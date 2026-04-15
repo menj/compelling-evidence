@@ -1,0 +1,386 @@
+/**
+ * Compelling Evidence — Engagement System
+ * Voting, resonance feedback, share bar, and widget styles.
+ *
+ * Uses the theme's existing colour variables and design language:
+ *   --teal: #0cd4e0   --gold: #f5c518
+ *   --bg-deepest: #0d0820   --muted: rgba(242,238,255,0.55)
+ *
+ * @since 1.7.0
+ */
+
+
+/* ═══════════════════════════════════════════════════
+   ENGAGEMENT FOOTER (wraps all three components)
+   ═══════════════════════════════════════════════════ */
+
+.ce-engagement-footer {
+  margin-top: 3rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+
+/* ═══════════════════════════════════════════════════
+   SHARE BAR
+   ═══════════════════════════════════════════════════ */
+
+.ce-share-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.ce-share-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(242,238,255,0.25);
+  flex-shrink: 0;
+}
+
+.ce-share-buttons {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.ce-share-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.03);
+  color: rgba(242,238,255,0.45);
+  cursor: pointer;
+  transition: all 0.18s ease;
+  padding: 0;
+}
+
+.ce-share-btn:hover {
+  transform: translateY(-1px);
+}
+
+/* Platform-specific hover colours */
+.ce-share-wa:hover      { border-color: rgba(37,211,102,0.4);  color: #25d366; background: rgba(37,211,102,0.08); }
+.ce-share-tg:hover      { border-color: rgba(0,136,204,0.4);   color: #0088cc; background: rgba(0,136,204,0.08); }
+.ce-share-fb:hover      { border-color: rgba(24,119,242,0.4);  color: #1877f2; background: rgba(24,119,242,0.08); }
+.ce-share-x:hover       { border-color: rgba(255,255,255,0.25); color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.06); }
+.ce-share-reddit:hover  { border-color: rgba(255,69,0,0.4);    color: #ff4500; background: rgba(255,69,0,0.08); }
+.ce-share-threads:hover { border-color: rgba(255,255,255,0.25); color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.06); }
+.ce-share-email:hover   { border-color: rgba(12,212,224,0.3);  color: rgba(12,212,224,0.8); background: rgba(12,212,224,0.06); }
+.ce-share-copy:hover    { border-color: rgba(12,212,224,0.3);  color: rgba(12,212,224,0.8); background: rgba(12,212,224,0.06); }
+.ce-share-native:hover  { border-color: rgba(107,47,160,0.3);  color: rgba(107,47,160,0.8); background: rgba(107,47,160,0.06); }
+
+/* Copy link feedback state */
+.ce-share-copy.copied {
+  border-color: rgba(12,212,224,0.5);
+  color: rgba(12,212,224,0.9);
+  background: rgba(12,212,224,0.1);
+}
+
+/* Native share: show on all devices (Web Share API check in JS) */
+.ce-share-native { display: none; }
+
+/* Hide copy label (icon-only mode) */
+.ce-copy-label { display: none; }
+
+
+/* ═══════════════════════════════════════════════════
+   VOTE WIDGET
+   ═══════════════════════════════════════════════════ */
+
+.ce-vote-widget {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 50px;
+  padding: 0.25rem 0.35rem;
+}
+
+.ce-vote-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: rgba(242,238,255,0.35);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ce-vote-btn:hover:not(:disabled) {
+  background: rgba(255,255,255,0.06);
+  color: rgba(242,238,255,0.7);
+}
+
+.ce-vote-up.active {
+  color: rgba(12,212,224,0.9);
+  background: rgba(12,212,224,0.1);
+}
+
+.ce-vote-down.active {
+  color: rgba(255,80,80,0.8);
+  background: rgba(255,80,80,0.08);
+}
+
+.ce-vote-btn:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+.ce-vote-btn.active:disabled {
+  opacity: 1;
+}
+
+.ce-vote-score {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: rgba(242,238,255,0.75);
+  min-width: 2rem;
+  text-align: center;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.ce-score-bump {
+  transform: scale(1.3);
+  color: rgba(12,212,224,0.9);
+}
+
+/* Row layout: share + vote side by side */
+.ce-share-vote-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+
+/* ═══════════════════════════════════════════════════
+   RESONANCE FEEDBACK
+   ═══════════════════════════════════════════════════ */
+
+.ce-resonance {
+  background: rgba(107,47,160,0.04);
+  border: 1px solid rgba(107,47,160,0.15);
+  border-radius: 14px;
+  padding: 1.8rem 2rem;
+}
+
+.ce-resonance-title {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: rgba(242,238,255,0.6);
+  margin: 0 0 1.2rem;
+}
+
+.ce-resonance-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.ce-res-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1.2rem;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  color: rgba(242,238,255,0.6);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.ce-res-btn:hover {
+  border-color: rgba(107,47,160,0.3);
+  background: rgba(107,47,160,0.06);
+  color: rgba(242,238,255,0.85);
+}
+
+.ce-res-btn svg {
+  flex-shrink: 0;
+  color: rgba(107,47,160,0.5);
+  transition: color 0.2s ease;
+}
+
+.ce-res-btn:hover svg {
+  color: rgba(107,47,160,0.8);
+}
+
+.ce-res-selected {
+  border-color: rgba(12,212,224,0.3) !important;
+  background: rgba(12,212,224,0.06) !important;
+  color: rgba(12,212,224,0.9) !important;
+}
+.ce-res-selected svg {
+  color: rgba(12,212,224,0.8) !important;
+}
+
+.ce-resonance-thanks {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  color: rgba(12,212,224,0.7);
+  margin: 0 0 1rem;
+}
+
+.ce-resonance-results {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.ce-res-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.ce-res-count {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: rgba(242,238,255,0.7);
+}
+
+.ce-res-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.7rem;
+  color: rgba(242,238,255,0.3);
+  letter-spacing: 0.04em;
+}
+
+
+/* ═══════════════════════════════════════════════════
+   MOST RESONANT WIDGET
+   ═══════════════════════════════════════════════════ */
+
+.ce-most-resonant-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ce-mr-item {
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.ce-mr-item:last-child {
+  border-bottom: none;
+}
+
+.ce-mr-item a {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.65rem 0;
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+
+.ce-mr-item a:hover {
+  opacity: 0.8;
+}
+
+.ce-mr-title {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  color: rgba(242,238,255,0.7);
+  line-height: 1.4;
+}
+
+.ce-mr-meta {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.ce-mr-score {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: rgba(12,212,224,0.6);
+}
+
+.ce-mr-helped {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.65rem;
+  color: rgba(242,238,255,0.25);
+}
+
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════ */
+
+@media (max-width: 860px) {
+  .ce-share-vote-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .ce-resonance {
+    padding: 1.4rem 1.2rem;
+  }
+  .ce-resonance-results {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .ce-res-stat {
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: baseline;
+  }
+  .ce-res-btn {
+    padding: 0.7rem 1rem;
+    font-size: 0.82rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .ce-share-btn {
+    width: 34px;
+    height: 34px;
+  }
+  .ce-share-btn svg {
+    width: 15px;
+    height: 15px;
+  }
+  .ce-share-buttons {
+    gap: 0.3rem;
+  }
+  .ce-share-label {
+    font-size: 0.6rem;
+  }
+  .ce-vote-btn {
+    width: 30px;
+    height: 30px;
+  }
+  .ce-vote-score {
+    font-size: 0.82rem;
+    min-width: 1.5rem;
+  }
+}

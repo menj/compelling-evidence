@@ -1,0 +1,359 @@
+# Compelling Evidence WordPress Theme
+# Copyright (C) 2026 compelling-evidence
+# This file is distributed under the same license as the Compelling Evidence theme.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Compelling Evidence 1.1.0\n"
+"Report-Msgid-Bugs-To: langgam.fikir@gmail.com\n"
+"POT-Creation-Date: 2026-03-15T00:00:00+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: compelling-evidence <langgam.fikir@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"X-Generator: Manual\n"
+"X-Domain: compelling-evidence\n"
+
+#. Theme Name
+#: style.css
+msgid "Compelling Evidence"
+msgstr ""
+
+#. Theme Description
+#: style.css
+msgid "A child theme of Twenty Twenty-Five for Compelling Evidence — an Islamic apologetics and dawah resource site."
+msgstr ""
+
+#: functions.php
+msgid "Articles"
+msgstr ""
+
+#: functions.php
+msgid "Article"
+msgstr ""
+
+#: functions.php
+msgid "Add New Article"
+msgstr ""
+
+#: functions.php
+msgid "Edit Article"
+msgstr ""
+
+#: functions.php
+msgid "New Article"
+msgstr ""
+
+#: functions.php
+msgid "View Article"
+msgstr ""
+
+#: functions.php
+msgid "Search Articles"
+msgstr ""
+
+#: functions.php
+msgid "No articles found"
+msgstr ""
+
+#: functions.php
+msgid "Topics"
+msgstr ""
+
+#: functions.php
+msgid "Topic"
+msgstr ""
+
+#: functions.php
+msgid "Add Topic"
+msgstr ""
+
+#: functions.php
+msgid "Primary Navigation"
+msgstr ""
+
+#: functions.php
+msgid "Footer Navigation"
+msgstr ""
+
+#: header.php
+msgid "Toggle menu"
+msgstr ""
+
+#: header.php
+msgid "Random article"
+msgstr ""
+
+#: header.php
+msgid "Random"
+msgstr ""
+
+#: header.php
+msgid "Read first"
+msgstr ""
+
+#: front-page.php
+msgid "Find my path"
+msgstr ""
+
+#: front-page.php
+msgid "Browse all 12 paths →"
+msgstr ""
+
+#: front-page.php
+msgid "Still Searching?"
+msgstr ""
+
+#: front-page.php
+msgid "Get In Touch"
+msgstr ""
+
+#: front-page.php
+msgid "Browse Topics"
+msgstr ""
+
+#: front-page.php
+msgid "Your personalised path"
+msgstr ""
+
+#: front-page.php
+msgid "Where are you starting from?"
+msgstr ""
+
+#: front-page.php
+msgid "Not a generic introduction — an argument written for someone exactly like you. Five questions. Ninety seconds."
+msgstr ""
+
+#: page-journeys.php
+msgid "12 Paths. One Question."
+msgstr ""
+
+#: page-journeys.php
+msgid "Each journey is written for a specific starting point — the arguments, the tone, the texture all calibrated for where you actually are."
+msgstr ""
+
+#: page-journeys.php
+msgid "Find my path"
+msgstr ""
+
+#: page-journeys.php
+msgid "Not sure which path is yours?"
+msgstr ""
+
+#: page-journeys.php
+msgid "Five questions. No wrong answers. Takes 90 seconds."
+msgstr ""
+
+#: page-journeys.php
+msgid "Take the quiz"
+msgstr ""
+
+#: page-journeys.php
+msgid "Begin journey"
+msgstr ""
+
+#. Persona names — journey cards
+#: page-journeys.php
+msgid "The New Atheist"
+msgstr ""
+
+#: page-journeys.php
+msgid "The Agnostic"
+msgstr ""
+
+#: page-journeys.php
+msgid "The Secular Humanist"
+msgstr ""
+
+#: page-journeys.php
+msgid "The Antitheist"
+msgstr ""
+
+#: page-journeys.php
+msgid "The Materialist"
+msgstr ""
+
+#: page-journeys.php
+msgid "Muslim with Doubts"
+msgstr ""
+
+#: page-journeys.php
+msgid "The Apatheist"
+msgstr ""
+
+#: page-journeys.php
+msgid "The Deist"
+msgstr ""
+
+#: page-journeys.php
+msgid "The Scientist"
+msgstr ""
+
+#: page-journeys.php
+msgid "The Classical Atheist"
+msgstr ""
+
+#: page-journeys.php
+msgid "The Ex-Believer"
+msgstr ""
+
+#: page-journeys.php
+msgid "The Spiritual Seeker"
+msgstr ""
+
+#. Journey card labels
+#: page-journeys.php
+msgid "Confrontational"
+msgstr ""
+
+#: page-journeys.php
+msgid "Uncertain"
+msgstr ""
+
+#: page-journeys.php
+msgid "Grounded"
+msgstr ""
+
+#: page-journeys.php
+msgid "Moral clarity"
+msgstr ""
+
+#: page-journeys.php
+msgid "Physicalist"
+msgstr ""
+
+#: page-journeys.php
+msgid "From inside"
+msgstr ""
+
+#: page-journeys.php
+msgid "Irrelevance"
+msgstr ""
+
+#: page-journeys.php
+msgid "Creator, not God"
+msgstr ""
+
+#: page-journeys.php
+msgid "Evidential"
+msgstr ""
+
+#: page-journeys.php
+msgid "Philosophical"
+msgstr ""
+
+#: page-journeys.php
+msgid "Post-religious"
+msgstr ""
+
+#: page-journeys.php
+msgid "Still searching"
+msgstr ""
+
+#. Journey card descriptions
+#: page-journeys.php
+msgid "You engage the God question head-on — with names, arguments, and a willingness to push back."
+msgstr ""
+
+#: page-journeys.php
+msgid "You hold the question open. You want evidence, not easy answers."
+msgstr ""
+
+#: page-journeys.php
+msgid "You have built a coherent, values-driven life. The question is whether those values need a foundation."
+msgstr ""
+
+#: page-journeys.php
+msgid "Religion isn't just wrong — it's harmful. You have a moral case against it."
+msgstr ""
+
+#: page-journeys.php
+msgid "The physical universe is all there is. Consciousness and values are what matter produces."
+msgstr ""
+
+#: page-journeys.php
+msgid "You grew up Muslim and specific things — historical, ethical, textual — have created serious questions."
+msgstr ""
+
+#: page-journeys.php
+msgid "God just stopped being relevant. Not disproved — irrelevant."
+msgstr ""
+
+#: page-journeys.php
+msgid "Something made the universe. But the personal God of any religion seems a step too far."
+msgstr ""
+
+#: page-journeys.php
+msgid "You apply an evidential standard consistently. The case must meet the same rigour as any other claim."
+msgstr ""
+
+#: page-journeys.php
+msgid "The concept of God is philosophically incoherent — not just unproved."
+msgstr ""
+
+#: page-journeys.php
+msgid "You left religion deliberately. Something specific broke the faith."
+msgstr ""
+
+#: page-journeys.php
+msgid "You have found real things in multiple traditions — but no single container has held all of it."
+msgstr ""
+
+#: page-journey.php
+msgid "Journey Not Found"
+msgstr ""
+
+#: page-journey.php
+msgid "The path \"%s\" is not available yet."
+msgstr ""
+
+#: page-journey.php
+msgid "Take the quiz"
+msgstr ""
+
+#: page-quiz.php
+msgid "Find Your Path"
+msgstr ""
+
+#: page-quiz.php
+msgid "Choose your path directly below."
+msgstr ""
+
+#: page-quiz.php
+msgid "View all paths"
+msgstr ""
+
+#: page-ask-a-question.php
+msgid "Ask a Question"
+msgstr ""
+
+#: index.php
+msgid "Search Results"
+msgstr ""
+
+#: index.php
+msgid "All Articles"
+msgstr ""
+
+#: index.php
+msgid "Results for:"
+msgstr ""
+
+#: footer.php
+msgid "A project by"
+msgstr ""
+
+#: single-ce_article.php
+msgid "min read"
+msgstr ""
+
+#: single-ce_article.php
+msgid "Related Articles"
+msgstr ""
+
+#: single-ce_article.php
+msgid "Read more"
+msgstr ""

@@ -1,0 +1,306 @@
+/**
+ * Compelling Evidence — Print Stylesheet
+ * Clean, readable output for printing articles.
+ *
+ * @since 1.9.1
+ * @media print
+ */
+
+/* ── Reset: hide non-content elements ── */
+.ce-nav,
+.featured-strip,
+#ce-reading-progress,
+.nav-toggle,
+.nav-actions,
+.article-sidebar,
+.ce-engagement-footer,
+.ce-share-bar,
+.ce-vote-widget,
+.ce-resonance,
+.sidebar-cta,
+.sidebar-widget,
+.sidebar-reading-progress,
+.archive-footer,
+.footer,
+.footer-inner,
+.scroll-hint,
+.hero-search-wrap,
+.hero-prompts,
+.quick-access,
+.journey-entry,
+.cta,
+.btn-teal,
+.btn-primary,
+.btn-gold,
+.ce-divider,
+.article-nav,
+.related-list,
+.topic-filter,
+.ts-toggle-btn,
+#ce-journey-return-widget,
+#ce-resume-banner,
+.meta-reading-progress,
+button,
+.network-bar {
+  display: none !important;
+}
+
+/* ── Page setup ── */
+@page {
+  margin: 2cm 2.5cm;
+  size: A4;
+}
+
+* {
+  background: white !important;
+  color: #1a1a1a !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  border-color: #ccc !important;
+}
+
+body {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 11pt;
+  line-height: 1.7;
+  color: #1a1a1a;
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+/* ── Typography ── */
+h1 {
+  font-family: 'Georgia', serif;
+  font-size: 20pt;
+  font-weight: 700;
+  margin-bottom: 0.4em;
+  line-height: 1.2;
+  page-break-after: avoid;
+}
+
+h2 {
+  font-family: 'Georgia', serif;
+  font-size: 14pt;
+  font-weight: 700;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+  page-break-after: avoid;
+}
+
+h3 {
+  font-size: 12pt;
+  font-weight: 700;
+  margin-top: 1.2em;
+  page-break-after: avoid;
+}
+
+p {
+  margin-bottom: 0.8em;
+  orphans: 3;
+  widows: 3;
+}
+
+/* ── Article content ── */
+.article-content,
+.ce-single,
+.ce-page {
+  padding: 0 !important;
+  margin: 0 !important;
+  max-width: 100% !important;
+}
+
+.article-content-wrap {
+  display: block !important;
+  grid-template-columns: 1fr !important;
+  padding: 0 !important;
+}
+
+.article-hero {
+  padding: 0 !important;
+  margin-bottom: 1.5em;
+  background: none !important;
+}
+
+.article-hero h1 {
+  font-size: 22pt;
+}
+
+.article-hero .article-topic {
+  font-size: 9pt;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #666 !important;
+  margin-bottom: 0.3em;
+}
+
+.article-meta span {
+  font-size: 9pt;
+  color: #666 !important;
+}
+
+/* ── Article lead paragraph ── */
+.article-lead {
+  font-size: 12pt;
+  font-style: italic;
+  margin-bottom: 1em;
+}
+
+/* ── Blockquotes ── */
+blockquote {
+  border-left: 2pt solid #999;
+  padding-left: 1em;
+  margin: 1em 0;
+  font-style: italic;
+  color: #333 !important;
+}
+
+/* ── Quran/Hadith citations ── */
+.quran-citation,
+.hadith-citation {
+  border: 1pt solid #ccc;
+  padding: 0.8em 1em;
+  margin: 1em 0;
+  page-break-inside: avoid;
+  background: #f9f9f9 !important;
+  text-align: center;
+}
+
+.quran-arabic {
+  font-family: 'Uthmani Quran', 'CE Hadith', serif;
+  font-size: 14pt;
+  direction: rtl;
+  text-align: center;
+  display: block;
+  margin-bottom: 0.5em;
+  line-height: 2;
+}
+.hadith-arabic {
+  font-family: 'CE Hadith', serif;
+  font-size: 14pt;
+  direction: rtl;
+  text-align: center;
+  display: block;
+  margin-bottom: 0.5em;
+  line-height: 2;
+}
+
+.quran-translation,
+.hadith-translation {
+  font-style: italic;
+  font-size: 10pt;
+  margin-bottom: 0.3em;
+  text-align: center;
+  display: block;
+}
+
+.quran-ref,
+.hadith-ref {
+  font-size: 8pt;
+  color: #666 !important;
+  display: block;
+  text-align: center;
+}
+
+/* ── Links — show URL ── */
+a[href]::after {
+  content: " (" attr(href) ")";
+  font-size: 8pt;
+  color: #666 !important;
+  word-break: break-all;
+}
+
+/* Don't show URL for internal/anchor links */
+a[href^="#"]::after,
+a[href^="javascript"]::after,
+.card-link::after,
+.card-title a::after,
+.related-list a::after,
+nav a::after {
+  content: "" !important;
+}
+
+/* ── Images ── */
+img {
+  max-width: 100% !important;
+  page-break-inside: avoid;
+}
+
+/* ── Page breaks ── */
+.article-content h2 {
+  page-break-after: avoid;
+}
+
+.quran-citation,
+.hadith-citation,
+blockquote {
+  page-break-inside: avoid;
+}
+
+/* ── Footer info ── */
+.ce-single::after {
+  content: "Compelling Evidence — compelling-evidence.com";
+  display: block;
+  margin-top: 3em;
+  padding-top: 1em;
+  border-top: 1pt solid #ccc;
+  font-size: 8pt;
+  color: #999 !important;
+  text-align: center;
+}
+
+/* ── Archive/list pages ── */
+.articles-archive {
+  padding: 0 !important;
+}
+
+.topic-section {
+  page-break-inside: avoid;
+}
+
+.ts-article {
+  border-bottom: 0.5pt solid #eee !important;
+}
+
+/* ── Front page: simplify for print ── */
+.hero {
+  min-height: auto !important;
+  padding: 1em 0 !important;
+}
+
+.hero-verse-img {
+  max-width: 300px;
+  filter: none !important;
+  animation: none !important;
+}
+
+.card {
+  page-break-inside: avoid;
+  border: 0.5pt solid #ccc !important;
+  margin-bottom: 1em;
+}
+
+.grid {
+  display: block !important;
+}
+
+.card-body {
+  padding: 0.8em !important;
+}
+
+.hero-verse-text {
+  font-family: 'Uthmani Quran', 'CE Hadith', serif;
+  font-size: 22pt;
+  line-height: 1.8;
+  text-align: center;
+  color: #2a1050;
+}
+
+.hero-verse-end {
+  font-size: 0.8em;
+}
+
+.hero-verse-img--fallback {
+  display: none !important;
+}

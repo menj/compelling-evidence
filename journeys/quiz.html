@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compelling Evidence — Find Your Path</title>
+<meta name="description" content="Ten questions. No wrong answers. Discover which of 14 personalised paths matches where you actually stand on God, religion, and existence — then follow the evidence.">
+<meta property="og:title" content="Find Your Path — Compelling Evidence">
+<meta property="og:description" content="Ten questions to identify your starting point. Fourteen personalised journeys. One honest inquiry into the questions that matter most.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://compelling-evidence.com/quiz/">
+<meta property="og:site_name" content="Compelling Evidence">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Find Your Path — Compelling Evidence">
+<meta name="twitter:description" content="Ten questions. Fourteen paths. Honest inquiry into the questions that matter most.">
+<link rel="canonical" href="https://compelling-evidence.com/quiz/">
+
+<style>
+
+/* Self-hosted fonts */
+@font-face { font-family: 'Playfair Display'; src: url('/wp-content/themes/compelling-evidence/assets/fonts/playfair-display-400.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Playfair Display'; src: url('/wp-content/themes/compelling-evidence/assets/fonts/playfair-display-700.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Playfair Display'; src: url('/wp-content/themes/compelling-evidence/assets/fonts/playfair-display-900.woff2') format('woff2'); font-weight: 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Playfair Display'; src: url('/wp-content/themes/compelling-evidence/assets/fonts/playfair-display-400-italic.woff2') format('woff2'); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: 'DM Sans'; src: url('/wp-content/themes/compelling-evidence/assets/fonts/dm-sans-300.woff2') format('woff2'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'DM Sans'; src: url('/wp-content/themes/compelling-evidence/assets/fonts/dm-sans-400.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'DM Sans'; src: url('/wp-content/themes/compelling-evidence/assets/fonts/dm-sans-500.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'DM Sans'; src: url('/wp-content/themes/compelling-evidence/assets/fonts/dm-sans-600.woff2') format('woff2'); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Cormorant Garamond'; src: url('/wp-content/themes/compelling-evidence/assets/fonts/cormorant-garamond-300.woff2') format('woff2'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Cormorant Garamond'; src: url('/wp-content/themes/compelling-evidence/assets/fonts/cormorant-garamond-400.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Cormorant Garamond'; src: url('/wp-content/themes/compelling-evidence/assets/fonts/cormorant-garamond-600.woff2') format('woff2'); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Cormorant Garamond'; src: url('/wp-content/themes/compelling-evidence/assets/fonts/cormorant-garamond-300-italic.woff2') format('woff2'); font-weight: 300; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Cormorant Garamond'; src: url('/wp-content/themes/compelling-evidence/assets/fonts/cormorant-garamond-400-italic.woff2') format('woff2'); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: 'CE Hadith'; src: url('/wp-content/themes/compelling-evidence/assets/fonts/ce-hadith-400.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'CE Hadith'; src: url('/wp-content/themes/compelling-evidence/assets/fonts/ce-hadith-700.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'CE Hadith'; src: url('/wp-content/themes/compelling-evidence/assets/fonts/ce-hadith-400.woff2') format('woff2'); font-weight: 400; font-style: italic; font-display: swap; }
+
+
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-deepest:#0d0820;--bg-dark:#1a0f38;--bg-deep:#120b2e;
+  --white:#f2eeff;--muted:rgba(242,238,255,0.55);--dimmed:rgba(242,238,255,0.28);
+  --teal:#0cd4e0;--gold:#f5c518;--purple:#6b2fa0;
+  --serif:'Playfair Display',serif;--body:'DM Sans',sans-serif;--reading:'Cormorant Garamond',serif;
+}
+html,body{min-height:100vh;background:var(--bg-deepest);color:var(--white);font-family:var(--body);overflow-x:hidden;}
+img,svg{max-width:100%;height:auto;}
+.q-option > div:last-child{flex:1;min-width:0;}
+.opt-text,.opt-sub,.q-text,.q-hint,.res-desc{overflow-wrap:anywhere;word-break:normal;}
+
+body{
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(107,47,160,0.35) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(12,212,224,0.06) 0%, transparent 50%),
+    var(--bg-deepest);
+}
+
+/* NAV */
+.ce-nav{position:fixed;top:0;left:0;right:0;z-index:100;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;background:rgba(13,8,32,0.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(107,47,160,0.12);}
+.nav-logo{font-family:var(--serif);font-style:italic;font-size:1.1rem;font-weight:700;color:var(--white);text-decoration:none;}
+
+/* QUIZ WRAPPER */
+.quiz-wrap{max-width:680px;margin:0 auto;padding:88px 2rem 4rem;}
+
+/* INTRO */
+.quiz-intro{text-align:center;padding:3rem 0 3.5rem;}
+.qi-eyebrow{font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(12,212,224,0.6);margin-bottom:1.2rem;display:block;}
+.qi-title{font-family:var(--serif);font-size:clamp(2.4rem,5vw,3.8rem);font-weight:900;line-height:1.05;letter-spacing:-0.02em;margin-bottom:1.2rem;}
+.qi-title em{font-style:italic;color:rgba(242,238,255,0.6);}
+.qi-sub{font-family:var(--reading);font-style:italic;font-size:1.1rem;color:var(--muted);line-height:1.75;max-width:480px;margin:0 auto 2rem;}
+.btn-start{display:inline-flex;align-items:center;gap:0.5rem;padding:1rem 2.2rem;border-radius:50px;background:linear-gradient(135deg,var(--teal),#09b8c4);color:#0d0820;font-family:var(--body);font-size:0.95rem;font-weight:700;cursor:pointer;border:none;box-shadow:0 6px 28px rgba(12,212,224,0.22);transition:all 0.2s;}
+.btn-start:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(12,212,224,0.3);}
+
+/* PROGRESS BAR */
+.quiz-progress{margin-bottom:2.5rem;}
+.qp-track{height:3px;background:rgba(255,255,255,0.08);border-radius:50px;overflow:hidden;margin-bottom:0.6rem;}
+.qp-fill{height:100%;background:linear-gradient(90deg,var(--teal),#09b8c4);border-radius:50px;transition:width 0.4s ease;}
+.qp-label{font-size:0.72rem;color:var(--dimmed);letter-spacing:0.1em;}
+
+/* QUESTION */
+.q-block{display:none;animation:fadeUp 0.4s ease forwards;}
+.q-block.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.q-num{font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--teal);margin-bottom:0.8rem;display:block;opacity:0.6;}
+.q-text{font-family:var(--serif);font-size:clamp(1.35rem,2.5vw,1.7rem);font-weight:700;line-height:1.3;margin-bottom:0.5rem;}
+.q-hint{font-family:var(--reading);font-style:italic;font-size:0.95rem;color:var(--muted);margin-bottom:1.8rem;line-height:1.6;}
+.q-multi-hint{font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(12,212,224,0.45);margin-bottom:1rem;display:block;}
+
+/* OPTIONS */
+.q-options{display:flex;flex-direction:column;gap:0.75rem;}
+.q-option{display:flex;align-items:flex-start;gap:1rem;padding:1.1rem 1.4rem;background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.07);border-radius:12px;cursor:pointer;transition:all 0.15s;position:relative;overflow:hidden;}
+.q-option::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(12,212,224,0.08),transparent);opacity:0;transition:opacity 0.2s;}
+.q-option:hover{border-color:rgba(12,212,224,0.25);background:rgba(12,212,224,0.04);}
+.q-option:hover::before{opacity:1;}
+.q-option.selected{border-color:rgba(12,212,224,0.5);background:rgba(12,212,224,0.06);}
+.q-option.selected::before{opacity:1;}
+.opt-radio{width:20px;height:20px;border-radius:5px;border:2px solid rgba(255,255,255,0.2);flex-shrink:0;margin-top:0.1rem;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+.q-option.selected .opt-radio{border-color:var(--teal);background:var(--teal);}
+.opt-radio::after{content:'✓';font-size:12px;color:var(--bg-deepest);font-weight:700;opacity:0;transition:opacity 0.15s;}
+.q-option.selected .opt-radio::after{opacity:1;}
+.opt-text{font-size:0.9rem;color:rgba(242,238,255,0.8);line-height:1.55;padding-top:0.1rem;}
+.opt-sub{font-size:0.78rem;color:var(--dimmed);margin-top:0.2rem;line-height:1.4;}
+
+/* NAV BUTTONS */
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;}
+.btn-prev{display:inline-flex;align-items:center;gap:0.4rem;padding:0.75rem 1.4rem;border-radius:50px;background:transparent;border:1px solid rgba(255,255,255,0.1);color:var(--muted);font-family:var(--body);font-size:0.85rem;cursor:pointer;transition:all 0.2s;}
+.btn-prev:hover{border-color:rgba(255,255,255,0.2);color:var(--white);}
+.btn-next{display:inline-flex;align-items:center;gap:0.4rem;padding:0.85rem 1.8rem;border-radius:50px;background:linear-gradient(135deg,var(--teal),#09b8c4);color:#0d0820;font-family:var(--body);font-size:0.88rem;font-weight:700;cursor:pointer;border:none;transition:all 0.2s;opacity:0.4;pointer-events:none;}
+.btn-next.enabled{opacity:1;pointer-events:all;}
+.btn-next.enabled:hover{transform:translateY(-1px);}
+
+/* RESULT */
+.result-screen{display:none;animation:fadeUp 0.5s ease forwards;}
+.result-screen.active{display:block;}
+.result-hero{text-align:center;padding:2rem 0 3rem;position:relative;}
+.result-hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(245,197,24,0.025) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;}
+.res-eyebrow{font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--dimmed);margin-bottom:1rem;display:block;}
+.res-label{font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--teal);margin-bottom:0.5rem;display:block;}
+.res-path{font-family:var(--serif);font-size:clamp(2.2rem,5vw,3.4rem);font-weight:900;line-height:1.1;letter-spacing:-0.02em;color:var(--white);margin-bottom:1rem;}
+.res-desc{font-family:var(--reading);font-style:italic;font-size:1.05rem;color:var(--muted);line-height:1.8;max-width:500px;margin:0 auto 1rem;}
+.res-note{max-width:540px;margin:0 auto 1.5rem;padding:0.9rem 1rem;border:1px solid rgba(12,212,224,0.16);border-radius:12px;background:rgba(12,212,224,0.05);font-size:0.86rem;line-height:1.55;color:rgba(242,238,255,0.72);display:none;}
+.res-resonances{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:1.4rem 1.8rem;margin:0 auto 2rem;max-width:500px;}
+.rr-label{font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--dimmed);margin-bottom:0.8rem;display:block;}
+.rr-items{display:flex;flex-wrap:wrap;gap:0.5rem;}
+.rr-item{font-size:0.78rem;padding:0.3rem 0.75rem;border-radius:50px;border:1px solid rgba(107,47,160,0.3);color:rgba(242,238,255,0.6);background:rgba(107,47,160,0.08);}
+.btn-journey{display:inline-flex;align-items:center;gap:0.5rem;padding:1.1rem 2.5rem;border-radius:50px;background:linear-gradient(135deg,var(--gold),#d4a017);color:#0d0820;font-family:var(--body);font-size:1rem;font-weight:700;cursor:pointer;border:none;box-shadow:0 6px 28px rgba(245,197,24,0.22);transition:all 0.2s;margin-bottom:1rem;}
+.btn-journey:hover{transform:translateY(-2px);}
+.btn-retake{display:inline-flex;align-items:center;gap:0.4rem;padding:0.75rem 1.5rem;border-radius:50px;background:transparent;border:1px solid rgba(255,255,255,0.1);color:var(--muted);font-family:var(--body);font-size:0.82rem;cursor:pointer;transition:all 0.2s;margin-left:0.75rem;}
+.btn-retake:hover{border-color:rgba(255,255,255,0.2);color:var(--white);}
+
+/* SCORE BAR (subtle) */
+.score-bars{max-width:500px;margin:0 auto 2rem;}
+.sb-label{font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--dimmed);margin-bottom:0.8rem;display:block;}
+.sb-row{display:flex;align-items:center;gap:0.8rem;margin-bottom:0.45rem;}
+.sb-name{font-size:0.75rem;color:var(--muted);width:140px;flex-shrink:0;text-align:right;}
+.sb-track{flex:1;height:4px;background:rgba(255,255,255,0.06);border-radius:50px;overflow:hidden;}
+.sb-fill{height:100%;border-radius:50px;background:linear-gradient(90deg,rgba(107,47,160,0.4),var(--teal));transition:width 0.6s ease;}
+.sb-fill.primary{background:linear-gradient(90deg,var(--purple),var(--teal));}
+
+/* ── Two-tone logo (matches main site header.php) ── */
+.nav-logo-text { display: inline-flex; align-items: baseline; gap: 0; line-height: 1; }
+.nav-logo-ce   { color: #e05252; font-weight: 900; }
+.nav-logo-ev   { color: #f2eeff; font-weight: 700; }
+
+/* ── MOBILE RESPONSIVE ─────────────────────────────────────────── */
+@media (max-width: 820px) {
+  .ce-nav { padding: 0 1rem; }
+  .quiz-wrap { max-width: 100%; padding: 76px 1rem 3rem; }
+  .q-nav { gap: 0.75rem; }
+}
+@media (max-width: 600px) {
+  .ce-nav { padding: 0 0.9rem; height: 56px; }
+  .nav-logo { font-size: 1rem; }
+  .quiz-wrap { padding: 68px 0.9rem calc(96px + env(safe-area-inset-bottom, 0px)); }
+  .quiz-intro { padding: 2rem 0 2.4rem; }
+  .qi-title { font-size: clamp(1.9rem, 8vw, 2.5rem); }
+  .qi-sub { font-size: 0.98rem; line-height: 1.7; }
+  .quiz-progress { margin-bottom: 1.5rem; }
+  .q-num, .q-multi-hint, .qp-label { letter-spacing: 0.12em; }
+  .q-text { font-size: 1.25rem; line-height: 1.35; }
+  .q-hint { font-size: 0.95rem; line-height: 1.55; margin-bottom: 1.2rem; }
+  .q-options { gap: 0.65rem; }
+  .q-option { padding: 0.95rem 0.95rem; gap: 0.8rem; border-radius: 14px; align-items: flex-start; }
+  .opt-radio { width: 18px; height: 18px; margin-top: 0.2rem; }
+  .opt-text { font-size: 0.92rem; line-height: 1.45; }
+  .opt-sub { font-size: 0.78rem; line-height: 1.4; margin-top: 0.28rem; }
+  .q-nav { position: sticky; bottom: 0; z-index: 20; display: grid; grid-template-columns: 1fr 1fr; align-items: stretch; gap: 0.65rem; padding: 0.85rem 0 calc(0.2rem + env(safe-area-inset-bottom, 0px)); margin-top: 1.2rem; background: linear-gradient(180deg, rgba(13,8,32,0) 0%, rgba(13,8,32,0.92) 22%, rgba(13,8,32,0.98) 100%); }
+  #q1 .q-nav { grid-template-columns: 1fr; }
+  #q1 .q-nav > div:empty { display: none; }
+  .btn-next, .btn-prev { width: 100%; justify-content: center; min-height: 46px; padding: 0.9rem 1rem; font-size: 0.9rem; }
+  .result-hero { padding: 1.25rem 0 1.6rem; }
+  .res-trait { margin-top: 0.8rem; padding: 0.7rem 0.95rem; border-radius: 18px; font-size: 0.92rem; }
+  .res-path { font-size: clamp(1.8rem, 8vw, 2.4rem); }
+  .res-desc { font-size: 0.98rem; line-height: 1.65; }
+  .res-note { font-size: 0.82rem; line-height: 1.5; padding: 0.85rem 0.9rem; margin-bottom: 1.15rem; }
+  .res-resonances { padding: 1rem 1rem; }
+  .rr-items { gap: 0.4rem; }
+  .rr-item { font-size: 0.74rem; }
+  .score-bars { margin-bottom: 1.4rem; }
+  .sb-row { display: block; margin-bottom: 0.75rem; }
+  .sb-name { width: auto; text-align: left; margin-bottom: 0.28rem; font-size: 0.72rem; }
+  .btn-journey, .btn-retake { width: 100%; justify-content: center; margin: 0.5rem 0 0; }
+  .btn-journey { padding: 1rem 1.2rem; font-size: 0.95rem; }
+  .btn-retake { padding: 0.85rem 1.2rem; }
+}
+@media (max-width: 380px) {
+  .quiz-wrap { padding-left: 0.75rem; padding-right: 0.75rem; }
+  .q-text { font-size: 1.15rem; }
+  .q-option { padding: 0.85rem 0.85rem; }
+  .opt-text { font-size: 0.88rem; }
+  .opt-sub { font-size: 0.75rem; }
+  .btn-next, .btn-prev { font-size: 0.85rem; }
+}
+
+
+.q-option:focus-visible { outline: 2px solid rgba(12,212,224,0.6); outline-offset: 2px; border-color: rgba(12,212,224,0.4); }
+.btn-next:focus-visible, .btn-prev:focus-visible, .btn-start:focus-visible { outline: 2px solid rgba(12,212,224,0.6); outline-offset: 3px; }
+</style>
+</head>
+<body>
+<nav class="ce-nav"><a class="nav-logo" href="/"><span class="nav-logo-text"><span class="nav-logo-ce">Compelling</span><span class="nav-logo-ev"> Evidence</span></span></a></nav>
+<div class="quiz-wrap">
+
+  <div class="quiz-intro" id="intro-screen">
+    <span class="qi-eyebrow">Your personalised journey</span>
+    <h1 class="qi-title">Where are you <em>starting from?</em></h1>
+    <p class="qi-sub">Ten questions. No wrong answers. Your responses shape a journey written specifically for where you stand — not a generic introduction, but an argument for someone exactly like you.</p>
+    <button class="btn-start" onclick="startQuiz()">Begin <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+  </div>
+
+  <div class="quiz-progress" id="progress-bar" style="display:none;">
+    <div class="qp-track"><div class="qp-fill" id="qp-fill" style="width:0%"></div></div>
+    <span class="qp-label" id="qp-label">Question 1 of 10</span>
+  </div>
+
+  <div id="questions-container" style="display:none;">
+
+    <div class="q-block" id="q1">
+      <span class="q-num">Question 1 of 10</span>
+      <h2 class="q-text">How did you arrive at your current position on God and religion?</h2>
+      <p class="q-hint">Not what you currently believe — how you got here.</p>
+      <span class="q-multi-hint">Select up to 3 that fit best</span>
+      <div class="q-options" role="listbox" aria-label="Choose your answer">
+        <div class="q-option" role="option" tabindex="0" data-q="1" data-v="A"><div class="opt-radio"></div><div><div class="opt-text">Never really cared — it wasn't part of my world</div><div class="opt-sub">The question of God just never felt pressing or relevant to your life</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="1" data-v="B"><div class="opt-radio"></div><div><div class="opt-text">Reasoned my way here through evidence and logic</div><div class="opt-sub">You studied, questioned, and followed the arguments to where they led</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="1" data-v="C"><div class="opt-radio"></div><div><div class="opt-text">Direct experience with religion — and it broke something</div><div class="opt-sub">Something you witnessed or endured changed how you see faith</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="1" data-v="D"><div class="opt-radio"></div><div><div class="opt-text">Searched across traditions and ideas, still looking</div><div class="opt-sub">You've explored widely but haven't found a framework that holds together</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="1" data-v="E"><div class="opt-radio"></div><div><div class="opt-text">Saw what religion does to people and turned against it</div><div class="opt-sub">The harm was too real, too widespread, and too systemic to ignore</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="1" data-v="F"><div class="opt-radio"></div><div><div class="opt-text">Grew up in a faith tradition — still processing what that means</div><div class="opt-sub">Whether you stayed, left, or drifted, the background shapes everything</div></div></div>
+      </div>
+      <div class="q-nav">
+        <div></div>
+        <button class="btn-next" id="next1" onclick="goNext(1)">Next <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+
+    <div class="q-block" id="q2">
+      <span class="q-num">Question 2 of 10</span>
+      <h2 class="q-text">When you think about God or ultimate reality, what's your first honest response?</h2>
+      <p class="q-hint">Not what you argue in debate. What you actually think when it's quiet.</p>
+      <span class="q-multi-hint">Select up to 3 that fit best</span>
+      <div class="q-options" role="listbox" aria-label="Choose your answer">
+        <div class="q-option" role="option" tabindex="0" data-q="2" data-v="A"><div class="opt-radio"></div><div><div class="opt-text">The idea doesn't hold up under serious examination</div><div class="opt-sub">You've looked at the arguments and found them wanting</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="2" data-v="B"><div class="opt-radio"></div><div><div class="opt-text">I genuinely don't know — and I'm honest about that</div><div class="opt-sub">You're holding the question open, not pretending it's settled</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="2" data-v="C"><div class="opt-radio"></div><div><div class="opt-text">Something transcendent probably exists — but organised religion misses it</div><div class="opt-sub">You sense there's more, but no tradition has captured it properly</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="2" data-v="D"><div class="opt-radio"></div><div><div class="opt-text">I don't think about it much — the question just doesn't grip me</div><div class="opt-sub">Not hostile, not searching — just not interested</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="2" data-v="E"><div class="opt-radio"></div><div><div class="opt-text">The concept makes me angry or hostile — I've seen the damage</div><div class="opt-sub">It's not just intellectual disagreement — there's real emotion behind it</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="2" data-v="F"><div class="opt-radio"></div><div><div class="opt-text">I believe — even if questions remain</div><div class="opt-sub">Your faith is real, even if it isn't always comfortable</div></div></div>
+      </div>
+      <div class="q-nav">
+        <button class="btn-prev" onclick="goPrev(2)"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back</button>
+        <button class="btn-next" id="next2" onclick="goNext(2)">Next <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+
+    <div class="q-block" id="q3">
+      <span class="q-num">Question 3 of 10</span>
+      <h2 class="q-text">What would it take to change your mind?</h2>
+      <p class="q-hint">What kind of evidence or argument would actually move you?</p>
+      <span class="q-multi-hint">Select up to 3 that fit best</span>
+      <div class="q-options" role="listbox" aria-label="Choose your answer">
+        <div class="q-option" role="option" tabindex="0" data-q="3" data-v="A"><div class="opt-radio"></div><div><div class="opt-text">A logically airtight philosophical argument I can't refute</div><div class="opt-sub">You need the reasoning to be watertight before you'll shift</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="3" data-v="B"><div class="opt-radio"></div><div><div class="opt-text">Concrete scientific evidence — repeatable, peer-reviewed, testable</div><div class="opt-sub">If it can't be measured and verified, you're not persuaded</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="3" data-v="C"><div class="opt-radio"></div><div><div class="opt-text">Good answers to specific problems I've encountered</div><div class="opt-sub">Not a general case — answers to the particular issues that trouble you</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="3" data-v="D"><div class="opt-radio"></div><div><div class="opt-text">I follow evidence wherever it leads — I'm already open</div><div class="opt-sub">You're not locked in — show you the best case and you'll evaluate it</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="3" data-v="E"><div class="opt-radio"></div><div><div class="opt-text">A direct personal experience that felt undeniably real</div><div class="opt-sub">Something beyond argument — an encounter that couldn't be explained away</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="3" data-v="F"><div class="opt-radio"></div><div><div class="opt-text">Nothing would — my position is settled, for better or worse</div><div class="opt-sub">Whether from conviction or exhaustion, you're done deliberating</div></div></div>
+      </div>
+      <div class="q-nav">
+        <button class="btn-prev" onclick="goPrev(3)"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back</button>
+        <button class="btn-next" id="next3" onclick="goNext(3)">Next <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+
+    <div class="q-block" id="q4">
+      <span class="q-num">Question 4 of 10</span>
+      <h2 class="q-text">What's your biggest problem with religion?</h2>
+      <p class="q-hint">The thing that makes you hesitate — or the thing that pushed you away.</p>
+      <span class="q-multi-hint">Select up to 3 that fit best</span>
+      <div class="q-options" role="listbox" aria-label="Choose your answer">
+        <div class="q-option" role="option" tabindex="0" data-q="4" data-v="A"><div class="opt-radio"></div><div><div class="opt-text">The harm — violence, control, oppression, hypocrisy</div><div class="opt-sub">You've seen religion do real damage, and that's hard to get past</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="4" data-v="B"><div class="opt-radio"></div><div><div class="opt-text">Intellectual dishonesty — demanding belief without evidence</div><div class="opt-sub">The reasoning doesn't hold up, and the refusal to admit it is the problem</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="4" data-v="C"><div class="opt-radio"></div><div><div class="opt-text">Specific claims or practices in my own tradition</div><div class="opt-sub">Not religion in general — particular things in the tradition you know best</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="4" data-v="D"><div class="opt-radio"></div><div><div class="opt-text">Not much, honestly — it's just not relevant to my life</div><div class="opt-sub">No big grudge, no dramatic break — religion simply isn't your concern</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="4" data-v="E"><div class="opt-radio"></div><div><div class="opt-text">It contradicts what science has established about reality</div><div class="opt-sub">The claims don't survive contact with what we actually know about the world</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="4" data-v="F"><div class="opt-radio"></div><div><div class="opt-text">Not God — the institutions and traditions built around God</div><div class="opt-sub">You don't object to the divine — you object to what humans did with it</div></div></div>
+      </div>
+      <div class="q-nav">
+        <button class="btn-prev" onclick="goPrev(4)"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back</button>
+        <button class="btn-next" id="next4" onclick="goNext(4)">Next <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+
+    <div class="q-block" id="q5">
+      <span class="q-num">Question 5 of 10</span>
+      <h2 class="q-text">What do you find most convincing about your current position?</h2>
+      <p class="q-hint">The thing that holds your view together — the reason you haven't moved.</p>
+      <span class="q-multi-hint">Select up to 3 that fit best</span>
+      <div class="q-options" role="listbox" aria-label="Choose your answer">
+        <div class="q-option" role="option" tabindex="0" data-q="5" data-v="A"><div class="opt-radio"></div><div><div class="opt-text">Science explains reality without needing God</div><div class="opt-sub">Physics, biology, cosmology — the picture is complete without a deity</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="5" data-v="B"><div class="opt-radio"></div><div><div class="opt-text">Religion's specific claims don't withstand scrutiny</div><div class="opt-sub">The arguments for God fail when examined carefully and honestly</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="5" data-v="C"><div class="opt-radio"></div><div><div class="opt-text">Ethics and meaning work perfectly well without God</div><div class="opt-sub">You don't need religion to be good, to find purpose, or to live well</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="5" data-v="D"><div class="opt-radio"></div><div><div class="opt-text">Certain problems haven't been answered honestly</div><div class="opt-sub">Specific issues — historical, ethical, textual — remain unresolved</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="5" data-v="E"><div class="opt-radio"></div><div><div class="opt-text">The question is genuinely open — strong arguments exist on both sides</div><div class="opt-sub">Neither side has closed the case, and intellectual honesty requires admitting that</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="5" data-v="F"><div class="opt-radio"></div><div><div class="opt-text">Something deeper than argument — a sense that God is real</div><div class="opt-sub">Not blind faith — but something reason alone doesn't fully capture</div></div></div>
+      </div>
+      <div class="q-nav">
+        <button class="btn-prev" onclick="goPrev(5)"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back</button>
+        <button class="btn-next" id="next5" onclick="goNext(5)">Next <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+
+    <div class="q-block" id="q6">
+      <span class="q-num">Question 6 of 10</span>
+      <h2 class="q-text">What is your current relationship with faith?</h2>
+      <p class="q-hint">Where you actually stand — not where anyone expects you to stand.</p>
+      <span class="q-multi-hint">Select up to 3 that fit best</span>
+      <div class="q-options" role="listbox" aria-label="Choose your answer">
+        <div class="q-option" role="option" tabindex="0" data-q="6" data-v="A"><div class="opt-radio"></div><div><div class="opt-text">Practising and committed — my faith is the foundation of my life</div><div class="opt-sub">You believe, you practise, and you want to go deeper</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="6" data-v="B"><div class="opt-radio"></div><div><div class="opt-text">I believe in something beyond the material — but not any organised religion</div><div class="opt-sub">Spiritual but not religious, or religious in your own way</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="6" data-v="C"><div class="opt-radio"></div><div><div class="opt-text">I used to believe — sincerely — but no longer</div><div class="opt-sub">Something broke, and you haven't been able to put it back together</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="6" data-v="D"><div class="opt-radio"></div><div><div class="opt-text">Never religious — I've always been secular</div><div class="opt-sub">Faith was never part of your identity or worldview</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="6" data-v="E"><div class="opt-radio"></div><div><div class="opt-text">Muslim, but struggling with serious doubts I can't resolve</div><div class="opt-sub">You haven't left — but specific questions are getting harder to ignore</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="6" data-v="F"><div class="opt-radio"></div><div><div class="opt-text">Religion just isn't part of my identity — it's a non-issue</div><div class="opt-sub">Not hostile, not searching — it's simply not on your radar</div></div></div>
+      </div>
+      <div class="q-nav">
+        <button class="btn-prev" onclick="goPrev(6)"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back</button>
+        <button class="btn-next" id="next6" onclick="goNext(6)">Next <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+
+    <div class="q-block" id="q7">
+      <span class="q-num">Question 7 of 10</span>
+      <h2 class="q-text">When someone you care about expresses doubt about God, your instinct is to...</h2>
+      <p class="q-hint">The first thing you feel — not the thing you think you should feel.</p>
+      <span class="q-multi-hint">Select up to 3 that fit best</span>
+      <div class="q-options" role="listbox" aria-label="Choose your answer">
+        <div class="q-option" role="option" tabindex="0" data-q="7" data-v="A"><div class="opt-radio"></div><div><div class="opt-text">I relate — I've been there, or I'm there now</div><div class="opt-sub">Their doubt mirrors something you recognise in yourself</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="7" data-v="B"><div class="opt-radio"></div><div><div class="opt-text">I want to help them find what I've found</div><div class="opt-sub">You have something real, and you wish they could see it too</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="7" data-v="C"><div class="opt-radio"></div><div><div class="opt-text">I encourage them to think it through for themselves</div><div class="opt-sub">Doubt is healthy — the important thing is independent inquiry</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="7" data-v="D"><div class="opt-radio"></div><div><div class="opt-text">Not my business — everyone works this out on their own</div><div class="opt-sub">You respect their autonomy and don't feel compelled to intervene</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="7" data-v="E"><div class="opt-radio"></div><div><div class="opt-text">I suggest they examine the evidence carefully</div><div class="opt-sub">The answer is in the data — they should look at it seriously</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="7" data-v="F"><div class="opt-radio"></div><div><div class="opt-text">It concerns me deeply — doubt can lead somewhere dangerous</div><div class="opt-sub">You take it seriously because you know what's at stake</div></div></div>
+      </div>
+      <div class="q-nav">
+        <button class="btn-prev" onclick="goPrev(7)"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back</button>
+        <button class="btn-next" id="next7" onclick="goNext(7)">Next <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+
+    <div class="q-block" id="q8">
+      <span class="q-num">Question 8 of 10</span>
+      <h2 class="q-text">Which comes closest to why you're taking this quiz?</h2>
+      <p class="q-hint">The honest version — not the version that sounds best.</p>
+      <span class="q-multi-hint">Select up to 3 that fit best</span>
+      <div class="q-options" role="listbox" aria-label="Choose your answer">
+        <div class="q-option" role="option" tabindex="0" data-q="8" data-v="A"><div class="opt-radio"></div><div><div class="opt-text">I'm wrestling with real questions about faith</div><div class="opt-sub">Something is unresolved and you're looking for clarity</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="8" data-v="B"><div class="opt-radio"></div><div><div class="opt-text">I want to equip myself — strengthen or deepen what I believe</div><div class="opt-sub">Your faith is real, but you want it to be more articulate</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="8" data-v="C"><div class="opt-radio"></div><div><div class="opt-text">Intellectual challenge — I want to stress-test ideas</div><div class="opt-sub">You enjoy rigorous thinking and want to see the strongest case</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="8" data-v="D"><div class="opt-radio"></div><div><div class="opt-text">Curiosity — not urgent, just interested</div><div class="opt-sub">Low stakes — you're browsing, not searching</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="8" data-v="E"><div class="opt-radio"></div><div><div class="opt-text">Processing my own departure from religion</div><div class="opt-sub">You left, or you're leaving, and you're still working through it</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="8" data-v="F"><div class="opt-radio"></div><div><div class="opt-text">Searching — I haven't found the right framework yet</div><div class="opt-sub">You know something is out there, but nothing has clicked</div></div></div>
+      </div>
+      <div class="q-nav">
+        <button class="btn-prev" onclick="goPrev(8)"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back</button>
+        <button class="btn-next" id="next8" onclick="goNext(8)">Next <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+
+    <div class="q-block" id="q9">
+      <span class="q-num">Question 9 of 10</span>
+      <h2 class="q-text">Complete this sentence: "The strongest version of the case for God is..."</h2>
+      <p class="q-hint">Even if you disagree — what's the best the other side has?</p>
+      <span class="q-multi-hint">Select up to 3 that fit best</span>
+      <div class="q-options" role="listbox" aria-label="Choose your answer">
+        <div class="q-option" role="option" tabindex="0" data-q="9" data-v="A"><div class="opt-radio"></div><div><div class="opt-text">...hasn't been made yet — I'm still waiting to hear it</div><div class="opt-sub">Nothing you've encountered has been strong enough to take seriously</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="9" data-v="B"><div class="opt-radio"></div><div><div class="opt-text">...irrelevant — even if God exists, it changes nothing practical</div><div class="opt-sub">The question is academic — your life doesn't depend on the answer</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="9" data-v="C"><div class="opt-radio"></div><div><div class="opt-text">...already convincing — I believe for reasons I can defend</div><div class="opt-sub">You've examined the evidence and it points where you stand</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="9" data-v="D"><div class="opt-radio"></div><div><div class="opt-text">...impossible — the concept of God is incoherent</div><div class="opt-sub">It's not that the arguments fail — the idea itself doesn't make sense</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="9" data-v="E"><div class="opt-radio"></div><div><div class="opt-text">...worth serious engagement — the evidence deserves honest examination</div><div class="opt-sub">You may disagree, but the case isn't trivial</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="9" data-v="F"><div class="opt-radio"></div><div><div class="opt-text">...felt rather than argued — something reason alone can't fully reach</div><div class="opt-sub">The strongest evidence is experiential, not philosophical</div></div></div>
+      </div>
+      <div class="q-nav">
+        <button class="btn-prev" onclick="goPrev(9)"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back</button>
+        <button class="btn-next" id="next9" onclick="goNext(9)">Next <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+
+    <div class="q-block" id="q10">
+      <span class="q-num">Question 10 of 10</span>
+      <h2 class="q-text">What is your biggest unresolved question?</h2>
+      <p class="q-hint">The one that keeps coming back — the one you haven't settled.</p>
+      <span class="q-multi-hint">Select up to 3 that fit best</span>
+      <div class="q-options" role="listbox" aria-label="Choose your answer">
+        <div class="q-option" role="option" tabindex="0" data-q="10" data-v="A"><div class="opt-radio"></div><div><div class="opt-text">Can I trust what I was taught — or what I walked away from?</div><div class="opt-sub">Your past shapes the question, and you're not sure which direction to revise</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="10" data-v="B"><div class="opt-radio"></div><div><div class="opt-text">Is there evidence strong enough to justify believing in God?</div><div class="opt-sub">The epistemological question — what counts as sufficient grounds for belief</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="10" data-v="C"><div class="opt-radio"></div><div><div class="opt-text">Why is there something rather than nothing?</div><div class="opt-sub">The deepest metaphysical question — existence itself needs explaining</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="10" data-v="D"><div class="opt-radio"></div><div><div class="opt-text">How do I reconcile specific problems in my tradition?</div><div class="opt-sub">Not God in general — particular issues in the faith you know</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="10" data-v="E"><div class="opt-radio"></div><div><div class="opt-text">Can consciousness and fine-tuning be explained without God?</div><div class="opt-sub">The scientific frontier — where the natural explanation seems to run out</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="10" data-v="F"><div class="opt-radio"></div><div><div class="opt-text">How do I live most faithfully with what I actually believe?</div><div class="opt-sub">Not what's true — how to live with integrity given what you hold</div></div></div>
+      </div>
+      <div class="q-nav">
+        <button class="btn-prev" onclick="goPrev(10)"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back</button>
+        <button class="btn-next" id="next10" onclick="showResult()">See my path <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="result-screen" id="result-screen">
+    <div class="result-hero">
+      <span class="res-eyebrow">Your personalised path</span>
+      <span class="res-label" id="res-label">Closest match</span>
+      <h2 class="res-path" id="res-path">Loading...</h2>
+      <p class="res-desc" id="res-desc"></p>
+      <div class="res-note" id="res-note"></div>
+    </div>
+    <div class="res-resonances" id="res-resonances" style="display:none;">
+      <span class="rr-label">Your profile also resonates with</span>
+      <div class="rr-items" id="rr-items"></div>
+    </div>
+    <div class="score-bars">
+      <span class="sb-label">How your answers map</span>
+      <div id="sb-rows"></div>
+    </div>
+    <div style="text-align:center;">
+      <button class="btn-journey" onclick="goJourney()">Begin your journey <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      <button class="btn-retake" onclick="retake()"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg> Retake quiz</button>
+    </div>
+  </div>
+
+</div>
+<script>
+var SCORING = {"1A":{"apatheist":3,"secular-humanist":2,"agnostic":1},"1B":{"classical-atheist":3,"scientist":3,"freethinker":2},"1C":{"ex-believer":3,"muslim-doubts":2,"antitheist":1},"1D":{"deist":3,"spiritual-seeker":2,"agnostic":2},"1E":{"antitheist":3,"new-atheist":2,"ex-believer":1},"1F":{"true-muslim":4,"muslim-doubts":2,"materialist":1},"2A":{"classical-atheist":3,"materialist":3,"new-atheist":2},"2B":{"agnostic":3,"scientist":2,"freethinker":2},"2C":{"deist":3,"spiritual-seeker":3,"freethinker":1},"2D":{"apatheist":3,"secular-humanist":2},"2E":{"antitheist":3,"ex-believer":2,"new-atheist":1},"2F":{"true-muslim":4,"muslim-doubts":2,"spiritual-seeker":1},"3A":{"classical-atheist":3,"scientist":2,"freethinker":1},"3B":{"scientist":3,"materialist":2,"new-atheist":1},"3C":{"muslim-doubts":2,"ex-believer":2,"agnostic":2},"3D":{"freethinker":3,"agnostic":2,"deist":1},"3E":{"spiritual-seeker":4,"deist":2,"apatheist":1},"3F":{"true-muslim":3,"secular-humanist":3,"antitheist":1},"4A":{"antitheist":3,"ex-believer":2,"new-atheist":2},"4B":{"new-atheist":3,"classical-atheist":2,"scientist":2,"freethinker":1},"4C":{"muslim-doubts":3,"ex-believer":2},"4D":{"apatheist":3,"secular-humanist":3,"agnostic":1},"4E":{"materialist":3,"scientist":2,"classical-atheist":1},"4F":{"deist":3,"spiritual-seeker":2,"true-muslim":1},"5A":{"materialist":3,"scientist":2,"classical-atheist":1},"5B":{"new-atheist":3,"freethinker":2,"antitheist":1},"5C":{"secular-humanist":4,"apatheist":2},"5D":{"muslim-doubts":3,"ex-believer":2,"agnostic":1},"5E":{"deist":3,"agnostic":2,"freethinker":1},"5F":{"true-muslim":4,"spiritual-seeker":4,"deist":1},"6A":{"true-muslim":5,"muslim-doubts":1},"6B":{"deist":3,"spiritual-seeker":3,"agnostic":1},"6C":{"ex-believer":3,"antitheist":2,"muslim-doubts":1},"6D":{"classical-atheist":2,"materialist":2,"secular-humanist":2,"new-atheist":1,"apatheist":1,"scientist":1,"freethinker":1},"6E":{"muslim-doubts":4,"true-muslim":1,"ex-believer":1},"6F":{"apatheist":3,"secular-humanist":2,"materialist":1},"7A":{"muslim-doubts":3,"agnostic":2,"ex-believer":2},"7B":{"true-muslim":3,"deist":1,"spiritual-seeker":1},"7C":{"freethinker":3,"new-atheist":2,"antitheist":1},"7D":{"apatheist":3,"materialist":2,"secular-humanist":1},"7E":{"scientist":3,"classical-atheist":2,"freethinker":1},"7F":{"true-muslim":3,"muslim-doubts":1},"8A":{"muslim-doubts":3,"agnostic":2,"spiritual-seeker":1,"ex-believer":1},"8B":{"true-muslim":4,"muslim-doubts":1},"8C":{"scientist":2,"freethinker":2,"agnostic":2,"new-atheist":1,"classical-atheist":1,"deist":1},"8D":{"secular-humanist":3,"apatheist":2,"materialist":1,"spiritual-seeker":1},"8E":{"ex-believer":3,"antitheist":2,"new-atheist":1},"8F":{"deist":2,"spiritual-seeker":3,"freethinker":1,"agnostic":1},"9A":{"new-atheist":2,"freethinker":2,"agnostic":1},"9B":{"apatheist":3,"secular-humanist":1,"materialist":1},"9C":{"true-muslim":4,"muslim-doubts":1,"deist":1},"9D":{"classical-atheist":3,"materialist":2,"antitheist":1},"9E":{"scientist":3,"agnostic":2,"deist":1},"9F":{"spiritual-seeker":4,"ex-believer":1,"muslim-doubts":1},"10A":{"ex-believer":2,"muslim-doubts":2,"antitheist":1,"spiritual-seeker":1},"10B":{"agnostic":3,"scientist":2,"freethinker":1,"classical-atheist":1},"10C":{"deist":3,"apatheist":2,"materialist":1,"spiritual-seeker":1},"10D":{"muslim-doubts":3,"ex-believer":2,"new-atheist":1},"10E":{"scientist":3,"materialist":2,"new-atheist":1},"10F":{"true-muslim":3,"secular-humanist":3,"antitheist":1,"freethinker":1}};
+
+var QUESTION_WEIGHTS = {1:1.55,2:1.45,3:0.9,4:1.45,5:1.0,6:1.9,7:0.8,8:1.45,9:0.8,10:1.35};
+var CORE_QUESTIONS = new Set([1,2,4,6,8,10]);
+var MAX_SELECTIONS = 3;
+
+var PERSONAS = {"new-atheist":{"name":"The New Atheist","file":"/journey/new-atheist/","desc":"You engage religion directly and critically. The issue is not whether it matters, but whether its claims survive scrutiny."},"agnostic":{"name":"The Agnostic","file":"/journey/agnostic/","desc":"You keep the question open. You want a case strong enough to justify commitment, not pressure to decide before the evidence is there."},"secular-humanist":{"name":"The Secular Humanist","file":"/journey/secular-humanist/","desc":"You have built a moral outlook around human dignity and the common good without relying on religion to hold it together."},"antitheist":{"name":"The Antitheist","file":"/journey/antitheist/","desc":"You see religion not merely as mistaken but as socially damaging, and that judgment shapes how you hear its claims."},"materialist":{"name":"The Materialist","file":"/journey/materialist/","desc":"You are inclined to think reality is ultimately physical, and that mind, value, and meaning arise from that physical base."},"muslim-doubts":{"name":"The Questioning Muslim","file":"/journey/muslim-doubts/","desc":"You still stand close enough to Islam for the questions to matter, but specific issues have become hard to ignore."},"apatheist":{"name":"The Apatheist","file":"/journey/apatheist/","desc":"The God question no longer feels urgent. It has not necessarily been answered; it has mostly slipped to the edges of life."},"deist":{"name":"The Deist","file":"/journey/deist/","desc":"You see good reason to think reality has a source, but remain unconvinced that any revealed tradition has yet made a compelling case."},"scientist":{"name":"The Scientist","file":"/journey/scientist/","desc":"You trust disciplined inquiry, careful evidence, and claims that can bear scrutiny. This path takes that instinct seriously."},"classical-atheist":{"name":"The Classical Atheist","file":"/journey/classical-atheist/","desc":"Your objections are conceptual as much as evidential. The issue is not only whether God is unproved, but whether the idea itself makes sense."},"ex-believer":{"name":"The Ex-Believer","file":"/journey/ex-believer/","desc":"You once believed sincerely, but something important fractured that trust. This path begins from that break."},"spiritual-seeker":{"name":"The Spiritual Seeker","file":"/journey/spiritual-seeker/","desc":"You remain open to transcendence and have found fragments of insight in more than one place, but no single framework has persuaded you to stay."},"true-muslim":{"name":"The Committed Muslim","file":"/journey/true-muslim/","desc":"You already believe, but you want that belief to be thoughtful, articulate, and able to face serious questions without fear."},"freethinker":{"name":"The Freethinker","file":"/journey/freethinker/","desc":"You are wary of inherited answers and prefer to examine things yourself. This path asks where consistent reasoning leads."}};
+
+
+var answers = {};
+function startQuiz(){if(window.ceTrack)ceTrack('quiz_start',{});document.getElementById('intro-screen').style.display='none';document.getElementById('progress-bar').style.display='block';document.getElementById('questions-container').style.display='block';showQ(1);}
+function showQ(n){document.querySelectorAll('.q-block').forEach(function(b){b.classList.remove('active');});var block=document.getElementById('q'+n);if(block){block.classList.add('active');if(answers[n]){answers[n].forEach(function(v){var opt=block.querySelector('[data-v="'+v+'"]');if(opt)opt.classList.add('selected');});enableNext(n);}}document.getElementById('qp-fill').style.width=((n-1)/10*100)+'%';document.getElementById('qp-label').textContent='Question '+n+' of 10';}
+function goNext(n){if(answers[n]&&answers[n].length>0)showQ(n+1);}
+function goPrev(n){if(n>1)showQ(n-1);}
+function enableNext(n){var btn=document.getElementById('next'+n);if(btn)btn.classList.add('enabled');}
+function disableNext(n){var btn=document.getElementById('next'+n);if(btn)btn.classList.remove('enabled');}
+
+document.addEventListener('click',function(e){
+  var opt=e.target.closest('.q-option');
+  if(!opt)return;
+  var q=parseInt(opt.dataset.q,10),v=opt.dataset.v;
+  if(!answers[q])answers[q]=[];
+  var idx=answers[q].indexOf(v);
+  if(idx>=0){answers[q].splice(idx,1);opt.classList.remove('selected');opt.setAttribute('aria-selected','false');}
+  else{
+    if(answers[q].length>=MAX_SELECTIONS){
+      var hint=document.querySelector('#q'+q+' .q-multi-hint');
+      if(hint){hint.textContent='Choose up to 3 for the closest result';hint.style.color='rgba(12,212,224,0.78)';clearTimeout(hint._t);hint._t=setTimeout(function(){hint.textContent='Select up to 3 that fit best';hint.style.color='';},1600);}
+      return;
+    }
+    answers[q].push(v);opt.classList.add('selected');opt.setAttribute('aria-selected','true');
+  }
+  if(answers[q].length>0)enableNext(q);else disableNext(q);if(window.ceTrack)ceTrack('quiz_answer',{question:q,answer:v});try{localStorage.setItem('ce_quiz_progress',JSON.stringify(answers));localStorage.setItem('ce_quiz_current_q',q.toString());}catch(e){}
+});
+
+function calcScores(){
+  var scores={};Object.keys(PERSONAS).forEach(function(p){scores[p]=0;});
+  for(var q=1;q<=10;q++){
+    var selected=answers[q]||[];if(!selected.length)continue;
+    var count=selected.length;
+    var divisor=count===1?1:(CORE_QUESTIONS.has(q)?(count===2?2.2:3.35):(count===2?2.35:3.65));
+    var qw=QUESTION_WEIGHTS[q]||1;
+    selected.forEach(function(v){var w=SCORING[q+v]||{};Object.keys(w).forEach(function(p){scores[p]+=(w[p]*qw)/divisor;});});
+  }
+
+  // Signal boosts
+  function has(q,v){return(answers[q]||[]).indexOf(v)>=0;}
+  function boost(p,a){scores[p]=(scores[p]||0)+a;}
+  function dampen(p,f){scores[p]=(scores[p]||0)*f;}
+
+  // Muslim cluster
+  if(has(6,'A')&&(has(8,'B')||has(9,'C')))boost('true-muslim',5);
+  if(has(6,'A')||has(6,'E'))boost('true-muslim',3);
+  if(has(6,'E')&&(has(8,'A')||has(10,'D')))boost('muslim-doubts',5);
+  if(has(1,'C')&&has(6,'E'))boost('muslim-doubts',3);
+
+  // Ex-believer
+  if(has(6,'C')&&(has(4,'A')||has(4,'C')))boost('ex-believer',4);
+  if(has(8,'E')&&has(6,'C'))boost('ex-believer',3);
+
+  // Antitheist
+  if(has(2,'E')&&has(4,'A'))boost('antitheist',4);
+  if(has(1,'E')&&has(6,'C'))boost('antitheist',2);
+
+  // New atheist
+  if(has(4,'B')&&has(5,'B')&&has(6,'D'))boost('new-atheist',3);
+
+  // Classical atheist
+  if(has(2,'A')&&(has(3,'A')||has(9,'D')))boost('classical-atheist',3);
+
+  // Materialist
+  if(has(5,'A')&&has(4,'E'))boost('materialist',3);
+  if(has(3,'B')&&has(2,'A')&&has(9,'B'))boost('materialist',2);
+
+  // Scientist
+  if(has(3,'B')&&has(7,'E')&&has(6,'D'))boost('scientist',3);
+  if(has(10,'E')&&has(5,'A'))boost('scientist',2);
+
+  // Freethinker
+  if(has(3,'D')&&has(7,'C'))boost('freethinker',3);
+  if(has(1,'B')&&has(9,'A'))boost('freethinker',2);
+
+  // Agnostic
+  if(has(2,'B')&&has(4,'D')&&has(5,'E'))boost('agnostic',4);
+  if(has(3,'D')&&has(10,'B'))boost('agnostic',2);
+
+  // Deist vs Seeker
+  if(has(2,'C')&&has(5,'E'))boost('deist',3);
+  if(has(4,'F')&&has(6,'B'))boost('deist',2);
+  if(has(2,'C')&&has(5,'F'))boost('spiritual-seeker',3);
+  if(has(3,'E')&&has(9,'F'))boost('spiritual-seeker',3);
+
+  // Apatheist vs SecHum
+  if(has(2,'D')&&has(4,'D')&&has(9,'B'))boost('apatheist',4);
+  if(has(5,'C')&&has(3,'F')&&has(10,'F'))boost('secular-humanist',4);
+  if(has(4,'D')&&has(5,'C')&&has(6,'D'))boost('secular-humanist',2);
+
+  // Conflict dampening
+  if(has(6,'A')||has(6,'E')){Object.keys(PERSONAS).forEach(function(p){if(p!=='true-muslim'&&p!=='muslim-doubts'&&p!=='ex-believer')dampen(p,0.25);});}
+  if(has(6,'D')||has(6,'F')){dampen('true-muslim',0.15);dampen('muslim-doubts',0.2);}
+  if(has(6,'C')){dampen('true-muslim',0.1);}
+
+  return scores;
+}
+
+function showResult(){
+  if(!answers[10]||!answers[10].length)return;
+  var scores=calcScores();
+  var sorted=Object.entries(scores).sort(function(a,b){return b[1]-a[1];});
+  var primary=sorted[0][0],maxScore=sorted[0][1];
+  var secondaries=sorted.slice(1,5).filter(function(e){return e[1]>0&&e[1]>=maxScore*0.78;}).slice(0,2).map(function(e){return e[0];});
+  try{localStorage.setItem('ce_primary_path',primary);localStorage.setItem('ce_secondary_paths',JSON.stringify(secondaries));localStorage.setItem('ce_quiz_scores',JSON.stringify(scores));localStorage.setItem('ce_quiz_taken','1');if(window.ceTrack)ceTrack('quiz_complete',{persona:primary});localStorage.removeItem('ce_quiz_progress');localStorage.removeItem('ce_quiz_current_q');}catch(e){}
+  document.getElementById('questions-container').style.display='none';document.getElementById('progress-bar').style.display='none';
+  var rs=document.getElementById('result-screen');rs.style.display='block';setTimeout(function(){rs.classList.add('active');},10);
+  document.getElementById('res-path').textContent=PERSONAS[primary].name;
+  document.getElementById('res-desc').textContent=PERSONAS[primary].desc;
+  var second=sorted[1]?sorted[1][0]:null,sScore=sorted[1]?sorted[1][1]:0,ratio=maxScore>0?(sScore/maxScore):0;
+  document.getElementById('res-label').textContent=ratio>=0.92?'Closest match — with strong overlap':'Closest match';
+  var resNote=document.getElementById('res-note');
+  if(second&&ratio>=0.92){resNote.style.display='block';resNote.textContent='Your answers sit close to the boundary between '+PERSONAS[primary].name+' and '+PERSONAS[second].name+'. Start with this path — the adjacent one will also feel familiar.';}
+  else if(second&&ratio>=0.84){resNote.style.display='block';resNote.textContent='Your answers cluster around a main path, with noticeable overlap with '+PERSONAS[second].name+'.';}
+  else{resNote.style.display='none';}
+  var rr=document.getElementById('res-resonances');
+  if(secondaries.length>0){rr.style.display='block';document.getElementById('rr-items').innerHTML=secondaries.map(function(p){return'<div class="rr-item">'+PERSONAS[p].name+'</div>';}).join('');}else{rr.style.display='none';}
+  document.getElementById('sb-rows').innerHTML=sorted.slice(0,6).map(function(e){var p=e[0],s=e[1],pct=maxScore>0?Math.round((s/maxScore)*100):0;return'<div class="sb-row"><div class="sb-name">'+PERSONAS[p].name+'</div><div class="sb-track"><div class="sb-fill'+(p===primary?' primary':'')+'" style="width:'+pct+'%"></div></div></div>';}).join('');
+}
+
+function goJourney(){try{var p=localStorage.getItem('ce_primary_path');if(p&&PERSONAS[p]){window.location.href=PERSONAS[p].file;return;}}catch(e){}var path=document.getElementById('res-path').textContent;var m=Object.entries(PERSONAS).find(function(e){return e[1].name===path;});if(m)window.location.href=m[1].file;}
+function retake(){answers={};document.querySelectorAll('.q-option').forEach(function(o){o.classList.remove('selected');});document.querySelectorAll('.btn-next').forEach(function(b){b.classList.remove('enabled');});document.getElementById('result-screen').classList.remove('active');document.getElementById('result-screen').style.display='none';document.getElementById('res-note').style.display='none';document.getElementById('intro-screen').style.display='block';document.getElementById('questions-container').style.display='none';document.getElementById('progress-bar').style.display='none';try{localStorage.removeItem('ce_quiz_taken');localStorage.removeItem('ce_primary_path');localStorage.removeItem('ce_secondary_paths');localStorage.removeItem('ce_quiz_scores');localStorage.removeItem('ce_quiz_progress');localStorage.removeItem('ce_quiz_current_q');}catch(e){}}
+
+try{var prev=localStorage.getItem('ce_primary_path');if(prev&&localStorage.getItem('ce_quiz_taken')&&PERSONAS[prev]){var btn=document.querySelector('.btn-start');if(btn){var resume=document.createElement('div');resume.style.cssText='margin-top:1rem;font-size:0.8rem;color:rgba(242,238,255,0.35);';resume.innerHTML='Previously matched: <span style="color:rgba(12,212,224,0.7)">'+PERSONAS[prev].name+'</span> — <a href="'+PERSONAS[prev].file+'" style="color:rgba(12,212,224,0.5);text-decoration:underline;font-size:0.78rem;">go there directly</a>';btn.parentNode.insertBefore(resume,btn.nextSibling);}}}catch(e){}
+
+
+// Quiz save/resume — restore progress if tab was closed mid-quiz
+try{
+  var savedProgress=localStorage.getItem('ce_quiz_progress');
+  var savedQ=localStorage.getItem('ce_quiz_current_q');
+  if(savedProgress&&savedQ&&!localStorage.getItem('ce_quiz_taken')){
+    var parsed=JSON.parse(savedProgress);
+    if(parsed&&typeof parsed==='object'&&Object.keys(parsed).length>0){
+      // Show resume prompt
+      var btn=document.querySelector('.btn-start');
+      if(btn){
+        var resumeDiv=document.createElement('div');
+        resumeDiv.style.cssText='margin-top:1rem;';
+        resumeDiv.innerHTML='<button onclick="resumeQuiz()" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.75rem 1.8rem;border-radius:50px;background:rgba(12,212,224,0.12);border:1px solid rgba(12,212,224,0.3);color:#0cd4e0;font-family:var(--body);font-size:0.88rem;font-weight:600;cursor:pointer;transition:all 0.2s;">Resume from question '+savedQ+' <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>';
+        btn.parentNode.insertBefore(resumeDiv,btn.nextSibling.nextSibling||null);
+      }
+    }
+  }
+}catch(e){}
+
+
+// Keyboard accessibility — Enter/Space selects options
+document.addEventListener('keydown',function(e){
+  if(e.key==='Enter'||e.key===' '){
+    var opt=e.target.closest('.q-option');
+    if(opt){e.preventDefault();opt.click();}
+  }
+});
+
+function resumeQuiz(){
+  try{
+    var saved=JSON.parse(localStorage.getItem('ce_quiz_progress'));
+    var savedQ=parseInt(localStorage.getItem('ce_quiz_current_q'),10)||1;
+    if(saved){
+      answers=saved;
+      // Restore visual selections
+      Object.keys(answers).forEach(function(q){
+        var block=document.getElementById('q'+q);
+        if(block&&answers[q]){
+          answers[q].forEach(function(v){
+            var opt=block.querySelector('[data-v="'+v+'"]');
+            if(opt)opt.classList.add('selected');
+          });
+          enableNext(parseInt(q,10));
+        }
+      });
+      document.getElementById('intro-screen').style.display='none';
+      document.getElementById('progress-bar').style.display='block';
+      document.getElementById('questions-container').style.display='block';
+      showQ(savedQ);
+    }
+  }catch(e){startQuiz();}
+}
+
+
+// Track quiz abandonment on page unload
+window.addEventListener('beforeunload', function() {
+  if (Object.keys(answers).length > 0 && !document.getElementById('result-screen').classList.contains('active')) {
+    var lastQ = Math.max.apply(null, Object.keys(answers).map(Number));
+    if (window.ceTrack) ceTrack('quiz_abandon', {last_question: lastQ, answers_given: Object.keys(answers).length});
+  }
+});
+
+</script>
+</body>
+</html>

@@ -1,0 +1,360 @@
+# Malay (Malaysia) translation for Compelling Evidence WordPress Theme
+# Copyright (C) 2026 compelling-evidence
+# This file is distributed under the same license as the Compelling Evidence theme.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Compelling Evidence 1.1.0\n"
+"Report-Msgid-Bugs-To: https://compelling-evidence.com\n"
+"POT-Creation-Date: 2026-03-15T00:00:00+00:00\n"
+"PO-Revision-Date: 2026-03-15T00:00:00+00:00\n"
+"Last-Translator: compelling-evidence <langgam.fikir@gmail.com>\n"
+"Language-Team: Malay (Malaysia)\n"
+"Language: ms_MY\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Manual\n"
+"X-Domain: compelling-evidence\n"
+
+#. Theme Name
+#: style.css
+msgid "Compelling Evidence"
+msgstr "Bukti Nyata"
+
+#. Theme Description
+#: style.css
+msgid "A child theme of Twenty Twenty-Five for Compelling Evidence — an Islamic apologetics and dawah resource site."
+msgstr "Tema anak Twenty Twenty-Five untuk Bukti Nyata — laman sumber apologetik Islam dan dakwah."
+
+#: functions.php
+msgid "Articles"
+msgstr "Artikel"
+
+#: functions.php
+msgid "Article"
+msgstr "Artikel"
+
+#: functions.php
+msgid "Add New Article"
+msgstr "Tambah Artikel Baharu"
+
+#: functions.php
+msgid "Edit Article"
+msgstr "Edit Artikel"
+
+#: functions.php
+msgid "New Article"
+msgstr "Artikel Baharu"
+
+#: functions.php
+msgid "View Article"
+msgstr "Lihat Artikel"
+
+#: functions.php
+msgid "Search Articles"
+msgstr "Cari Artikel"
+
+#: functions.php
+msgid "No articles found"
+msgstr "Tiada artikel ditemui"
+
+#: functions.php
+msgid "Topics"
+msgstr "Topik"
+
+#: functions.php
+msgid "Topic"
+msgstr "Topik"
+
+#: functions.php
+msgid "Add Topic"
+msgstr "Tambah Topik"
+
+#: functions.php
+msgid "Primary Navigation"
+msgstr "Navigasi Utama"
+
+#: functions.php
+msgid "Footer Navigation"
+msgstr "Navigasi Pengaki"
+
+#: header.php
+msgid "Toggle menu"
+msgstr "Buka/tutup menu"
+
+#: header.php
+msgid "Random article"
+msgstr "Artikel rawak"
+
+#: header.php
+msgid "Random"
+msgstr "Rawak"
+
+#: header.php
+msgid "Read first"
+msgstr "Baca dahulu"
+
+#: front-page.php
+msgid "Find my path"
+msgstr "Cari laluan saya"
+
+#: front-page.php
+msgid "Browse all 12 paths →"
+msgstr "Semak imbas semua 12 laluan →"
+
+#: front-page.php
+msgid "Still Searching?"
+msgstr "Masih Mencari?"
+
+#: front-page.php
+msgid "Get In Touch"
+msgstr "Hubungi Kami"
+
+#: front-page.php
+msgid "Browse Topics"
+msgstr "Semak Imbas Topik"
+
+#: front-page.php
+msgid "Your personalised path"
+msgstr "Laluan peribadi anda"
+
+#: front-page.php
+msgid "Where are you starting from?"
+msgstr "Di manakah anda bermula?"
+
+#: front-page.php
+msgid "Not a generic introduction — an argument written for someone exactly like you. Five questions. Ninety seconds."
+msgstr "Bukan pengenalan umum — hujah yang ditulis khusus untuk seseorang seperti anda. Lima soalan. Sembilan puluh saat."
+
+#: page-journeys.php
+msgid "12 Paths. One Question."
+msgstr "12 Laluan. Satu Soalan."
+
+#: page-journeys.php
+msgid "Each journey is written for a specific starting point — the arguments, the tone, the texture all calibrated for where you actually are."
+msgstr "Setiap perjalanan ditulis untuk titik permulaan tertentu — hujah, nada, dan tekstur semuanya disesuaikan dengan kedudukan anda yang sebenar."
+
+#: page-journeys.php
+msgid "Find my path"
+msgstr "Cari laluan saya"
+
+#: page-journeys.php
+msgid "Not sure which path is yours?"
+msgstr "Tidak pasti laluan mana yang sesuai untuk anda?"
+
+#: page-journeys.php
+msgid "Five questions. No wrong answers. Takes 90 seconds."
+msgstr "Lima soalan. Tiada jawapan yang salah. Mengambil masa 90 saat."
+
+#: page-journeys.php
+msgid "Take the quiz"
+msgstr "Ikuti kuiz"
+
+#: page-journeys.php
+msgid "Begin journey"
+msgstr "Mulakan perjalanan"
+
+#. Persona names — journey cards
+#: page-journeys.php
+msgid "The New Atheist"
+msgstr "Ateis Baharu"
+
+#: page-journeys.php
+msgid "The Agnostic"
+msgstr "Agnostik"
+
+#: page-journeys.php
+msgid "The Secular Humanist"
+msgstr "Humanis Sekular"
+
+#: page-journeys.php
+msgid "The Antitheist"
+msgstr "Anti-teis"
+
+#: page-journeys.php
+msgid "The Materialist"
+msgstr "Materialis"
+
+#: page-journeys.php
+msgid "Muslim with Doubts"
+msgstr "Muslim Beraguaan"
+
+#: page-journeys.php
+msgid "The Apatheist"
+msgstr "Apatis"
+
+#: page-journeys.php
+msgid "The Deist"
+msgstr "Deis"
+
+#: page-journeys.php
+msgid "The Scientist"
+msgstr "Saintis"
+
+#: page-journeys.php
+msgid "The Classical Atheist"
+msgstr "Ateis Klasikal"
+
+#: page-journeys.php
+msgid "The Ex-Believer"
+msgstr "Bekas Penganut"
+
+#: page-journeys.php
+msgid "The Spiritual Seeker"
+msgstr "Pencari Rohani"
+
+#. Journey card labels
+#: page-journeys.php
+msgid "Confrontational"
+msgstr "Konfrontatif"
+
+#: page-journeys.php
+msgid "Uncertain"
+msgstr "Tidak Pasti"
+
+#: page-journeys.php
+msgid "Grounded"
+msgstr "Berpendirian"
+
+#: page-journeys.php
+msgid "Moral clarity"
+msgstr "Kejelasan Moral"
+
+#: page-journeys.php
+msgid "Physicalist"
+msgstr "Fizikalis"
+
+#: page-journeys.php
+msgid "From inside"
+msgstr "Dari Dalam"
+
+#: page-journeys.php
+msgid "Irrelevance"
+msgstr "Tidak Relevan"
+
+#: page-journeys.php
+msgid "Creator, not God"
+msgstr "Pencipta, Bukan Tuhan"
+
+#: page-journeys.php
+msgid "Evidential"
+msgstr "Berasaskan Bukti"
+
+#: page-journeys.php
+msgid "Philosophical"
+msgstr "Falsafah"
+
+#: page-journeys.php
+msgid "Post-religious"
+msgstr "Pasca-agama"
+
+#: page-journeys.php
+msgid "Still searching"
+msgstr "Masih Mencari"
+
+#. Journey card descriptions
+#: page-journeys.php
+msgid "You engage the God question head-on — with names, arguments, and a willingness to push back."
+msgstr "Anda berhadapan terus dengan persoalan Tuhan — dengan nama, hujah, dan keberanian untuk menyanggah."
+
+#: page-journeys.php
+msgid "You hold the question open. You want evidence, not easy answers."
+msgstr "Anda membiarkan soalan itu terbuka. Anda mahukan bukti, bukan jawapan mudah."
+
+#: page-journeys.php
+msgid "You have built a coherent, values-driven life. The question is whether those values need a foundation."
+msgstr "Anda telah membina kehidupan yang koheren berasaskan nilai. Persoalannya ialah sama ada nilai-nilai itu memerlukan asas."
+
+#: page-journeys.php
+msgid "Religion isn't just wrong — it's harmful. You have a moral case against it."
+msgstr "Agama bukan sekadar salah — ia memudaratkan. Anda mempunyai hujah moral menentangnya."
+
+#: page-journeys.php
+msgid "The physical universe is all there is. Consciousness and values are what matter produces."
+msgstr "Alam semesta fizikal adalah segalanya. Kesedaran dan nilai adalah hasil daripada jirim."
+
+#: page-journeys.php
+msgid "You grew up Muslim and specific things — historical, ethical, textual — have created serious questions."
+msgstr "Anda membesar sebagai Muslim dan perkara-perkara tertentu — sejarah, etika, teks — telah menimbulkan persoalan serius."
+
+#: page-journeys.php
+msgid "God just stopped being relevant. Not disproved — irrelevant."
+msgstr "Tuhan sekadar tidak relevan lagi. Bukan dibuktikan salah — hanya tidak relevan."
+
+#: page-journeys.php
+msgid "Something made the universe. But the personal God of any religion seems a step too far."
+msgstr "Sesuatu telah mencipta alam semesta. Tetapi Tuhan peribadi dalam mana-mana agama nampaknya terlalu jauh."
+
+#: page-journeys.php
+msgid "You apply an evidential standard consistently. The case must meet the same rigour as any other claim."
+msgstr "Anda menggunakan piawaian bukti secara konsisten. Hujah mesti memenuhi ketelitian yang sama seperti mana-mana dakwaan lain."
+
+#: page-journeys.php
+msgid "The concept of God is philosophically incoherent — not just unproved."
+msgstr "Konsep Tuhan adalah tidak koheren secara falsafah — bukan sekadar tidak terbukti."
+
+#: page-journeys.php
+msgid "You left religion deliberately. Something specific broke the faith."
+msgstr "Anda meninggalkan agama secara sedar. Sesuatu yang khusus telah memecahkan iman."
+
+#: page-journeys.php
+msgid "You have found real things in multiple traditions — but no single container has held all of it."
+msgstr "Anda telah menemui perkara yang nyata dalam pelbagai tradisi — tetapi tiada satu bekas yang dapat menampung semuanya."
+
+#: page-journey.php
+msgid "Journey Not Found"
+msgstr "Perjalanan Tidak Dijumpai"
+
+#: page-journey.php
+msgid "The path \"%s\" is not available yet."
+msgstr "Laluan \"%s\" belum tersedia."
+
+#: page-journey.php
+msgid "Take the quiz"
+msgstr "Ikuti kuiz"
+
+#: page-quiz.php
+msgid "Find Your Path"
+msgstr "Cari Laluan Anda"
+
+#: page-quiz.php
+msgid "Choose your path directly below."
+msgstr "Pilih laluan anda secara terus di bawah."
+
+#: page-quiz.php
+msgid "View all paths"
+msgstr "Lihat semua laluan"
+
+#: page-ask-a-question.php
+msgid "Ask a Question"
+msgstr "Kemukakan Soalan"
+
+#: index.php
+msgid "Search Results"
+msgstr "Keputusan Carian"
+
+#: index.php
+msgid "All Articles"
+msgstr "Semua Artikel"
+
+#: index.php
+msgid "Results for:"
+msgstr "Keputusan untuk:"
+
+#: footer.php
+msgid "A project by"
+msgstr "Satu projek oleh"
+
+#: single-ce_article.php
+msgid "min read"
+msgstr "min baca"
+
+#: single-ce_article.php
+msgid "Related Articles"
+msgstr "Artikel Berkaitan"
+
+#: single-ce_article.php
+msgid "Read more"
+msgstr "Baca lagi"

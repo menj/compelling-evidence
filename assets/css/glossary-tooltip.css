@@ -1,0 +1,173 @@
+/**
+ * Glossary Tooltip Styles
+ * Matches the Compelling Evidence theme
+ */
+
+/* Glossary term link styling */
+.ce-glossary-term {
+    color: #0cd4e0;
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(12, 212, 224, 0.4);
+    transition: all 0.2s ease;
+    cursor: help;
+    position: relative;
+}
+
+.ce-glossary-term:hover {
+    color: #0cd4e0;
+    border-bottom-style: solid;
+    border-bottom-color: #0cd4e0;
+}
+
+/* Tooltip container */
+.ce-glossary-tooltip {
+    position: absolute;
+    z-index: 10000;
+    background: linear-gradient(180deg, #1a0f38 0%, #110b28 100%);
+    border: 1px solid rgba(107, 47, 160, 0.3);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(12, 212, 224, 0.1),
+        0 0 30px rgba(107, 47, 160, 0.15);
+    max-width: 320px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: auto;
+}
+
+.ce-glossary-tooltip.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Arrow pointing to term */
+.ce-glossary-tooltip::before {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #1a0f38;
+}
+
+.ce-glossary-tooltip.tooltip-below::before {
+    bottom: auto;
+    top: -8px;
+    border-top: none;
+    border-bottom: 8px solid #1a0f38;
+}
+
+/* Tooltip header with term and Arabic */
+.glossary-tooltip-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(242, 238, 255, 0.1);
+}
+
+.glossary-tooltip-term {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #f2eeff;
+    letter-spacing: -0.01em;
+}
+
+.glossary-tooltip-arabic {
+    font-family: 'CE Hadith', serif;
+    font-size: 1.2rem;
+    color: rgba(12, 212, 224, 0.9);
+    opacity: 0.9;
+}
+
+/* Definition text */
+.glossary-tooltip-definition {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: rgba(242, 238, 255, 0.85);
+    margin-bottom: 0.75rem;
+}
+
+/* Footer with CTA */
+.glossary-tooltip-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(242, 238, 255, 0.08);
+    font-size: 0.75rem;
+    color: rgba(12, 212, 224, 0.7);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.glossary-tooltip-footer svg {
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+}
+
+.ce-glossary-tooltip:hover .glossary-tooltip-footer svg {
+    transform: translateX(3px);
+}
+
+/* Mobile adjustments */
+@media (max-width: 640px) {
+    .ce-glossary-tooltip {
+        max-width: calc(100vw - 32px);
+        left: 16px !important;
+        right: 16px !important;
+    }
+    
+    .glossary-tooltip-definition {
+        font-size: 0.85rem;
+    }
+}
+
+/* Print styles - hide tooltips */
+@media print {
+    .ce-glossary-tooltip {
+        display: none !important;
+    }
+    
+    .ce-glossary-term {
+        border-bottom: none;
+        color: inherit;
+    }
+}
+
+/* Focus styles for accessibility */
+.ce-glossary-term:focus {
+    outline: 2px solid rgba(12, 212, 224, 0.5);
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+/* Dark mode enhancement (if system prefers) */
+@media (prefers-color-scheme: dark) {
+    .ce-glossary-tooltip {
+        box-shadow: 
+            0 20px 50px rgba(0, 0, 0, 0.6),
+            0 0 0 1px rgba(12, 212, 224, 0.15),
+            0 0 40px rgba(107, 47, 160, 0.2);
+    }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+    .ce-glossary-tooltip,
+    .ce-glossary-term {
+        transition: none;
+    }
+}

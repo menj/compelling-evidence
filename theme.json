@@ -1,0 +1,16 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 3,
+  "settings": {
+    "layout": {
+      "contentSize": "1060px",
+      "wideSize": "1280px"
+    },
+    "useRootPaddingAwareAlignments": true
+  },
+  "styles": {
+    "spacing": {
+      "blockGap": "0"
+    }
+  }
+}
