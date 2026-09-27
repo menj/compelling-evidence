@@ -1,0 +1,80 @@
+/**
+ * CE Theme: Contact Form 7 in the theme's form design (since 2.6.33).
+ * Replaces the plugin's own stylesheet, which the theme switches off.
+ */
+.wpcf7 { max-width: 640px; }
+.wpcf7-form p { margin: 0 0 1.2rem; }
+.wpcf7-form label {
+  display: block;
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgba(245,240,255,0.78);
+}
+.wpcf7-form-control-wrap { display: block; margin-top: 0.45rem; }
+.wpcf7-form input[type="text"],
+.wpcf7-form input[type="email"],
+.wpcf7-form input[type="url"],
+.wpcf7-form input[type="tel"],
+.wpcf7-form input[type="number"],
+.wpcf7-form input[type="date"],
+.wpcf7-form select,
+.wpcf7-form textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  font: 400 1rem/1.5 var(--font-ui);
+  color: var(--white, #f5f0ff);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(107,47,160,0.35);
+  border-radius: 10px;
+  transition: border-color 0.2s, background 0.2s;
+}
+.wpcf7-form textarea { min-height: 160px; resize: vertical; }
+.wpcf7-form input:focus,
+.wpcf7-form select:focus,
+.wpcf7-form textarea:focus {
+  outline: none;
+  border-color: var(--teal, #0cd4e0);
+  background: rgba(12,212,224,0.05);
+}
+.wpcf7-form input[type="submit"] {
+  display: inline-flex; align-items: center;
+  padding: 0.85rem 1.8rem;
+  font: 600 0.9rem/1 var(--font-ui);
+  letter-spacing: 0.04em;
+  color: #fff;
+  background: var(--accent, #e8455a);
+  border: 0; border-radius: 50px;
+  cursor: pointer;
+  transition: transform 0.15s, filter 0.2s;
+}
+.wpcf7-form input[type="submit"]:hover { filter: brightness(1.08); }
+.wpcf7-form input[type="submit"]:focus-visible { outline: 2px solid var(--teal, #0cd4e0); outline-offset: 3px; }
+.wpcf7-form input[type="checkbox"],
+.wpcf7-form input[type="radio"] { accent-color: var(--accent, #e8455a); }
+.wpcf7-list-item { margin: 0 1rem 0 0; }
+.wpcf7-not-valid-tip { margin-top: 0.35rem; font: 500 0.78rem/1.4 var(--font-ui); color: #ff8a9a; }
+.wpcf7-not-valid { border-color: #ff8a9a !important; }
+.wpcf7 form .wpcf7-response-output { display: none; }
+.wpcf7 form.sent .wpcf7-response-output,
+.wpcf7 form.invalid .wpcf7-response-output,
+.wpcf7 form.failed .wpcf7-response-output,
+.wpcf7 form.spam .wpcf7-response-output,
+.wpcf7 form.unaccepted .wpcf7-response-output,
+.wpcf7 form.aborted .wpcf7-response-output { display: block; }
+.wpcf7 form .wpcf7-response-output {
+  margin: 1.2rem 0 0;
+  padding: 0.9rem 1.1rem;
+  font: 400 0.9rem/1.5 var(--font-ui);
+  color: var(--white, #f5f0ff);
+  border: 1px solid rgba(107,47,160,0.4);
+  border-radius: 10px;
+  background: rgba(107,47,160,0.12);
+}
+.wpcf7 form.sent .wpcf7-response-output { border-color: var(--teal, #0cd4e0); background: rgba(12,212,224,0.08); }
+.wpcf7 form.invalid .wpcf7-response-output,
+.wpcf7 form.failed .wpcf7-response-output,
+.wpcf7 form.spam .wpcf7-response-output { border-color: #ff8a9a; background: rgba(232,69,90,0.1); }
+.wpcf7-spinner { background-color: var(--teal, #0cd4e0); }
+.wpcf7 .screen-reader-response { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(1px,1px,1px,1px); }

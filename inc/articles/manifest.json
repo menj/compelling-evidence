@@ -1,0 +1,50 @@
+{
+  "version": "2.6.33",
+  "generated": "2026-09-27T09:00:00+00:00",
+  "total_articles": 131,
+  "batches": [
+    {
+      "file": "batch-001.json",
+      "source": "inc/articles/backup/articles-data.php",
+      "checksum": "f3dead85c5547a3135a490ff1d28d99c42cda41664e8165d4f52e0c089c506ae",
+      "articles": 24
+    },
+    {
+      "file": "batch-002.json",
+      "source": "inc/articles/backup/articles-data-2.php",
+      "checksum": "5b7a4a45164a02510d2a5f1ae0ecb7fe68380cfe7253dc4a5010371b8d0c876c",
+      "articles": 24
+    },
+    {
+      "file": "batch-003.json",
+      "source": "inc/articles/backup/articles-data-3.php",
+      "checksum": "2635a10217f60cf57fa7e1d8e9873ce9477e4a6191ae52cfcd8442c6d9bd40d8",
+      "articles": 24
+    },
+    {
+      "file": "batch-004.json",
+      "source": "inc/articles/backup/articles-data-4.php",
+      "checksum": "62bb0398796900901a08b5e5e0538013a42fd938ef4e69f60e6ee1058898a7cc",
+      "articles": 24
+    },
+    {
+      "file": "batch-005.json",
+      "source": "inc/articles/backup/articles-data-5.php + articles-data-6.php",
+      "checksum": "fc374873af0e68644bf9b7be2b70809092fc7b7619a10c22a73789e0319d996a",
+      "articles": 24
+    },
+    {
+      "file": "batch-006.json",
+      "source": "Drafted directly for v2.6.0 — Logic Over Faith critique coverage gaps",
+      "checksum": "5f8b6206e8f539950823502091d615def1732e224085d186cb81d03c8c75bd3b",
+      "articles": 3
+    },
+    {
+      "file": "batch-007.json",
+      "source": "Drafted directly for v2.6.22, critique coverage gaps (Islamic Dilemma, 9:5 and 9:29, terrorism data, Jews, 4:34, divine love, salvation, citizenship)",
+      "checksum": "0a4f41eda0ac977542d6450388fdda60b3b679af4d39020135d0bc1b06f411f2",
+      "articles": 8
+    }
+  ],
+  "checksum": "e5ef4ad2747ea8be4df97c4297f764fdb40b0355a2704f491056ed40285397db"
+}

@@ -7,6 +7,7 @@
 get_header();
 ?>
 
+<main id="main" role="main">
 <div class="progress-page">
 
   <div class="progress-hero">
@@ -175,5 +176,7 @@ get_header();
   window.addEventListener('load', renderGrid);
 })();
 </script>
+
+</main><!-- /#main -->
 
 <?php get_footer(); ?>

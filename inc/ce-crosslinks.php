@@ -57,7 +57,7 @@ function ce_get_default_crosslink_phrases() {
         'free will and predestination'      => 'free-will-predestination',
         'predestination'                    => 'free-will-predestination',
         'qadar'                             => 'free-will-predestination',
-        'unanswered prayer'                 => 'if-god-answers-prayer-why-cant-you-prove-it',
+        'unanswered prayer'                 => 'does-god-answer-prayer',
         'why god needs worship'             => 'why-does-god-need-compelled-worship',
         'deism'                             => 'god-personal-or-deist',
         'first cause'                       => 'god-personal-or-deist',
@@ -96,75 +96,153 @@ function ce_get_default_crosslink_phrases() {
         'many-worlds'                       => 'multiverse-objection',
         'evolution and islam'               => 'evolution-and-islam',
         'evolution'                         => 'evolution-and-islam',
-        'big bang'                          => 'origins-of-the-universe',
+        'big bang'                          => 'big-bang-creation',
 
         // ── Examining the Quran ──
-        'quran and science'                 => 'quran-and-science',
-        'scientific miracles'               => 'quran-and-science',
-        'preservation of the quran'         => 'quran-preserved',
-        'quran preservation'                => 'quran-preserved',
-        'literary miracle'                  => 'quran-literary-miracle',
-        'inimitability'                     => 'quran-literary-miracle',
-        'challenge of the quran'            => 'quran-literary-miracle',
-        'abrogation'                        => 'abrogation',
-        'variant readings'                  => 'quran-variant-readings',
-        'qiraat'                            => 'quran-variant-readings',
-        'violence in the quran'             => 'quran-violence',
-        'sword verse'                       => 'quran-violence',
+        'quran and science'                 => 'scientific-miracles-quran',
+        'scientific miracles'               => 'scientific-miracles-quran',
+        'preservation of the quran'         => 'quran-historical-reliability',
+        'quran preservation'                => 'quran-historical-reliability',
+        'literary miracle'                  => 'quran-literary-argument',
+        'inimitability'                     => 'quran-literary-argument',
+        'challenge of the quran'            => 'quran-literary-argument',
+        'abrogation'                        => 'meccan-medinan-abrogation',
+        'variant readings'                  => 'quran-variant-readings-qiraat',
+        'qiraat'                            => 'quran-variant-readings-qiraat',
+        'violence in the quran'             => 'mercy-harsh-passages',
+        'sword verse'                       => 'sword-verse-jizya-9-5-9-29',
 
         // ── Examining the Sources ──
-        'hadith reliability'                => 'hadith-authenticity',
-        'hadith criticism'                  => 'hadith-authenticity',
-        'isnad'                             => 'hadith-authenticity',
-        'chain of transmission'             => 'hadith-authenticity',
-        'prophethood'                       => 'was-muhammad-who-he-claimed',
-        'muhammad\'s character'             => 'was-muhammad-who-he-claimed',
-        'age of aisha'                      => 'age-of-aisha',
-        'aisha marriage'                    => 'age-of-aisha',
+        'hadith reliability'                => 'hadith-reliability',
+        'hadith criticism'                  => 'hadith-reliability',
+        'isnad'                             => 'hadith-reliability',
+        'chain of transmission'             => 'hadith-reliability',
+        'prophethood'                       => 'was-muhammad-who-he-claimed-to-be',
+        'muhammad\'s character'             => 'was-muhammad-who-he-claimed-to-be',
+        'age of aisha'                      => 'aisha-age-marriage',
+        'aisha marriage'                    => 'aisha-age-marriage',
 
         // ── Rights & Freedom ──
         'women in islam'                    => 'women-in-islam',
         'women\'s rights in islam'          => 'women-in-islam',
-        'apostasy'                          => 'freedom-to-leave',
-        'freedom to leave islam'            => 'freedom-to-leave',
-        'blasphemy'                         => 'blasphemy-laws',
-        'religious freedom'                 => 'religious-freedom-islam',
-        'shariah law'                       => 'shariah-modern-world',
-        'sharia law'                        => 'shariah-modern-world',
-        'slavery in islam'                  => 'slavery-in-islam',
-        'human rights'                      => 'human-rights-islam',
-        'jihad'                             => 'meaning-of-jihad',
-        'holy war'                          => 'meaning-of-jihad',
-        'lgbtq'                             => 'islam-lgbtq',
-        'homosexuality'                     => 'islam-lgbtq',
-        'hudud'                             => 'hudud-punishments',
+        'apostasy'                          => 'post-muslim-identity',
+        'freedom to leave islam'            => 'post-muslim-identity',
+        'blasphemy'                         => 'apostasy-and-freedom',
+        'religious freedom'                 => 'apostasy-international-law',
+        'shariah law'                       => 'islam-and-enlightenment',
+        'sharia law'                        => 'islam-and-enlightenment',
+        'slavery in islam'                  => 'slavery-in-islamic-sources',
+        'human rights'                      => 'apostasy-international-law',
+        'jihad'                             => 'did-islam-spread-by-the-sword',
+        'holy war'                          => 'did-islam-spread-by-the-sword',
+        'lgbtq'                             => 'islam-and-same-sex-attraction',
+        'homosexuality'                     => 'islam-and-same-sex-attraction',
+        'hudud'                             => 'finite-sins-infinite-punishment',
 
         // ── History & Context ──
-        'golden age of islam'               => 'golden-age',
-        'islamic golden age'                => 'golden-age',
-        'orientalism'                       => 'orientalism',
-        'western lens'                      => 'orientalism',
-        'crusades'                          => 'crusades-context',
-        'colonialism'                       => 'colonialism-and-islam',
+        'golden age of islam'               => 'the-freethinkers-islam-produced',
+        'islamic golden age'                => 'the-freethinkers-islam-produced',
+        'orientalism'                       => 'the-islam-i-was-defending',
+        'western lens'                      => 'the-islam-i-was-defending',
+        'crusades'                          => 'banu-qurayza-early-violence',
+        'colonialism'                       => 'islam-and-enlightenment',
 
         // ── The Inner Journey ──
-        'spiritual dryness'                 => 'when-presence-fades',
-        'loss of faith'                     => 'when-presence-fades',
+        'spiritual dryness'                 => 'when-the-presence-fades',
+        'loss of faith'                     => 'when-the-presence-fades',
         'purpose of life'                   => 'purpose-of-life',
         'meaning of life'                   => 'purpose-of-life',
-        'death in islam'                    => 'what-happens-after-death',
-        'afterlife'                         => 'what-happens-after-death',
-        'repentance'                        => 'the-door-is-still-open',
-        'tawbah'                            => 'the-door-is-still-open',
+        'death in islam'                    => 'what-does-islam-say-happens-after-death',
+        'afterlife'                         => 'what-does-islam-say-happens-after-death',
+        'repentance'                        => 'coming-back-after-leaving',
+        'tawbah'                            => 'coming-back-after-leaving',
         'coming back to islam'              => 'coming-back-after-leaving',
-        'converts to islam'                 => 'what-draws-people-to-islam',
+        'converts to islam'                 => 'what-draws-people-to-islam-today',
 
         // ── The Bigger Picture ──
         'nihilism'                          => 'if-nothing-really-matters',
         'existential nihilism'              => 'if-nothing-really-matters',
-        'the heart in islam'                => 'spiritual-heart-of-islam',
-        'believing in the unseen'           => 'rational-person-believe-unseen',
-        'the unseen'                        => 'rational-person-believe-unseen',
+        'the heart in islam'                => 'the-spiritual-heart-of-islam',
+        'believing in the unseen'           => 'how-can-a-rational-person-believe-in-the-unseen',
+        'the unseen'                        => 'how-can-a-rational-person-believe-in-the-unseen',
+        'does god communicate'              => 'does-god-communicate-with-humanity',
+        'competing claims to revelation'    => 'how-do-we-evaluate-competing-claims-to-revelation',
+
+        // ── New articles — Does God Exist? ──
+        'why worship god'                   => 'why-does-god-need-worship',
+        'purpose of worship'                => 'why-does-god-need-worship',
+        'religion of your birth'            => 'religion-of-your-birth',
+        'accident of birth'                 => 'religion-of-your-birth',
+        'born into religion'                => 'religion-of-your-birth',
+        'pray in arabic'                    => 'why-arabic-prayer',
+        'prayer in arabic'                  => 'why-arabic-prayer',
+        'why arabic'                        => 'why-arabic-prayer',
+        'prison conversion'                 => 'islam-prison-conversion',
+        'islam in prison'                   => 'islam-prison-conversion',
+        'too many rules'                    => 'islam-too-many-rules',
+        'trivial rules'                     => 'islam-too-many-rules',
+        'loyalty test'                      => 'god-rewards-faith-punishes-doubt',
+        'rewards faith punishes doubt'      => 'god-rewards-faith-punishes-doubt',
+
+        // ── New articles — Examining the Quran ──
+        'creation accounts'                 => 'quran-creation-accounts',
+        'clay clot water dust'              => 'quran-creation-accounts',
+        'quran contradictions'              => 'quran-creation-accounts',
+        'kaaba idol worship'                => 'kaaba-idol-worship',
+        'black stone'                       => 'kaaba-idol-worship',
+        'kissing the stone'                 => 'kaaba-idol-worship',
+        'qiblah'                            => 'kaaba-idol-worship',
+        'bible stories'                     => 'quran-bible-stories',
+        'recycled bible'                    => 'quran-bible-stories',
+        'moon splitting'                    => 'moon-splitting',
+        'splitting of the moon'             => 'moon-splitting',
+        'hadith authenticity'               => 'hadith-authenticity',
+        'hadith fabrication'                => 'hadith-authenticity',
+        'can we trust hadith'               => 'hadith-authenticity',
+        'goldziher'                         => 'hadith-authenticity',
+        'schacht'                           => 'hadith-authenticity',
+
+        // ── New articles — Does God Exist? / History ──
+        'jinn possession'                   => 'islam-jinn-mental-illness',
+        'jinn and mental illness'           => 'islam-jinn-mental-illness',
+        'evil eye'                          => 'evil-eye-islamic-view',
+        'ayn'                               => 'evil-eye-islamic-view',
+        'ritual purity'                     => 'ritual-purity-wudu-menstruation',
+        'wudu'                              => 'ritual-purity-wudu-menstruation',
+        'menstruation in islam'             => 'ritual-purity-wudu-menstruation',
+        'ramadan purpose'                   => 'ramadan-fasting-purpose',
+        'what is fasting for'               => 'ramadan-fasting-purpose',
+        'islam built on fear'               => 'islam-built-on-fear',
+        'religion of fear'                  => 'islam-built-on-fear',
+        'muhammad and war'                  => 'muhammad-and-warfare',
+        'why did muhammad fight'            => 'muhammad-and-warfare',
+        'prophet and the sword'             => 'muhammad-and-warfare',
+        // ── is-islam-a-cult ──
+        'is islam a cult'                   => 'is-islam-a-cult',
+        'cult comparison'                   => 'is-islam-a-cult',
+        'islam cult'                        => 'is-islam-a-cult',
+        'undue influence'                   => 'is-islam-a-cult',
+        'psychological coercion'            => 'is-islam-a-cult',
+        'ikhtilaf'                          => 'is-islam-a-cult',
+        // ── v2.6.22 critique coverage ──
+        'islamic dilemma'                   => 'islamic-dilemma-quran-and-bible',
+        'torah and the gospel'              => 'islamic-dilemma-quran-and-bible',
+        'corruption of the bible'           => 'islamic-dilemma-quran-and-bible',
+        'verse of the sword'                => 'sword-verse-jizya-9-5-9-29',
+        'religion of peace'                 => 'is-islam-a-religion-of-peace-terrorism-data',
+        'islamic terrorism'                 => 'is-islam-a-religion-of-peace-terrorism-data',
+        'suicide bombing'                   => 'is-islam-a-religion-of-peace-terrorism-data',
+        'hatred of jews'                    => 'does-the-quran-teach-hatred-of-jews',
+        'antisemitism'                      => 'does-the-quran-teach-hatred-of-jews',
+        'people of the book'                => 'does-the-quran-teach-hatred-of-jews',
+        'wife-beating'                      => 'quran-4-34-wife-beating',
+        'domestic violence'                 => 'quran-4-34-wife-beating',
+        'slave-master'                      => 'is-allah-a-slave-master-or-a-god-of-love',
+        'god of love'                       => 'is-allah-a-slave-master-or-a-god-of-love',
+        'salvation by works'                => 'does-islam-teach-salvation-by-works',
+        'earn paradise'                     => 'does-islam-teach-salvation-by-works',
+        'western democracy'                 => 'is-islam-compatible-with-western-democracy',
+        'loyal citizen'                     => 'is-islam-compatible-with-western-democracy',
     ];
 }
 
@@ -226,12 +304,19 @@ function ce_unified_link_filter( $content ) {
     $used_slugs        = [];  // Each target slug linked at most once
     $in_heading        = false;
     $in_protected      = false; // Inside <a>, citation blocks
+    $media_depth       = 0;     // Inside <figure>, <svg> or <table> (2.6.33)
     $para_has_crosslink = false;
     $para_has_tooltip   = false;
     $in_paragraph      = false;
 
     for ( $i = 0; $i < count( $parts ); $i++ ) {
         $part = $parts[ $i ];
+
+        // Figures, diagrams and tables never receive links or tooltips:
+        // captions, credits and SVG labels must read exactly as written.
+        if ( preg_match( '/^<(figure|svg|table)\b/i', $part ) ) { $media_depth++; continue; }
+        if ( preg_match( '/^<\/(figure|svg|table)>/i', $part ) ) { $media_depth = max( 0, $media_depth - 1 ); continue; }
+        if ( $media_depth > 0 ) continue;
 
         // Track HTML context
         if ( preg_match( '/^<(h[1-6])\b/i', $part ) ) { $in_heading = true; continue; }
@@ -361,7 +446,9 @@ function ce_unified_link_filter( $content ) {
                 $before = substr( $content, max( 0, $offset - 500 ), min( 500, $offset ) );
                 $in_h = preg_match_all( '/<h[1-6][^>]*>/i', $before ) > preg_match_all( '/<\/h[1-6]>/i', $before );
                 $in_a = preg_match_all( '/<a[\s>]/i', $before ) > preg_match_all( '/<\/a>/i', $before );
-                if ( $in_h || $in_a ) continue;
+                $prefix = substr( $content, 0, $offset );
+                $in_m   = preg_match_all( '/<(figure|svg|table)\b/i', $prefix ) > preg_match_all( '/<\/(figure|svg|table)>/i', $prefix );
+                if ( $in_h || $in_a || $in_m ) continue;
 
                 $title_attr = '';
                 $target_post = get_page_by_path( $slug, OBJECT, 'ce_article' );
@@ -418,11 +505,21 @@ function ce_crosslink_meta_box_html( $post ) {
 }
 
 function ce_crosslink_save_meta( $post_id ) {
-    if ( ! isset( $_POST['ce_link_meta_nonce'] ) || ! wp_verify_nonce( $_POST['ce_link_meta_nonce'], 'ce_link_meta' ) ) return;
-    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
-    if ( ! current_user_can( 'edit_post', $post_id ) ) return;
+    if ( ! isset( $_POST['ce_link_meta_nonce'] ) ) {
+        return;
+    }
+    $nonce = sanitize_text_field( wp_unslash( $_POST['ce_link_meta_nonce'] ) );
+    if ( ! wp_verify_nonce( $nonce, 'ce_link_meta' ) ) {
+        return;
+    }
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+        return;
+    }
+    if ( ! current_user_can( 'edit_post', $post_id ) ) {
+        return;
+    }
 
     update_post_meta( $post_id, '_ce_disable_crosslinks', isset( $_POST['ce_disable_crosslinks'] ) ? '1' : '0' );
-    update_post_meta( $post_id, '_ce_disable_tooltips', isset( $_POST['ce_disable_tooltips'] ) ? '1' : '0' );
+    update_post_meta( $post_id, '_ce_disable_tooltips',   isset( $_POST['ce_disable_tooltips']   ) ? '1' : '0' );
 }
 add_action( 'save_post', 'ce_crosslink_save_meta' );

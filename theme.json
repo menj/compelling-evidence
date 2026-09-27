@@ -1,16 +1,270 @@
 {
-  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "$schema": "https://schemas.wp.org/wp/6.7/theme.json",
   "version": 3,
   "settings": {
     "layout": {
       "contentSize": "1060px",
       "wideSize": "1280px"
     },
-    "useRootPaddingAwareAlignments": true
+    "useRootPaddingAwareAlignments": true,
+    "color": {
+      "palette": [
+        {
+          "slug": "base",
+          "name": "Base (CE page background)",
+          "color": "#2a1050"
+        },
+        {
+          "slug": "contrast",
+          "name": "Contrast (CE text)",
+          "color": "#f5f0ff"
+        },
+        {
+          "slug": "accent-1",
+          "name": "Accent 1 (CE red)",
+          "color": "#e8455a"
+        },
+        {
+          "slug": "accent-2",
+          "name": "Accent 2 (CE teal)",
+          "color": "#0cd4e0"
+        },
+        {
+          "slug": "accent-3",
+          "name": "Accent 3 (CE purple)",
+          "color": "#6b2fa0"
+        },
+        {
+          "slug": "accent-4",
+          "name": "Accent 4 (CE muted text)",
+          "color": "#b4a8c7"
+        },
+        {
+          "slug": "accent-5",
+          "name": "Accent 5 (CE deep surface)",
+          "color": "#1a0a2e"
+        },
+        {
+          "slug": "accent-6",
+          "name": "Accent 6",
+          "color": "color-mix(in srgb, currentColor 20%, transparent)"
+        }
+      ]
+    },
+    "typography": {
+      "fontFamilies": [
+        {
+          "slug": "playfair-display",
+          "name": "Playfair Display",
+          "fontFamily": "'Playfair Display', Georgia, serif",
+          "fontFace": [
+            {
+              "fontFamily": "Playfair Display",
+              "fontStyle": "normal",
+              "fontWeight": "400",
+              "src": [
+                "file:./assets/fonts/playfair-display-400.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Playfair Display",
+              "fontStyle": "normal",
+              "fontWeight": "700",
+              "src": [
+                "file:./assets/fonts/playfair-display-700.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Playfair Display",
+              "fontStyle": "normal",
+              "fontWeight": "900",
+              "src": [
+                "file:./assets/fonts/playfair-display-900.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Playfair Display",
+              "fontStyle": "italic",
+              "fontWeight": "400",
+              "src": [
+                "file:./assets/fonts/playfair-display-400-italic.woff2"
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "cormorant-garamond",
+          "name": "Cormorant Garamond",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontFace": [
+            {
+              "fontFamily": "Cormorant Garamond",
+              "fontStyle": "normal",
+              "fontWeight": "400",
+              "src": [
+                "file:./assets/fonts/cormorant-garamond-400.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Cormorant Garamond",
+              "fontStyle": "normal",
+              "fontWeight": "600",
+              "src": [
+                "file:./assets/fonts/cormorant-garamond-600.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Cormorant Garamond",
+              "fontStyle": "italic",
+              "fontWeight": "400",
+              "src": [
+                "file:./assets/fonts/cormorant-garamond-400-italic.woff2"
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "eb-garamond",
+          "name": "EB Garamond",
+          "fontFamily": "'EB Garamond', Georgia, serif",
+          "fontFace": [
+            {
+              "fontFamily": "EB Garamond",
+              "fontStyle": "normal",
+              "fontWeight": "400 800",
+              "src": [
+                "file:./assets/fonts/eb-garamond-var.woff2"
+              ]
+            },
+            {
+              "fontFamily": "EB Garamond",
+              "fontStyle": "italic",
+              "fontWeight": "400 800",
+              "src": [
+                "file:./assets/fonts/eb-garamond-var-italic.woff2"
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "dm-sans",
+          "name": "DM Sans",
+          "fontFamily": "'DM Sans', system-ui, sans-serif",
+          "fontFace": [
+            {
+              "fontFamily": "DM Sans",
+              "fontStyle": "normal",
+              "fontWeight": "300",
+              "src": [
+                "file:./assets/fonts/dm-sans-300.woff2"
+              ]
+            },
+            {
+              "fontFamily": "DM Sans",
+              "fontStyle": "normal",
+              "fontWeight": "400",
+              "src": [
+                "file:./assets/fonts/dm-sans-400.woff2"
+              ]
+            },
+            {
+              "fontFamily": "DM Sans",
+              "fontStyle": "normal",
+              "fontWeight": "500",
+              "src": [
+                "file:./assets/fonts/dm-sans-500.woff2"
+              ]
+            },
+            {
+              "fontFamily": "DM Sans",
+              "fontStyle": "normal",
+              "fontWeight": "600",
+              "src": [
+                "file:./assets/fonts/dm-sans-600.woff2"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Manrope",
+          "slug": "manrope",
+          "fontFamily": "Manrope, sans-serif",
+          "fontFace": [
+            {
+              "src": [
+                "file:./assets/fonts/manrope/Manrope-VariableFont_wght.woff2"
+              ],
+              "fontWeight": "200 800",
+              "fontStyle": "normal",
+              "fontFamily": "Manrope"
+            }
+          ]
+        },
+        {
+          "name": "Fira Code",
+          "slug": "fira-code",
+          "fontFamily": "\"Fira Code\", monospace",
+          "fontFace": [
+            {
+              "src": [
+                "file:./assets/fonts/fira-code/FiraCode-VariableFont_wght.woff2"
+              ],
+              "fontWeight": "300 700",
+              "fontStyle": "normal",
+              "fontFamily": "\"Fira Code\""
+            }
+          ]
+        }
+      ]
+    }
   },
   "styles": {
     "spacing": {
       "blockGap": "0"
+    },
+    "color": {
+      "background": "var:preset|color|base",
+      "text": "var:preset|color|contrast"
+    },
+    "typography": {
+      "fontFamily": "var(--font-ui, 'DM Sans', system-ui, sans-serif)",
+      "fontSize": "1rem",
+      "fontWeight": "300",
+      "lineHeight": "1.6",
+      "letterSpacing": "normal"
+    },
+    "elements": {
+      "heading": {
+        "typography": {
+          "fontFamily": "var(--font-heading, 'Playfair Display', Georgia, serif)",
+          "fontWeight": "700",
+          "lineHeight": "1.2",
+          "letterSpacing": "-0.01em"
+        }
+      },
+      "button": {
+        "color": {
+          "background": "var:preset|color|accent-1",
+          "text": "var:preset|color|contrast"
+        },
+        ":hover": {
+          "color": {
+            "background": "color-mix(in srgb, var(--wp--preset--color--accent-1) 85%, transparent)",
+            "text": "var:preset|color|contrast"
+          }
+        },
+        ":focus": {
+          "outline": {
+            "color": "var:preset|color|accent-2",
+            "offset": "2px"
+          }
+        }
+      },
+      "caption": {
+        "color": {
+          "text": "var:preset|color|accent-4"
+        }
+      }
     }
   }
 }

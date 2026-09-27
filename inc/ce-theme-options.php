@@ -38,6 +38,7 @@ function ce_options_register() {
     register_setting( 'ce_options_typography', 'ce_font_scale', [ 'default' => '1.0' ] );
     register_setting( 'ce_options_typography', 'ce_reading_font', [ 'default' => 'cormorant' ] );
     register_setting( 'ce_options_typography', 'ce_heading_font', [ 'default' => 'playfair' ] );
+    register_setting( 'ce_options_typography', 'ce_accent_font', [ 'default' => 'dm-sans' ] );
 
     // ── Quiz & Journeys ──
     register_setting( 'ce_options_quiz', 'ce_quiz_enabled', [ 'default' => '1' ] );
@@ -77,6 +78,8 @@ function ce_options_register() {
     register_setting( 'ce_options_performance', 'ce_parallax_enabled', [ 'default' => '1' ] );
     register_setting( 'ce_options_performance', 'ce_preload_fonts', [ 'default' => '1' ] );
     register_setting( 'ce_options_performance', 'ce_minify_inline', [ 'default' => '0' ] );
+    register_setting( 'ce_options_performance', 'ce_gone_enabled', [ 'default' => '1' ] );
+    register_setting( 'ce_options_performance', 'ce_gone_paths', [ 'default' => ce_gone_default_paths() ] );
 }
 add_action( 'admin_init', 'ce_options_register' );
 
@@ -106,58 +109,108 @@ function ce_options_page() {
 
     $tabs = [
         'general'     => [ 'label' => 'General',           'icon' => 'dashicons-admin-home' ],
+        'identity'    => [ 'label' => 'Author & Identity', 'icon' => 'dashicons-businessperson' ],
         'colors'      => [ 'label' => 'Colors',            'icon' => 'dashicons-art' ],
         'typography'  => [ 'label' => 'Typography',        'icon' => 'dashicons-editor-textcolor' ],
         'links'       => [ 'label' => 'Links & Tooltips',  'icon' => 'dashicons-admin-links' ],
+        'media'       => [ 'label' => 'Media',             'icon' => 'dashicons-format-image' ],
         'quiz'        => [ 'label' => 'Quiz & Journeys',   'icon' => 'dashicons-forms' ],
         'engagement'  => [ 'label' => 'Engagement',        'icon' => 'dashicons-thumbs-up' ],
         'analytics'   => [ 'label' => 'Analytics',         'icon' => 'dashicons-chart-area' ],
         'performance' => [ 'label' => 'Performance',       'icon' => 'dashicons-performance' ],
+        'tools'       => [ 'label' => 'Tools & Sync',      'icon' => 'dashicons-admin-tools' ],
     ];
 
     $active = sanitize_key( $_GET['tab'] ?? 'general' );
     if ( ! isset( $tabs[ $active ] ) ) $active = 'general';
 
     // Handle save
-    if ( $_SERVER['REQUEST_METHOD'] === 'POST' && check_admin_referer( 'ce_options_' . $active ) ) {
-        $option_group = 'ce_options_' . $active;
-        // WordPress settings API handles the save via options.php,
-        // but we use a direct approach for our tabbed interface.
-        $fields = ce_get_tab_fields( $active );
-        foreach ( $fields as $field ) {
-            $key = $field['id'];
-            if ( $field['type'] === 'checkbox' ) {
-                update_option( $key, isset( $_POST[ $key ] ) ? '1' : '0' );
+    $saved = false;
+    $sync_result = null;
+    $media_result = null;
+    
+    if ( isset( $_SERVER['REQUEST_METHOD'] ) && $_SERVER['REQUEST_METHOD'] === 'POST' && check_admin_referer( 'ce_options_' . $active ) ) {
+        // Handle manual sync trigger
+        if ( $active === 'tools' && isset( $_POST['ce_manual_sync'] ) ) {
+            $sync_result = ce_manual_content_sync();
+        } elseif ( $active === 'media' && isset( $_POST['ce_media_import_now'] ) && function_exists( 'ce_media_import_pending' ) ) {
+            $media_result = ce_media_import_pending( 10 );
+            if ( $media_result['failed'] ) {
+                update_option( 'ce_media_import_errors', $media_result['failed'], false );
             } else {
-                $value = $_POST[ $key ] ?? '';
-                if ( $field['type'] === 'color' ) {
-                    $value = sanitize_hex_color( $value ) ?: $field['default'];
-                } elseif ( $field['type'] === 'number' ) {
-                    $value = absint( $value );
-                } else {
-                    $value = sanitize_text_field( $value );
-                }
-                update_option( $key, $value );
+                delete_option( 'ce_media_import_errors' );
             }
+        } else {
+            $option_group = 'ce_options_' . $active;
+            // WordPress settings API handles the save via options.php,
+            // but we use a direct approach for our tabbed interface.
+            $fields = ce_get_tab_fields( $active );
+            foreach ( $fields as $field ) {
+                $key = $field['id'];
+                if ( $field['type'] === 'checkbox' ) {
+                    update_option( $key, isset( $_POST[ $key ] ) ? '1' : '0' );
+                } else {
+                    // wp_unslash() is required because WordPress magic-quotes
+                    // POST values; without it we double-escape on save.
+                    $value = isset( $_POST[ $key ] ) ? wp_unslash( $_POST[ $key ] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitised per field type immediately below; nonce checked by check_admin_referer().
+                    if ( $field['type'] === 'color' ) {
+                        $value = sanitize_hex_color( $value ) ?: $field['default'];
+                    } elseif ( $field['type'] === 'number' ) {
+                        $value = absint( $value );
+                    } elseif ( $field['type'] === 'textarea' ) {
+                        $value = sanitize_textarea_field( $value );
+                    } else {
+                        $value = sanitize_text_field( $value );
+                    }
+                    update_option( $key, $value );
+                }
+            }
+            $saved = true;
         }
-        $saved = true;
     }
 
     ?>
     <div class="wrap ce-options-wrap">
         <h1 class="ce-options-title">
-            <span class="ce-options-logo">C<span style="color:#e8455a;">E</span></span>
-            Theme Options
+            <span class="ce-options-logo" title="Compelling Evidence" aria-label="Compelling Evidence">
+                <img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/ce-icon.svg' ); ?>"
+                     alt="CE" width="28" height="28" style="display:block;">
+            </span>
+            CE Theme Options
         </h1>
 
         <?php if ( ! empty( $saved ) ) : ?>
             <div class="notice notice-success is-dismissible"><p>Settings saved.</p></div>
         <?php endif; ?>
 
+        <?php if ( ! empty( $sync_result ) ) : ?>
+            <?php if ( $sync_result['success'] ) : ?>
+                <div class="notice notice-success is-dismissible">
+                    <p><strong>Sync completed successfully!</strong></p>
+                    <ul style="margin:0;list-style:none;">
+                        <li>✓ Articles synced: <?php echo intval( $sync_result['synced'] ); ?></li>
+                        <li>✓ Topics created: <?php echo intval( $sync_result['topics_created'] ); ?></li>
+                        <li>✓ Topics cleaned: <?php echo intval( $sync_result['topics_cleaned'] ); ?></li>
+                        <?php if ( ! empty( $sync_result['duplicates_found'] ) ) : ?>
+                            <li>⚠ Duplicates detected and skipped: <?php echo intval( $sync_result['duplicates_found'] ); ?></li>
+                        <?php endif; ?>
+                    </ul>
+                </div>
+            <?php else : ?>
+                <div class="notice notice-error is-dismissible">
+                    <p><strong>Sync failed:</strong> <?php echo esc_html( $sync_result['error'] ); ?></p>
+                    <?php if ( ! empty( $sync_result['fallback'] ) ) : ?>
+                        <p><em>Fallback mode activated. <?php echo intval( $sync_result['fallback_synced'] ); ?> articles synced with basic method.</em></p>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
+        <?php endif; ?>
+
         <style>
             .ce-options-wrap { max-width: 960px; }
             .ce-options-title { display: flex; align-items: center; gap: 0.6rem; font-size: 1.6rem; font-weight: 700; margin-bottom: 1.2rem; }
-            .ce-options-logo { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: #1a0a2e; border-radius: 8px; color: #f5f0ff; font-weight: 900; font-size: 0.9rem; letter-spacing: -0.03em; }
+            .ce-options-logo { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: #180d2e; border-radius: 8px; overflow: hidden; flex-shrink: 0; }
+            .ce-options-logo img { width: 28px; height: 28px; object-fit: contain; }
 
             .ce-tabs { display: flex; gap: 0; border-bottom: 2px solid #ddd; margin-bottom: 0; background: #fff; border-radius: 8px 8px 0 0; overflow-x: auto; }
             .ce-tab { display: flex; align-items: center; gap: 0.4rem; padding: 0.85rem 1.1rem; border: none; background: none; color: #666; font-size: 0.82rem; font-weight: 500; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap; transition: all 0.15s; text-decoration: none; }
@@ -202,7 +255,7 @@ function ce_options_page() {
         <!-- Tabs -->
         <div class="ce-tabs">
             <?php foreach ( $tabs as $key => $tab ) : ?>
-                <a href="<?php echo admin_url( 'themes.php?page=ce-theme-options&tab=' . $key ); ?>"
+                <a href="<?php echo esc_url( admin_url( 'themes.php?page=ce-theme-options&tab=' . $key ) ); ?>"
                    class="ce-tab <?php echo $active === $key ? 'active' : ''; ?>">
                     <span class="dashicons <?php echo esc_attr( $tab['icon'] ); ?>"></span>
                     <?php echo esc_html( $tab['label'] ); ?>
@@ -236,9 +289,9 @@ function ce_options_page() {
                                        id="<?php echo esc_attr( $field['id'] ); ?>"
                                        name="<?php echo esc_attr( $field['id'] ); ?>"
                                        value="<?php echo esc_attr( $value ); ?>"
-                                       <?php if ( ! empty( $field['min'] ) ) echo 'min="' . $field['min'] . '"'; ?>
-                                       <?php if ( ! empty( $field['max'] ) ) echo 'max="' . $field['max'] . '"'; ?>
-                                       <?php if ( ! empty( $field['step'] ) ) echo 'step="' . $field['step'] . '"'; ?>>
+                                       <?php if ( ! empty( $field['min'] ) ) echo 'min="' . esc_attr( $field['min'] ) . '"'; ?>
+                                       <?php if ( ! empty( $field['max'] ) ) echo 'max="' . esc_attr( $field['max'] ) . '"'; ?>
+                                       <?php if ( ! empty( $field['step'] ) ) echo 'step="' . esc_attr( $field['step'] ) . '"'; ?>>
                                 <?php break;
 
                             case 'textarea': ?>
@@ -293,9 +346,83 @@ function ce_options_page() {
                     </div>
                 <?php endforeach; ?>
 
-                <div class="ce-save-row">
-                    <button type="submit" class="ce-save-btn">Save Changes</button>
-                </div>
+                <?php if ( $active === 'media' && function_exists( 'ce_media_status_html' ) ) : ?>
+                    <div class="ce-field" style="background:#f8f9fa;border:1px solid #ddd;border-radius:8px;padding:1.5rem;margin-top:1rem;">
+                        <h3 style="margin-top:0;margin-bottom:0.6rem;font-size:1rem;">Article images</h3>
+                        <?php if ( $media_result ) : ?>
+                            <div class="notice notice-success inline" style="margin:0 0 1rem;"><p><?php echo esc_html( sprintf( 'Imported %d image(s); %d remaining.', (int) $media_result['imported'], (int) $media_result['remaining'] ) ); ?></p></div>
+                        <?php endif; ?>
+                        <?php echo wp_kses_post( ce_media_status_html() ); ?>
+                        <p style="color:#555;">Figures use images registered in <code>inc/articles/media.json</code>, each with its source page and licence. Images from Wikimedia Commons, Pexels and Flickr are supported; the credit line is printed under every figure.</p>
+                        <button type="submit" name="ce_media_import_now" value="1" class="button button-secondary">Import pending images now</button>
+                    </div>
+                <?php endif; ?>
+
+                <?php if ( $active === 'tools' ) : ?>
+                    <!-- Special Tools Tab Content -->
+                    <div class="ce-field" style="background:#f8f9fa;border:1px solid #ddd;border-radius:8px;padding:1.5rem;margin-top:1rem;">
+                        <h3 style="margin-top:0;margin-bottom:1rem;font-size:1rem;">Manual Content Synchronization</h3>
+                        <p style="margin-bottom:1rem;color:#555;">
+                            Use this button to manually trigger the article content sync from JSON files to the WordPress database. 
+                            This will update all 120 articles, create missing topic terms, and clean up deprecated categories.
+                        </p>
+                        
+                        <?php 
+                        $last_sync = get_option( 'ce_content_sync_last_run', 'Never' );
+                        $theme_ver = wp_get_theme()->get( 'Version' );
+                        $sync_key = 'ce_content_sync_' . str_replace( '.', '_', $theme_ver );
+                        $has_synced = get_option( $sync_key ) ? 'Yes ✓' : 'No (sync pending)';
+                        ?>
+                        <div style="background:#fff;border:1px solid #e0e0e0;border-radius:4px;padding:1rem;margin-bottom:1rem;font-size:0.85rem;">
+                            <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem;">
+                                <span>Current Theme Version:</span>
+                                <strong><?php echo esc_html( $theme_ver ); ?></strong>
+                            </div>
+                            <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem;">
+                                <span>Sync Status:</span>
+                                <strong><?php echo esc_html( $has_synced ); ?></strong>
+                            </div>
+                            <div style="display:flex;justify-content:space-between;">
+                                <span>Last Manual Sync:</span>
+                                <strong><?php echo esc_html( $last_sync ); ?></strong>
+                            </div>
+                        </div>
+                        
+                        <div style="display:flex;gap:1rem;align-items:center;">
+                            <button type="submit" name="ce_manual_sync" value="1" class="ce-save-btn" style="background:#e8455a;" onclick="return confirm('This will sync all 120 articles. Continue?');">
+                                <span class="dashicons dashicons-update" style="margin-right:0.3rem;vertical-align:middle;"></span>
+                                Run Content Sync Now
+                            </button>
+                            <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:#666;">
+                                <input type="checkbox" name="ce_sync_force" value="1">
+                                Force re-sync (ignore version check)
+                            </label>
+                        </div>
+                        
+                        <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid #eee;">
+                            <h4 style="margin:0 0 0.5rem;font-size:0.9rem;">Sync Safeguards</h4>
+                            <ul style="margin:0;padding-left:1.2rem;font-size:0.8rem;color:#666;">
+                                <li>Duplicate detection: Skips articles with duplicate slugs</li>
+                                <li>Fallback mode: If JSON loading fails, attempts basic sync</li>
+                                <li>Memory limit: Auto-increases to 256M for large syncs</li>
+                                <li>Timeout protection: 5-minute limit prevents incomplete syncs</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Article Data Diagnostics -->
+                    <div class="ce-field" style="background:#f8f9fa;border:1px solid #ddd;border-radius:8px;padding:1.5rem;margin-top:1rem;">
+                        <h3 style="margin-top:0;margin-bottom:0.3rem;font-size:1rem;">Article Data Diagnostics</h3>
+                        <p style="margin:0 0 1.2rem;color:#555;font-size:0.85rem;">
+                            Verifies manifest integrity, batch file checksums, and loader health. Run this if articles appear empty or sync is not firing.
+                        </p>
+                        <?php ce_render_article_diagnostics(); ?>
+                    </div>
+                <?php else : ?>
+                    <div class="ce-save-row">
+                        <button type="submit" class="ce-save-btn">Save Changes</button>
+                    </div>
+                <?php endif; ?>
             </form>
         </div>
     </div>
@@ -329,6 +456,32 @@ function ce_get_tab_fields( $tab ) {
             [ 'id' => 'ce_footer_text',             'label' => 'Footer Text',              'type' => 'text',     'default' => '© Compelling Evidence. All rights reserved.', 'section' => 'Footer' ],
         ],
 
+        'identity' => [
+            // ── Author (Person schema) ─────────────────────────────────────
+            [ 'id' => 'ce_author_name',     'label' => 'Author Name',     'type' => 'text', 'default' => '', 'section' => 'Author', 'desc' => 'Used in Person schema and the visible byline on every article. Leave empty to fall back to Organization-only authorship.' ],
+            [ 'id' => 'ce_author_title',    'label' => 'Author Job Title', 'type' => 'text', 'default' => '', 'desc' => 'e.g. "Editor", "Writer", "Founder". Used in Person schema (jobTitle).' ],
+            [ 'id' => 'ce_author_bio',      'label' => 'Author Bio',      'type' => 'textarea', 'default' => '', 'desc' => 'Up to 300 characters. Used in Person schema (description) and the author archive page.' ],
+            [ 'id' => 'ce_author_url',      'label' => 'Author Profile URL', 'type' => 'text', 'default' => '', 'desc' => 'Where the byline links to. Defaults to the WordPress author archive if empty.' ],
+
+            // ── Author social profiles (sameAs schema) ─────────────────────
+            [ 'id' => 'ce_author_twitter',  'label' => 'Author Twitter / X', 'type' => 'text', 'default' => '', 'section' => 'Author Social Profiles', 'desc' => 'Full URL, e.g. https://twitter.com/handle' ],
+            [ 'id' => 'ce_author_youtube',  'label' => 'Author YouTube',  'type' => 'text', 'default' => '', 'desc' => 'Full URL to channel.' ],
+            [ 'id' => 'ce_author_github',   'label' => 'Author GitHub',   'type' => 'text', 'default' => '', 'desc' => 'Full URL to profile.' ],
+            [ 'id' => 'ce_author_linkedin', 'label' => 'Author LinkedIn', 'type' => 'text', 'default' => '', 'desc' => 'Full URL to profile.' ],
+            [ 'id' => 'ce_author_other_urls', 'label' => 'Other Author URLs', 'type' => 'textarea', 'default' => '', 'desc' => 'One URL per line. Wikipedia entry, Scholar profile, ORCID, etc. All added to the Person schema sameAs array.' ],
+
+            // ── Site-level social and contact (Organization schema) ────────
+            [ 'id' => 'ce_site_twitter_handle', 'label' => 'Site Twitter Handle', 'type' => 'text', 'default' => '', 'section' => 'Site Social & Contact', 'desc' => 'Handle only, including the @, e.g. @CompellingEv. Used for twitter:site meta tag.' ],
+            [ 'id' => 'ce_site_youtube_url',    'label' => 'Site YouTube Channel', 'type' => 'text', 'default' => '', 'desc' => 'Full URL.' ],
+            [ 'id' => 'ce_site_facebook_url',   'label' => 'Site Facebook Page', 'type' => 'text', 'default' => '' ],
+            [ 'id' => 'ce_site_contact_email',  'label' => 'Site Contact Email', 'type' => 'text', 'default' => '', 'desc' => 'Used in Organization schema contactPoint.' ],
+
+            // ── Logo (Organization schema, ImageObject) ────────────────────
+            [ 'id' => 'ce_org_logo_url',    'label' => 'Logo URL',        'type' => 'text',   'default' => '', 'section' => 'Logo (Organization Schema)', 'desc' => 'Direct URL to logo image. Recommended 1:1 aspect ratio, ≥ 112×112 px for Google rich-result eligibility.' ],
+            [ 'id' => 'ce_org_logo_width',  'label' => 'Logo Width (px)', 'type' => 'number', 'default' => '512', 'min' => 64, 'max' => 4096 ],
+            [ 'id' => 'ce_org_logo_height', 'label' => 'Logo Height (px)', 'type' => 'number', 'default' => '512', 'min' => 64, 'max' => 4096 ],
+        ],
+
         'colors' => [
             [ 'id' => 'ce_color_accent',      'label' => 'Primary Accent',     'type' => 'color', 'default' => '#e8455a', 'desc' => 'Buttons, links, category labels.', 'section' => 'Brand Colors' ],
             [ 'id' => 'ce_color_accent2',     'label' => 'Secondary Accent',   'type' => 'color', 'default' => '#ff6b35', 'desc' => 'Gradient endpoints, hover states.' ],
@@ -341,9 +494,14 @@ function ce_get_tab_fields( $tab ) {
 
         'typography' => [
             [ 'id' => 'ce_heading_font', 'label' => 'Heading Font', 'type' => 'select', 'default' => 'playfair', 'section' => 'Font Families',
-              'options' => [ 'playfair' => 'Playfair Display (serif, editorial)', 'cormorant' => 'Cormorant Garamond (serif, elegant)' ] ],
+              'options' => ce_font_options( 'heading' ),
+              'desc' => 'Titles, section headings and display numbers across the site.' ],
             [ 'id' => 'ce_reading_font', 'label' => 'Reading Body Font', 'type' => 'select', 'default' => 'cormorant',
-              'options' => [ 'cormorant' => 'Cormorant Garamond (serif, literary)', 'playfair' => 'Playfair Display (serif, editorial)', 'dm-sans' => 'DM Sans (sans-serif, modern)' ] ],
+              'options' => ce_font_options( 'reading' ),
+              'desc' => 'Article text, excerpts and quotations. EB Garamond has the closest x-height to Cormorant, so switching between the two keeps line lengths stable.' ],
+            [ 'id' => 'ce_accent_font',  'label' => 'Label & Eyebrow Font', 'type' => 'select', 'default' => 'dm-sans',
+              'options' => ce_font_options( 'accent' ),
+              'desc' => 'Uppercase section labels, topic tags and page eyebrows. Special Elite gives a typewriter case-file look; it covers English text only, so it is never applied to transliterated Arabic.' ],
             [ 'id' => 'ce_font_scale',   'label' => 'Font Size Scale', 'type' => 'select', 'default' => '1.0', 'section' => 'Sizing',
               'options' => [ '0.9' => 'Compact (90%)', '1.0' => 'Default (100%)', '1.1' => 'Large (110%)', '1.2' => 'Extra Large (120%)' ],
               'desc' => 'Scales all body text proportionally. Headings and UI elements remain fixed.' ],
@@ -400,12 +558,29 @@ function ce_get_tab_fields( $tab ) {
             [ 'id' => 'ce_tooltip_trigger',  'label' => 'Tooltip trigger',   'type' => 'select', 'default' => 'hover',
               'options' => [ 'hover' => 'Hover (desktop) / Tap (mobile)', 'click' => 'Click/tap only' ],
               'desc' => 'When set to hover, tooltip appears on mouseover. On mobile, first tap shows tooltip, second tap follows link.' ],
+            [ 'id' => 'ce_pretty_search',  'label' => 'Pretty search URLs', 'type' => 'checkbox', 'default' => '1', 'section' => 'Search URLs',
+              'desc' => 'Redirects /?s=term to /search/term/. Built in; replaces the Pretty Search Permalinks plugin. Search results stay noindexed and disallowed in robots.txt.' ],
+            [ 'id' => 'ce_search_base',    'label' => 'Search base', 'type' => 'text', 'default' => 'search',
+              'desc' => 'The path segment before the search term. Letters, numbers and hyphens only. Save Settings → Permalinks after changing it.' ],
+        ],
+
+        'media' => [
+            [ 'id' => 'ce_lightbox_enabled', 'label' => 'Open article images and diagrams in a lightbox', 'type' => 'checkbox', 'default' => '1', 'section' => 'Lightbox',
+              'desc' => 'Built into the theme (no jQuery, no plugin). Keyboard, swipe and screen-reader accessible. Replaces the Lightbox2 plugin.' ],
+            [ 'id' => 'ce_media_import', 'label' => 'Import article images into the Media Library', 'type' => 'checkbox', 'default' => '1', 'section' => 'Image import',
+              'desc' => 'Copies each registered image into the Media Library, a few per admin page load, so pages serve local, responsive images. Until an image is imported, figures load it from its source.' ],
         ],
 
         'performance' => [
             [ 'id' => 'ce_parallax_enabled', 'label' => 'Enable homepage parallax effect',  'type' => 'checkbox', 'default' => '1', 'section' => 'Visual Effects', 'desc' => 'Dot grid, glow orb, and Arabic verse parallax layers. Automatically disabled on mobile and prefers-reduced-motion.' ],
-            [ 'id' => 'ce_preload_fonts',    'label' => 'Preload critical fonts',           'type' => 'checkbox', 'default' => '1', 'desc' => 'Adds <link rel="preload"> for Playfair Display 900 and DM Sans 400 to eliminate flash of invisible text.' ],
+            [ 'id' => 'ce_preload_fonts',    'label' => 'Preload critical fonts',           'type' => 'checkbox', 'default' => '1', 'desc' => 'Adds <link rel="preload"> for the selected heading font and DM Sans 400 to eliminate flash of invisible text.' ],
             [ 'id' => 'ce_minify_inline',    'label' => 'Minify inline script output',      'type' => 'checkbox', 'default' => '0', 'desc' => 'Strips whitespace from wp_localize_script output. Minor savings.' ],
+            [ 'id' => 'ce_gone_enabled',     'label' => 'Answer retired URLs with 410 Gone', 'type' => 'checkbox', 'default' => '1', 'section' => 'Retired URLs', 'desc' => 'Returns a lightweight 410 response, before the main query runs, for paths that never belonged to this site (left behind by a past spam injection). Crawlers drop 410 URLs faster than 404 URLs.' ],
+            [ 'id' => 'ce_gone_paths',       'label' => 'Retired path prefixes',            'type' => 'textarea', 'default' => ce_gone_default_paths(), 'desc' => 'One path prefix per line, starting with a slash. Any request whose path begins with a listed prefix receives 410. Never list a prefix used by real content.' ],
+        ],
+
+        'tools' => [
+            [ 'id' => 'ce_sync_info', 'label' => 'Content Sync', 'type' => 'info', 'section' => 'Manual Article Sync' ],
         ],
     ];
 
@@ -424,14 +599,17 @@ function ce_analytics_cron_purge() {
     $table = $wpdb->prefix . 'ce_analytics';
     $days  = absint( get_option( 'ce_analytics_retention_days', 90 ) );
     $before = gmdate( 'Y-m-d H:i:s', time() - ( $days * DAY_IN_SECONDS ) );
-    $wpdb->query( $wpdb->prepare( "DELETE FROM {$table} WHERE created_at < %s", $before ) );
+    $wpdb->query( $wpdb->prepare( "DELETE FROM %i WHERE created_at < %s", $table, $before ) );
 }
 add_action( 'ce_daily_cleanup', 'ce_analytics_cron_purge' );
 
-// Schedule cron if not already scheduled
-if ( ! wp_next_scheduled( 'ce_daily_cleanup' ) ) {
-    wp_schedule_event( time(), 'daily', 'ce_daily_cleanup' );
+// Schedule cron if not already scheduled (wrapped in function for proper hook timing)
+function ce_schedule_analytics_cron() {
+    if ( ! wp_next_scheduled( 'ce_daily_cleanup' ) ) {
+        wp_schedule_event( time(), 'daily', 'ce_daily_cleanup' );
+    }
 }
+add_action( 'init', 'ce_schedule_analytics_cron' );
 
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -515,7 +693,262 @@ function ce_options_inject_css() {
 
     if ( $changed ) {
         $root_css = ! empty( $vars ) ? ':root { ' . implode( ' ', $vars ) . ' } ' : '';
-        echo '<style id="ce-theme-options">' . $root_css . $extra_css . '</style>' . "\n";
+        echo '<style id="ce-theme-options">' . $root_css . $extra_css . '</style>' . "\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- colours pass sanitize_hex_color(); other values are whitelisted keywords.
     }
 }
 add_action( 'wp_head', 'ce_options_inject_css', 5 );
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   MANUAL CONTENT SYNC — Tools Tab
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/**
+ * Manual content sync — called when the "Run Content Sync Now" button is clicked.
+ *
+ * Previously this function maintained its own parallel sync implementation with
+ * separate (and incomplete) topic migration maps, no slug-rename handling, and
+ * no orphan detection — AND it set the version key, which silently blocked the
+ * automatic admin_init sync from ever running.
+ *
+ * Now it simply:
+ *   1. Clears the version key and lock so ce_sync_article_content() runs fresh.
+ *   2. Calls ce_sync_article_content() — the single source of sync truth.
+ *   3. Returns a result array the UI can report on.
+ *
+ * @since 2.3.9
+ */
+function ce_manual_content_sync(): array {
+    $result = [
+        'success'          => false,
+        'synced'           => 0,
+        'topics_created'   => 0,
+        'topics_cleaned'   => 0,
+        'duplicates_found' => 0,
+        'error'            => '',
+        'fallback'         => false,
+        'fallback_synced'  => 0,
+    ];
+
+    if ( ! current_user_can( 'manage_options' ) ) {
+        $result['error'] = 'Insufficient permissions.';
+        return $result;
+    }
+
+    // ── Clear state so ce_sync_article_content() runs unconditionally ─────────
+    $theme_version = wp_get_theme()->get( 'Version' );
+    $version_key   = 'ce_content_sync_' . str_replace( '.', '_', $theme_version );
+    delete_option( $version_key );
+    delete_transient( 'ce_content_sync_lock' );
+
+    // ── Load the canonical sync function ─────────────────────────────────────
+    // ce-content-sync.php is required via functions.php, but require_once is safe.
+    $sync_path = get_stylesheet_directory() . '/inc/ce-content-sync.php';
+    if ( file_exists( $sync_path ) && ! function_exists( 'ce_sync_article_content' ) ) {
+        require_once $sync_path;
+    }
+
+    if ( ! function_exists( 'ce_sync_article_content' ) ) {
+        $result['error'] = 'ce_sync_article_content() not found — check ce-content-sync.php.';
+        return $result;
+    }
+
+    // ── Run sync ──────────────────────────────────────────────────────────────
+    // force_run = true bypasses the version-key option check entirely,
+    // which can silently block sync on hosts with a persistent object cache.
+    ce_sync_article_content( true );
+
+    // ── Check outcome ─────────────────────────────────────────────────────────
+    $synced_at = get_option( $version_key );
+    if ( $synced_at ) {
+        $result['success']        = true;
+        $result['synced']         = wp_count_posts( 'ce_article' )->publish ?? 0;
+        $result['topics_created'] = count( get_terms( [ 'taxonomy' => 'ce_topic', 'hide_empty' => false ] ) );
+        $result['topics_cleaned'] = 6; // 4 from v2.3.1 + 2 from v2.3.6
+        update_option( 'ce_content_sync_last_run', date( 'Y-m-d H:i:s' ) );
+    } else {
+        // Sync ran but version key not set — it exited early (loader error, lock, etc.)
+        // Check WP debug log for CE Article Loader errors.
+        $result['error'] = 'Sync completed but version key was not set — article loading may have failed. Check Theme Options → Tools & Sync diagnostics panel and WP debug log.';
+    }
+
+    return $result;
+}
+
+
+/**
+ * Render the article data diagnostics panel — Tools tab only.
+ *
+ * Replaces the standalone inc/articles/diagnose.php file which was publicly
+ * accessible via URL and had no authentication or WordPress context.
+ * This function runs inside ce_options_page() which already gates on
+ * current_user_can('manage_options').
+ */
+function ce_render_article_diagnostics(): void {
+
+    $articles_dir  = get_stylesheet_directory() . '/inc/articles';
+    $manifest_path = $articles_dir . '/manifest.json';
+    $loader_path   = get_stylesheet_directory() . '/inc/class-ce-article-loader.php';
+
+    $ok    = '#2ea44f';
+    $warn  = '#bf8700';
+    $fail  = '#cf222e';
+    $muted = '#666';
+
+    $row = static function( string $label, string $value, string $color = '' ) use ( $muted ): void {
+        $style = $color ? "color:{$color};font-weight:600;" : "color:{$muted};";
+        echo '<div style="display:flex;justify-content:space-between;padding:0.35rem 0;border-bottom:1px solid #f0f0f0;font-size:0.82rem;">';
+        echo '<span>' . esc_html( $label ) . '</span>';
+        echo '<span style="' . esc_attr( $style ) . '">' . esc_html( $value ) . '</span>';
+        echo '</div>';
+    };
+
+    echo '<div style="background:#fff;border:1px solid #e0e0e0;border-radius:4px;padding:1rem;">';
+
+    // ── PHP & environment ──────────────────────────────────────────────
+    echo '<p style="margin:0 0 0.6rem;font-size:0.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:#888;">Environment</p>';
+    $row( 'PHP Version',        PHP_VERSION );
+    $row( 'Theme Directory',    get_stylesheet_directory() );
+    $row( 'Articles Directory', $articles_dir );
+    $row( 'Directory exists',   is_dir( $articles_dir )      ? 'YES' : 'NO',  is_dir( $articles_dir ) ? $ok : $fail );
+    $row( 'Directory readable', is_readable( $articles_dir ) ? 'YES' : 'NO',  is_readable( $articles_dir ) ? $ok : $fail );
+
+    echo '<br>';
+
+    // ── Manifest ───────────────────────────────────────────────────────
+    echo '<p style="margin:0 0 0.6rem;font-size:0.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:#888;">manifest.json</p>';
+
+    if ( ! file_exists( $manifest_path ) ) {
+        $row( 'Manifest', 'NOT FOUND', $fail );
+        echo '</div>';
+        return;
+    }
+
+    $row( 'Manifest exists',   'YES', $ok );
+    $row( 'Manifest readable', is_readable( $manifest_path ) ? 'YES' : 'NO', is_readable( $manifest_path ) ? $ok : $fail );
+
+    $raw_manifest = file_get_contents( $manifest_path );
+
+    if ( $raw_manifest === false ) {
+        $row( 'Manifest read', 'FAILED', $fail );
+        echo '</div>';
+        return;
+    }
+
+    $manifest = json_decode( $raw_manifest, true );
+
+    if ( json_last_error() !== JSON_ERROR_NONE ) {
+        $row( 'Manifest JSON', 'PARSE ERROR: ' . json_last_error_msg(), $fail );
+        echo '</div>';
+        return;
+    }
+
+    $row( 'Manifest JSON',    'Valid', $ok );
+    $row( 'Manifest version', $manifest['version'] ?? 'NOT SET' );
+    $row( 'Batch count',      isset( $manifest['batches'] ) ? (string) count( $manifest['batches'] ) : '0',
+          ( isset( $manifest['batches'] ) && count( $manifest['batches'] ) >= 5 ) ? $ok : $warn );
+    $row( 'Total articles',   isset( $manifest['total_articles'] ) ? (string) $manifest['total_articles'] : 'NOT SET' );
+
+    echo '<br>';
+
+    // ── Per-batch checksum verification ───────────────────────────────
+    echo '<p style="margin:0 0 0.6rem;font-size:0.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:#888;">Batch File Checksums</p>';
+
+    if ( ! empty( $manifest['batches'] ) ) {
+        $all_ok = true;
+        foreach ( $manifest['batches'] as $batch ) {
+            $batch_path = $articles_dir . '/' . $batch['file'];
+
+            if ( ! file_exists( $batch_path ) ) {
+                $row( $batch['file'], 'FILE NOT FOUND', $fail );
+                $all_ok = false;
+                continue;
+            }
+
+            $content = file_get_contents( $batch_path );
+
+            // Mirror the loader's normalisation: strip BOM + normalise CRLF
+            if ( substr( $content, 0, 3 ) === "\xEF\xBB\xBF" ) {
+                $content = substr( $content, 3 );
+            }
+            $content = str_replace( "\r\n", "\n", $content );
+
+            $actual   = hash( 'sha256', $content );
+            $expected = $batch['checksum'] ?? '';
+            $match    = ( $actual === $expected );
+
+            $batch_data     = json_decode( $content, true );
+            $article_count  = ( $batch_data && isset( $batch_data['articles'] ) )
+                ? count( $batch_data['articles'] ) : 0;
+
+            $label  = $batch['file'] . ' (' . $article_count . ' articles)';
+            $status = $match ? 'Checksum OK ✓' : 'CHECKSUM MISMATCH ✗';
+            $color  = $match ? $ok : $fail;
+
+            $row( $label, $status, $color );
+
+            if ( ! $match ) {
+                $all_ok = false;
+                $row( '  └ Expected', substr( $expected, 0, 20 ) . '…' );
+                $row( '  └ Actual',   substr( $actual,   0, 20 ) . '…' );
+            }
+        }
+
+        if ( $all_ok ) {
+            echo '<p style="margin:0.6rem 0 0;font-size:0.82rem;color:' . esc_attr( $ok ) . ';font-weight:600;">All checksums verified ✓</p>';
+        } else {
+            echo '<p style="margin:0.6rem 0 0;font-size:0.82rem;color:' . esc_attr( $fail ) . ';font-weight:600;">Checksum failure — run build-articles.php to regenerate JSON files and manifest.</p>';
+        }
+    } else {
+        $row( 'Batches', 'None found in manifest', $fail );
+    }
+
+    echo '<br>';
+
+    // ── Loader test ───────────────────────────────────────────────────
+    echo '<p style="margin:0 0 0.6rem;font-size:0.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:#888;">Article Loader</p>';
+
+    $row( 'Loader file exists', file_exists( $loader_path ) ? 'YES' : 'NO', file_exists( $loader_path ) ? $ok : $fail );
+
+    if ( file_exists( $loader_path ) ) {
+        if ( ! class_exists( 'CE_Article_Loader' ) ) {
+            require_once $loader_path;
+        }
+
+        if ( class_exists( 'CE_Article_Loader' ) ) {
+            $loader   = new CE_Article_Loader();
+            $articles = $loader->load_all_articles();
+            $count    = count( $articles );
+
+            $row( 'Articles loaded', (string) $count, $count >= 110 ? $ok : ( $count > 0 ? $warn : $fail ) );
+
+            if ( $loader->has_errors() ) {
+                echo '<p style="margin:0.4rem 0 0.2rem;font-size:0.82rem;color:' . esc_attr( $fail ) . ';font-weight:600;">Loader errors:</p>';
+                echo '<ul style="margin:0;padding-left:1.2rem;font-size:0.8rem;color:' . esc_attr( $fail ) . ';">';
+                foreach ( $loader->get_errors() as $error ) {
+                    echo '<li>' . esc_html( $error ) . '</li>';
+                }
+                echo '</ul>';
+            } else {
+                $row( 'Loader errors', 'None ✓', $ok );
+            }
+        } else {
+            $row( 'CE_Article_Loader class', 'NOT FOUND after require', $fail );
+        }
+    }
+
+    echo '<br>';
+
+    // ── Sync key status ───────────────────────────────────────────────
+    echo '<p style="margin:0 0 0.6rem;font-size:0.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:#888;">Sync Key</p>';
+
+    $theme_ver  = wp_get_theme()->get( 'Version' );
+    $sync_key   = 'ce_content_sync_' . str_replace( '.', '_', $theme_ver );
+    $sync_val   = get_option( $sync_key );
+    $sync_time  = $sync_val ? date( 'Y-m-d H:i:s', (int) $sync_val ) : null;
+
+    $row( 'Option key',   $sync_key );
+    $row( 'Sync run',     $sync_val ? 'Yes — ' . $sync_time : 'Not yet (will run on next admin page load)', $sync_val ? $ok : $warn );
+
+    echo '</div>'; // end white inner box
+}

@@ -3,6 +3,23 @@
  * Matches the Compelling Evidence theme
  */
 
+/* Visually-hidden definition spans paired with each glossary term link
+ * via aria-describedby. Sighted users get the JS tooltip via data-definition;
+ * screen-reader users get the same content via these spans. The classic
+ * inclusive-design "sr-only" pattern: visually hidden but discoverable
+ * by assistive tech and still selectable for browser find. Item 22. */
+.ce-glossary-sr-only {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
 /* Glossary term link styling */
 .ce-glossary-term {
     color: #0cd4e0;
@@ -75,7 +92,7 @@
 }
 
 .glossary-tooltip-term {
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-heading);
     font-size: 1.1rem;
     font-weight: 600;
     color: #f2eeff;
@@ -91,7 +108,7 @@
 
 /* Definition text */
 .glossary-tooltip-definition {
-    font-family: 'DM Sans', sans-serif;
+    font-family: var(--font-ui);
     font-size: 0.9rem;
     line-height: 1.6;
     color: rgba(242, 238, 255, 0.85);

@@ -35,7 +35,7 @@
 }
 
 .ce-share-label {
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-ui);
   font-size: 0.68rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -146,7 +146,7 @@
 }
 
 .ce-vote-score {
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-ui);
   font-size: 0.92rem;
   font-weight: 600;
   color: rgba(242,238,255,0.75);
@@ -182,7 +182,7 @@
 }
 
 .ce-resonance-title {
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-ui);
   font-size: 0.82rem;
   font-weight: 600;
   letter-spacing: 0.06em;
@@ -205,7 +205,7 @@
   border: 1px solid rgba(255,255,255,0.06);
   border-radius: 10px;
   color: rgba(242,238,255,0.6);
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-ui);
   font-size: 0.88rem;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -238,7 +238,7 @@
 }
 
 .ce-resonance-thanks {
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-ui);
   font-size: 0.88rem;
   color: rgba(12,212,224,0.7);
   margin: 0 0 1rem;
@@ -257,14 +257,14 @@
 }
 
 .ce-res-count {
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-ui);
   font-size: 1.3rem;
   font-weight: 700;
   color: rgba(242,238,255,0.7);
 }
 
 .ce-res-label {
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-ui);
   font-size: 0.7rem;
   color: rgba(242,238,255,0.3);
   letter-spacing: 0.04em;
@@ -303,7 +303,7 @@
 }
 
 .ce-mr-title {
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-ui);
   font-size: 0.85rem;
   color: rgba(242,238,255,0.7);
   line-height: 1.4;
@@ -316,14 +316,14 @@
 }
 
 .ce-mr-score {
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-ui);
   font-size: 0.7rem;
   font-weight: 600;
   color: rgba(12,212,224,0.6);
 }
 
 .ce-mr-helped {
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-ui);
   font-size: 0.65rem;
   color: rgba(242,238,255,0.25);
 }

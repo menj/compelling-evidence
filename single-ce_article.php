@@ -6,45 +6,11 @@ $word_count   = str_word_count( strip_tags( get_the_content() ) );
 $reading_mins = max( 1, (int) ceil( $word_count / 200 ) );
 $reading_secs = $word_count * 0.3; // approx seconds for progress tracking
 
-// Extract h2 headings for TOC schema
-$toc_items = [];
-$content = get_the_content();
-if ( preg_match_all('/<h2[^>]*>(.*?)<\/h2>/i', $content, $matches, PREG_SET_ORDER ) ) {
-    foreach ( $matches as $i => $match ) {
-        $heading_text = wp_strip_all_tags( $match[1] );
-        if ( ! empty( $heading_text ) ) {
-            $toc_items[] = [
-                '@type'    => 'ListItem',
-                'position' => $i + 1,
-                'name'     => $heading_text,
-                'url'      => get_permalink() . '#section-' . ( $i + 1 ),
-            ];
-        }
-    }
-}
-if ( count( $toc_items ) >= 2 ) :
+// Structured data for articles lives in inc/ce-seo.php (Article + BreadcrumbList).
+// The former ItemList/SiteNavigationElement table-of-contents markup and the
+// Speakable block were removed in 2.6.31: Google supports neither for this
+// kind of page (ItemList only inside carousels; Speakable only for news).
 ?>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  "name": "Table of Contents: <?php echo esc_js( get_the_title() ); ?>",
-  "itemListElement": <?php echo wp_json_encode( $toc_items, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?>
-}
-</script>
-<?php endif; ?>
-
-<!-- Speakable schema for voice assistants -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  "speakable": {
-    "@type": "SpeakableSpecification",
-    "cssSelector": [".article-title", ".article-content"]
-  }
-}
-</script>
 
 <!-- ── READING PROGRESS BAR ───────────────────────────────────────────────── -->
 <div id="ce-reading-progress" aria-hidden="true">
@@ -87,12 +53,36 @@ if ( count( $toc_items ) >= 2 ) :
 
         <h1 class="article-title"><?php the_title(); ?></h1>
 
+        <?php
+        // Visible byline — only renders when an author has been configured in
+        // CE Theme Options → Author & Identity. The link target falls back to
+        // the WordPress author archive URL if no explicit profile URL is set,
+        // which gives Google an internal author-page to crawl.
+        $byline_name = trim( (string) get_option( 'ce_author_name', '' ) );
+        if ( '' !== $byline_name ) :
+            $byline_url = trim( (string) get_option( 'ce_author_url', '' ) );
+            if ( '' === $byline_url ) {
+                $byline_url = get_author_posts_url( get_the_author_meta( 'ID' ) );
+            }
+        ?>
+            <p class="article-byline">
+                <?php esc_html_e( 'By', 'compelling-evidence' ); ?>
+                <a class="article-byline-link" rel="author" href="<?php echo esc_url( $byline_url ); ?>"><?php echo esc_html( $byline_name ); ?></a>
+                <?php
+                $byline_title = trim( (string) get_option( 'ce_author_title', '' ) );
+                if ( '' !== $byline_title ) :
+                ?>
+                    <span class="article-byline-title">— <?php echo esc_html( $byline_title ); ?></span>
+                <?php endif; ?>
+            </p>
+        <?php endif; ?>
+
         <div class="article-meta">
           <span class="meta-reading-time">
             <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
             </svg>
-            <?php echo $reading_mins; ?> min read
+            <?php echo (int) $reading_mins; ?> min read
           </span>
           <span class="meta-sep">·</span>
           <span><?php echo number_format($word_count); ?> words</span>
@@ -125,21 +115,26 @@ if ( count( $toc_items ) >= 2 ) :
       <!-- Sidebar -->
       <aside class="article-sidebar">
 
-        <!-- Table of Contents (auto-populated by JS) -->
-        <nav class="sidebar-toc sidebar-widget" id="ce-toc" style="display:none;" aria-label="Table of contents">
-          <h3 class="widget-title">In this article</h3>
-          <ol class="toc-list" id="ce-toc-list"></ol>
-        </nav>
+        <!-- Sticky group: stays in view for the whole article (TOC + reading progress) -->
+        <div class="sidebar-sticky-track">
+          <div class="sidebar-sticky">
+          <!-- Table of Contents (auto-populated by JS) -->
+          <nav class="sidebar-toc sidebar-widget" id="ce-toc" style="display:none;" role="doc-toc" aria-label="Table of contents">
+            <h3 class="widget-title">In this article</h3>
+            <ol class="toc-list" id="ce-toc-list"></ol>
+          </nav>
 
-        <!-- Sidebar reading progress -->
-        <div class="sidebar-reading-progress">
-          <span class="srp-label">Reading progress</span>
-          <div class="srp-track">
-            <div class="srp-fill" id="srp-fill"></div>
+          <!-- Sidebar reading progress -->
+          <div class="sidebar-reading-progress" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="srp">
+            <span class="srp-label">Reading progress</span>
+            <div class="srp-track">
+              <div class="srp-fill" id="srp-fill"></div>
+            </div>
+            <div class="srp-stats">
+              <span><?php echo (int) $reading_mins; ?> min read</span>
+              <span class="srp-pct" id="srp-pct">0%</span>
+            </div>
           </div>
-          <div class="srp-stats">
-            <span><?php echo $reading_mins; ?> min read</span>
-            <span class="srp-pct" id="srp-pct">0%</span>
           </div>
         </div>
 
@@ -176,7 +171,7 @@ if ( count( $toc_items ) >= 2 ) :
               <?php foreach ($related as $r) : ?>
                 <li>
                   <a href="<?php echo esc_url(get_permalink($r)); ?>">
-                    <?php echo get_the_title($r); ?>
+                    <?php echo esc_html( get_the_title($r) ); ?>
                     <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                   </a>
                 </li>
@@ -227,8 +222,8 @@ if ( count( $toc_items ) >= 2 ) :
           <?php if ($rc_topic) : ?>
             <span class="related-card-topic"><?php echo esc_html($rc_topic); ?></span>
           <?php endif; ?>
-          <h3 class="related-card-title"><?php echo get_the_title($rc); ?></h3>
-          <span class="related-card-meta"><?php echo $rc_mins; ?> min read</span>
+          <h3 class="related-card-title"><?php echo esc_html( get_the_title($rc) ); ?></h3>
+          <span class="related-card-meta"><?php echo (int) $rc_mins; ?> min read</span>
         </a>
         <?php endforeach; ?>
       </div>
@@ -264,6 +259,8 @@ if ( count( $toc_items ) >= 2 ) :
     topBar.style.width = pctStr;
     if (srpFill)  srpFill.style.width   = pctStr;
     if (srpPct)   srpPct.textContent    = pctStr;
+    var srp = document.getElementById('srp');
+    if (srp) srp.setAttribute('aria-valuenow', pct);
   }
 
   window.addEventListener('scroll', update, { passive: true });
@@ -271,57 +268,7 @@ if ( count( $toc_items ) >= 2 ) :
   update();
 })();
 
-// ── TABLE OF CONTENTS ────────────────────────────────────────────────────
-(function() {
-  var body = document.getElementById('article-body');
-  var toc  = document.getElementById('ce-toc');
-  var list = document.getElementById('ce-toc-list');
-  if (!body || !toc || !list) return;
-
-  var headings = body.querySelectorAll('h2');
-  if (headings.length < 2) return; // Don't show TOC for 0-1 headings
-
-  headings.forEach(function(h, i) {
-    // Add ID to heading
-    var id = 'section-' + (i + 1);
-    h.id = id;
-
-    // Create TOC link
-    var li = document.createElement('li');
-    var a  = document.createElement('a');
-    a.href = '#' + id;
-    a.textContent = h.textContent;
-    a.addEventListener('click', function(e) {
-      e.preventDefault();
-      var target = document.getElementById(id);
-      if (target) {
-        var offset = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--total-offset') || '116');
-        window.scrollTo({ top: target.offsetTop - offset - 20, behavior: 'smooth' });
-      }
-    });
-    li.appendChild(a);
-    list.appendChild(li);
-  });
-
-  toc.style.display = 'block';
-
-  // Scroll spy
-  var links = list.querySelectorAll('a');
-  function updateActive() {
-    var offset = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--total-offset') || '116') + 40;
-    var current = '';
-    headings.forEach(function(h) {
-      if (h.getBoundingClientRect().top <= offset) {
-        current = h.id;
-      }
-    });
-    links.forEach(function(a) {
-      a.classList.toggle('toc-active', a.getAttribute('href') === '#' + current);
-    });
-  }
-  window.addEventListener('scroll', updateActive, { passive: true });
-  updateActive();
-})();
+// Table of contents: assets/js/ce-toc.js (enqueued in functions.php).
 
 // ── ARTICLE → JOURNEY RETURN WIDGET ─────────────────────────────────────
 (function() {

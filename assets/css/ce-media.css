@@ -1,0 +1,194 @@
+/**
+ * CE Theme: article figures, diagrams, tables and lightbox.
+ * Colours come from the theme tokens (--accent, --purple, --white, --muted,
+ * --deep), so figures follow Theme Options → Colors.
+ *
+ * @since 2.6.33
+ */
+
+/* ── Figures ─────────────────────────────────────────────────────────── */
+#article-body .ce-figure,
+.article-content .ce-figure {
+  margin: 2.4rem 0;
+  padding: 0;
+}
+.ce-figure-link {
+  display: block;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: zoom-in;
+  outline-offset: 4px;
+}
+.ce-figure-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.03);
+}
+.ce-figure--photo .ce-figure-img { filter: saturate(0.95); }
+/* Scans and calligraphy on white read best on a paper panel. */
+.ce-figure--light .ce-figure-link,
+.ce-figure--light > .ce-figure-img {
+  background: #f7f3ea;
+  padding: clamp(0.75rem, 3vw, 1.5rem);
+}
+.ce-figure--light .ce-figure-img {
+  max-height: 520px;
+  width: auto;
+  max-width: 100%;
+  margin: 0 auto;
+  background: transparent;
+  border-radius: 0;
+}
+.ce-figure figcaption {
+  margin-top: 0.8rem;
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--muted, rgba(245,240,255,0.68));
+  text-align: left;
+}
+.ce-figure-caption { color: rgba(245,240,255,0.86); }
+.ce-figure-credit { display: block; margin-top: 0.25rem; font-size: 0.75rem; opacity: 0.8; }
+.ce-figure-credit a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+
+/* ── Diagrams ────────────────────────────────────────────────────────── */
+.ce-diagram-canvas {
+  position: relative;
+  padding: clamp(1rem, 3vw, 1.8rem);
+  border-radius: 16px;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 0%, rgba(107,47,160,0.18), transparent 70%),
+    rgba(255,255,255,0.025);
+  border: 1px solid rgba(107,47,160,0.25);
+}
+.ce-dg { display: block; width: 100%; height: auto; max-width: 640px; margin: 0 auto; font-family: var(--font-ui); }
+.ce-dg .dg-box { fill: rgba(245,240,255,0.04); stroke: rgba(180,168,199,0.35); stroke-width: 1.5; }
+.ce-dg .dg-box--accent { fill: rgba(12,212,224,0.07); stroke: var(--teal, #0cd4e0); }
+.ce-dg .dg-title { fill: var(--white, #f5f0ff); font-size: 22px; font-weight: 600; font-family: var(--font-heading); }
+.ce-dg .dg-title--accent { fill: var(--teal, #0cd4e0); }
+.ce-dg .dg-text { fill: rgba(245,240,255,0.82); font-size: 19px; }
+.ce-dg .dg-ref { fill: rgba(245,240,255,0.55); font-size: 15px; letter-spacing: 0.04em; }
+.ce-dg .dg-label { fill: rgba(245,240,255,0.55); font-size: 14px; letter-spacing: 0.16em; font-weight: 600; }
+.ce-dg .dg-label--accent { fill: var(--accent, #e8455a); }
+.ce-dg .dg-line { fill: none; stroke: rgba(180,168,199,0.55); stroke-width: 2; }
+.ce-dg .dg-line--accent { stroke: var(--teal, #0cd4e0); stroke-dasharray: 6 5; }
+.ce-dg .dg-arrowhead { fill: rgba(180,168,199,0.8); }
+.ce-dg .dg-step { fill: var(--purple, #6b2fa0); }
+.ce-dg .dg-num { fill: var(--white, #f5f0ff); font-size: 22px; font-weight: 700; }
+.ce-dg .dg-side { fill: var(--teal, #0cd4e0); font-size: 15px; letter-spacing: 0.06em; }
+.ce-dg .dg-grid line { stroke: rgba(180,168,199,0.18); stroke-width: 1; }
+.ce-dg .dg-bar { fill: var(--teal, #0cd4e0); opacity: 0.85; }
+.ce-dg .dg-bar--muted { fill: var(--accent, #e8455a); }
+.ce-dg .dg-barlabel { fill: var(--deep, #1a0a2e); font-size: 17px; font-weight: 700; }
+
+.ce-diagram-zoom {
+  position: absolute; top: 0.6rem; right: 0.6rem;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(26,10,46,0.7); color: var(--white, #f5f0ff);
+  border: 1px solid rgba(180,168,199,0.3); cursor: zoom-in;
+}
+.ce-diagram-zoom:hover, .ce-diagram-zoom:focus-visible { border-color: var(--teal, #0cd4e0); color: var(--teal, #0cd4e0); }
+
+/* ── Tables ──────────────────────────────────────────────────────────── */
+.ce-table-wrap {
+  margin: 2.2rem 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 14px;
+  border: 1px solid rgba(107,47,160,0.28);
+  background: rgba(255,255,255,0.02);
+}
+.ce-table-wrap:focus-visible { outline: 2px solid var(--teal, #0cd4e0); outline-offset: 3px; }
+.ce-table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  text-align: left !important;
+  hyphens: manual;
+}
+.ce-table-wrap caption {
+  caption-side: top;
+  padding: 1rem 1.2rem 0.8rem;
+  text-align: left;
+  font-family: var(--font-accent, var(--font-ui));
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--teal, #0cd4e0);
+}
+.ce-table-wrap th,
+.ce-table-wrap td {
+  padding: 0.75rem 1.2rem;
+  vertical-align: top;
+  border-top: 1px solid rgba(107,47,160,0.2);
+  text-align: left !important;
+}
+.ce-table-wrap thead th {
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  color: rgba(245,240,255,0.72);
+  background: rgba(107,47,160,0.16);
+  border-top: 0;
+}
+.ce-table-wrap tbody th { font-weight: 600; color: var(--white, #f5f0ff); white-space: nowrap; }
+.ce-table-wrap tbody td { color: rgba(245,240,255,0.84); }
+.ce-table-wrap tbody tr:hover td,
+.ce-table-wrap tbody tr:hover th { background: rgba(107,47,160,0.08); }
+.ce-table-wrap td.num, .ce-table-wrap th.num { text-align: right !important; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ce-table-wrap tfoot td { font-size: 0.78rem; color: var(--muted, rgba(245,240,255,0.68)); }
+
+@media (max-width: 600px) {
+  .ce-table-wrap table { font-size: 0.85rem; }
+  .ce-table-wrap th, .ce-table-wrap td { padding: 0.65rem 0.9rem; }
+  .ce-figure figcaption { font-size: 0.8rem; }
+}
+
+/* ── Lightbox ────────────────────────────────────────────────────────── */
+.ce-lb {
+  position: fixed; inset: 0; z-index: 10000;
+  display: grid; grid-template-rows: 1fr auto; place-items: center;
+  padding: calc(env(safe-area-inset-top, 0px) + 3.5rem) 1rem calc(env(safe-area-inset-bottom, 0px) + 1rem);
+  background: rgba(10,4,20,0.94);
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0s linear 0.2s;
+}
+.ce-lb.is-open { opacity: 1; visibility: visible; transition: opacity 0.2s ease, visibility 0s; }
+.ce-lb-stage { max-width: min(1200px, 100%); max-height: 100%; display: flex; align-items: center; justify-content: center; min-height: 0; }
+.ce-lb-stage img { max-width: 100%; max-height: calc(100vh - 9rem); width: auto; height: auto; border-radius: 8px; background: #f7f3ea; }
+.ce-lb-stage .ce-dg { width: min(960px, 92vw); max-width: none; max-height: calc(100vh - 9rem); }
+.ce-lb-stage.is-diagram { padding: 1.5rem; border-radius: 16px; background: var(--deep, #1a0a2e); border: 1px solid rgba(107,47,160,0.35); }
+.ce-lb-caption { max-width: 900px; margin-top: 0.9rem; font-family: var(--font-ui); font-size: 0.85rem; line-height: 1.5; color: rgba(245,240,255,0.8); text-align: center; }
+.ce-lb-caption a { color: inherit; }
+.ce-lb-count { display: block; margin-top: 0.3rem; font-size: 0.72rem; letter-spacing: 0.12em; color: rgba(245,240,255,0.55); }
+.ce-lb-btn {
+  position: absolute; display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid rgba(180,168,199,0.35); background: rgba(26,10,46,0.8);
+  color: var(--white, #f5f0ff); cursor: pointer;
+}
+.ce-lb-btn:hover, .ce-lb-btn:focus-visible { border-color: var(--teal, #0cd4e0); color: var(--teal, #0cd4e0); outline: none; }
+.ce-lb-close { top: calc(env(safe-area-inset-top, 0px) + 0.8rem); right: 0.8rem; }
+.ce-lb-prev { left: 0.8rem; top: 50%; transform: translateY(-50%); }
+.ce-lb-next { right: 0.8rem; top: 50%; transform: translateY(-50%); }
+.ce-lb[data-count="1"] .ce-lb-prev,
+.ce-lb[data-count="1"] .ce-lb-next { display: none; }
+html.ce-lb-lock { overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ce-lb, .ce-lb.is-open { transition: none; }
+}
+@media print {
+  .ce-lb, .ce-diagram-zoom { display: none !important; }
+  .ce-diagram-canvas { background: none; border-color: #999; }
+}
+
+/* A table's minimum width must never widen the article column: grid and
+   flex items default to min-width:auto, which lets content push them out. */
+.article-content, #article-body, .reading { min-width: 0; }

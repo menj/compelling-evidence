@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 660" role="img" aria-labelledby="dg2-title dg2-desc" class="ce-dg">
+  <title id="dg2-title">The staged process of 4:34 and 4:35</title>
+  <desc id="dg2-desc">Four stages for a marriage in crisis: admonish; leave alone in bed; strike, within the limit the Prophet set as not severe, which Ibn Abbas explained as with a siwak and the jurists as leaving no mark; then arbitration with one arbiter from each family. If the breach ends at any stage, the husband may seek no way against his wife.</desc>
+  <defs>
+    <marker id="dg2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="dg-arrowhead"/></marker>
+  </defs>
+  <g>
+    <circle cx="52" cy="70" r="24" class="dg-step"/><text x="52" y="78" text-anchor="middle" class="dg-num">1</text>
+    <rect x="96" y="30" width="400" height="80" rx="14" class="dg-box"/>
+    <text x="118" y="64" class="dg-title">Admonish</text>
+    <text x="118" y="94" class="dg-text">The first step</text>
+    <text x="484" y="94" text-anchor="end" class="dg-ref">4:34</text>
+  </g>
+  <path d="M52 96 L52 150" class="dg-line" marker-end="url(#dg2-arrow)"/>
+  <g>
+    <circle cx="52" cy="190" r="24" class="dg-step"/><text x="52" y="198" text-anchor="middle" class="dg-num">2</text>
+    <rect x="96" y="150" width="400" height="80" rx="14" class="dg-box"/>
+    <text x="118" y="184" class="dg-title">Leave her alone in bed</text>
+    <text x="118" y="214" class="dg-text">The second step</text>
+    <text x="484" y="214" text-anchor="end" class="dg-ref">4:34</text>
+  </g>
+  <path d="M52 216 L52 270" class="dg-line" marker-end="url(#dg2-arrow)"/>
+  <g>
+    <circle cx="52" cy="330" r="24" class="dg-step"/><text x="52" y="338" text-anchor="middle" class="dg-num">3</text>
+    <rect x="96" y="270" width="400" height="120" rx="14" class="dg-box"/>
+    <text x="118" y="304" class="dg-title">Strike, "not severe"</text>
+    <text x="118" y="334" class="dg-text">With a siwāk (tooth-stick): Ibn ʿAbbās</text>
+    <text x="118" y="362" class="dg-text">No mark, no broken limb: the jurists</text>
+    <text x="484" y="380" text-anchor="end" class="dg-ref">4:34</text>
+  </g>
+  <path d="M52 356 L52 430" class="dg-line" marker-end="url(#dg2-arrow)"/>
+  <g>
+    <circle cx="52" cy="470" r="24" class="dg-step"/><text x="52" y="478" text-anchor="middle" class="dg-num">4</text>
+    <rect x="96" y="430" width="400" height="80" rx="14" class="dg-box"/>
+    <text x="118" y="464" class="dg-title">Arbitration</text>
+    <text x="118" y="494" class="dg-text">One arbiter from each family</text>
+    <text x="484" y="494" text-anchor="end" class="dg-ref">4:35</text>
+  </g>
+  <path d="M520 70 L560 70 L560 470 L520 470" class="dg-line dg-line--accent"/>
+  <path d="M560 270 L588 270" class="dg-line dg-line--accent"/>
+  <text x="600" y="206" class="dg-side" transform="rotate(90 600 206)">If the breach ends: stop</text>
+  <rect x="24" y="544" width="592" height="92" rx="16" class="dg-box dg-box--accent"/>
+  <text x="320" y="582" text-anchor="middle" class="dg-title dg-title--accent">"Seek no way against them" (4:34)</text>
+  <text x="320" y="614" text-anchor="middle" class="dg-text">Once the breach ends, no retaliation and no further pressure.</text>
+</svg>

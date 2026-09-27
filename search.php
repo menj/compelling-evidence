@@ -20,6 +20,7 @@ $args = [
 $results = new WP_Query($args);
 ?>
 
+<main id="main" role="main">
 <div class="search-page">
 
   <!-- Hero / Search bar -->
@@ -38,7 +39,7 @@ $results = new WP_Query($args);
         } elseif ($found === 1) {
             echo '1 ' . esc_html__('article', 'compelling-evidence');
         } else {
-            echo $found . ' ' . esc_html__('articles', 'compelling-evidence');
+            echo esc_html( number_format_i18n( (int) $found ) ) . ' ' . esc_html__('articles', 'compelling-evidence');
         }
         ?>
       </p>
@@ -78,16 +79,16 @@ $results = new WP_Query($args);
         $num_str  = str_pad($idx, 2, '0', STR_PAD_LEFT);
       ?>
       <a href="<?php the_permalink(); ?>" class="search-result-card">
-        <span class="src-num"><?php echo $num_str; ?></span>
+        <span class="src-num"><?php echo esc_html( $num_str ); ?></span>
         <div class="src-body">
           <div class="src-meta">
             <?php if ($topic) : ?>
               <span class="src-topic"><?php echo esc_html($topic); ?></span>
             <?php endif; ?>
-            <span class="src-reading"><?php echo $mins; ?> min read</span>
+            <span class="src-reading"><?php echo (int) $mins; ?> min read</span>
           </div>
           <div class="src-title"><?php the_title(); ?></div>
-          <div class="src-excerpt"><?php echo wp_trim_words(get_the_excerpt(), 24); ?></div>
+          <div class="src-excerpt"><?php echo esc_html( wp_trim_words( get_the_excerpt(), 24 ) ); ?></div>
         </div>
       </a>
       <?php endwhile; wp_reset_postdata(); ?>
@@ -96,7 +97,7 @@ $results = new WP_Query($args);
     <!-- Pagination -->
     <div class="pagination">
       <?php
-      echo paginate_links([
+      echo wp_kses_post( paginate_links([
         'base'      => str_replace(999999999, '%#%', esc_url(get_pagenum_link(999999999))),
         'format'    => '?paged=%#%',
         'current'   => $paged,
@@ -104,7 +105,7 @@ $results = new WP_Query($args);
         'prev_text' => '← ' . __('Prev', 'compelling-evidence'),
         'next_text' => __('Next', 'compelling-evidence') . ' →',
         'mid_size'  => 2,
-      ]);
+      ] ) );
       ?>
     </div>
 
@@ -225,5 +226,7 @@ $results = new WP_Query($args);
   <p class="inf-scroll-request" style="display:none;color:rgba(242,238,255,0.3);font-size:0.8rem;">Loading more…</p>
   <p class="inf-scroll-last"    style="display:none;color:rgba(242,238,255,0.2);font-size:0.75rem;">All results loaded.</p>
 </div>
+
+</main><!-- /#main -->
 
 <?php get_footer(); ?>

@@ -23,7 +23,8 @@ if ( ! $journey_file || ! file_exists($journey_file) ) {
     status_header(404);
     get_header();
     ?>
-    <section class="not-found-hero">
+    <main id="main" role="main">
+<section class="not-found-hero">
       <div class="not-found-code" aria-hidden="true">404</div>
       <h1 class="not-found-title">Journey not found</h1>
       <p class="not-found-sub">
@@ -50,7 +51,7 @@ $html = str_replace( 'href="/"',    'href="' . home_url('/') . '"', $html );
 
 // ── Inject shared journey base CSS ──
 $base_css_url = get_stylesheet_directory_uri() . '/assets/css/journey-base.css?v=' . wp_get_theme()->get('Version');
-$html = str_replace( '</head>', '<link rel="stylesheet" href="' . esc_url( $base_css_url ) . '">' . "\n" . '</head>', $html );
+$html = str_replace( '</head>', '<link rel="stylesheet" href="' . esc_url( $base_css_url ) . '">' . "\n" . '</head>', $html ); // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet -- standalone HTML document; wp_head() does not run here.
 
 // ── Inject Auto Justify Content styles into self-contained journey HTML ──
 // The AJC plugin cannot reach these pages (no wp_head fires), so we inject
@@ -84,6 +85,8 @@ $analytics_js = '<script>'
     . '</script>';
 $html = str_replace( '</body>', $analytics_js . '</body>', $html );
 
+$html = ce_standalone_html_seo( $html, get_permalink(), $journey_key );
+
 header('Content-Type: text/html; charset=UTF-8');
-echo $html;
+echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- complete static HTML document shipped with the theme.
 exit;

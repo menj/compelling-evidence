@@ -1,0 +1,37 @@
+{
+  "generated": "2026-04-21T13:49:25Z",
+  "checksum": "skip_this_level",
+  "version": "2.3.5",
+  "batches": [
+    {
+      "articles": 24,
+      "source": "inc/articles/backup/articles-data.php",
+      "checksum": "164cc235de2688306c303705bf91b9bd2bc27b281efc9630f31aaa22ebdf7a8e",
+      "file": "batch-001.json"
+    },
+    {
+      "articles": 24,
+      "source": "inc/articles/backup/articles-data-2.php",
+      "checksum": "ae99c04b0bbed55bc4fffcef4bb41d852f1bc4474472d353be73bef9ff6903d3",
+      "file": "batch-002.json"
+    },
+    {
+      "articles": 24,
+      "source": "inc/articles/backup/articles-data-3.php",
+      "checksum": "ba994e2a62ef268b148a8a4aba69c41424cf26e3df4e870a2e3c355f3ef0a67b",
+      "file": "batch-003.json"
+    },
+    {
+      "articles": 24,
+      "source": "inc/articles/backup/articles-data-4.php",
+      "checksum": "4e79e0d6fb92fd9a86c76026ea2d57bef5be9a7d9bb79b8e1bf9a255c98a3f3a",
+      "file": "batch-004.json"
+    },
+    {
+      "articles": 24,
+      "source": "inc/articles/backup/articles-data-5.php",
+      "checksum": "eda4bc77ee63d895401dcaeba9ccbe3f1319191b56db1716843bee7037476364",
+      "file": "batch-005.json"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+/**
+ * CE Theme: shared responsive layer for the standalone journey pages.
+ *
+ * page-journey.php serves each journey as self-contained HTML and injects
+ * this stylesheet before </head>, after the page's own inline styles, so
+ * these rules win at equal specificity. Until 2.6.30 page-journey.php
+ * linked this file but it did not exist, and the journey layout never
+ * collapsed: the 280px sidebar column stayed beside the text on phones,
+ * and the header breadcrumb pushed the page 219px wider than the screen.
+ *
+ * Applies to all journeys, English and ms-MY.
+ *
+ * @since 2.6.30
+ */
+
+/* All widths: clear the fixed 68px journey header. The hero's own top
+   padding (4rem) left the topic label 4px below the header on desktop
+   and underneath it on phones. */
+.art-hero { padding-top: calc(68px + 2.25rem) !important; }
+
+/* Tablet: single column, sidebar moves below the article. */
+@media (max-width: 960px) {
+  .art-body {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 2.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  .art-sidebar {
+    position: static !important;
+    top: auto !important;
+    max-height: none !important;
+  }
+  .art-hero { padding-left: 1.5rem; padding-right: 1.5rem; }
+}
+
+/* Phone: compact header, no horizontal overflow. */
+@media (max-width: 700px) {
+  html, body { overflow-x: hidden; }
+  .ce-nav {
+    padding: 0 1rem !important;
+    gap: 0.75rem;
+  }
+  .ce-nav .nav-path {
+    min-width: 0;
+    flex: 1 1 auto;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .ce-nav .nav-path-step,
+  .ce-nav .nav-path-sep { display: none; }
+  .ce-nav .nav-progress { flex-shrink: 0; gap: 4px; }
+  .art-hero { padding: calc(68px + 1.5rem) 1.25rem 2rem !important; }
+  .art-body { padding: 2rem 1.25rem 3rem; }
+  .art-content, .reading { min-width: 0; overflow-wrap: break-word; }
+  .reading table, .reading pre { display: block; max-width: 100%; overflow-x: auto; }
+}
+
+/* Small phones: the logo and chapter dots need the space. */
+@media (max-width: 420px) {
+  .ce-nav .nav-path { display: none; }
+  .ce-nav .nav-logo-text { font-size: 1.05rem; }
+}

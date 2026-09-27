@@ -368,8 +368,8 @@ CE_ARTICLE_6,
         ],
 
         [
-            'slug'    => 'if-god-answers-prayer-why-cant-you-prove-it',
-            'title'   => 'If God Answers Prayer, Why Can\'t You Demonstrate It?',
+            'slug'    => 'does-god-answer-prayer',
+            'title'   => 'If God Answers Prayer, Why Can’t You Demonstrate It?',
             'topic'   => 'Does God Exist?',
             'order'   => 87,
             'excerpt' => 'The Quran says "Call upon Me; I will respond to you." If that is true, why can\'t believers simply demonstrate it under controlled conditions? The objection sounds devastating. It deserves a serious answer.',
@@ -587,35 +587,43 @@ CE_ARTICLE_9,
             'order'   => 90,
             'excerpt' => 'Honour killings are attributed to Islam by critics and committed by some Muslims in its name. The Islamic legal tradition explicitly and unanimously prohibits them. The distinction matters.',
             'content' => <<<'CE_ARTICLE_10'
-<p class="article-lead">The objection is direct: Muslims commit honour killings. Therefore Islam endorses them. The logic seems straightforward. But the Islamic legal tradition tells a very different story from the cultural practice — and the gap between the two is the real issue.</p>
+<p class="article-lead">The objection is direct: Muslims commit honour killings. Therefore Islam endorses them. The logic seems straightforward. But the Islamic legal tradition tells a very different story from the cultural practice — and the gap between the two is not incidental. It is the real issue.</p>
 
 <h2>What an honour killing is</h2>
 
-<p>An honour killing is the murder of a family member — almost always a woman — by relatives who believe she has brought shame on the family, typically through sexual behaviour, refusal to accept an arranged marriage, seeking a divorce, or being a victim of rape. The murder is committed to "restore" the family's honour.</p>
+<p>An honour killing is the murder of a family member — almost always a woman — by relatives who believe she has brought shame on the family, typically through perceived sexual behaviour, refusal of an arranged marriage, seeking a divorce, or being the victim of rape. The murder is committed to "restore" the family's standing.</p>
 
-<p>This practice exists across South Asia, parts of the Middle East, North Africa, and among diaspora communities from these regions. It occurs among Muslims, Hindus, Sikhs, and Christians — and among communities with no strong religious affiliation. The practice predates Islam by centuries and correlates with tribal patriarchal culture, not with Islamic observance.</p>
+<p>This practice exists across South Asia, parts of the Middle East, North Africa, and among diaspora communities from these regions. Critically, it occurs among Muslims, Hindus, Sikhs, and Christians — and among communities with no strong religious affiliation at all. The practice predates Islam by centuries and correlates with tribal patriarchal culture, not with Islamic observance. Regions with higher rates of honour killings do not correspond neatly with regions of greater Islamic piety. They correspond with regions of entrenched tribal patriarchy.</p>
 
 <h2>What Islamic law actually says</h2>
 
-<p>Islamic law (sharia) classifies unlawful killing as one of the gravest sins. The Quran is explicit:</p>
+<p>Islamic law classifies unlawful killing as one of the gravest sins. The Quran is explicit:</p>
 
 <div class="quran-citation">
 <div class="quran-arabic">وَلَا تَقْتُلُوا ٱلنَّفْسَ ٱلَّتِى حَرَّمَ ٱللَّهُ إِلَّا بِٱلْحَقِّ ﴿٣٣﴾</div>
 <div class="quran-translation">"And do not kill the soul which God has made sacred, except by right."</div>
-<div class="quran-ref">— Surah Al-Isra (17:33)</div>
+<div class="quran-ref">— Surah Al-Isra 17:33</div>
 </div>
 
-<p>"Except by right" refers to judicial due process — not family vigilantism. There is no provision in any school of Islamic jurisprudence (Hanafi, Maliki, Shafi'i, Hanbali) that permits a family member to kill a relative for perceived dishonour. None. The act is murder under Islamic law, punishable by qisas (retribution) or diya (blood money) at the victim's family's discretion.</p>
+<p>The phrase "except by right" refers to capital punishment applied through the formal legal system under strict evidentiary conditions — not to extrajudicial killing by families. Islamic jurisprudence has never recognised family honour as a legal justification for killing. No classical school of Islamic law — Hanafi, Maliki, Shafi'i, or Hanbali — permits extrajudicial killing to preserve family honour. A family member who kills a relative for perceived sexual transgression has committed murder under Islamic law, and faces the legal consequences of murder.</p>
 
-<p>Even in cases where Islamic law prescribes capital punishment for certain offences (such as proven adultery, which requires four eyewitnesses to the act itself — a near-impossible evidentiary standard), the punishment is carried out by the state after judicial proceedings, not by family members acting unilaterally. The entire framework of Islamic criminal law is built to prevent exactly what honour killings represent: private citizens taking life and death into their own hands.</p>
+<h2>The conflation problem</h2>
 
-<h2>Why the conflation persists</h2>
+<p>When critics attribute honour killings to Islam, they are making an empirical claim: that Islamic doctrine produces or permits this practice. The empirical evidence does not support this. The presence of the practice in non-Muslim communities in the same geographic and cultural zones demonstrates that the relevant variable is tribal patriarchal culture, not Islamic doctrine. The absence of the practice in Muslim-majority communities that are not embedded in those cultural traditions — including large Muslim populations in Southeast Asia — further confirms this.</p>
 
-<p>The conflation of honour killings with Islam persists for three reasons. First, because some perpetrators invoke Islam to justify their actions — incorrectly, but effectively enough to shape public perception. Second, because some Muslim-majority countries have legal systems that treat honour killings leniently, reflecting pre-Islamic tribal custom embedded in civil law rather than sharia. Third, because critics of Islam have a rhetorical interest in attributing cultural practices to the religion itself.</p>
+<p>The error is conflating the religion with the culture of its geographic heartland. Christianity produced the Inquisition, but the Inquisition is not what Christianity teaches. Islam produced tribal patriarchal violence in communities where tribal patriarchy was already dominant, but that violence is not what Islam teaches. The tradition must be evaluated on its actual doctrinal content, not on the worst practices of communities that nominally belong to it.</p>
 
-<p>The honest assessment: honour killings are a pre-Islamic cultural practice that Islam's legal tradition explicitly prohibits. That some Muslims commit them is a failure of those individuals and their cultures, not a consequence of Islamic teaching. The Quran and the Prophet's example both point in the opposite direction — toward due process, the sanctity of life, and the prohibition of extrajudicial killing.</p>
+<h2>The Islamic framework on women's dignity</h2>
 
-<p>The unity of truth and life matters here. Pain is real, doubt is real, and bad religious formation is real. Yet none of these experiences settles the God-question by itself. Tawhid calls the reader to examine whether Islam is true before deciding what to do with the injuries, pressures, and disappointments that gathered around it.</p>
+<p>The Quran introduced specific protections for women in a context where female infanticide was practiced and women had limited inheritance rights. It gave women independent legal standing, the right to own property, the right to contract marriage, and rights of divorce. These were not perfect in their historical implementation, and the tradition has genuine points of tension with contemporary accounts of equality that deserve honest engagement. But the trajectory of the revelation was toward the protection of women's dignity, not toward the toleration of their murder.</p>
+
+<div class="quran-citation">
+<div class="quran-arabic">وَلَهُنَّ مِثْلُ ٱلَّذِى عَلَيْهِنَّ بِٱلْمَعْرُوفِ ﴿٢٢٨﴾</div>
+<div class="quran-translation">"And women shall have rights similar to the rights against them, according to what is equitable."</div>
+<div class="quran-ref">— Surah Al-Baqarah 2:228</div>
+</div>
+
+<p>A tradition whose scripture establishes women's rights as a mirror of men's rights, whose law forbids extrajudicial killing, and whose Prophet explicitly condemned the tribal culture that preceded the revelation cannot coherently be held responsible for cultural practices that violate all three of those commitments. The charge against Islam requires ignoring what Islam actually says.</p>
 CE_ARTICLE_10,
         ],
 

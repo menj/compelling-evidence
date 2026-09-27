@@ -237,7 +237,6 @@ function ce_migrate_categories_2_2_0() {
         if ( $term ) {
             $tid = is_array( $term ) ? (int) $term['term_id'] : (int) $term;
             // Only delete if no articles remain assigned
-            $count = wp_count_terms( $taxonomy, [ 'parent' => 0 ] ); // just checking it exists
             $posts = get_posts([
                 'post_type'      => [ 'ce_article', 'post' ],
                 'posts_per_page' => 1,

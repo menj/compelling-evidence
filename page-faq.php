@@ -67,6 +67,21 @@ $faq_sections = [
     </div>
   </header>
 
+  <?php /* Item 15 — FAQ editorial framing. */ ?>
+  <aside class="page-intro-context" aria-label="<?php esc_attr_e( 'About these FAQs', 'compelling-evidence' ); ?>">
+    <div class="page-intro-inner">
+      <p>
+        <?php esc_html_e( 'These are the questions readers actually ask about the site itself: what it is, who runs it, what its editorial commitments are, what it does and does not ask of its readers. The answers are short by design — long-form treatment of substantive questions belongs in the articles, not here.', 'compelling-evidence' ); ?>
+      </p>
+      <p>
+        <?php esc_html_e( 'Three principles guide the answers below. First, honesty about what the site is — it presents the case for Islam at full intellectual strength, but it does not pretend to be neutral or to lack a point of view. Second, respect for the reader\'s autonomy — no manipulation, no data harvesting, no obligation, and no follow-up unless the reader initiates it. Third, accountability — the site\'s claims are sourced, the editorial process is documented, and corrections are issued when errors are found.', 'compelling-evidence' ); ?>
+      </p>
+      <p>
+        <?php esc_html_e( 'For substantive questions about Islam itself — about God, prophethood, the Quran, ethics, or any of the topics the articles address — see the articles directly or use the search. For questions about reader-submitted Q&A, see the dedicated Q&A surface. The form below answers structural questions about the site as a whole.', 'compelling-evidence' ); ?>
+      </p>
+    </div>
+  </aside>
+
   <div class="faq-body">
     <?php foreach ( $faq_sections as $section_title => $questions ) : ?>
       <section class="faq-section">

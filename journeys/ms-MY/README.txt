@@ -1,7 +1,7 @@
 MALAY (ms-MY) JOURNEY FILES
 ============================
 
-This folder holds Malay translations of the 12 journey HTML files and quiz.
+This folder holds Malay translations of the 14 journey HTML files and quiz.
 
 When WordPress is set to Malay (Malaysia), page-journey.php and page-quiz.php
 will automatically serve files from this folder instead of the English defaults
@@ -22,6 +22,8 @@ scientist-journey.html
 classical-atheist-journey.html
 ex-believer-journey.html
 spiritual-seeker-journey.html
+freethinker-journey.html
+true-muslim-journey.html
 
 TRANSLATION NOTES
 -----------------
@@ -31,7 +33,7 @@ TRANSLATION NOTES
   translation. Do not modify any <script> blocks.
 - The CSS embedded in <style> blocks requires no translation.
 - Physics chapter labels (Horizon, Singularity, Calibration, Emergence,
-  Constant, Entropy, Signal) should be translated consistently across all 12 files.
+  Constant, Entropy, Signal) should be translated consistently across all 14 files.
 - Quranic verses: the Arabic text (class="arabic-large") should be kept as-is.
   Translate the English translation line below each verse.
 - Persona names in quiz.html PERSONAS object: use the Malay names from ms_MY.po

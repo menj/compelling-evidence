@@ -7,7 +7,8 @@ if ( ! file_exists( $quiz_file ) ) {
     status_header(404);
     get_header();
     ?>
-    <section class="not-found-hero">
+    <main id="main" role="main">
+<section class="not-found-hero">
       <div class="not-found-code" aria-hidden="true">404</div>
       <h1 class="not-found-title">Quiz not available</h1>
       <p class="not-found-sub">The quiz could not be loaded. Browse all journey paths directly or read the articles.</p>
@@ -67,5 +68,6 @@ $analytics_js = '<script>'
 $html = preg_replace( '/(<script>)/', $analytics_js . '$1', $html, 1 );
 
 header('Content-Type: text/html; charset=UTF-8');
-echo $html;
+$html = ce_standalone_html_seo( $html, get_permalink() );
+echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- complete static HTML document shipped with the theme.
 exit;

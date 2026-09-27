@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 560" role="img" aria-labelledby="dg1-title dg1-desc" class="ce-dg">
+  <title id="dg1-title">The dilemma's two options and the Quran's third position</title>
+  <desc id="dg1-desc">The dilemma allows only two options: the earlier scriptures are wholly reliable, so the Quran is contradicted, or wholly corrupt, so the Quran was wrong to affirm them. The Quran states a third position in 5:48: earlier revelation survives mixed with human additions and losses, and the Quran is the guardian that confirms what is sound and exposes what is not.</desc>
+  <defs>
+    <marker id="dg1-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="dg-arrowhead"/></marker>
+  </defs>
+  <text x="320" y="34" text-anchor="middle" class="dg-label">THE DILEMMA ALLOWS TWO OPTIONS</text>
+  <rect x="16" y="54" width="292" height="104" rx="14" class="dg-box"/>
+  <text x="162" y="92" text-anchor="middle" class="dg-title">Scriptures wholly reliable</text>
+  <text x="162" y="124" text-anchor="middle" class="dg-text">then the Quran</text>
+  <text x="162" y="146" text-anchor="middle" class="dg-text">is contradicted</text>
+  <rect x="332" y="54" width="292" height="104" rx="14" class="dg-box"/>
+  <text x="478" y="92" text-anchor="middle" class="dg-title">Scriptures wholly corrupt</text>
+  <text x="478" y="124" text-anchor="middle" class="dg-text">then the Quran was wrong</text>
+  <text x="478" y="146" text-anchor="middle" class="dg-text">to affirm them</text>
+  <path d="M162 170 L162 206 L300 206" class="dg-line"/>
+  <path d="M478 170 L478 206 L340 206" class="dg-line"/>
+  <path d="M320 206 L320 262" class="dg-line" marker-end="url(#dg1-arrow)"/>
+  <text x="320" y="240" text-anchor="middle" class="dg-label dg-label--accent" dx="96">BOTH OMIT</text>
+  <rect x="40" y="276" width="560" height="236" rx="18" class="dg-box dg-box--accent"/>
+  <text x="320" y="318" text-anchor="middle" class="dg-title dg-title--accent">The Quran's position (5:48)</text>
+  <text x="320" y="360" text-anchor="middle" class="dg-text">Earlier revelation survives in the scriptures,</text>
+  <text x="320" y="388" text-anchor="middle" class="dg-text">mixed with human additions and losses.</text>
+  <text x="320" y="430" text-anchor="middle" class="dg-text">The Quran is muhaymin (guardian over it):</text>
+  <text x="320" y="458" text-anchor="middle" class="dg-text">it confirms what is sound</text>
+  <text x="320" y="486" text-anchor="middle" class="dg-text">and identifies what is not.</text>
+</svg>

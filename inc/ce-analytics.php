@@ -41,16 +41,17 @@ function ce_analytics_create_table() {
         KEY idx_session (session_id)
     ) {$charset};";
 
-    require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-    dbDelta( $sql );
+    return ce_create_table( $table, $sql );
 }
 add_action( 'after_switch_theme', 'ce_analytics_create_table' );
 
-// Run on admin init to ensure table exists
+// Run on admin init to ensure table exists. The version flag is only
+// recorded once the table is confirmed, so a failed create is retried.
 function ce_analytics_maybe_create_table() {
     if ( get_option( 'ce_analytics_table_version' ) === '1.0' ) return;
-    ce_analytics_create_table();
-    update_option( 'ce_analytics_table_version', '1.0' );
+    if ( ce_analytics_create_table() ) {
+        update_option( 'ce_analytics_table_version', '1.0' );
+    }
 }
 add_action( 'admin_init', 'ce_analytics_maybe_create_table' );
 
@@ -73,7 +74,9 @@ function ce_analytics_record( $type, $data = [], $session_id = '' ) {
     $visitor_hash = function_exists( 'ce_get_ip_hash' ) ? ce_get_ip_hash() : '';
 
     // Detect device type from User-Agent
-    $ua = $_SERVER['HTTP_USER_AGENT'] ?? '';
+    $ua = isset( $_SERVER['HTTP_USER_AGENT'] )
+        ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) )
+        : '';
     $device = 'desktop';
     if ( preg_match( '/Mobile|Android|iPhone|iPad/i', $ua ) ) {
         $device = preg_match( '/iPad|Tablet/i', $ua ) ? 'tablet' : 'mobile';
@@ -84,8 +87,8 @@ function ce_analytics_record( $type, $data = [], $session_id = '' ) {
         'event_data'   => wp_json_encode( $data ),
         'visitor_hash' => $visitor_hash,
         'session_id'   => sanitize_key( substr( $session_id, 0, 32 ) ),
-        'page_url'     => esc_url_raw( substr( $_SERVER['HTTP_REFERER'] ?? '', 0, 255 ) ),
-        'referrer'     => esc_url_raw( substr( $_SERVER['HTTP_REFERER'] ?? '', 0, 255 ) ),
+        'page_url'     => substr( esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ?? '' ) ), 0, 255 ),
+        'referrer'     => substr( esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ?? '' ) ), 0, 255 ),
         'device_type'  => $device,
     ], [ '%s', '%s', '%s', '%s', '%s', '%s', '%s' ] );
 }
@@ -103,7 +106,10 @@ function ce_ajax_analytics() {
     }
 
     $type       = sanitize_key( $_POST['event_type'] ?? '' );
-    $data       = json_decode( stripslashes( $_POST['event_data'] ?? '{}' ), true );
+    // wp_unslash() is the WordPress-canonical way to undo magic-quotes on
+    // POST data — equivalent to stripslashes() but recognised by WP coding
+    // standards and static analysis tools as the correct primitive.
+    $data       = json_decode( wp_unslash( $_POST['event_data'] ?? '{}' ), true ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- JSON payload; the event whitelist and per-key sanitisation below apply.
     $session_id = sanitize_key( $_POST['session_id'] ?? '' );
 
     if ( ! $type || ! is_array( $data ) ) {
@@ -140,13 +146,13 @@ add_action( 'wp_ajax_nopriv_ce_analytics', 'ce_ajax_analytics' );
    QUERY HELPERS — for the dashboard
    ═══════════════════════════════════════════════════════════════════════ */
 
-function ce_analytics_count( $type, $days = 30, $extra_where = '' ) {
+function ce_analytics_count( $type, $days = 30 ) {
     global $wpdb;
     $table = $wpdb->prefix . 'ce_analytics';
     $since = gmdate( 'Y-m-d H:i:s', time() - ( $days * DAY_IN_SECONDS ) );
     return (int) $wpdb->get_var( $wpdb->prepare(
-        "SELECT COUNT(*) FROM {$table} WHERE event_type = %s AND created_at >= %s {$extra_where}",
-        $type, $since
+        "SELECT COUNT(*) FROM %i WHERE event_type = %s AND created_at >= %s",
+        $table, $type, $since
     ) );
 }
 
@@ -155,8 +161,8 @@ function ce_analytics_unique_visitors( $days = 30 ) {
     $table = $wpdb->prefix . 'ce_analytics';
     $since = gmdate( 'Y-m-d H:i:s', time() - ( $days * DAY_IN_SECONDS ) );
     return (int) $wpdb->get_var( $wpdb->prepare(
-        "SELECT COUNT(DISTINCT visitor_hash) FROM {$table} WHERE created_at >= %s",
-        $since
+        "SELECT COUNT(DISTINCT visitor_hash) FROM %i WHERE created_at >= %s",
+        $table, $since
     ) );
 }
 
@@ -167,12 +173,12 @@ function ce_analytics_top_items( $type, $data_key, $days = 30, $limit = 15 ) {
     $json_path = '$.' . $data_key;
     return $wpdb->get_results( $wpdb->prepare(
         "SELECT JSON_UNQUOTE(JSON_EXTRACT(event_data, %s)) AS item, COUNT(*) AS total
-         FROM {$table}
+         FROM %i
          WHERE event_type = %s AND created_at >= %s
          GROUP BY item
          ORDER BY total DESC
          LIMIT %d",
-        $json_path, $type, $since, $limit
+        $json_path, $table, $type, $since, $limit
     ) );
 }
 
@@ -182,11 +188,11 @@ function ce_analytics_daily_counts( $type, $days = 30 ) {
     $since = gmdate( 'Y-m-d H:i:s', time() - ( $days * DAY_IN_SECONDS ) );
     return $wpdb->get_results( $wpdb->prepare(
         "SELECT DATE(created_at) AS day, COUNT(*) AS total
-         FROM {$table}
+         FROM %i
          WHERE event_type = %s AND created_at >= %s
          GROUP BY day
          ORDER BY day ASC",
-        $type, $since
+        $table, $type, $since
     ) );
 }
 
@@ -200,11 +206,11 @@ function ce_analytics_device_breakdown( $days = 30 ) {
     $since = gmdate( 'Y-m-d H:i:s', time() - ( $days * DAY_IN_SECONDS ) );
     return $wpdb->get_results( $wpdb->prepare(
         "SELECT device_type, COUNT(*) AS total
-         FROM {$table}
+         FROM %i
          WHERE event_type = 'pageview' AND created_at >= %s
          GROUP BY device_type
          ORDER BY total DESC",
-        $since
+        $table, $since
     ) );
 }
 
@@ -233,11 +239,11 @@ function ce_analytics_scroll_depth( $days = 30 ) {
     $since = gmdate( 'Y-m-d H:i:s', time() - ( $days * DAY_IN_SECONDS ) );
     return $wpdb->get_results( $wpdb->prepare(
         "SELECT JSON_UNQUOTE(JSON_EXTRACT(event_data, '$.depth')) AS depth, COUNT(*) AS total
-         FROM {$table}
+         FROM %i
          WHERE event_type = 'article_scroll' AND created_at >= %s
          GROUP BY depth
          ORDER BY CAST(depth AS UNSIGNED) ASC",
-        $since
+        $table, $since
     ) );
 }
 
@@ -260,7 +266,7 @@ function ce_analytics_admin_menu() {
 add_action( 'admin_menu', 'ce_analytics_admin_menu' );
 
 function ce_analytics_dashboard_page() {
-    $days = absint( $_GET['days'] ?? 30 );
+    $days = absint( $_GET['days'] ?? 30 ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only status flag for display.
     if ( ! in_array( $days, [ 7, 30, 90, 365 ], true ) ) $days = 30;
 
     $visitors       = ce_analytics_unique_visitors( $days );
@@ -288,9 +294,9 @@ function ce_analytics_dashboard_page() {
             <?php foreach ( [7,30,90,365] as $d ) :
                 $active = $d === $days ? 'font-weight:700;background:#2271b1;color:#fff;' : '';
             ?>
-                <a href="<?php echo admin_url( 'admin.php?page=ce-analytics&days=' . $d ); ?>"
-                   class="button" style="<?php echo $active; ?>">
-                    <?php echo $d === 365 ? '1 Year' : $d . ' Days'; ?>
+                <a href="<?php echo esc_url( admin_url( 'admin.php?page=ce-analytics&days=' . (int) $d ) ); ?>"
+                   class="button" style="<?php echo esc_attr( $active ); ?>">
+                    <?php echo esc_html( 365 === $d ? '1 Year' : $d . ' Days' ); ?>
                 </a>
             <?php endforeach; ?>
         </div>
@@ -310,7 +316,7 @@ function ce_analytics_dashboard_page() {
             ];
             foreach ( $cards as $card ) :
             ?>
-            <div style="background:#fff;border:1px solid #ddd;border-left:4px solid <?php echo $card[2]; ?>;border-radius:4px;padding:1rem 1.2rem;">
+            <div style="background:#fff;border:1px solid #ddd;border-left:4px solid <?php echo esc_attr( $card[2] ); ?>;border-radius:4px;padding:1rem 1.2rem;">
                 <div style="font-size:0.78rem;color:#666;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.4rem;"><?php echo esc_html( $card[0] ); ?></div>
                 <div style="font-size:1.8rem;font-weight:700;color:#1d2327;"><?php echo esc_html( $card[1] ); ?></div>
             </div>
@@ -390,10 +396,10 @@ function ce_analytics_dashboard_page() {
                     <div style="margin-bottom:0.8rem;">
                         <div style="display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:0.3rem;">
                             <span style="text-transform:capitalize;"><?php echo esc_html( $d->device_type ); ?></span>
-                            <span style="font-weight:600;"><?php echo esc_html( $d->total ); ?> (<?php echo $pct; ?>%)</span>
+                            <span style="font-weight:600;"><?php echo esc_html( $d->total ); ?> (<?php echo esc_html( $pct ); ?>%)</span>
                         </div>
                         <div style="height:6px;background:#f0f0f1;border-radius:3px;overflow:hidden;">
-                            <div style="height:100%;width:<?php echo $pct; ?>%;background:#2271b1;border-radius:3px;"></div>
+                            <div style="height:100%;width:<?php echo esc_attr( $pct ); ?>%;background:#2271b1;border-radius:3px;"></div>
                         </div>
                     </div>
                 <?php endforeach; else : ?>
@@ -408,7 +414,7 @@ function ce_analytics_dashboard_page() {
                 ?>
                     <div style="display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:0.5rem;">
                         <span><?php echo esc_html( $s->depth ); ?>%</span>
-                        <span style="font-weight:600;"><?php echo esc_html( $s->total ); ?> (<?php echo $pct; ?>%)</span>
+                        <span style="font-weight:600;"><?php echo esc_html( $s->total ); ?> (<?php echo esc_html( $pct ); ?>%)</span>
                     </div>
                 <?php endforeach; else : ?>
                     <p style="color:#666;">No scroll data yet.</p>
@@ -421,7 +427,7 @@ function ce_analytics_dashboard_page() {
         <div style="margin-top:3rem;padding:1rem 1.5rem;background:#fff;border:1px solid #ddd;border-radius:4px;">
             <h2 style="margin:0 0 0.5rem;font-size:1rem;">Data Management</h2>
             <p style="color:#666;font-size:0.85rem;margin-bottom:1rem;">Analytics data is stored in your WordPress database. No data is sent to third parties.</p>
-            <form method="post" action="<?php echo admin_url( 'admin-post.php' ); ?>">
+            <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
                 <?php wp_nonce_field( 'ce_purge_analytics', 'ce_purge_nonce' ); ?>
                 <input type="hidden" name="action" value="ce_purge_analytics">
                 <label style="font-size:0.85rem;">Purge data older than
@@ -450,7 +456,7 @@ function ce_handle_purge_analytics() {
     $before = gmdate( 'Y-m-d H:i:s', time() - ( $days * DAY_IN_SECONDS ) );
 
     $deleted = $wpdb->query( $wpdb->prepare(
-        "DELETE FROM {$table} WHERE created_at < %s", $before
+        "DELETE FROM %i WHERE created_at < %s", $table, $before
     ) );
 
     wp_redirect( admin_url( 'admin.php?page=ce-analytics&purged=' . $deleted ) );

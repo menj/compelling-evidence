@@ -1,5 +1,7 @@
 <?php get_header(); ?>
 
+<main id="main" role="main" aria-label="Main content">
+
 <!-- ── HERO ─────────────────────────────────────────────────────────────── -->
 <section class="hero">
 
@@ -118,7 +120,7 @@
 
   <div class="scroll-hint" aria-hidden="true">
     <div class="scroll-hint-preview">
-      <a href="<?php echo esc_url(home_url('/topic/does-god-exist/')); ?>" class="scroll-hint-tile">
+      <a href="<?php echo esc_url(home_url('/topic/does-god-exist/')); ?>" class="scroll-hint-tile" tabindex="-1">
         <span class="sht-label">Does God Exist?</span>
       </a>
       <a href="<?php echo esc_url(home_url('/topic/the-problem-of-evil/')); ?>" class="scroll-hint-tile">
@@ -137,27 +139,36 @@
 <section class="quick-access">
   <a href="<?php echo esc_url(home_url('/articles?orderby=popular')); ?>" class="qa-card qa-card--questions">
     <div class="qa-card-icon">
-      <svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+      <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
     </div>
-    <h3>Top Questions</h3>
+    <h2>Top Questions</h2>
     <p>The most commonly asked questions about Islam, God, and existence.</p>
     <span class="qa-card-cta">Browse questions →</span>
   </a>
 
+  <a href="<?php echo esc_url(home_url('/qa')); ?>" class="qa-card qa-card--qa">
+    <div class="qa-card-icon">
+      <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></svg>
+    </div>
+    <h2>Reader Q&amp;A</h2>
+    <p>Real questions submitted by readers, answered with care.</p>
+    <span class="qa-card-cta">Read answers →</span>
+  </a>
+
   <a href="<?php echo esc_url(home_url('/articles')); ?>" class="qa-card qa-card--new">
     <div class="qa-card-icon">
-      <svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
     </div>
-    <h3>What's New</h3>
+    <h2>What's New</h2>
     <p>Our most recently published articles and answers.</p>
     <span class="qa-card-cta">See latest →</span>
   </a>
 
   <a href="<?php echo esc_url(home_url('/ask-a-question')); ?>" class="qa-card qa-card--ask">
     <div class="qa-card-icon">
-      <svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M12 7v6M9 10h6"/></svg>
     </div>
-    <h3>Ask a Question</h3>
+    <h2>Ask a Question</h2>
     <p>Can't find what you're looking for? Submit your question directly.</p>
     <span class="qa-card-cta">Ask now →</span>
   </a>
@@ -206,7 +217,6 @@
       $articles = new WP_Query($args);
     }
 
-    $fallback_icons = ['🌱','✨','🔭','⚖️','🔬','🧭'];
     $i = 0;
 
     if ($articles->have_posts()) :
@@ -215,13 +225,13 @@
         $topic_name = (!empty($topics) && !is_wp_error($topics)) ? $topics[0]->name : get_post_type_object(get_post_type())->labels->singular_name;
     ?>
     <article class="card reveal">
-      <a href="<?php the_permalink(); ?>" class="card-img-link" tabindex="-1" aria-hidden="true">
-        <?php if (has_post_thumbnail()) : ?>
+      <?php if (has_post_thumbnail()) : ?>
+        <a href="<?php the_permalink(); ?>" class="card-img-link" tabindex="-1" aria-hidden="true">
           <?php the_post_thumbnail('medium_large', ['class' => 'card-img', 'loading' => 'lazy', 'alt' => esc_attr( get_the_title() )]); ?>
+        </a>
         <?php else : ?>
-          <div class="card-img-placeholder"><?php echo $fallback_icons[$i % 6]; ?></div>
+          <?php echo ce_card_placeholder( $topic_name ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG built from constants in inc/ce-icons.php. ?>
         <?php endif; ?>
-      </a>
       <div class="card-body">
         <?php if ($topic_name) : ?>
           <p class="card-tag"><?php echo esc_html($topic_name); ?></p>
@@ -229,9 +239,9 @@
         <h3 class="card-title">
           <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
         </h3>
-        <p class="card-text"><?php echo get_the_excerpt(); ?></p>
+        <p class="card-text"><?php echo esc_html( get_the_excerpt() ); ?></p>
         <a href="<?php the_permalink(); ?>" class="card-link">
-          Read more
+          Read more<span class="screen-reader-text">: <?php echo esc_html( get_the_title() ); ?></span>
           <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
       </div>
@@ -254,12 +264,12 @@
       ];
       foreach ($static_cards as $card) : ?>
         <article class="card reveal">
-          <div class="card-img-placeholder"><?php echo $card['icon']; ?></div>
+          <?php echo ce_card_placeholder( $card['tag'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG built from constants in inc/ce-icons.php. ?>
           <div class="card-body">
             <p class="card-tag"><?php echo esc_html($card['tag']); ?></p>
-            <h3 class="card-title"><?php echo $card['title']; ?></h3>
+            <h3 class="card-title"><?php echo wp_kses_post( $card['title'] ); ?></h3>
             <p class="card-text"><?php echo esc_html($card['text']); ?></p>
-            <a href="#" class="card-link">
+            <a href="#" class="card-link" aria-label="<?php echo esc_attr( $card['title'] ); ?>">
               Read more
               <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
@@ -416,9 +426,11 @@
     }
   }
 
+  // Cache heroH once to avoid forced reflow on every scroll event
+  var heroH = hero.offsetHeight;
+
   function update() {
     ticking = false;
-    var heroH = hero.offsetHeight;
 
     // Early exit once scrolled past hero
     if (lastY > heroH + 200) return;
@@ -460,5 +472,7 @@
   onScroll(); // initial position
 })();
 </script>
+
+</main><!-- /#main -->
 
 <?php get_footer(); ?>

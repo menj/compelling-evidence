@@ -1,0 +1,74 @@
+{
+ "_about": "Media registry for article figures. Every entry records its source page and licence as verified against the source on the date shown. Pexels and Flickr entries use the same fields (source: pexels | flickr).",
+ "media": {
+  "codex-sinaiticus-mark-ending": {
+   "source": "wikimedia-commons",
+   "file": "File:Shorter ending of Mark 16 from Codex Sinaiticus.png",
+   "url": "https://upload.wikimedia.org/wikipedia/commons/2/25/Shorter_ending_of_Mark_16_from_Codex_Sinaiticus.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "thumb": "https://upload.wikimedia.org/wikipedia/commons/2/25/Shorter_ending_of_Mark_16_from_Codex_Sinaiticus.png",
+   "page": "https://commons.wikimedia.org/wiki/File:Shorter_ending_of_Mark_16_from_Codex_Sinaiticus.png",
+   "author": "Codex Sinaiticus, 4th century (British Library)",
+   "license": "Public domain",
+   "license_url": "",
+   "alt": "Two columns of Greek uncial script from Codex Sinaiticus, with the closing title of the Gospel of Mark set apart below the last lines of text",
+   "width": 659,
+   "height": 574,
+   "variant": "light",
+   "crop": null,
+   "verified": "2026-09-27"
+  },
+  "medina-1880": {
+   "source": "wikimedia-commons",
+   "file": "File:General view of Medina around 1880.jpg",
+   "url": "https://upload.wikimedia.org/wikipedia/commons/f/f7/General_view_of_Medina_around_1880.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f7/General_view_of_Medina_around_1880.jpg/1920px-General_view_of_Medina_around_1880.jpg",
+   "page": "https://commons.wikimedia.org/wiki/File:General_view_of_Medina_around_1880.jpg",
+   "author": "Unknown Ottoman officer, about 1880, published by D. G. Hogarth",
+   "license": "CC0",
+   "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+   "alt": "Black and white panorama of Medina about 1880: city walls in the foreground, the Prophet's Mosque with its dome and minarets behind, and mountains on the horizon",
+   "width": 3000,
+   "height": 2070,
+   "variant": "photo",
+   "crop": [
+    0.195,
+    0.245,
+    0.823,
+    0.832
+   ],
+   "verified": "2026-09-27"
+  },
+  "al-wadud-calligraphy": {
+   "source": "wikimedia-commons",
+   "file": "File:الودود.jpg",
+   "url": "https://upload.wikimedia.org/wikipedia/commons/d/d9/%D8%A7%D9%84%D9%88%D8%AF%D9%88%D8%AF.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "thumb": "https://upload.wikimedia.org/wikipedia/commons/d/d9/%D8%A7%D9%84%D9%88%D8%AF%D9%88%D8%AF.jpg",
+   "page": "https://commons.wikimedia.org/wiki/File:%D8%A7%D9%84%D9%88%D8%AF%D9%88%D8%AF.jpg",
+   "author": "Wikimedia Commons contributor",
+   "license": "CC0",
+   "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+   "alt": "The divine name al-Wadūd, the Loving, written in black Arabic calligraphy",
+   "width": 480,
+   "height": 379,
+   "variant": "light",
+   "crop": null,
+   "verified": "2026-09-27"
+  },
+  "qundusi-quran-tawbah": {
+   "source": "wikimedia-commons",
+   "file": "File:مصحف بخط قندوسي 2.jpg",
+   "url": "https://upload.wikimedia.org/wikipedia/commons/5/54/%D9%85%D8%B5%D8%AD%D9%81_%D8%A8%D8%AE%D8%B7_%D9%82%D9%86%D8%AF%D9%88%D8%B3%D9%8A_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "thumb": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/54/%D9%85%D8%B5%D8%AD%D9%81_%D8%A8%D8%AE%D8%B7_%D9%82%D9%86%D8%AF%D9%88%D8%B3%D9%8A_2.jpg/1920px-%D9%85%D8%B5%D8%AD%D9%81_%D8%A8%D8%AE%D8%B7_%D9%82%D9%86%D8%AF%D9%88%D8%B3%D9%8A_2.jpg",
+   "page": "https://commons.wikimedia.org/wiki/File:%D9%85%D8%B5%D8%AD%D9%81_%D8%A8%D8%AE%D8%B7_%D9%82%D9%86%D8%AF%D9%88%D8%B3%D9%8A_2.jpg",
+   "author": "Muhammad ibn al-Qasim al-Qundusi, 19th century",
+   "license": "Public domain",
+   "license_url": "",
+   "alt": "A Quran page in bold Maghribi Qundusi script with a decorated border and a gold and blue header panel",
+   "width": 2110,
+   "height": 3301,
+   "variant": "photo",
+   "crop": null,
+   "verified": "2026-09-27"
+  }
+ }
+}

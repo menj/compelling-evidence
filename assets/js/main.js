@@ -47,13 +47,25 @@
         mobileActionsAdded = true;
       }
     });
+    function closeMenu() {
+      links.classList.remove('open');
+      toggle.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
     links.querySelectorAll('a').forEach(function (a) {
-      a.addEventListener('click', function () {
-        links.classList.remove('open');
-        toggle.classList.remove('open');
-        toggle.setAttribute('aria-expanded', 'false');
-      });
+      a.addEventListener('click', closeMenu);
     });
+    // Escape closes the mobile menu and returns focus to the toggle.
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && links.classList.contains('open')) {
+        closeMenu();
+        toggle.focus();
+      }
+    });
+    // Rotating a tablet to landscape (above 900px) must not leave the menu stuck open.
+    window.addEventListener('resize', function () {
+      if (window.innerWidth > 900 && links.classList.contains('open')) closeMenu();
+    }, { passive: true });
   }
 
   // ── FEATURED STRIP: hide on scroll down ─────────────────────────────────────
@@ -103,11 +115,16 @@
 
   function renderResults(items) {
     if (!searchResults) return;
+    // Every interpolated value must be escaped — earlier versions escaped
+    // url and topic but inlined title and excerpt unescaped, which let any
+    // post with HTML in its title or excerpt execute script when shown in
+    // search results. The server uses html_entity_decode() on these fields
+    // before JSON-encoding them, so we cannot rely on them being pre-escaped.
     searchResults.innerHTML = items.map(function (item) {
       return '<a href="' + escHtml(item.url) + '" class="search-result-item">' +
         (item.topic ? '<span class="search-result-tag">' + escHtml(item.topic) + '</span>' : '') +
-        '<span class="search-result-title">' + item.title + '</span>' +
-        (item.excerpt ? '<span class="search-result-excerpt">' + item.excerpt + '</span>' : '') +
+        '<span class="search-result-title">' + escHtml(item.title) + '</span>' +
+        (item.excerpt ? '<span class="search-result-excerpt">' + escHtml(item.excerpt) + '</span>' : '') +
         '</a>';
     }).join('');
     searchResults.classList.add('open');

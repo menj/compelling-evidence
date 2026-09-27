@@ -4,9 +4,20 @@
   <meta charset="<?php bloginfo('charset'); ?>">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="profile" href="https://gmpg.org/xfn/11">
-  <!-- Preload critical fonts (eliminates FOIT on first paint) -->
-  <link rel="preload" href="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/fonts/playfair-display-900.woff2' ); ?>" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/fonts/dm-sans-400.woff2' ); ?>" as="font" type="font/woff2" crossorigin>
+  <!-- Favicons -->
+  <link rel="icon" type="image/svg+xml" href="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/ce-icon.svg' ); ?>">
+  <link rel="icon" type="image/png" sizes="32x32" href="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/favicon-32x32.png' ); ?>">
+  <link rel="icon" type="image/png" sizes="16x16" href="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/favicon-16x16.png' ); ?>">
+  <link rel="apple-touch-icon" sizes="180x180" href="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/apple-touch-icon.png' ); ?>">
+  <link rel="shortcut icon" href="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/favicon.ico' ); ?>">
+
+  <!-- Preload critical fonts (heading + UI families; see inc/ce-fonts.php) -->
+  <?php ce_fonts_preload_tags(); ?>
+  <?php if ( is_front_page() || is_home() ) : ?>
+  <!-- Preload Arabic fonts — LCP element on homepage is hero-verse-text -->
+  <link rel="preload" href="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/fonts/uthmani-quran.woff2' ); ?>" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/fonts/ce-hadith-400.woff2' ); ?>" as="font" type="font/woff2" crossorigin>
+  <?php endif; ?>
   <?php wp_head(); ?>
 <script>
 (function() {
@@ -47,6 +58,7 @@
       <ul class="nav-links">
         <li><a href="<?php echo esc_url(home_url('/journeys')); ?>"><?php esc_html_e('Journeys', 'compelling-evidence'); ?></a></li>
         <li><a href="<?php echo esc_url(home_url('/articles')); ?>"><?php esc_html_e('Articles', 'compelling-evidence'); ?></a></li>
+        <li><a href="<?php echo esc_url(home_url('/qa')); ?>"><?php esc_html_e('Q&amp;A', 'compelling-evidence'); ?></a></li>
         <li><a href="<?php echo esc_url(home_url('/ask-a-question')); ?>"><?php esc_html_e('Ask a Question', 'compelling-evidence'); ?></a></li>
         <li><a href="<?php echo esc_url(home_url('/faq')); ?>"><?php esc_html_e('FAQ', 'compelling-evidence'); ?></a></li>
       </ul>

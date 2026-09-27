@@ -7,6 +7,7 @@
 get_header();
 ?>
 
+<main id="main" role="main">
 <div class="journeys-page">
 
   <!-- Hero -->
@@ -129,7 +130,7 @@ get_header();
        class="jy-card"
        data-path="<?php echo esc_attr($p['key']); ?>">
       <span class="jy-card-badge" style="display:none;"></span>
-      <span class="jy-card-num">Path <?php echo $num; ?></span>
+      <span class="jy-card-num">Path <?php echo esc_html( $num ); ?></span>
       <div class="jy-card-question"><?php echo esc_html($p['question']); ?></div>
       <div class="jy-card-desc"><?php echo esc_html($p['desc']); ?></div>
       <span class="jy-card-action">
@@ -178,5 +179,7 @@ get_header();
   } catch(e) {}
 })();
 </script>
+
+</main><!-- /#main -->
 
 <?php get_footer(); ?>

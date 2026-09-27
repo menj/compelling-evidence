@@ -16,27 +16,33 @@ function ce_create_secondary_pages() {
             'slug'    => 'about-compelling-evidence',
             'title'   => 'About This Site',
             'content' => '
-<p class="article-lead">Compelling Evidence is an independent, evidence-based inquiry into the questions that matter most — written for the curious, the doubtful, and the unconvinced.</p>
+<p class="article-lead">Compelling Evidence is a long-running attempt to take the strongest objections against Islam, and against belief in God in general, and weigh them honestly against what the available evidence supports. The work is written for the curious, the doubtful, and the unconvinced. It does not assume agreement, and it does not pretend to certainty that the evidence does not actually furnish.</p>
 
-<h2>What this site is</h2>
+<h2>The premise</h2>
 
-<p>This site presents the case for God\'s existence and for Islam as the most rationally compelling answer to the questions that follow from that existence. It is written primarily for atheists, agnostics, and sceptics — people who start from zero and demand evidence before belief.</p>
+<p>Most material on contested religious questions falls into one of two camps. The first preaches to the convinced: comfortable, confident, allergic to genuine difficulty. The second weaponises difficulty against the other side without applying the same scrutiny to its own foundations. Neither serves the inquirer who actually wants to think a question through. The premise here is that careful argument, applied evenhandedly, has a better chance of arriving at something true than either confident assertion or rhetorical attack.</p>
 
-<p>Every argument is built on evidence from philosophy, physics, cosmology, consciousness studies, and ethics — not on scripture, tradition, or emotional appeals. The Quran and hadith are cited as supporting evidence where relevant, but no argument depends on accepting their authority in advance.</p>
+<h2>The method</h2>
 
-<h2>What this site is not</h2>
+<p>Each article begins with a question, usually a hard one. The strongest version of the challenge is stated first, in the form a thoughtful sceptic would actually present it. Then the relevant evidence is laid out: historical sources, philosophical arguments, scientific findings, classical scholarly responses where they exist. Where the evidence cuts cleanly in one direction, that direction is named. Where the evidence is genuinely contested, the contestation is named. Where the evidence is thin, the thinness is named. Specific claims are tied to specific sources; rhetorical flourishes are kept to a minimum.</p>
 
-<p>This is not a comparative religion site. It does not attack other traditions. It is not affiliated with any mosque, organisation, political movement, or government. It does not collect personal data for marketing. It does not track you across the web.</p>
+<h2>What the work covers</h2>
 
-<h2>Who it is for</h2>
+<p>The articles are organised across eleven investigative topics. The existence of God: cosmological arguments, fine-tuning, ontological reasoning. The problem of evil: classical theodicies, modern objections, the evidential case from suffering. Ethics without God: whether the moral law can be grounded without theism, and what classical Islamic ethical thought brings to the question. Science and evidence: how religious claims interact with the empirical record, including the cosmological and biological details that recur in apologetic argument.</p>
 
-<p>If you are a convinced atheist who thinks religion is intellectually bankrupt — this is written for you. If you are an agnostic who has never found a case strong enough to commit — this is written for you. If you are a scientist who demands empirical rigour — this is written for you. If you are a Muslim carrying doubts you have never been able to voice — this is written for you.</p>
+<p>On the Islamic side specifically: the Quran and its sources, including its preservation history, literary form, internal structure, and engagement with prior scriptures. History, context, and comparison: situating early Islam within late antiquity, addressing the harder questions about the Prophet\'s life and the formation of the early community. Divine justice and fairness: the questions about hell, eternal punishment, predestination, and the moral architecture of the Islamic worldview. Islamic practice and ritual, examined for its rationale rather than presented as self-evident. Rights and freedom: the harder questions about religious liberty, apostasy, and how Islamic law has actually addressed these across the centuries. The inner journey, for readers who are wrestling with belief from the inside. Revelation and meaning, on the deeper question of why any of this should matter.</p>
 
-<p>The only thing required is honesty. Not agreement. Not belief. Just the willingness to follow the evidence wherever it leads.</p>
+<h2>Who this is for</h2>
 
-<h2>How to engage</h2>
+<p>The audience is the honest inquirer, not the polemicist on either side. Atheists who want to know what the strongest version of the religious case actually looks like. Christians and other monotheists comparing claims across traditions. Muslims wrestling with hard questions and wanting to find them addressed seriously rather than waved away. Anyone who has noticed that the loudest voices in this discussion are rarely the most careful ones, and who would like an alternative.</p>
 
-<p>Start with the <a href="/quiz">quiz</a> — ten questions that route you to a personalised journey written for your specific starting point. Or browse the <a href="/articles">articles</a> directly. Or <a href="/ask-a-question">ask a question</a> we haven\'t addressed yet.</p>
+<p>Articles can be read individually, each is self-contained, or followed in their canonical sequence, which builds a cumulative argument across topics. New material is added regularly. The site is free, contains no advertising, and tracks no readers across sessions.</p>
+
+<h2>A note on tone</h2>
+
+<p>The work tries to be plainspoken without being casual, careful without being timid, and serious without being heavy-handed. Religious questions matter to people in ways that other questions do not, and that fact deserves respect on every side. Atheist readers should not feel patronised; Muslim readers should not feel that their tradition is being defended badly; readers from other backgrounds should be able to follow the arguments without prior commitment to any of them. Whether the work succeeds at this is for readers to judge, but the attempt, at least, is sincere.</p>
+
+<p><a href="/articles">Browse all articles →</a></p>
 ',
         ],
 
@@ -203,3 +209,67 @@ function ce_create_v2_pages() {
     update_option( 'ce_v2_pages_created', '1' );
 }
 add_action( 'admin_init', 'ce_create_v2_pages' );
+
+/**
+ * Refresh the About page content on existing installs (added in v2.6.10).
+ *
+ * The auto-creation function above runs once and sets a flag. On sites where
+ * the theme was activated before v2.6.10, the About page already exists in
+ * the database with the older content, and updating this file alone does not
+ * propagate to the existing post.
+ *
+ * This function uses its own flag (ce_about_v2_updated) so it runs exactly
+ * once per site, locates the existing About page by slug, and refreshes its
+ * content via wp_update_post. The flag prevents repeated overwrites if the
+ * site administrator has further customised the About page after this
+ * upgrade has run.
+ */
+function ce_update_about_page_v2() {
+    if ( get_option( 'ce_about_v2_updated' ) ) return;
+
+    $about = get_page_by_path( 'about-compelling-evidence' );
+    if ( ! $about ) {
+        // No existing About page — the auto-create function will handle it
+        // on the next admin load with the new content.
+        update_option( 'ce_about_v2_updated', '1' );
+        return;
+    }
+
+    $new_content = '
+<p class="article-lead">Compelling Evidence is a long-running attempt to take the strongest objections against Islam, and against belief in God in general, and weigh them honestly against what the available evidence supports. The work is written for the curious, the doubtful, and the unconvinced. It does not assume agreement, and it does not pretend to certainty that the evidence does not actually furnish.</p>
+
+<h2>The premise</h2>
+
+<p>Most material on contested religious questions falls into one of two camps. The first preaches to the convinced: comfortable, confident, allergic to genuine difficulty. The second weaponises difficulty against the other side without applying the same scrutiny to its own foundations. Neither serves the inquirer who actually wants to think a question through. The premise here is that careful argument, applied evenhandedly, has a better chance of arriving at something true than either confident assertion or rhetorical attack.</p>
+
+<h2>The method</h2>
+
+<p>Each article begins with a question, usually a hard one. The strongest version of the challenge is stated first, in the form a thoughtful sceptic would actually present it. Then the relevant evidence is laid out: historical sources, philosophical arguments, scientific findings, classical scholarly responses where they exist. Where the evidence cuts cleanly in one direction, that direction is named. Where the evidence is genuinely contested, the contestation is named. Where the evidence is thin, the thinness is named. Specific claims are tied to specific sources; rhetorical flourishes are kept to a minimum.</p>
+
+<h2>What the work covers</h2>
+
+<p>The articles are organised across eleven investigative topics. The existence of God: cosmological arguments, fine-tuning, ontological reasoning. The problem of evil: classical theodicies, modern objections, the evidential case from suffering. Ethics without God: whether the moral law can be grounded without theism, and what classical Islamic ethical thought brings to the question. Science and evidence: how religious claims interact with the empirical record, including the cosmological and biological details that recur in apologetic argument.</p>
+
+<p>On the Islamic side specifically: the Quran and its sources, including its preservation history, literary form, internal structure, and engagement with prior scriptures. History, context, and comparison: situating early Islam within late antiquity, addressing the harder questions about the Prophet\'s life and the formation of the early community. Divine justice and fairness: the questions about hell, eternal punishment, predestination, and the moral architecture of the Islamic worldview. Islamic practice and ritual, examined for its rationale rather than presented as self-evident. Rights and freedom: the harder questions about religious liberty, apostasy, and how Islamic law has actually addressed these across the centuries. The inner journey, for readers who are wrestling with belief from the inside. Revelation and meaning, on the deeper question of why any of this should matter.</p>
+
+<h2>Who this is for</h2>
+
+<p>The audience is the honest inquirer, not the polemicist on either side. Atheists who want to know what the strongest version of the religious case actually looks like. Christians and other monotheists comparing claims across traditions. Muslims wrestling with hard questions and wanting to find them addressed seriously rather than waved away. Anyone who has noticed that the loudest voices in this discussion are rarely the most careful ones, and who would like an alternative.</p>
+
+<p>Articles can be read individually, each is self-contained, or followed in their canonical sequence, which builds a cumulative argument across topics. New material is added regularly. The site is free, contains no advertising, and tracks no readers across sessions.</p>
+
+<h2>A note on tone</h2>
+
+<p>The work tries to be plainspoken without being casual, careful without being timid, and serious without being heavy-handed. Religious questions matter to people in ways that other questions do not, and that fact deserves respect on every side. Atheist readers should not feel patronised; Muslim readers should not feel that their tradition is being defended badly; readers from other backgrounds should be able to follow the arguments without prior commitment to any of them. Whether the work succeeds at this is for readers to judge, but the attempt, at least, is sincere.</p>
+
+<p><a href="/articles">Browse all articles →</a></p>
+';
+
+    wp_update_post([
+        'ID'           => $about->ID,
+        'post_content' => $new_content,
+    ]);
+
+    update_option( 'ce_about_v2_updated', '1' );
+}
+add_action( 'admin_init', 'ce_update_about_page_v2' );
