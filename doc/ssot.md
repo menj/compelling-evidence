@@ -1,7 +1,7 @@
 # SSOT — Single Source of Truth
 ## Compelling Evidence Theme — System Design, Naming Conventions, Configuration Rules
 
-**Version:** 2.6.33  
+**Version:** 2.6.34  
 **Location:** `/doc/SSOT.md`
 
 This document is authoritative. When any other file conflicts with a rule stated here, this document is correct and the other file should be updated.
@@ -430,7 +430,7 @@ The unified crosslink + tooltip engine (`ce-crosslinks.php`) enforces these rule
 
 ---
 
-*Last updated: September 2026 (v2.6.33)*
+*Last updated: September 2026 (v2.6.34)*
 ---
 
 ## 17. Feed Redirector (`inc/class-ce-feed-redirector.php`)
@@ -569,7 +569,13 @@ Reference documents: Google's SEO Starter Guide and Google's list of structured 
 
 **Links and tooltips** never enter figures, diagrams or tables (`ce-crosslinks.php` skips those elements).
 
-**Coverage.** Batch 007 (eight articles) carries figures, diagrams and tables. Earlier batches have none yet; add them batch by batch through the same shortcodes and registry.
+**Coverage.** All 131 articles open with a lead figure placed after the first paragraph; batch 007 also carries diagrams and tables. Registry: 131 images (124 Pexels, 7 Wikimedia Commons).
+
+**Featured images.** A registry entry's `featured_for` names the article whose featured image it becomes on import (cards, Open Graph, Article schema). An editor's own featured image is never replaced. `ce_media_assign_featured()` backfills once per registry change.
+
+**Choosing images.** No identifiable person on articles about leaving Islam, trauma, honour killings, sexuality, mental illness, prison or cult accusations; use objects and landscapes there. No symbols of another religion unless the article is about that scripture. Captions describe what the picture shows; alt text comes from the source's own description where it is accurate. Every pick is reviewed by eye before registration.
+
+**API keys.** The Pexels API key is used only when sourcing images and is never stored in the theme or the registry.
 
 ## 26. Plugins: native or not (since 2.6.33)
 

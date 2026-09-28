@@ -6,6 +6,12 @@ Only paths explicitly identified in development are documented here.
 
 ---
 
+## Upgrading to v2.6.34 from v2.6.33
+
+**After deploying:** open Theme Options → Media and press **Import next 20 images now** until the count reads 131 of 131 (about seven presses). Featured images are assigned as each image arrives. Allow roughly 120 MB of uploads space.
+
+---
+
 ## Upgrading to v2.6.33 from v2.6.32
 
 **After deploying:**

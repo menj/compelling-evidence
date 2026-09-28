@@ -77,7 +77,9 @@ function ce_media_source_label( string $source ): string {
 function ce_media_credit_html( array $m ): string {
 	$parts = [];
 	if ( ! empty( $m['author'] ) ) {
-		$parts[] = esc_html( $m['author'] );
+		$parts[] = ! empty( $m['author_url'] )
+			? '<a href="' . esc_url( $m['author_url'] ) . '" rel="noopener" target="_blank">' . esc_html( $m['author'] ) . '</a>'
+			: esc_html( $m['author'] );
 	}
 	if ( ! empty( $m['license'] ) ) {
 		$parts[] = ! empty( $m['license_url'] )
@@ -292,8 +294,49 @@ function ce_media_import_one( string $id, array $m ) {
 	update_post_meta( $att, '_ce_media_key', $id );
 	update_post_meta( $att, '_ce_media_source', esc_url_raw( (string) ( $m['page'] ?? $url ) ) );
 	update_post_meta( $att, '_ce_media_license', sanitize_text_field( (string) ( $m['license'] ?? '' ) ) );
+	ce_media_set_featured( (int) $att, $m );
 	return (int) $att;
 }
+
+/**
+ * Make an imported image the featured image of the article it belongs to,
+ * unless that article already has one chosen by an editor.
+ *
+ * Featured images appear on article cards and as the social share image.
+ */
+function ce_media_set_featured( int $att, array $m ): void {
+	if ( empty( $m['featured_for'] ) ) {
+		return;
+	}
+	$post = get_page_by_path( sanitize_title( (string) $m['featured_for'] ), OBJECT, 'ce_article' );
+	if ( $post && ! has_post_thumbnail( $post ) ) {
+		set_post_thumbnail( $post, $att );
+	}
+}
+
+/**
+ * Assign featured images for media imported before featured_for existed,
+ * once per registry change.
+ */
+function ce_media_assign_featured(): void {
+	if ( wp_doing_ajax() || ! current_user_can( 'upload_files' ) ) {
+		return;
+	}
+	$reg  = ce_media_registry();
+	$hash = md5( (string) wp_json_encode( array_map( static function ( $m ) {
+		return $m['featured_for'] ?? '';
+	}, $reg ) ) . wp_json_encode( ce_media_attachments() ) );
+	if ( get_option( 'ce_media_featured_hash' ) === $hash ) {
+		return;
+	}
+	foreach ( ce_media_attachments() as $id => $att ) {
+		if ( isset( $reg[ $id ] ) && wp_attachment_is_image( (int) $att ) ) {
+			ce_media_set_featured( (int) $att, $reg[ $id ] );
+		}
+	}
+	update_option( 'ce_media_featured_hash', $hash, false );
+}
+add_action( 'admin_init', 'ce_media_assign_featured', 41 );
 
 /**
  * Trickle imports: a few images per admin page load, never during AJAX.

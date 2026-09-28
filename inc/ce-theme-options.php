@@ -134,7 +134,10 @@ function ce_options_page() {
         if ( $active === 'tools' && isset( $_POST['ce_manual_sync'] ) ) {
             $sync_result = ce_manual_content_sync();
         } elseif ( $active === 'media' && isset( $_POST['ce_media_import_now'] ) && function_exists( 'ce_media_import_pending' ) ) {
-            $media_result = ce_media_import_pending( 10 );
+            if ( function_exists( 'set_time_limit' ) ) {
+                @set_time_limit( 300 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged -- may be disabled on the host.
+            }
+            $media_result = ce_media_import_pending( 20 );
             if ( $media_result['failed'] ) {
                 update_option( 'ce_media_import_errors', $media_result['failed'], false );
             } else {
@@ -354,7 +357,7 @@ function ce_options_page() {
                         <?php endif; ?>
                         <?php echo wp_kses_post( ce_media_status_html() ); ?>
                         <p style="color:#555;">Figures use images registered in <code>inc/articles/media.json</code>, each with its source page and licence. Images from Wikimedia Commons, Pexels and Flickr are supported; the credit line is printed under every figure.</p>
-                        <button type="submit" name="ce_media_import_now" value="1" class="button button-secondary">Import pending images now</button>
+                        <button type="submit" name="ce_media_import_now" value="1" class="button button-secondary">Import next 20 images now</button>
                     </div>
                 <?php endif; ?>
 

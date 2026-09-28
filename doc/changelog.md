@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.6.34] — September 2026
+
+### Lead images for every article
+
+- **131 of 131 articles** now open with a figure after the first paragraph: 124 photographs from the Pexels API (Pexels License) and 7 images from Wikimedia Commons (licences confirmed through the Commons API), including the Birmingham Quran manuscript, an eighteenth-century Persian astrolabe and Andrea di Bonaiuto's fresco of Ibn Rushd. Each pick was reviewed by eye; four first choices were replaced (a political protest, a path marked with a cross, and two identifiable people on sensitive topics) and fourteen captions corrected to match what the picture shows.
+- **Featured images.** Imported images become the article's featured image (cards, social shares, Article schema) unless an editor has already set one. The homepage and archive cards now show photographs in place of the topic icons.
+- **Credits** link to the photographer's Pexels profile.
+- **Import** runs 20 images per click in Theme Options → Media (about seven clicks for the full set), plus three per admin page load in the background. On the test site the full set with generated sizes took about 118 MB of uploads.
+
+---
+
 ## [2.6.33] — September 2026
 
 ### Article media, native lightbox, plugin integration
