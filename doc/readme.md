@@ -1,6 +1,6 @@
 # CE Theme (Compelling Evidence) — WordPress Theme
 
-**Version:** 2.6.34 | **Parent theme:** Twenty Twenty-Five (tested with 1.5) | **Requires:** WordPress 6.7+ (tested to 7.1), PHP 8.0 to 8.4  
+**Version:** 2.6.38 | **Parent theme:** Twenty Twenty-Five (tested with 1.5) | **Requires:** WordPress 6.7+ (tested to 7.1), PHP 8.0 to 8.4  
 **Site:** https://compelling-evidence.com | **Repository:** https://github.com/menj/compelling-evidence | **Author:** [MENJ](https://menj.blog) | **Text domain:** `compelling-evidence`
 
 An Islamic apologetics child theme delivering personalised argumentation journeys across 14 persona paths, 131 articles across 11 investigative categories, a weighted intake quiz, a gamified progress system, a privacy-first analytics layer, and a full engagement suite. Built for a single deployment — not a general-purpose theme.
@@ -290,4 +290,4 @@ The `readme.txt` file remains in the theme root for WordPress.org compliance.
 
 ---
 
-*Last updated: September 2026 (v2.6.34)*
+*Last updated: October 2026 (v2.6.38)*

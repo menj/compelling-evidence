@@ -6,6 +6,38 @@ Only paths explicitly identified in development are documented here.
 
 ---
 
+## Upgrading to v2.6.38 from v2.6.37
+
+**After deploying:** load any admin page; the sync creates five articles and updates six. The 15 new images import on the hourly schedule.
+
+---
+
+## Upgrading to v2.6.37 from v2.6.36
+
+**After deploying:** load any admin page so the sync creates the six new articles and fills their Rank Math fields; their 18 images import on the hourly schedule or through Theme Options → Media.
+
+---
+
+## Upgrading to v2.6.36 from v2.6.35
+
+**Before deploying:** back up the database. This release changes every article's content.
+
+**After deploying:**
+1. Load any admin page once: the content sync runs, and Rank Math's empty focus keyword, SEO title and description fields are filled from `seo.json`. Fields you have already set are left alone.
+2. The 262 new images import on the hourly schedule (ten registered images per run), or press "Import next 20 images now" in Theme Options → Media about thirteen times. Allow roughly 250 MB more uploads space.
+3. To reach 90 or above, switch off Rank Math's Content AI module (Rank Math → Dashboard → Modules) unless you use Content AI.
+4. Rank Math stores each article's score when the article is opened or updated in the editor; the score column fills in as articles are opened.
+
+---
+
+## Upgrading to v2.6.35 from v2.6.34
+
+**To switch on automatic images:** Theme Options → Media → paste the Pexels API key, tick "Find and publish lead images for new articles automatically", and save. The first run happens within the hour, or press **Run now**.
+
+**Note:** registered images now import on the hourly schedule as well, so the "Import next 20 images now" presses after 2.6.34 are optional. WP-Cron runs on site visits; on a low-traffic site, a real server cron calling `wp-cron.php` keeps the schedule punctual.
+
+---
+
 ## Upgrading to v2.6.34 from v2.6.33
 
 **After deploying:** open Theme Options → Media and press **Import next 20 images now** until the count reads 131 of 131 (about seven presses). Featured images are assigned as each image arrives. Allow roughly 120 MB of uploads space.

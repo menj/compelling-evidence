@@ -133,6 +133,8 @@ function ce_options_page() {
         // Handle manual sync trigger
         if ( $active === 'tools' && isset( $_POST['ce_manual_sync'] ) ) {
             $sync_result = ce_manual_content_sync();
+        } elseif ( $active === 'media' && isset( $_POST['ce_media_auto_action'] ) ) {
+            // Handled by ce_media_auto_panel_html() below; settings are left as they are.
         } elseif ( $active === 'media' && isset( $_POST['ce_media_import_now'] ) && function_exists( 'ce_media_import_pending' ) ) {
             if ( function_exists( 'set_time_limit' ) ) {
                 @set_time_limit( 300 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged -- may be disabled on the host.
@@ -286,12 +288,14 @@ function ce_options_page() {
 
                         switch ( $field['type'] ) :
                             case 'text':
+                            case 'password':
                             case 'number': ?>
                                 <label class="ce-field-label" for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['label'] ); ?></label>
                                 <input type="<?php echo esc_attr( $field['type'] ); ?>"
                                        id="<?php echo esc_attr( $field['id'] ); ?>"
                                        name="<?php echo esc_attr( $field['id'] ); ?>"
                                        value="<?php echo esc_attr( $value ); ?>"
+                                       <?php if ( 'password' === $field['type'] ) echo 'autocomplete="off" spellcheck="false"'; ?>
                                        <?php if ( ! empty( $field['min'] ) ) echo 'min="' . esc_attr( $field['min'] ) . '"'; ?>
                                        <?php if ( ! empty( $field['max'] ) ) echo 'max="' . esc_attr( $field['max'] ) . '"'; ?>
                                        <?php if ( ! empty( $field['step'] ) ) echo 'step="' . esc_attr( $field['step'] ) . '"'; ?>>
@@ -359,6 +363,7 @@ function ce_options_page() {
                         <p style="color:#555;">Figures use images registered in <code>inc/articles/media.json</code>, each with its source page and licence. Images from Wikimedia Commons, Pexels and Flickr are supported; the credit line is printed under every figure.</p>
                         <button type="submit" name="ce_media_import_now" value="1" class="button button-secondary">Import next 20 images now</button>
                     </div>
+                    <?php if ( function_exists( 'ce_media_auto_panel_html' ) ) { echo ce_media_auto_panel_html(); } // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- every value is escaped inside the function. ?>
                 <?php endif; ?>
 
                 <?php if ( $active === 'tools' ) : ?>
@@ -570,6 +575,10 @@ function ce_get_tab_fields( $tab ) {
         'media' => [
             [ 'id' => 'ce_lightbox_enabled', 'label' => 'Open article images and diagrams in a lightbox', 'type' => 'checkbox', 'default' => '1', 'section' => 'Lightbox',
               'desc' => 'Built into the theme (no jQuery, no plugin). Keyboard, swipe and screen-reader accessible. Replaces the Lightbox2 plugin.' ],
+            [ 'id' => 'ce_media_auto', 'label' => 'Find and publish lead images for new articles automatically', 'type' => 'checkbox', 'default' => '0', 'section' => 'Automatic images',
+              'desc' => 'Every hour, articles with no featured image and no figure get a Pexels photograph chosen from their title, imported, credited, set as the featured image and shown after the first paragraph. Published at once; correct any choice below with Replace or Remove.' ],
+            [ 'id' => 'ce_pexels_key', 'label' => 'Pexels API key', 'type' => 'password', 'default' => '',
+              'desc' => 'From pexels.com/api. Stored in the database only, never in the theme files.' ],
             [ 'id' => 'ce_media_import', 'label' => 'Import article images into the Media Library', 'type' => 'checkbox', 'default' => '1', 'section' => 'Image import',
               'desc' => 'Copies each registered image into the Media Library, a few per admin page load, so pages serve local, responsive images. Until an image is imported, figures load it from its source.' ],
         ],

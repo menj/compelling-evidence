@@ -30,8 +30,10 @@ require_once get_stylesheet_directory() . '/inc/ce-fonts.php';
 require_once get_stylesheet_directory() . '/inc/ce-icons.php';
 require_once get_stylesheet_directory() . '/inc/ce-404.php';
 require_once get_stylesheet_directory() . '/inc/ce-media.php';
+require_once get_stylesheet_directory() . '/inc/ce-media-auto.php';
 require_once get_stylesheet_directory() . '/inc/ce-search-permalinks.php';
 require_once get_stylesheet_directory() . '/inc/ce-plugin-compat.php';
+require_once get_stylesheet_directory() . '/inc/ce-rankmath.php';
 require_once get_stylesheet_directory() . '/inc/ce-theme-options.php';
 
 // ── ARTICLE LOADER (secure JSON-based article loading with checksum verification)

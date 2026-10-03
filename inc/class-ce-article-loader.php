@@ -67,7 +67,7 @@ class CE_Article_Loader {
      * @return bool True if data is complete, false otherwise
      */
     private function validate_data_completeness( array $manifest ): bool {
-        // NOTE: Currently 7 batches (batch-001 through batch-007), 131 articles.
+        // NOTE: Currently 9 batches (batch-001 through batch-009), 142 articles.
         // $expected_batches and $min_expected_articles are floors (the checks use <),
         // so adding batches never requires changing them.
         $expected_batches = 5;

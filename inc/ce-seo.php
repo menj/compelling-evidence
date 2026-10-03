@@ -282,13 +282,10 @@ function ce_page_meta_descriptions(): array {
     ];
 }
 
-function ce_meta_description() {
-    // Rank Math owns meta descriptions when active; printing ours as well
-    // puts two description tags on every page.
-    if ( function_exists( 'ce_is_rankmath_active' ) && ce_is_rankmath_active() ) {
-        return;
-    }
-
+/**
+ * The theme's description for the current request ('' when none).
+ */
+function ce_get_meta_description(): string {
     $summary = '';
     $cta     = '';
 
@@ -329,8 +326,17 @@ function ce_meta_description() {
     // Search results and 404s carry no description: search pages are
     // noindexed and 404s are not indexed.
 
-    if ( $summary ) {
-        $desc = ce_meta_description_with_cta( $summary, $cta );
+    return $summary ? ce_meta_description_with_cta( $summary, $cta ) : '';
+}
+
+function ce_meta_description() {
+    // Rank Math prints the description when active; the theme supplies one
+    // only where Rank Math's is empty (ce_rankmath_description()).
+    if ( function_exists( 'ce_is_rankmath_active' ) && ce_is_rankmath_active() ) {
+        return;
+    }
+    $desc = ce_get_meta_description();
+    if ( $desc ) {
         echo '<meta name="description" content="' . esc_attr( $desc ) . '">' . "\n";
     }
 }
@@ -341,11 +347,10 @@ add_action( 'wp_head', 'ce_meta_description', 1 );
    CANONICAL URL
    ═══════════════════════════════════════════════════════════════════════ */
 
-function ce_canonical_url() {
-    // Rank Math prints its own canonical; two canonical tags cancel each other out.
-    if ( function_exists( 'ce_is_rankmath_active' ) && ce_is_rankmath_active() ) {
-        return;
-    }
+/**
+ * The theme's canonical URL for the current request ('' when none).
+ */
+function ce_get_canonical_url(): string {
     if ( is_singular() ) {
         $url = get_permalink();
     } elseif ( is_post_type_archive( 'ce_article' ) ) {
@@ -357,10 +362,19 @@ function ce_canonical_url() {
     } elseif ( is_front_page() || is_home() ) {
         $url = home_url( '/' );
     } else {
+        return '';
+    }
+    return ( $url && ! is_wp_error( $url ) ) ? (string) $url : '';
+}
+
+function ce_canonical_url() {
+    // Rank Math prints the canonical when active; the theme fills it only
+    // where Rank Math's is empty (ce_rankmath_canonical()).
+    if ( function_exists( 'ce_is_rankmath_active' ) && ce_is_rankmath_active() ) {
         return;
     }
-
-    if ( $url && ! is_wp_error( $url ) ) {
+    $url = ce_get_canonical_url();
+    if ( $url ) {
         echo '<link rel="canonical" href="' . esc_url( $url ) . '">' . "\n";
     }
 }
@@ -492,7 +506,15 @@ add_action( 'wp_head', 'ce_og_twitter_meta', 2 );
    JSON-LD STRUCTURED DATA
    ═══════════════════════════════════════════════════════════════════════ */
 
-function ce_schema_jsonld() {
+/**
+ * Theme schema nodes for the current request (WebSite, Organization,
+ * Article, BreadcrumbList, CollectionPage). Printed on their own when Rank
+ * Math is inactive; with Rank Math they only fill gaps in its graph
+ * (see inc/ce-rankmath.php).
+ *
+ * @return array[]
+ */
+function ce_schema_nodes(): array {
     $schemas = [];
 
     // ── WebSite schema (every page) ──
@@ -522,7 +544,7 @@ function ce_schema_jsonld() {
     // above remain — they're either complementary (BreadcrumbList,
     // FAQPage) or sitewide (WebSite, Organization) and Rank Math doesn't
     // duplicate them. Per-article schema is the single overlap point.
-    $skip_article_schema = function_exists( 'ce_is_rankmath_active' ) && ce_is_rankmath_active();
+    $skip_article_schema = false;
 
     if ( ! $skip_article_schema && ( is_singular( 'ce_article' ) || is_singular( 'post' ) ) ) {
         $word_count = str_word_count( strip_tags( get_the_content() ) );
@@ -686,7 +708,16 @@ function ce_schema_jsonld() {
     // Q&A on the page; Google requires marked-up content to be visible, and
     // FAQ rich results are limited to government and health sites.
 
-    // ── Output ──
+    return $schemas;
+}
+
+function ce_schema_jsonld() {
+    // With Rank Math active, its graph is the single JSON-LD block; the theme
+    // adds only the nodes Rank Math lacks (ce_rankmath_json_ld()).
+    if ( function_exists( 'ce_is_rankmath_active' ) && ce_is_rankmath_active() ) {
+        return;
+    }
+    $schemas = ce_schema_nodes();
     if ( ! empty( $schemas ) ) {
         $output = [
             '@context' => 'https://schema.org',

@@ -1,0 +1,715 @@
+{
+ "_about": "Rank Math defaults per article: focus keyword (primary first, then related terms that appear in the text), SEO title and meta description (130 characters including a call to action). Written to Rank Math fields only when those fields are empty.",
+ "articles": {
+  "is-islam-compatible-with-western-democracy": {
+   "focus_keyword": "western democracy, justice, dignity",
+   "title": "Western Democracy: Can a Muslim Be a Loyal Citizen?",
+   "description": "Western democracy: critics say Islam denies human dignity and seeks to conquer the societies that host it… Read the argument."
+  },
+  "does-islam-teach-salvation-by-works": {
+   "focus_keyword": "salvation by works, deeds, mercy",
+   "title": "Salvation by Works? Does Islam Teach That Paradise Is Earned?",
+   "description": "Salvation by works: a popular Christian explainer says Muslims try to earn Paradise through the Five Pillars… Read the argument."
+  },
+  "is-allah-a-slave-master-or-a-god-of-love": {
+   "focus_keyword": "god of love, mercy, loves",
+   "title": "God of Love or Slave-Master? How Allah Relates to Humanity",
+   "description": "God of love: an ex-Muslim turned Christian says Islam knows only a tyrant who threatens his slaves. The Quran… Read the argument."
+  },
+  "quran-4-34-wife-beating": {
+   "focus_keyword": "quran 4 34, prophet, verse",
+   "title": "Quran 4 34: Does the Verse Permit a Husband to Beat His Wife?",
+   "description": "Quran 4 34: the verse contains a word that means \"strike.\" What the Prophet, his companions and the classical… Read the argument."
+  },
+  "does-the-quran-teach-hatred-of-jews": {
+   "focus_keyword": "hatred of jews, allies, verse, hostility",
+   "title": "Hatred of Jews? Does the Quran Teach Muslims to Hate Jews?",
+   "description": "Hatred of jews: a British Muslim says he was born to hate Jews. Critics say the Quran taught him. The texts… Read the argument."
+  },
+  "is-islam-a-religion-of-peace-terrorism-data": {
+   "focus_keyword": "religion of peace, percent",
+   "title": "Is Islam a Religion of Peace? What the Terrorism Data Shows",
+   "description": "Religion of peace: critics cite tens of thousands of \"Islamic terror attacks\" and polls of Muslim opinion… Read the argument."
+  },
+  "sword-verse-jizya-9-5-9-29": {
+   "focus_keyword": "sword verse, al-tawbah, verses, polytheists",
+   "title": "The Sword Verse and Jizya: Do 9:5 and 9:29 Command War on All Non-Muslims?",
+   "description": "Sword verse: critics call 9:5 the \"verse of the sword\" and read 9:29 as a standing order to fight unbelief… Read the argument."
+  },
+  "islamic-dilemma-quran-and-bible": {
+   "focus_keyword": "islamic dilemma, revelation, torah",
+   "title": "The Islamic Dilemma: Does the Quran Confirm the Bible It Contradicts?",
+   "description": "Islamic dilemma: the argument says the Quran traps itself by affirming scriptures it contradicts. It works… Read the argument."
+  },
+  "why-would-god-create-enemies": {
+   "focus_keyword": "god create enemies, beings, moral",
+   "title": "Why Would God Create Enemies?",
+   "description": "God create enemies: the universe is vast, life is rare, and humans fight over God. The objection combines… Read the argument."
+  },
+  "is-islam-a-cult": {
+   "focus_keyword": "islam a cult, tradition, arguments",
+   "title": "Is Islam a Cult? The Comparison Examined and Rejected",
+   "description": "Islam a cult: the cult comparison is common and feels intuitively powerful. But it fails on every serious… Read the argument."
+  },
+  "islam-built-on-fear": {
+   "focus_keyword": "built on fear, mercy",
+   "title": "Built on Fear? Is Islam Just a System of Control?",
+   "description": "Built on fear: the claim is that Islam uses hell, divine punishment, and social pressure to control behaviour… Read the argument."
+  },
+  "ritual-purity-wudu-menstruation": {
+   "focus_keyword": "ritual purity, menstruation",
+   "title": "Ritual Purity: Is Menstruation a Sin in Islam?",
+   "description": "Islamic ritual purity law suspends certain acts of worship during menstruation and requires washing before… Read the argument."
+  },
+  "evil-eye-islamic-view": {
+   "focus_keyword": "evil eye",
+   "title": "The Evil Eye: Does Islam Really Believe in Magic?",
+   "description": "Belief in the evil eye and magic is dismissed as medieval superstition. Islam does affirm that the evil eye… Read the argument."
+  },
+  "ramadan-fasting-purpose": {
+   "focus_keyword": "ramadan fasting, practice",
+   "title": "Ramadan Fasting: What Is It For? Starvation on a Schedule?",
+   "description": "Critics say Ramadan fasting achieves nothing: people eat more at night, sleep through the day, and the health… Read the argument."
+  },
+  "moon-splitting": {
+   "focus_keyword": "moon",
+   "title": "The Moon Splitting: Did the Moon Split? Is There Any Evidence?",
+   "description": "The splitting of the moon is referenced in the Quran and reported in hadith as a miracle witnessed by the… Read the argument."
+  },
+  "islam-jinn-mental-illness": {
+   "focus_keyword": "jinn mental illness, medical",
+   "title": "Jinn, Mental Illness and Islam: Does Islam Blame Jinn?",
+   "description": "Jinn mental illness: the abuse of mentally ill people through exorcism is a real and serious problem in some… Read the argument."
+  },
+  "kaaba-idol-worship": {
+   "focus_keyword": "kaaba idol worship, prophet, physical",
+   "title": "Kaaba, Idol Worship and the Black Stone: Is Circling the Kaaba Idolatry?",
+   "description": "Kaaba idol worship: muslims face a cube of stone in prayer and kiss a black stone embedded in its wall… Read the argument."
+  },
+  "quran-creation-accounts": {
+   "focus_keyword": "creation accounts, context",
+   "title": "Creation Accounts in the Quran: Four Descriptions, One Contradiction?",
+   "description": "Creation accounts: clay, a clot of blood, water, dust. The Quran uses four different descriptions of human… Read the argument."
+  },
+  "angels-and-the-unseen": {
+   "focus_keyword": "angels, unseen",
+   "title": "Angels and the Unseen: How Many Angels Are There?",
+   "description": "Angels and the unseen: critics calculate 16 billion recording angels and conclude the logistics make no… Read the argument."
+  },
+  "hadith-authenticity": {
+   "focus_keyword": "hadith authenticity, corpus, generation",
+   "title": "Hadith Authenticity: Can We Trust That Hadith Go Back to the Prophet?",
+   "description": "Hadith authenticity: the hadith corpus is either a genuine record of prophetic practice or a vast… Read the argument."
+  },
+  "does-god-need-our-prayers": {
+   "focus_keyword": "god need our prayers, worshipper",
+   "title": "Does God Need Our Prayers?",
+   "description": "God need our prayers: a deity demanding constant verbal validation looks insecure. Five times a day looks… Read the argument."
+  },
+  "god-rewards-faith-punishes-doubt": {
+   "focus_keyword": "god rewards faith, evidence, objection",
+   "title": "God Rewards Faith and Punishes Doubt: Just a Loyalty Test?",
+   "description": "God rewards faith: if God sends people to hell for not believing and heaven for believing, isn't He simply… Read the argument."
+  },
+  "islam-too-many-rules": {
+   "focus_keyword": "too many rules, eating, objectives, framework",
+   "title": "Too Many Rules? Why Islam Regulates Trivial Things",
+   "description": "Too many rules: islam has rules about eating, sleeping, using the bathroom, and greeting strangers. Critics… Read the argument."
+  },
+  "muhammad-and-warfare": {
+   "focus_keyword": "muhammad and warfare, military, fight",
+   "title": "Muhammad and Warfare: If He Was a Prophet, Why the Sword?",
+   "description": "Muhammad and warfare: muhammad fought wars. The question is whether this is inconsistent with prophetic… Read the argument."
+  },
+  "islam-prison-conversion": {
+   "focus_keyword": "prison conversion, genuine, environment",
+   "title": "Prison Conversion: Why Does Islam Spread So Fast in Prison?",
+   "description": "Prison conversion: islam's growth in Western prisons is real and documented. Critics see it as evidence of… Read the argument."
+  },
+  "quran-bible-stories": {
+   "focus_keyword": "bible stories, figures, account, jesus",
+   "title": "Bible Stories in the Quran: Recycled or Revealed?",
+   "description": "Bible stories: the Quran shares figures with the Bible — Adam, Abraham, Moses, Jesus. Critics call this… Read the argument."
+  },
+  "why-arabic-prayer": {
+   "focus_keyword": "arabic prayer, language",
+   "title": "Arabic Prayer: Why Pray in Arabic if God Understands All Languages?",
+   "description": "Arabic prayer: if God understands every language, why must prayer be in Arabic? The question points at… Read the argument."
+  },
+  "religion-of-your-birth": {
+   "focus_keyword": "religion of your birth, belief",
+   "title": "The Religion of Your Birth: An Accident of Geography?",
+   "description": "Religion of your birth: most people hold the religion of their birthplace. Does this mean religious belief is… Read the argument."
+  },
+  "why-does-god-need-worship": {
+   "focus_keyword": "god need worship, practice, acknowledgment",
+   "title": "God Need Worship? If Not, Why Does the Quran Demand It?",
+   "description": "God need worship: god needs nothing. So why does Islam centre on worship? The answer reframes the question… Read the argument."
+  },
+  "suffering-and-god": {
+   "focus_keyword": "suffering and god, trust, designed",
+   "title": "Suffering and God: The Islamic Account",
+   "description": "Suffering and god: the philosophical problem of evil has been answered elsewhere on this site. This article… Read the argument."
+  },
+  "coming-back-after-leaving": {
+   "focus_keyword": "coming back after leaving, return",
+   "title": "Coming Back After Leaving: Is Return Possible?",
+   "description": "Coming back after leaving: sixteen articles on this site address leaving. This one addresses returning. The… Read the argument."
+  },
+  "how-can-a-rational-person-believe-in-the-unseen": {
+   "focus_keyword": "rational person believe in the unseen, evidence, reality",
+   "title": "How Can a Rational Person Believe in the Unseen?",
+   "description": "Rational person believe in the unseen: angels, the soul, the afterlife, revelation — how can a rational… Read the argument."
+  },
+  "the-spiritual-heart-of-islam": {
+   "focus_keyword": "spiritual heart of islam, tradition",
+   "title": "The Spiritual Heart of Islam: Beyond Rules and Ritual",
+   "description": "Spiritual heart of islam: islam is often reduced to rules and prohibitions. Beneath the law lies a… Read the argument."
+  },
+  "if-nothing-really-matters": {
+   "focus_keyword": "nothing really matters, universe, suffering",
+   "title": "If Nothing Really Matters, Why Does It Feel Like It Should?",
+   "description": "Nothing really matters: the nihilism problem: if the universe is purposeless, why does every human being live… Read the argument."
+  },
+  "what-does-islam-say-happens-after-death": {
+   "focus_keyword": "after death, mercy, moral",
+   "title": "After Death: What Does Islam Say Happens?",
+   "description": "After death: islam presents a detailed, coherent eschatology — not just hell, but mercy, accountability… Read the argument."
+  },
+  "what-draws-people-to-islam-today": {
+   "focus_keyword": "draws people to islam, convert",
+   "title": "What Draws People to Islam Today?",
+   "description": "Draws people to islam: thousands of people convert to Islam each year in the West alone — not through… Read the argument."
+  },
+  "how-do-we-evaluate-competing-claims-to-revelation": {
+   "focus_keyword": "competing claims to revelation, criteria, tradition",
+   "title": "Competing Claims to Revelation: An Honest Way to Evaluate Them",
+   "description": "Competing claims to revelation: competing revelations force disciplined comparison. On unity of God… Read the argument."
+  },
+  "what-would-authentic-revelation-look-like": {
+   "focus_keyword": "authentic revelation, moral",
+   "title": "What Would Authentic Revelation Look Like?",
+   "description": "Authentic revelation should bear marks that reason can recognize: coherence about God, public preservation… Read the argument."
+  },
+  "does-god-communicate-with-humanity": {
+   "focus_keyword": "god communicate with humanity, revelation",
+   "title": "Does God Communicate With Humanity?",
+   "description": "God communicate with humanity: if God creates rational and morally accountable beings, revelation becomes a… Read the argument."
+  },
+  "was-muhammad-who-he-claimed-to-be": {
+   "focus_keyword": "muhammad",
+   "title": "Muhammad: Was He Who He Claimed to Be?",
+   "description": "Muhammad: the case for Islam rises or falls on the credibility of the man who delivered it. What does the… Read the argument."
+  },
+  "the-algorithm-that-deconverted-you": {
+   "focus_keyword": "algorithm that deconverted you, truth, objections",
+   "title": "The Algorithm That Deconverted You",
+   "description": "Algorithm that deconverted you: online ecosystems shape deconversion by selecting, repeating, rewarding, and… Read the argument."
+  },
+  "did-your-heart-leave-before-your-head": {
+   "focus_keyword": "heart leave before your head, emotional, evidence",
+   "title": "Did Your Heart Leave Before Your Head?",
+   "description": "Heart leave before your head: faith and doubt are never purely intellectual. Examining whether pain, desire… Read the argument."
+  },
+  "quran-cosmology-flat-earth-seven-heavens": {
+   "focus_keyword": "flat earth, language",
+   "title": "Flat Earth, Seven Heavens and Shooting Stars: Is Quranic Cosmology Wrong?",
+   "description": "Flat earth: the Quran’s cosmological language does not amount to scientific error. It uses phenomenological… Read the argument."
+  },
+  "quran-variant-readings-qiraat": {
+   "focus_keyword": "variant readings, reading",
+   "title": "Variant Readings of the Quran: Do They Disprove Preservation?",
+   "description": "Variant readings: hafs, Warsh, Qalun — the Quran has multiple accepted readings. Critics say this proves the… Read the argument."
+  },
+  "honour-killings-culture-not-islam": {
+   "focus_keyword": "honour killings, practice",
+   "title": "Honour Killings: Culture, Not Islam",
+   "description": "Honour killings are attributed to Islam by critics and committed by some Muslims in its name. The Islamic… Read the argument."
+  },
+  "islam-and-same-sex-attraction": {
+   "focus_keyword": "same-sex attraction, moral, desire",
+   "title": "Same-Sex Attraction and Islam: The Question That Cannot Be Avoided",
+   "description": "Same-sex attraction: islam prohibits same-sex sexual acts. For many people, this is sufficient reason to… Read the argument."
+  },
+  "did-islam-spread-by-the-sword": {
+   "focus_keyword": "islam spread by the sword, conversion",
+   "title": "Did Islam Spread by the Sword?",
+   "description": "Islam spread by the sword: islam spread through conquest, trade, teaching, law, and devotion. The simplistic… Read the argument."
+  },
+  "does-god-answer-prayer": {
+   "focus_keyword": "god answer prayer, relationship, promise",
+   "title": "Does God Answer Prayer? Why You Cannot Demonstrate It",
+   "description": "God answer prayer: the Quran says \"Call upon Me; I will respond to you.\" If that is true, why can't believers… Read the argument."
+  },
+  "the-anger-is-real": {
+   "focus_keyword": "anger is real, moral",
+   "title": "The Anger Is Real — And It Deserves an Answer",
+   "description": "Anger is real: anger at religion can be morally intelligible. It still needs to be examined, because anger is… Read the argument."
+  },
+  "the-freethinkers-islam-produced": {
+   "focus_keyword": "freethinkers islam produced, tradition",
+   "title": "The Freethinkers Islam Produced",
+   "description": "Freethinkers islam produced: islamic civilization produced skeptics, critics, and freethinkers from within… Read the argument."
+  },
+  "when-religion-was-imposed-not-discovered": {
+   "focus_keyword": "religion was imposed, moral, freely, coercion",
+   "title": "When Religion Was Imposed, Not Discovered",
+   "description": "Religion was imposed: coerced religion distorts the soul. The failure of coercion does not show that Islam is… Read the argument."
+  },
+  "when-the-presence-fades": {
+   "focus_keyword": "presence fades, spiritual, dryness",
+   "title": "When the Presence Fades",
+   "description": "Presence fades: faith sometimes weakens quietly through dryness rather than rebellion. Islam reads that… Read the argument."
+  },
+  "the-good-muslim-paradox": {
+   "focus_keyword": "good muslim paradox, tradition",
+   "title": "The Good Muslim Paradox",
+   "description": "Good muslim paradox: many people who leave Islam were once serious, moral, and intellectually engaged. That… Read the argument."
+  },
+  "your-doubts-are-not-a-disease": {
+   "focus_keyword": "doubts are not a disease, doubt",
+   "title": "Your Doubts Are Not a Disease",
+   "description": "Doubts are not a disease: doubt should not be treated as contamination. Islam has resources for disciplined… Read the argument."
+  },
+  "hijab-male-control-or-divine-command": {
+   "focus_keyword": "hijab male control, theological, women",
+   "title": "Hijab, Male Control or Divine Command?",
+   "description": "Hijab male control: the critique runs that the hijab is patriarchal control wearing religious clothing. The… Read the argument."
+  },
+  "reading-the-quran-for-the-first-time": {
+   "focus_keyword": "first time, reader",
+   "title": "First Time Reading the Quran: What Happens",
+   "description": "First time: a first serious reading of the Quran often unsettles inherited assumptions. It can also reveal a… Read the argument."
+  },
+  "why-humans-believe-in-god": {
+   "focus_keyword": "humans believe in god, cognitive",
+   "title": "Why Do Humans Believe in God at All?",
+   "description": "Humans believe in god: cognitive accounts of belief explain aspects of how humans form religious judgments… Read the argument."
+  },
+  "apostasy-international-law": {
+   "focus_keyword": "apostasy international law, belief",
+   "title": "Apostasy, International Law and the Universal Declaration of Human Rights",
+   "description": "Apostasy international law: modern human-rights language highlights the difference between protecting public… Read the argument."
+  },
+  "inconsistent-revelations": {
+   "focus_keyword": "inconsistent revelations, original, messages",
+   "title": "Inconsistent Revelations: Why Do Prophets' Messages Differ?",
+   "description": "Inconsistent revelations: judaism, Christianity, and Islam each claim to carry authentic divine communication… Read the argument."
+  },
+  "the-islam-i-was-defending": {
+   "focus_keyword": "islam i was defending, tradition",
+   "title": "The Islam I Was Defending Did Not Exist",
+   "description": "Islam i was defending: many people discover that the Islam they argued for or against was partial, cultural… Read the argument."
+  },
+  "near-death-experiences": {
+   "focus_keyword": "near-death experiences, death",
+   "title": "Near-Death Experiences: Evidence for What?",
+   "description": "Hundreds of thousands of people report near-death experiences — tunnels of light, life reviews, encounters… Read the argument."
+  },
+  "apostasy-political-history": {
+   "focus_keyword": "apostasy political history, tradition, conditions",
+   "title": "Apostasy, Political History and Islamic Law",
+   "description": "Apostasy political history: apostasy law developed inside concrete state conditions. Its political history… Read the argument."
+  },
+  "finite-sins-infinite-punishment": {
+   "focus_keyword": "finite sins infinite punishment, objection",
+   "title": "Finite Sins, Infinite Punishment: Is Hell Proportionate?",
+   "description": "Finite sins infinite punishment: the proportionality objection to hell: no finite collection of wrong actions… Read the argument."
+  },
+  "how-muslims-leave-the-sociology": {
+   "focus_keyword": "muslims leave, social",
+   "title": "Muslims Leave Islam How? The Inner Journey",
+   "description": "Muslims leave: leaving Islam usually unfolds through a social and emotional process, not a single pure act of… Read the argument."
+  },
+  "why-create-knowing-suffering": {
+   "focus_keyword": "create knowing suffering, creation",
+   "title": "Create Knowing Suffering Would Follow? Why God Made Humanity",
+   "description": "Create knowing suffering: the creation problem: if God is omniscient, God knew before creating humanity the… Read the argument."
+  },
+  "doubt-permitted-in-islam": {
+   "focus_keyword": "doubt permitted in islam, tradition, truth",
+   "title": "Is Doubt Permitted in Islam?",
+   "description": "Doubt permitted in islam: many people are told — or assume — that doubt is a sign of weak faith, spiritual… Read the argument."
+  },
+  "religious-trauma": {
+   "focus_keyword": "religious trauma, mercy",
+   "title": "Religious Trauma: When Religion Hurts, and the God Question",
+   "description": "Religious trauma is real and should be named honestly. Its reality still does not decide the truth of Islam… Read the argument."
+  },
+  "shirk-unforgivable": {
+   "focus_keyword": "shirk",
+   "title": "Shirk: Why Is It the One Unforgivable Sin?",
+   "description": "The Quran states that God does not forgive shirk — associating partners with God. Every other sin may be… Read the argument."
+  },
+  "quran-in-arabic": {
+   "focus_keyword": "arabic",
+   "title": "Arabic: Why Is God's Final Message in Arabic?",
+   "description": "A universal revelation still has to come in a language. The Quran’s Arabic is part of its public form, its… Read the argument."
+  },
+  "universal-salvation": {
+   "focus_keyword": "universal salvation, mercy",
+   "title": "Universal Salvation: Why Does God Not Simply Forgive Everyone?",
+   "description": "Universal salvation has emotional force because mercy matters. Islam honors that force while refusing to… Read the argument."
+  },
+  "unanswered-prayer": {
+   "focus_keyword": "unanswered prayer, promise, experience, request",
+   "title": "Unanswered Prayer: If God Listens, Why No Response?",
+   "description": "Unanswered prayer wounds because prayer is personal. Islam answers by refusing magical guarantees while… Read the argument."
+  },
+  "religious-experience-neuroscience": {
+   "focus_keyword": "religious experience, instrument",
+   "title": "Religious Experience: Can Neuroscience Explain It?",
+   "description": "Temporal lobe stimulation can produce religious experiences. The \"God helmet\" generates feelings of presence… Read the argument."
+  },
+  "burden-of-proof": {
+   "focus_keyword": "burden of proof, positive, arguments",
+   "title": "Who Bears The Burden of Proof — The Theist or The Atheist?",
+   "description": "Burden of proof: russell's teapot: you cannot prove there isn't a teapot orbiting the sun, but that doesn't… Read the argument."
+  },
+  "evolution-explains-design": {
+   "focus_keyword": "evolution explains design, explain",
+   "title": "Evolution Explains Design? Then Is God Unnecessary?",
+   "description": "Evolution explains design: darwin's great insight: natural selection produces the appearance of design… Read the argument."
+  },
+  "god-as-psychological-projection": {
+   "focus_keyword": "psychological projection, belief, orientation",
+   "title": "Psychological Projection: Is God Just a Projection of Human Psychology?",
+   "description": "Psychological projection: freud argued that God is an idealised father figure — a projection of human… Read the argument."
+  },
+  "free-will-predestination": {
+   "focus_keyword": "free will, knowledge",
+   "title": "Free Will and Predestination: If God Knew Everything, Is My Choice Free?",
+   "description": "Free will: divine foreknowledge and human freedom appear to be in direct conflict. If God knew before your… Read the argument."
+  },
+  "euthyphro-dilemma": {
+   "focus_keyword": "euthyphro dilemma, nature",
+   "title": "The Euthyphro Dilemma: Is Goodness What God Commands?",
+   "description": "Plato's Euthyphro dilemma: either God commands things because they are good (making goodness independent of… Read the argument."
+  },
+  "divine-hiddenness": {
+   "focus_keyword": "divine hiddenness, belief, evidence",
+   "title": "Divine Hiddenness: If God Wants to Be Known, Why Is God Hidden?",
+   "description": "Divine hiddenness is a serious challenge. Islam answers by treating God’s signs as sufficient for… Read the argument."
+  },
+  "evolution-and-islam": {
+   "focus_keyword": "evolution and islam, creation, science",
+   "title": "Evolution and Islam: Does Human Evolution Contradict Islamic Theology?",
+   "description": "Evolution and islam: evolution describes how life diversified through God's immutable patterns in nature. The… Read the argument."
+  },
+  "hadith-reliability": {
+   "focus_keyword": "hadith reliability, tradition",
+   "title": "Hadith Reliability: How Reliable Is Hadith Science?",
+   "description": "Hadith reliability: hadith criticism is serious and necessary. So is recognizing that the Muslim science of… Read the argument."
+  },
+  "gharaniq-satanic-verses": {
+   "focus_keyword": "satanic verses, surah, revelation",
+   "title": "The Satanic Verses Incident: What Happened and Why It Matters",
+   "description": "Satanic verses: the gharānīq story claims Satan inserted praise of pagan goddesses into Prophetic recitation… Read the argument."
+  },
+  "banu-qurayza-early-violence": {
+   "focus_keyword": "banu qurayza, early",
+   "title": "Banu Qurayza: The Violence of Early Islam and What It Means",
+   "description": "The Banu Qurayza massacre, military raids, and assassinations attributed to early Islamic history are cited… Read the argument."
+  },
+  "slavery-in-islamic-sources": {
+   "focus_keyword": "slavery in islamic sources, moral",
+   "title": "Slavery in Islamic Sources: The Hardest Question",
+   "description": "Slavery in islamic sources: slavery is one of the hardest historical questions. The Islamic record makes most… Read the argument."
+  },
+  "women-in-islam": {
+   "focus_keyword": "women in islam, testimony, moral",
+   "title": "Women in Islam: God, Islamic Law and Divine Justice",
+   "description": "The hardest questions about women in Islamic law require context, legal structure, and moral proportion. They… Read the argument."
+  },
+  "aisha-age-marriage": {
+   "focus_keyword": "aisha age marriage, moral, historical",
+   "title": "Aisha, Age, Marriage: The Objection That Requires a Serious Answer",
+   "description": "Aisha age marriage: the objection about Aisha must be addressed seriously. The historical record, disputed… Read the argument."
+  },
+  "meccan-medinan-abrogation": {
+   "focus_keyword": "abrogation, truth",
+   "title": "Abrogation: The Quran's Two Voices in Mecca and Medina",
+   "description": "Abrogation: the Quran does not contain two contradictory moral voices. Meccan and Medinan revelation reflect… Read the argument."
+  },
+  "practising-without-belief": {
+   "focus_keyword": "without belief, practice",
+   "title": "Practising Without Belief: What Ritual Means When Faith Is Gone",
+   "description": "Without belief: many people who have left Islam in their hearts continue to perform Ramadan, Eid, and prayer… Read the argument."
+  },
+  "islam-and-enlightenment": {
+   "focus_keyword": "enlightenment, truth",
+   "title": "Enlightenment: Why Has Islam Not Had One?",
+   "description": "Islam does not need a European-style Enlightenment to justify reason, conscience, or reform. Its own… Read the argument."
+  },
+  "kill-him-who-changes-religion": {
+   "focus_keyword": "kill him who changes, hadith, belief",
+   "title": "The Hadith \"Kill Him Who Changes His Religion\" — A Direct Response",
+   "description": "Kill him who changes: the hadith on apostasy is real, yet its scope was never as simple as critics suggest… Read the argument."
+  },
+  "no-compulsion-in-religion": {
+   "focus_keyword": "no compulsion in religion, verse",
+   "title": "\"There Is No Compulsion In Religion\" — Who Does It Actually Protect?",
+   "description": "No compulsion in religion: quran 2:256 remains a governing principle. Faith in Islam rests on clarity and… Read the argument."
+  },
+  "scale-of-leaving": {
+   "focus_keyword": "scale of leaving, doubt",
+   "title": "The Scale of Leaving: Doubt in the Muslim World",
+   "description": "Scale of leaving: the doubter reads privately, clears the history, and assumes they are an isolated anomaly… Read the argument."
+  },
+  "social-cost-of-leaving": {
+   "focus_keyword": "social cost of leaving, community, family",
+   "title": "The Social Cost of Leaving: What No One Tells You",
+   "description": "Social cost of leaving: the intellectual case for leaving Islam is one thing. The social reality is another… Read the argument."
+  },
+  "god-personal-or-deist": {
+   "focus_keyword": "god personal or deist, cause",
+   "title": "God, Personal or Deist? A Person or Just a First Cause?",
+   "description": "God personal or deist: the cosmological and fine-tuning arguments establish that there is a cause of the… Read the argument."
+  },
+  "quran-written-by-humans": {
+   "focus_keyword": "written by humans, prophet, hypothesis",
+   "title": "Written by Humans? How We Know Muhammad Did Not Author the Quran",
+   "description": "Written by humans: the claim that Muhammad authored the Quran sounds simple until the text itself is… Read the argument."
+  },
+  "post-muslim-identity": {
+   "focus_keyword": "identity, tradition",
+   "title": "Identity After Islam: Can You Leave and Still Be Yourself?",
+   "description": "Identity: the fear behind the departure from Islam is often not theological but existential: who am I if I am… Read the argument."
+  },
+  "anger-at-religion": {
+   "focus_keyword": "anger at religion, tradition, religious",
+   "title": "Anger at Religion: What the Anger Phase Is and What It Means",
+   "description": "Anger at religion: people who leave religion often go through a period of intense anger at what they left… Read the argument."
+  },
+  "scientific-miracles-quran": {
+   "focus_keyword": "scientific miracles, signs, revelation",
+   "title": "What About Scientific Miracles In The Quran?",
+   "description": "Scientific miracles: claims about science in the Quran are often mishandled. Even so, a careful cumulative… Read the argument."
+  },
+  "mercy-harsh-passages": {
+   "focus_keyword": "harsh passages, mercy",
+   "title": "Harsh Passages: If God Is Merciful, Why Are Some Verses So Hard?",
+   "description": "Harsh passages: the tension between the God described as Al-Rahman, Al-Rahim and specific Quranic passages… Read the argument."
+  },
+  "the-dual-life": {
+   "focus_keyword": "dual life, performance, honest",
+   "title": "The Dual Life: The Weight of Hidden Doubt",
+   "description": "Dual life: many people who have serious doubts about Islam continue to perform Muslim identity in public… Read the argument."
+  },
+  "do-good-non-muslims-go-to-hell": {
+   "focus_keyword": "good non-muslims, message, tradition",
+   "title": "Do Good Non-Muslims Go to Hell? What Happens to Those Who Never Heard",
+   "description": "Good non-muslims: the moral intuition behind this question is sound: it seems unjust for someone to be… Read the argument."
+  },
+  "religion-is-political-control": {
+   "focus_keyword": "political control, religious",
+   "title": "Political Control: Is Religion Just a Tool of Power?",
+   "description": "Political control: religious institutions have been used to control populations, silence dissent, and protect… Read the argument."
+  },
+  "left-because-of-specific-problems": {
+   "focus_keyword": "specific problems, tradition",
+   "title": "Specific Problems in the Sources: Why I Left",
+   "description": "Specific problems: specific textual, historical, and ethical problems in Islamic sources are real and… Read the argument."
+  },
+  "faith-was-just-conditioning": {
+   "focus_keyword": "faith was just conditioning, belief",
+   "title": "Faith Was Just Conditioning? Examining the Claim",
+   "description": "Faith was just conditioning: the anger phase after leaving religion often produces a specific thought… Read the argument."
+  },
+  "apostasy-and-freedom": {
+   "focus_keyword": "apostasy, tradition, community",
+   "title": "Apostasy: Why Can't People Leave Islam Without Consequences?",
+   "description": "The abuse of apostasy rules has been real. The stronger Islamic case distinguishes private conscience from… Read the argument."
+  },
+  "why-does-god-need-compelled-worship": {
+   "focus_keyword": "compelled worship, objection, worshipper, conscious",
+   "title": "Compelled Worship: Why Would God Need to Be Worshipped?",
+   "description": "Compelled worship: if God is complete, unlimited, and in need of nothing — why does God require worship? The… Read the argument."
+  },
+  "why-hellfire": {
+   "focus_keyword": "hellfire, mercy",
+   "title": "Hellfire: Why Would God Send Anyone There?",
+   "description": "Hellfire: if God is merciful, why does the concept of eternal punishment exist at all? The question deserves… Read the argument."
+  },
+  "ethics-morality": {
+   "focus_keyword": "ethics, facts",
+   "title": "Ethics and Morality Without Religion: What Grounds Them?",
+   "description": "The most common secular objection to religious ethics is also the one that least survives examination: that… Read the argument."
+  },
+  "science-and-religion": {
+   "focus_keyword": "science and religion, philosophical, nature, knowledge",
+   "title": "Science and Religion: Does Science Provide All the Answers?",
+   "description": "Science and religion: science is one of the greatest tools human beings have ever developed. It is also… Read the argument."
+  },
+  "problem-of-evil-response": {
+   "focus_keyword": "problem of evil response, suffering",
+   "title": "Problem of Evil Response: Answering the Strongest Objection",
+   "description": "Problem of evil response: it is the objection that stays. Even after the arguments for God's existence are… Read the argument."
+  },
+  "does-god-exist": {
+   "focus_keyword": "god exist, universe",
+   "title": "Does God Exist? The Case for a Higher Power",
+   "description": "God exist: not the God of bad religion or convenient tradition — but the God the evidence from physics… Read the argument."
+  },
+  "existence-come-out-of-nothing": {
+   "focus_keyword": "existence come out of nothing, universe",
+   "title": "Can Existence Come Out Of Nothing?",
+   "description": "Existence come out of nothing: lawrence Krauss said the universe came from nothing. Stephen Hawking said… Read the argument."
+  },
+  "why-islam-not-christianity": {
+   "focus_keyword": "islam not christianity, revelation, principle",
+   "title": "Islam, Not Christianity: Why Choose Islam Over Another Religion?",
+   "description": "Islam not christianity: once God is taken seriously, the major monotheistic claims are no longer equal… Read the argument."
+  },
+  "god-of-gaps": {
+   "focus_keyword": "god of gaps, arguments, signs",
+   "title": "God of Gaps: Is God Just an Explanation for What We Do Not Know?",
+   "description": "God of gaps: the God of the gaps objection says that every time science explains something previously… Read the argument."
+  },
+  "religion-cause-harm": {
+   "focus_keyword": "religion cause harm, religious",
+   "title": "Does Religion Cause Harm? Has It Done Enough Damage?",
+   "description": "Religion cause harm: religion has been abused grievously. That history does not disprove God, and it does not… Read the argument."
+  },
+  "purpose-of-life": {
+   "focus_keyword": "purpose of life, moral, existence",
+   "title": "What Is the Purpose of Life?",
+   "description": "Purpose of life: the question of purpose is either the most important question a conscious being can face, or… Read the argument."
+  },
+  "islam-and-science": {
+   "focus_keyword": "islam and science, tradition",
+   "title": "Islam and Science: The Scientific Tradition",
+   "description": "Islam and science: islam has deep reasons to welcome rational inquiry because the created order is itself a… Read the argument."
+  },
+  "quran-historical-reliability": {
+   "focus_keyword": "historical reliability, written, prophet",
+   "title": "The Quran's Historical Reliability: How It Was Preserved",
+   "description": "Historical reliability: the Quran’s preservation history is unusually strong by ancient standards and remains… Read the argument."
+  },
+  "quran-literary-argument": {
+   "focus_keyword": "literary argument, challenge",
+   "title": "The Quran as Literary Argument",
+   "description": "Literary argument: the Quran’s literary challenge is more than rhetoric. It remains part of the cumulative… Read the argument."
+  },
+  "big-bang-creation": {
+   "focus_keyword": "big bang, beginning",
+   "title": "The Big Bang: The Universe Had a Beginning",
+   "description": "Big bang: for most of Western scientific history, the dominant assumption was an eternal universe — one that… Read the argument."
+  },
+  "multiverse-objection": {
+   "focus_keyword": "multiverse",
+   "title": "Does the Multiverse Explain Away Fine-Tuning?",
+   "description": "The multiverse is the most popular scientific response to the fine-tuning argument. If enough universes exist… Read the argument."
+  },
+  "science-limits": {
+   "focus_keyword": "limits, knowledge",
+   "title": "The Limits of Science: What Science Cannot Tell You",
+   "description": "Limits: science is one of the greatest achievements of human civilisation. It is also frequently claimed to… Read the argument."
+  },
+  "natural-evil": {
+   "focus_keyword": "natural evil, suffering",
+   "title": "Natural Evil: Earthquakes, Cancer, and a Good God",
+   "description": "Moral evil can be partly explained by free will. Natural evil — disease, disaster, the suffering written into… Read the argument."
+  },
+  "problem-of-evil": {
+   "focus_keyword": "problem of evil, existence",
+   "title": "The Problem of Evil: If God Is Good, Why Is There Suffering?",
+   "description": "The problem of evil is the most emotionally powerful objection to theism, and the one that deserves the most… Read the argument."
+  },
+  "objective-morality": {
+   "focus_keyword": "objective morality, relativism, merely",
+   "title": "Objective Morality: Is Morality Just Opinion?",
+   "description": "Objective morality: moral relativism — the view that there are no universal moral truths, only cultural… Read the argument."
+  },
+  "ethics-without-god": {
+   "focus_keyword": "ethics without god, secular",
+   "title": "Can You Ground Ethics Without God?",
+   "description": "Ethics without god: the secular humanist argues that we need no God to live ethically — that compassion… Read the argument."
+  },
+  "moral-argument-god": {
+   "focus_keyword": "moral argument, facts",
+   "title": "The Moral Argument: Where Do Moral Facts Live?",
+   "description": "Moral argument: most people behave as though moral facts are real — as though torturing children for… Read the argument."
+  },
+  "consciousness-hard-problem": {
+   "focus_keyword": "hard problem, consciousness",
+   "title": "The Hard Problem: What Neuroscience Cannot Explain About Consciousness",
+   "description": "Hard problem: neuroscience can tell us which brain regions activate during different experiences. It cannot… Read the argument."
+  },
+  "argument-from-reason": {
+   "focus_keyword": "argument from reason, reasoning, faculties",
+   "title": "The Argument from Reason: If Your Brain Is Just Atoms, Can You Trust It?",
+   "description": "Argument from reason: the naturalist claims that the human mind is entirely the product of blind evolutionary… Read the argument."
+  },
+  "ontological-argument": {
+   "focus_keyword": "ontological argument, possible",
+   "title": "The Ontological Argument: The God Who Cannot Not Exist",
+   "description": "The ontological argument for God's existence has been dismissed and reformulated for nine centuries. In its… Read the argument."
+  },
+  "fine-tuning-universe": {
+   "focus_keyword": "fine-tuning, universe",
+   "title": "Fine-Tuning: The Universe Is Absurdly Specific",
+   "description": "Fine-tuning: the physical constants of the universe are set to values that permit life with a precision that… Read the argument."
+  },
+  "why-does-anything-exist": {
+   "focus_keyword": "anything exist, universe",
+   "title": "Why Does Anything Exist Rather Than Nothing?",
+   "description": "Anything exist: the most basic question in philosophy is also the one most people never ask. Why is there… Read the argument."
+  },
+  "haman-pharaoh-esther-anachronism": {
+   "focus_keyword": "haman",
+   "title": "Did the Quran Move Haman From Persia to Egypt?",
+   "description": "Haman: the Quran names him as Pharaoh's official, while Esther places a Haman in Persia. Testing the charge… Read the argument."
+  },
+  "is-allah-a-moon-god": {
+   "focus_keyword": "moon god, allah",
+   "title": "Is Allah a Moon God, or the God of Abraham?",
+   "description": "Moon god? The claim that Allah began as an Arabian moon deity or the idol Hubal fails on the evidence and on… Read the argument."
+  },
+  "was-muhammad-possessed-first-revelation": {
+   "focus_keyword": "first revelation, report, prophet",
+   "title": "Was Muhammad Possessed? The First Revelation and the Pause",
+   "description": "The first revelation left Muhammad shaken, and one late report speaks of despair. The sources answer the… Read the argument."
+  },
+  "did-muhammad-order-critics-killed": {
+   "focus_keyword": "critics killed, prophet, instruction, criticism",
+   "title": "Critics Killed on Muhammad's Order? Kaʿb, Asmāʾ and Abū ʿAfak",
+   "description": "Critics killed on the Prophet's order? Two of the three famous reports are fabricated; the third concerns… Read the argument."
+  },
+  "jesus-word-of-god-spirit-quran": {
+   "focus_keyword": "word of god, jesus, titles",
+   "title": "Word of God: If the Quran Calls Jesus This, Is He Divine?",
+   "description": "Word of God and spirit from Him: the Quran's titles for Jesus, read in the verses that give them, deny his… Read the argument."
+  },
+  "muhammad-in-the-bible-deuteronomy-paraclete": {
+   "focus_keyword": "muhammad in the bible, prophet",
+   "title": "Muhammad in the Bible: Is He Foretold by Moses and Jesus?",
+   "description": "Muhammad in the Bible: Deuteronomy 18 and John's Paraclete weighed fairly, with the strongest case on each… Read the argument."
+  },
+  "prophet-marriages-zaynab-safiyyah-mariyah": {
+   "focus_keyword": "zaynab, prophet",
+   "title": "The Prophet's Marriages: Zaynab, Ṣafiyyah and Māriyah",
+   "description": "Zaynab, Ṣafiyyah and Māriyah: the three marriages critics cite most, read on the sources and on the Quran's… Read the argument."
+  },
+  "quran-contradictions-method": {
+   "focus_keyword": "quran contradictions, contradiction, burdens",
+   "title": "Quran Contradictions: How to Test an Alleged Contradiction",
+   "description": "Quran contradictions lists run to hundreds. Four tests, applied to the most famous examples, show how most… Read the argument."
+  },
+  "dhul-qarnayn-sun-muddy-spring": {
+   "focus_keyword": "dhul-qarnayn, setting",
+   "title": "Dhul-Qarnayn and the Sun Setting in a Muddy Spring",
+   "description": "Dhul-Qarnayn and the muddy spring: the grammar of 18:86, the classical commentators and the Alexander legend. Read the argument."
+  },
+  "selective-hadith-embarrassing-reports": {
+   "focus_keyword": "selective hadith, reports, report",
+   "title": "Selective Hadith Use? Do Muslims Reject Only Embarrassing Reports?",
+   "description": "Selective hadith use? The stoned monkey and the fly in the drink show the scholars applying fixed, published… Read the argument."
+  },
+  "crucifixion-quran-4-157": {
+   "focus_keyword": "crucifixion, jesus",
+   "title": "Crucifixion: What Quran 4:157 Claims and What History Can Show",
+   "description": "Crucifixion and Quran 4:157: what historians can establish, what the verse denies, and where the real dispute… Read the argument."
+  }
+ }
+}

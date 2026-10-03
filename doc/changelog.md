@@ -6,6 +6,94 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.6.38] — October 2026
+
+### Content release: batch 009 and a strengthening pass
+
+**New articles (batch 009, 142 in total)**
+
+| Order | Slug | Claim | Topic / subcategory |
+|---|---|---|---|
+| 138 | `prophet-marriages-zaynab-safiyyah-mariyah` | C11 | Rights & Freedom / The Harder Accusations |
+| 139 | `quran-contradictions-method` | C09 | The Quran & Its Sources / Difficult Passages & Doctrines |
+| 140 | `dhul-qarnayn-sun-muddy-spring` | C07 (second half) | The Quran & Its Sources / Difficult Passages & Doctrines |
+| 141 | `selective-hadith-embarrassing-reports` | C21 | The Quran & Its Sources / History & Hadith |
+| 142 | `crucifixion-quran-4-157` | C18 | History, Context & Comparison / The Specific Charges |
+
+**Strengthening pass (new sections in existing articles)**
+- `quran-historical-reliability`: why ʿUthmān burned the other copies (Ṣaḥīḥ al-Bukhārī 4987; Ibn Masʿūd's objection, Jāmiʿ al-Tirmidhī 3104).
+- `meccan-medinan-abrogation`: can an eternal word be cancelled? (2:106, 16:101).
+- `quran-cosmology-flat-earth-seven-heavens`: the words for "spread out" (88:20, 20:53).
+- `islamic-dilemma-quran-and-bible`: whether 15:9 promises to preserve the earlier scriptures (15:6, 15:9, 5:44).
+- `was-muhammad-who-he-claimed-to-be`: the biblical tests for a false prophet (Deuteronomy 13:1-3, 1 John 2:22).
+- `quran-bible-stories`: stories from outside the Bible (3:49, 19:23, 18:9).
+- Reviewed and left unchanged: `aisha-age-marriage` and `gharaniq-satanic-verses` already address the specific forms; `quran-variant-readings-qiraat` is covered by the new section in the reliability article.
+
+**Verification.** 31 further Quran verses from api.alquran.cloud; Ṣaḥīḥ al-Bukhārī 3320, 3849, 4787, 4987, 5086 and 7420 and Jāmiʿ al-Tirmidhī 3104 from the fawazahmed0 hadith API (Arabic and English); Deuteronomy 13:1-3 and 1 John 2:22 from bible-api.com (KJV); Ibn Kathīr and al-Jalālayn on 18:86 checked against published editions online.
+
+**Site integration.** 15 reviewed Pexels images; Rank Math fields in `seo.json`; five crosslink phrases; archive subcategories; long paragraphs split. Rank Math 1.0.279 with Content AI off: new articles 92 to 94, strengthened articles 92 to 95.
+
+---
+
+## [2.6.37] — October 2026
+
+### Content release: batch 008 (six articles, 137 in total)
+
+**Source.** Chosen from the analysis of the Answering Islam corpus (23 claims register) by fit with this site: charges an honest inquirer is likely to meet, not already covered by the existing 131 articles. The articles are original responses; no text from the corpus is reproduced.
+
+| Order | Slug | Claim | Topic / subcategory |
+|---|---|---|---|
+| 132 | `haman-pharaoh-esther-anachronism` | C07 | The Quran & Its Sources / Difficult Passages & Doctrines |
+| 133 | `is-allah-a-moon-god` | C16 | History, Context & Comparison / The Specific Charges |
+| 134 | `was-muhammad-possessed-first-revelation` | C14 | The Quran & Its Sources / Authorship & Prophethood |
+| 135 | `did-muhammad-order-critics-killed` | C12 | Rights & Freedom / The Harder Accusations |
+| 136 | `jesus-word-of-god-spirit-quran` | C22 | History, Context & Comparison / The Specific Charges |
+| 137 | `muhammad-in-the-bible-deuteronomy-paraclete` | C15 | The Quran & Its Sources / Authorship & Prophethood |
+
+**Verification.** All 23 Quran verses fetched from api.alquran.cloud (Uthmani text with Sahih International; one typographical slip in the Sahih text of 41:37, "prostate", corrected to "prostrate"). Ṣaḥīḥ al-Bukhārī 3, 4037, 5763 and 6982 fetched from the fawazahmed0 hadith API in Arabic and English; the phrase fīmā balaghanā in 6982 checked in the Arabic. Bible quotations from bible-api.com (King James Version). Scholarly judgements on the Asmāʾ bint Marwān report (Ibn ʿAdī, Ibn al-Jawzī, al-Albānī) and Ibn Ḥajar's comment on al-Zuhrī's addition checked against published secondary sources.
+
+**Candour.** The Haman article declines to rely on the disputed Bucaille inscription; the Bible prophecy article states the Christian reading of Deuteronomy 18:15 and John 14:26 at full strength and concludes that both texts are disputed.
+
+**Site integration.** 18 Pexels images reviewed by eye (three per article, lead image as featured image); Rank Math focus keywords, SEO titles and descriptions in `seo.json`; eight crosslink phrases (moon god, Hubal, Haman, cave of Hira, Kaʿb ibn al-Ashraf, Paraclete, Deuteronomy 18, spirit from Him); archive subcategory map; manifest checksums. Rank Math 1.0.279 scores with Content AI off: 92 to 94.
+
+---
+
+## [2.6.36] — October 2026
+
+### Rank Math integration, content compliance, sync safety
+
+**Fixed (critical)**
+- **Content sync could trash articles.** When one batch file failed its checksum, the loader skipped the batch and the orphan pass then moved every article from that batch to the trash (126 of 131 in testing). The orphan pass now runs only when every batch loaded cleanly.
+
+**Rank Math**
+- **New `inc/ce-rankmath.php`.** Rank Math is authoritative for title, description, canonical and JSON-LD; the theme fills only empty values through Rank Math's own filters. The theme no longer prints a second JSON-LD block when Rank Math is active, which removes the duplicate WebSite and Organization nodes; theme Article and BreadcrumbList nodes are added to Rank Math's graph only when it has none. Verified: one title, one description, one canonical, one Open Graph set and one JSON-LD block per page.
+- **Seeded fields.** New `inc/articles/seo.json` gives every article a focus keyword (with related terms), an SEO title and a description of at most 130 characters including a call to action. They are written to Rank Math's fields only where empty.
+- **Accurate content analysis.** `assets/js/ce-rankmath-admin.js` lets Rank Math analyse the article as published (figures, links, images) while the editor text is unchanged, comparing text content so the block editor's re-serialised markup does not break the match. The theme's table of contents is declared to Rank Math.
+- **Theme refactor.** `ce_get_meta_description()`, `ce_get_canonical_url()` and `ce_schema_nodes()` return values for reuse; `ce_content_synced` action added at the end of a sync.
+
+**Content (all 131 articles)**
+- 64 paragraphs over 120 words split at a sentence break.
+- 262 new in-body images from Pexels (two per article), filtered and reviewed by eye: six first picks replaced (an identifiable man praying, a path with a cross, a crowd at prayer on the cult article, a portrait, an ambiguous photograph and a refugee scene). Each article now carries three figures and a featured image.
+- Lead-figure captions carry the SEO title where the opening paragraph lacks the keyword (96 articles); lead-image alt text names the article's subject.
+
+**Result.** Rank Math 1.0.279 run on every article in the block editor: 90 to 95 with the Content AI module off (all 131 at 90 or above); 85 to 90 with it on.
+
+---
+
+## [2.6.35] — September 2026
+
+### Automatic lead images
+
+- **New `inc/ce-media-auto.php`.** An hourly WP-Cron task finds published articles with no featured image and no figure, searches Pexels from the two most specific words of the title (then the topic), and takes the first photograph that passes the site's rules, is at least 1,600 pixels wide and has not been used or rejected before. It is imported, credited, set as the featured image and shown after the first paragraph at once. On the title search the photograph's description must mention the subject, which removed off-topic results in testing.
+- **Image rules.** Candidates whose description mentions other faiths' symbols, alcohol, pork, weapons, blood, protests, revealing clothing, gambling, tattoos or skulls are rejected. On sensitive articles (leaving Islam, trauma, abuse, violence, sexuality, mental illness, prison, cult accusations and similar) any photograph of people is rejected and searches favour landscapes. In testing the filter caught a Bible photograph and the relevance check replaced a toy-blocks photograph found for a question about hospitals.
+- **Captions** are the first sentence of the photograph's own description, without stock-site marketing phrases.
+- **Corrections.** Theme Options → Media lists every automatic choice with its thumbnail and caption, with **Replace** (next acceptable photograph) and **Remove** (leave the article without one). Rejected photographs are never chosen again.
+- **No clicks after deploys.** The same cron run imports registered images from `media.json`, ten at a time.
+- **Settings:** Theme Options → Media → "Find and publish lead images for new articles automatically" (off by default) and "Pexels API key" (password field; stored in the database only). Theme Options gains a password field type.
+- Article figures render after shortcode-free content sync, so a batch update never removes an automatic image.
+
+---
+
 ## [2.6.34] — September 2026
 
 ### Lead images for every article

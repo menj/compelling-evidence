@@ -202,6 +202,8 @@ $active_term = $is_filtered ? get_queried_object() : null;
           'Authorship & Prophethood' => [
               'quran-written-by-humans',
               'was-muhammad-who-he-claimed-to-be',
+              'was-muhammad-possessed-first-revelation',
+              'muhammad-in-the-bible-deuteronomy-paraclete',
               'inconsistent-revelations',
               'gharaniq-satanic-verses',
           ],
@@ -213,6 +215,9 @@ $active_term = $is_filtered ? get_queried_object() : null;
               'quran-cosmology-flat-earth-seven-heavens',
               'quran-creation-accounts',
               'moon-splitting',
+              'haman-pharaoh-esther-anachronism',
+              'dhul-qarnayn-sun-muddy-spring',
+              'quran-contradictions-method',
           ],
           'History & Hadith' => [
               'hadith-authenticity',
@@ -221,6 +226,7 @@ $active_term = $is_filtered ? get_queried_object() : null;
               'banu-qurayza-early-violence',
               'did-islam-spread-by-the-sword',
               'aisha-age-marriage',
+              'selective-hadith-embarrassing-reports',
           ],
       ],
       'Science & Evidence' => [
@@ -262,6 +268,8 @@ $active_term = $is_filtered ? get_queried_object() : null;
               'islam-built-on-fear',
               'is-islam-a-cult',
               'is-islam-compatible-with-western-democracy',
+              'did-muhammad-order-critics-killed',
+              'prophet-marriages-zaynab-safiyyah-mariyah',
           ],
       ],
       'The Inner Journey' => [
@@ -317,6 +325,9 @@ $active_term = $is_filtered ? get_queried_object() : null;
               'islam-prison-conversion',
               'is-islam-a-religion-of-peace-terrorism-data',
               'does-the-quran-teach-hatred-of-jews',
+              'is-allah-a-moon-god',
+              'jesus-word-of-god-spirit-quran',
+              'crucifixion-quran-4-157',
           ],
       ],
       'The Problem of Evil' => [

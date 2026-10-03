@@ -6,7 +6,7 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.6.34
+Version: 2.6.38
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Template: twentytwentyfive
@@ -101,6 +101,29 @@ Appearance > CE Theme Options — 8 tabs:
                   Retired URLs (410 Gone path prefixes)
 
 == Changelog ==
+
+= 2.6.38 — October 2026 =
+Content release: five new articles (batch 009, 142 in total) on the Prophet's marriages, alleged
+Quran contradictions, Dhul-Qarnayn and the muddy spring, the selective use of hadith, and the
+crucifixion; six existing articles gain sections answering the specific forms of each objection.
+
+= 2.6.37 — October 2026 =
+Content release: six new articles (batch 008, 137 in total) answering the strongest recurring
+charges in Christian polemic: Haman and Esther, the moon god claim, the first revelation and the
+possession charge, the killing of critics, Jesus as Word of God, and Muhammad in the Bible.
+
+= 2.6.36 — October 2026 =
+Rank Math integration and content compliance. Rank Math owns titles, descriptions, canonicals and
+schema; the theme fills only empty values. Every article gets a focus keyword, SEO title and
+description in Rank Math's empty fields, two more images, shorter paragraphs and keyword-bearing
+captions. Tested with Rank Math 1.0.279: all 131 articles score 90 to 95 with the Content AI
+module off. Fixes a content-sync fault that could trash every article in a batch.
+
+= 2.6.35 — September 2026 =
+Automatic lead images. Every hour, new articles without an image get a Pexels photograph chosen
+from their title, checked against the site's image rules, imported, credited and published as the
+lead figure and featured image. Registered images also import on the same schedule, so deploys
+need no clicks. Theme Options → Media lists each automatic choice with Replace and Remove.
 
 = 2.6.34 — September 2026 =
 Every one of the 131 articles now opens with a licensed lead image (124 from Pexels, 7 from

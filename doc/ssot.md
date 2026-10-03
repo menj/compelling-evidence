@@ -1,7 +1,7 @@
 # SSOT — Single Source of Truth
 ## Compelling Evidence Theme — System Design, Naming Conventions, Configuration Rules
 
-**Version:** 2.6.34  
+**Version:** 2.6.38  
 **Location:** `/doc/SSOT.md`
 
 This document is authoritative. When any other file conflicts with a rule stated here, this document is correct and the other file should be updated.
@@ -430,7 +430,7 @@ The unified crosslink + tooltip engine (`ce-crosslinks.php`) enforces these rule
 
 ---
 
-*Last updated: September 2026 (v2.6.34)*
+*Last updated: October 2026 (v2.6.38)*
 ---
 
 ## 17. Feed Redirector (`inc/class-ce-feed-redirector.php`)
@@ -575,7 +575,14 @@ Reference documents: Google's SEO Starter Guide and Google's list of structured 
 
 **Choosing images.** No identifiable person on articles about leaving Islam, trauma, honour killings, sexuality, mental illness, prison or cult accusations; use objects and landscapes there. No symbols of another religion unless the article is about that scripture. Captions describe what the picture shows; alt text comes from the source's own description where it is accurate. Every pick is reviewed by eye before registration.
 
-**API keys.** The Pexels API key is used only when sourcing images and is never stored in the theme or the registry.
+**API keys.** The Pexels API key lives only in the `ce_pexels_key` option (Theme Options → Media), never in the theme files or the registry.
+
+**Automatic images (since 2.6.35, `inc/ce-media-auto.php`).** Hourly cron `ce_media_auto_cron`, plus Theme Options → Media → Run now. Each run imports up to ten registered images, then, when "Find and publish lead images" is on, places images on up to five published articles that have no featured image and no `[ce_figure]`.
+- *Query:* the two most specific words of the title (stop words and question words removed); then the article's topic; then a safe fallback. On the title query the photograph's own description must mention one of those words.
+- *Rules:* `ce_media_auto_banned_words()` (other faiths' symbols, alcohol, pork, weapons, blood, protests, revealing clothing, gambling, tattoos, skulls) rejects any candidate whose description contains them; on sensitive articles (`ce_media_auto_sensitive_words()`: leaving, doubt, trauma, abuse, violence, honour, sexuality, mental illness, jinn, prison, cult, control, fear, anger, terror, hijab, women, slavery, marriage) any candidate describing people is rejected and searches add "landscape". Both lists are filterable. Images narrower than 1,600 pixels and photographs already used or rejected are skipped.
+- *Publication:* the entry goes to the `ce_media_auto_registry` option (merged into the registry), is imported, becomes the featured image, and is shown after the first paragraph by a `the_content` filter (`_ce_auto_figure`, `_ce_auto_caption` post meta), so article sync never overwrites it. The caption is the first sentence of the photograph's own description.
+- *Corrections:* Replace deletes the image, records the Pexels id in `ce_media_auto_rejected` and picks the next acceptable photograph; Remove deletes it and adds the article to `ce_media_auto_skip`, so it is not filled again. Articles for which no acceptable photograph exists are also skipped.
+- *Limits:* the rules read the stock site's own description, which can miss what is in the picture; captions are descriptive, never argumentative. Review the list in Theme Options → Media after each new batch.
 
 ## 26. Plugins: native or not (since 2.6.33)
 
@@ -583,4 +590,27 @@ Reference documents: Google's SEO Starter Guide and Google's list of structured 
 - **Pretty Search Permalinks (wp-seo-search)** → replaced by `inc/ce-search-permalinks.php` (Theme Options → Links & Tooltips → Search URLs); the theme steps aside if the plugin is still active.
 - **Contact Form 7** and **Contact Form CFDB7** → stay plugins (forms and stored messages must survive a theme change). The theme styles CF7 forms (`assets/css/ce-cf7.css`) and loads CF7 scripts only on pages containing a form (`inc/ce-plugin-compat.php`).
 - **WPS Hide Login** → stays a plugin: the login URL is a security control and must not depend on the active theme.
+
+---
+
+## 27. Rank Math (since 2.6.36)
+
+**Precedence.** Where Rank Math and the theme overlap, Rank Math wins; the theme supplies a value only where Rank Math's is empty (`inc/ce-rankmath.php`).
+- Title, meta description, canonical: printed by Rank Math. Empty values are filled through `rank_math/frontend/title`, `rank_math/frontend/description` and `rank_math/frontend/canonical` from `ce_get_meta_description()` and `ce_get_canonical_url()`.
+- JSON-LD: Rank Math's graph is the only block. `ce_rankmath_json_ld()` (`rank_math/json_ld`) adds theme nodes (Article, BreadcrumbList, CollectionPage, WebSite, Organization) only when no node of that family is present. `ce_schema_nodes()` builds the nodes; `ce_schema_jsonld()` prints them only without Rank Math.
+- robots.txt, sitemaps, Open Graph: Rank Math only.
+
+**Article SEO data.** `inc/articles/seo.json` holds, per article slug, `focus_keyword` (primary keyword first, then related terms already present in the text), `title` and `description` (130 characters including a call to action). `ce_rankmath_fill_empty_fields()` writes them to `rank_math_focus_keyword`, `rank_math_title`, `rank_math_description` only where empty, after every content sync and once whenever seo.json changes. Editor changes in Rank Math are never overwritten.
+
+**Keyword rules.** The primary keyword is a contiguous part of the slug (Rank Math's URL test), starts the SEO title or sits in its first half, appears in the description and within the first 10 percent of the text (the lead figure caption carries the SEO title where the opening paragraph does not), and in the lead image's alt text. Related keywords bring the combined density between 1.0 and 2.5 percent. No keyword is used twice.
+
+**Content analysis.** Rank Math scores editor text. `assets/js/ce-rankmath-admin.js` hooks `rank_math_content` and, while the editor text matches the saved article, gives the analysis the published article body (figures, links, lead image), then calls `rankMathEditor.refresh('content')`. `rank_math/metabox/post/values` declares the theme's table of contents (`assessor.hasTOCPlugin`) for articles with two or more H2 headings.
+
+**Scores (Rank Math 1.0.279, all 131 articles, analysed in the block editor).** With the Content AI module off: 90 to 95. With it on: 85 to 90, because its 5 points are earned only by using Rank Math's paid Content AI. Points still lost by design: content length (articles are 650 to 1,700 words; Rank Math wants 2,500), number in title, and on some titles the sentiment or power-word tests. Two slugs exceed Rank Math's URL length; slugs are not changed.
+
+**Images.** Each article now has three in-body figures (lead, middle, late), plus the featured image: 393 registered images. Rank Math's media test needs four images (counting the featured image) for full marks.
+
+## 28. Content Sync Safety (since 2.6.36)
+
+The orphan pass (trashing articles no longer in the JSON) runs only when the loader reports no errors. Before 2.6.36, one batch failing its checksum removed that batch from the article list and the orphan pass trashed every article in it. After editing any batch file, recompute its checksum in `manifest.json`.
 

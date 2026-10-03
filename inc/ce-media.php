@@ -35,9 +35,9 @@ defined( 'ABSPATH' ) || exit;
 /**
  * All registered media, keyed by id.
  */
-function ce_media_registry(): array {
+function ce_media_registry( bool $refresh = false ): array {
 	static $registry = null;
-	if ( null !== $registry ) {
+	if ( null !== $registry && ! $refresh ) {
 		return $registry;
 	}
 	$registry = [];
@@ -47,6 +47,11 @@ function ce_media_registry(): array {
 		if ( is_array( $data ) && isset( $data['media'] ) && is_array( $data['media'] ) ) {
 			$registry = $data['media'];
 		}
+	}
+	// Entries chosen automatically for new articles (inc/ce-media-auto.php).
+	$auto = get_option( 'ce_media_auto_registry', [] );
+	if ( is_array( $auto ) ) {
+		$registry = array_merge( $auto, $registry );
 	}
 	return $registry;
 }

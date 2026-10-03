@@ -404,8 +404,16 @@ function ce_sync_article_content( bool $force_run = false ) {
     // Note: Only NEW slugs are valid. Old slugs should have been renamed; any remaining
     // old-slug articles are duplicates that need to be trashed.
     $valid_slugs = array_column( $articles, 'slug' );
-    
-    $orphans = get_posts([
+
+    // Safety (2.6.36): never trash anything when the article set is incomplete.
+    // Before this guard, one batch failing its checksum dropped every article
+    // in that batch from $articles, and the orphan pass then trashed them all.
+    $orphan_pass_allowed = ! $loader->has_errors();
+    if ( ! $orphan_pass_allowed ) {
+        error_log( 'CE: Orphan check skipped — the article loader reported errors, so the JSON set may be incomplete.' );
+    }
+
+    $orphans = ! $orphan_pass_allowed ? [] : get_posts([
         'post_type'      => 'ce_article',
         'post_status'    => 'publish',
         'posts_per_page' => -1,
@@ -437,6 +445,8 @@ function ce_sync_article_content( bool $force_run = false ) {
     delete_transient( $lock_key );
 
     // Log results
+    do_action( 'ce_content_synced' );
+
     if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
         error_log( "CE: Content sync complete — Synced: {$synced}, Created: {$created}, Orphans trashed: {$orphans_trashed}, Failed: {$failed}, Total: " . count( $articles ) );
     }

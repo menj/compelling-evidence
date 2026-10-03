@@ -1,50 +1,62 @@
 {
-  "version": "2.6.34",
+  "version": "2.6.38",
   "generated": "2026-09-27T09:00:00+00:00",
-  "total_articles": 131,
+  "total_articles": 142,
   "batches": [
     {
       "file": "batch-001.json",
       "source": "inc/articles/backup/articles-data.php",
-      "checksum": "837e7ce02206197d280983b458318e5117f62d7688071297e21de979d5852736",
+      "checksum": "90825d7a4b971cb6e33ea8824e85c87749e5b2e2bd8e3a78149d43fd553fdb82",
       "articles": 24
     },
     {
       "file": "batch-002.json",
       "source": "inc/articles/backup/articles-data-2.php",
-      "checksum": "3763c6aa3c1d48cecf7182d4cdb8950287238e6e30cff363ef918d6a9af7cb44",
+      "checksum": "e1181c400008fe4b706ddc9e50238792f8dce2fcc632cc7613bc88b9cd177d8f",
       "articles": 24
     },
     {
       "file": "batch-003.json",
       "source": "inc/articles/backup/articles-data-3.php",
-      "checksum": "c2600dc9dd8c03dbc7bcd89d7ca2c7be06a3ee016edb4a78f24a260dc0b0f255",
+      "checksum": "b10bf3ad617fc5a67820801d4773dc667c015efd15b96301514d9511e78dc64c",
       "articles": 24
     },
     {
       "file": "batch-004.json",
       "source": "inc/articles/backup/articles-data-4.php",
-      "checksum": "4e9445b06b350e55d2869688f339fd5d9821b5b3aba0b097d6d4e426532847f2",
+      "checksum": "0b0e00e3c87c2ff42ba6b15590fbcff5c9ba131071f5f9673321dad9000b648b",
       "articles": 24
     },
     {
       "file": "batch-005.json",
       "source": "inc/articles/backup/articles-data-5.php + articles-data-6.php",
-      "checksum": "befa6852ac3a651ed93b2b10d0a685b5c3e062b56f30346731942e2a68606de5",
+      "checksum": "52745a545d835bb1535ae4337fbc55214ec1cf61cb0f9e0cd9d6b9405a74a51c",
       "articles": 24
     },
     {
       "file": "batch-006.json",
       "source": "Drafted directly for v2.6.0 — Logic Over Faith critique coverage gaps",
-      "checksum": "dd09bcd5a0220636efd28a3e56e85113cdf03898bd799465896f816e744fc3c0",
+      "checksum": "53092798f90196858d39bc5709cc47e80e2f189f4f81aeda25b5f1adc11c728b",
       "articles": 3
     },
     {
       "file": "batch-007.json",
       "source": "Drafted directly for v2.6.22, critique coverage gaps (Islamic Dilemma, 9:5 and 9:29, terrorism data, Jews, 4:34, divine love, salvation, citizenship)",
-      "checksum": "7c44847a22d59959f8035a0b0619cb22a829a504a41bc27adb969ac81df20696",
+      "checksum": "6163bf510cf861ac932c8d7d9dda6ba71d079c5f189543a70da8ef33eedab49c",
       "articles": 8
+    },
+    {
+      "file": "batch-008.json",
+      "source": "Drafted for v2.6.37 from the Answering Islam corpus analysis: Haman, moon god, first revelation, critics, Word of God, Muhammad in the Bible",
+      "checksum": "7a79e15002d3f9a58cff0458f87f6bae8fb232bed119eab1f299f8c1f72b512d",
+      "articles": 6
+    },
+    {
+      "file": "batch-009.json",
+      "source": "Drafted for v2.6.38 from the Answering Islam corpus review (claims C11, C09, C07 second half, C21, C18): original responses with verified Quran, hadith and Bible citations",
+      "checksum": "389cbb58ff640e853fd201b4cf6d863e4b41a058c1ec4dbeb2bab049ec562a9d",
+      "articles": 5
     }
   ],
-  "checksum": "9703ac2855d37d56dc2ed50450eca4e5b1d8e6fdcd86953d5d0fca03e60a03cc"
+  "checksum": "999e2458bc31e354a33072e0cf8a2cbad82712ccc09f6e4fd10115eb91cc958b"
 }
