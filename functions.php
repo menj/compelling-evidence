@@ -1208,5 +1208,5 @@ function ce_sitemap_exclude_pages( array $args, string $post_type ): array {
 }
 add_filter( 'wp_sitemaps_posts_query_args', 'ce_sitemap_exclude_pages', 10, 2 );
 
-/* Cross-site content links between the sister sites. */
-require_once get_stylesheet_directory() . '/inc/network-links.php';
+/* Contextual in-content links. */
+require_once get_stylesheet_directory() . '/inc/contextual-links.php';
