@@ -292,14 +292,20 @@ function ce_ctx_find_sister_url( $links, $text ) {
  *
  * @param string   $text     Plain text.
  * @param string[] $patterns Patterns.
- * @param callable $callback Receives the matched text, returns the replacement.
+ * @param callable $callback Receives the matched text, returns the replacement or null to pass it over.
  * @return string The text, unchanged when a pattern fails (invalid UTF-8).
  */
 function ce_ctx_replace_matches( $text, $patterns, $callback ) {
     // Each pattern is searched again from the cursor after every match, so a
     // phrase hidden behind another pattern's overlapping match is still found.
+    // The callback returns null to pass a match over; the scan then resumes one
+    // character on, so a phrase running past its end ("Paul of Tarsus" after
+    // "Peter and Paul") can still link, while one wholly inside it ("Barnabas"
+    // in "Gospel of Barnabas") stays part of that name.
     $out    = '';
-    $cursor = 0;
+    $at     = 0; // Text emitted up to here.
+    $cursor = 0; // Scan position.
+    $shadow = 0; // End of the furthest match passed over.
     $len    = strlen( $text );
     while ( $cursor < $len ) {
         $best = null;
@@ -315,10 +321,19 @@ function ce_ctx_replace_matches( $text, $patterns, $callback ) {
         if ( null === $best ) {
             break;
         }
-        $out   .= substr( $text, $cursor, $best[1] - $cursor ) . $callback( $best[0] );
-        $cursor = $best[1] + max( 1, strlen( $best[0] ) );
+        $end  = $best[1] + strlen( $best[0] );
+        $link = $end <= $shadow || '' === $best[0] ? null : $callback( $best[0] );
+        if ( null === $link ) {
+            $shadow = max( $shadow, $end );
+            $byte   = ord( $text[ $best[1] ] );
+            $cursor = $best[1] + ( $byte >= 0xF0 ? 4 : ( $byte >= 0xE0 ? 3 : ( $byte >= 0xC0 ? 2 : 1 ) ) );
+            continue;
+        }
+        $out   .= substr( $text, $at, $best[1] - $at ) . $link;
+        $at     = $end;
+        $cursor = $end;
     }
-    return $out . substr( $text, $cursor );
+    return $out . substr( $text, $at );
 }
 
 
@@ -450,9 +465,9 @@ function ce_ctx_apply_sister_links( $content, $max, $here ) {
             $piece,
             $patterns,
             static function ( $match ) use ( $links, $here_key, $block, $max, &$done, &$made, &$used ) {
-                if ( $made >= $max || isset( $used[ $block ] ) ) return $match;
+                if ( $made >= $max || isset( $used[ $block ] ) ) return null;
                 $url = ce_ctx_find_sister_url( $links, $match );
-                if ( '' === $url || isset( $done[ $url ] ) || untrailingslashit( $url ) === $here_key ) return $match;
+                if ( '' === $url || isset( $done[ $url ] ) || untrailingslashit( $url ) === $here_key ) return null;
                 $done[ $url ]    = true;
                 $used[ $block ]  = true;
                 ++$made;
