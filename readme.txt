@@ -33,7 +33,7 @@ The theme delivers:
 * 85-term Islamic/Arabic glossary with hover/click tooltip auto-linking
 * 197 phrase-to-article crosslink mappings with enforced ground rules
 * 8-tab admin Theme Options panel (Appearance > CE Theme Options)
-* RTL Arabic support with self-hosted Uthmani Quranic and CE Hadith fonts
+* RTL Arabic support with self-hosted KFGQPC HAFS Uthmanic Script (Quranic verses only) and CE Hadith fonts
 * Malay (ms-MY) translation included
 
 == Installation ==
@@ -101,6 +101,11 @@ Appearance > CE Theme Options — 8 tabs:
                   Retired URLs (410 Gone path prefixes)
 
 == Changelog ==
+
+= 2.6.40 — October 2026 =
+Quranic verses, and only Quranic verses, are set in the original KFGQPC HAFS Uthmanic Script
+TTF, distributed unmodified under its licence. It replaces the subset uthmani-quran.woff2.
+Hadith and other Arabic keep CE Hadith.
 
 = 2.6.39 — October 2026 =
 Contextual links across the network: the first mention of a phrase another of the seven sites
@@ -337,7 +342,7 @@ Upgrading from below 2.2.0: run the category migration — see UPGRADING.md.
 == Credits ==
 
 Parent theme: Twenty Twenty-Five by Automattic (GPL-2.0-or-later).
-Uthmani Quran font: KFGQPC HAFS Uthmanic Script (King Fahd Quran Printing Complex).
+KFGQPC HAFS Uthmanic Script, King Fahd Glorious Quran Printing Complex, distributed unmodified under its licence (Quranic verses only).
 CE Hadith font: Noto Naskh Arabic (Google, Apache 2.0).
 Playfair Display, DM Sans, Cormorant Garamond: Google Fonts (SIL Open Font License).
 All fonts self-hosted — zero external font requests at runtime.

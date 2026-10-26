@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.6.40] — October 2026
+
+### Quranic verses set in KFGQPC HAFS Uthmanic Script
+
+**Changed**
+- Quranic verses, and only Quranic verses, use the original KFGQPC HAFS Uthmanic Script TTF from the King Fahd Glorious Quran Printing Complex (`assets/fonts/kfgqpc-hafs-uthmanic-script.ttf`), through a new `--font-quran` token on `:root`: `.quran-arabic`, `.hero-verse-text`, their print rules, and `.arabic-verse` / `.arabic-large` in the two journey pages that show a verse. Hadith, glossary terms and the verse-number ornament keep CE Hadith.
+- The face is no longer subset: the full font (1,572 glyphs, with the ayah-end sign and the small high marks) replaces the 608-glyph `uthmani-quran.woff2`, and the `unicode-range` limit is gone. The licence permits use and distribution free of cost and forbids modification, so the TTF ships as issued and is never converted or subset; its licence text is in `assets/fonts/licenses/`.
+- The front-page preload and critical `@font-face` now name the TTF. The hero verse line height goes from 1.85 to 2.
+
+**Removed**
+- `assets/fonts/uthmani-quran.woff2`.
+
+---
+
 ## [2.6.39] — October 2026
 
 ### Contextual links across the network

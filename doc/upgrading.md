@@ -6,6 +6,12 @@ Only paths explicitly identified in development are documented here.
 
 ---
 
+## Upgrading to v2.6.40 from v2.6.39
+
+**After deploying:** nothing to run. Purge any page or CDN cache that holds `assets/fonts/uthmani-quran.woff2`, which is removed. Child themes or custom CSS that named the `'Uthmani Quran'` family should use `var(--font-quran)` instead.
+
+---
+
 ## Upgrading to v2.6.39 from v2.6.38
 
 **After deploying:** nothing to run. Sister-site links are on by default (three per article); turn them off or change the cap under Theme Options → Links & Tooltips → Sister-Site Links. When the shared map changes, copy `inc/data/network-links.json` to all seven themes.
