@@ -57,6 +57,8 @@ function ce_ctx_host( $url ) {
 
 function ce_ctx_lower( $text ) {
     $text = str_replace( [ "\u{2019}", '&#8217;', '&#039;', '&#39;', '&rsquo;' ], "'", (string) $text );
+    // Any run of spaces, &nbsp;, &#160; or U+00A0 is one space, as in the phrase.
+    $text = preg_replace( '/(?:\s|&nbsp;|&#160;|\x{00A0})+/u', ' ', $text ) ?? $text;
     return function_exists( 'mb_strtolower' ) ? mb_strtolower( $text, 'UTF-8' ) : strtolower( $text );
 }
 
@@ -216,7 +218,12 @@ function ce_ctx_sister_links() {
  */
 function ce_ctx_phrase_alt( $phrase ) {
     $phrase = str_replace( [ "\u{2019}", '&#8217;', '&#039;', '&#39;', '&rsquo;' ], "'", (string) $phrase );
-    return str_replace( "'", "(?:'|\u{2019}|&\#8217;|&\#0?39;|&rsquo;)", preg_quote( $phrase, '/' ) );
+    // The editor may write a space as &nbsp;, &#160; or U+00A0.
+    return str_replace(
+        [ "'", ' ' ],
+        [ "(?:'|\u{2019}|&\#8217;|&\#0?39;|&rsquo;)", '(?:\s|&nbsp;|&\#160;|\x{00A0})+' ],
+        preg_quote( trim( preg_replace( '/\s+/u', ' ', $phrase ) ?? $phrase ), '/' )
+    );
 }
 
 /**
