@@ -485,7 +485,15 @@ function ce_unified_link_filter( $content ) {
                 $in_m   = preg_match_all( '/<(figure|svg|table)\b/i', $prefix ) > preg_match_all( '/<\/(figure|svg|table)>/i', $prefix );
                 // Never inside a tag's attributes (alt, title, data-*).
                 $in_tag = strrpos( $prefix, '<' ) > (int) strrpos( $prefix, '>' );
-                if ( $in_h || $in_a || $in_m || $in_tag ) continue;
+                // The same protected zones as the first pass: quotations, and a
+                // citation or Arabic block up to its first closing </div>.
+                $in_q    = preg_match_all( '/<blockquote\b/i', $prefix ) > preg_match_all( '/<\/blockquote>/i', $prefix );
+                $in_cite = false;
+                if ( preg_match_all( '/class="[^"]*(?:quran-citation|hadith-citation|quran-arabic|hadith-arabic)/i', $prefix, $cm, PREG_OFFSET_CAPTURE ) ) {
+                    $last    = end( $cm[0] );
+                    $in_cite = false === stripos( substr( $prefix, $last[1] ), '</div>' );
+                }
+                if ( $in_h || $in_a || $in_m || $in_tag || $in_q || $in_cite ) continue;
 
                 $title_attr = '';
                 $target_post = get_page_by_path( $slug, OBJECT, 'ce_article' );
