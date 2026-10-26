@@ -6,7 +6,7 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.6.38
+Version: 2.6.42
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Template: twentytwentyfive
@@ -33,7 +33,7 @@ The theme delivers:
 * 85-term Islamic/Arabic glossary with hover/click tooltip auto-linking
 * 197 phrase-to-article crosslink mappings with enforced ground rules
 * 8-tab admin Theme Options panel (Appearance > CE Theme Options)
-* RTL Arabic support with self-hosted Uthmani Quranic and CE Hadith fonts
+* RTL Arabic support with self-hosted KFGQPC HAFS Uthmanic Script (Quranic verses only) and CE Hadith fonts
 * Malay (ms-MY) translation included
 
 == Installation ==
@@ -101,6 +101,27 @@ Appearance > CE Theme Options — 8 tabs:
                   Retired URLs (410 Gone path prefixes)
 
 == Changelog ==
+
+= 2.6.42 — October 2026 =
+The Quran face is served as a woff2 conversion (105 KiB, from 291 KiB) in place of the original
+TTF, by the owner's decision, accepting that the font's licence forbids modifying it.
+Review fixes: disabled topics hold for answered questions, one sister link per list item,
+glossary tooltips load on answered questions, and the hero ayah number follows Theme Options.
+
+= 2.6.41 — October 2026 =
+Quranic verse text is fitted to the KFGQPC encoding as it renders (sukun, the rounded zero, and
+one ayah-number medallion in place of brackets round a medallion). Stored text is unchanged.
+
+= 2.6.40 — October 2026 =
+Quranic verses, and only Quranic verses, are set in the original KFGQPC HAFS Uthmanic Script
+TTF, distributed unmodified under its licence. It replaces the subset uthmani-quran.woff2.
+Hadith and other Arabic keep CE Hadith.
+
+= 2.6.39 — October 2026 =
+Contextual links across the network: the first mention of a phrase another of the seven sites
+treats now links to that inner page, alongside the existing links to this site's own articles.
+One shared phrase map, inc/data/network-links.json, identical in all seven themes. Answered
+questions get crosslinks too. Theme Options styles move to their own stylesheet.
 
 = 2.6.38 — October 2026 =
 Content release: five new articles (batch 009, 142 in total) on the Prophet's marriages, alleged
@@ -331,7 +352,7 @@ Upgrading from below 2.2.0: run the category migration — see UPGRADING.md.
 == Credits ==
 
 Parent theme: Twenty Twenty-Five by Automattic (GPL-2.0-or-later).
-Uthmani Quran font: KFGQPC HAFS Uthmanic Script (King Fahd Quran Printing Complex).
+KFGQPC HAFS Uthmanic Script, King Fahd Glorious Quran Printing Complex (Quranic verses only), served as a woff2 conversion of the original TTF by the owner's decision, although its licence forbids modification.
 CE Hadith font: Noto Naskh Arabic (Google, Apache 2.0).
 Playfair Display, DM Sans, Cormorant Garamond: Google Fonts (SIL Open Font License).
 All fonts self-hosted — zero external font requests at runtime.

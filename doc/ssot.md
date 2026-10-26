@@ -1,7 +1,7 @@
 # SSOT — Single Source of Truth
 ## Compelling Evidence Theme — System Design, Naming Conventions, Configuration Rules
 
-**Version:** 2.6.38  
+**Version:** 2.6.39  
 **Location:** `/doc/SSOT.md`
 
 This document is authoritative. When any other file conflicts with a rule stated here, this document is correct and the other file should be updated.
@@ -366,7 +366,7 @@ All fonts are self-hosted (zero external Google Fonts requests).
 | Special Elite | 400 | Optional typewriter label font (Apache 2.0) | 49KB |
 | Sabon Next LT | 400, 700, 400i, 700i | Optional heading / reading font (commercial, licensed by the site owner) | ~100-107KB each |
 | CE Hadith | 400 | Arabic text (Noto Naskh Arabic subset) | ~69KB |
-| Uthmani Quran | 400 | Quranic verses (KFGQPC HAFS Uthmanic Script) | 107KB |
+| KFGQPC HAFS Uthmanic Script | 400 | Quranic verses only (`--font-quran`), woff2 conversion of the original TTF | 105KB |
 
 **Note:** Amiri font was removed in v2.2.76 (Latin-subset only, useless for Arabic).
 
@@ -391,13 +391,17 @@ CSS never names a Latin family directly outside `@font-face`. It uses four role 
 
 ### Arabic Font Rendering Chain
 
-Quranic text uses this font stack:
-1. **Uthmani Quran** — Primary. 608 glyphs covering U+0600-06FF + U+FB50-FDFF.
-2. **CE Hadith** — Secondary for non-Quranic Arabic.
+Quranic text uses `--font-quran` (defined on `:root` in `main.css`), and only Quranic text: `.quran-arabic[data-ce-quran="kfgqpc"]` (a verse the converter below has fitted; an unfitted `.quran-arabic` keeps CE Hadith, so Tanzil text never shows in the KFGQPC face), `.hero-verse-text`, and `.arabic-verse` / `.arabic-large` in the two journey pages that show a verse.
+1. **KFGQPC HAFS Uthmanic Script** — Primary. From the King Fahd Glorious Quran Printing Complex, 1,572 glyphs, including the ayah-end sign (U+06DD) and the small high marks. Served as `assets/fonts/kfgqpc-hafs-uthmanic-script.woff2`, never subset. Its licence permits use, copying and distribution free of cost and forbids any modification. The owner chose on 2026-10-26 to serve a WOFF2 conversion of the KFGQPC HAFS Uthmanic Script (107 KB, from 298 KB), accepting that the KFGQPC licence forbids modifying the font. The conversion is lossless for glyphs, cmap and OpenType layout; the digital signature (DSIG) is dropped. Its licence text is in `assets/fonts/licenses/`.
+2. **CE Hadith** — Fallback for the few code points the Quran face lacks, and the font for all non-Quranic Arabic (hadith, glossary terms, the verse-number ornament).
 3. **System fonts** — Noto Naskh Arabic (Android/Linux), Traditional Arabic (Windows), Geeza Pro (macOS/iOS).
 
+### Verse encoding
+
+The KFGQPC face follows the King Fahd Complex's encoding, not Tanzil's: its sukun is U+06E1, its rounded zero is U+0652, U+06DF is a spacing ornament, and Arabic-Indic digits in a verse draw as the ayah-end medallion. The article data is Tanzil-encoded and stays so. `inc/ce-quran-text.php` (`ce_quran_fit_content()`, `the_content` priority 8, before media injection and all link passes) rewrites only the text inside `.quran-arabic` elements: U+0652 to U+06E1, U+06DF to U+0652, and ﴿n﴾ or U+06DD n to n. It skips a verse that already carries U+06E1, and marks each fitted element `data-ce-quran="kfgqpc"` so it never runs twice. Hadith (`.hadith-arabic`), glossary terms and any other Arabic are never touched. The static journey pages carry U+06E1 in their verse markup directly.
+
 ### Known Limitation
-Ornate brackets ﴿﴾ (U+FD3E-FD3F) are not in the Uthmani font. They render via system Arabic fonts.
+Ornate brackets ﴿﴾ (U+FD3E-FD3F) are not in the KFGQPC face. They render via CE Hadith.
 
 ---
 
@@ -427,10 +431,24 @@ The unified crosslink + tooltip engine (`ce-crosslinks.php`) enforces these rule
 4. **Minimum crosslinks** — Every article gets at least 3 crosslinks. Second pass with relaxed rules if needed.
 5. **Per-post disable** — `_ce_disable_crosslinks` and `_ce_disable_tooltips` post meta can disable either system.
 6. **Per-category disable** — Comma-separated slugs in Theme Options disable both systems for those topic categories.
+7. **Post types** — Articles, posts, answered questions and pages (`ce_article`, `post`, `ce_question`, `page`; filter `ce_contextual_links_post_types`), never the front page.
+8. **Excluded pages** — Slugs listed under Links & Tooltips → Pages without crosslinks get no crosslinks of either kind; tooltips stay.
+
+### Shared network map and sister-site links (v2.6.39)
+
+`inc/data/network-links.json` is a **shared file, byte-identical in all seven themes** (Compelling Evidence, Abrahamic Religions, Best of Islam, The Injil, Apostle of Doom, Murtadd, Lailatulqadar). It lists each site's base URL and its inner pages with the phrases that lead to them; every phrase belongs to exactly one page across the network. Edit it in one theme, then copy the same file to the other six.
+
+- This site's entries (`"site": "ce"`) join the curated list in `ce_get_default_crosslink_phrases()` and are linked by the unified engine above.
+- A curated phrase the map gives to a sister site leaves this site's list and links to that sister page instead.
+- `inc/ce-contextual-links.php` links the sister entries at `the_content` priority 21, after the unified engine (20), so its crosslinks and tooltips are already in place and their paragraphs are skipped.
+- Sister-link rules: whole phrase, first mention, each address once a page, one added link a paragraph or list item (a paragraph inside a list item counts with the item), never in a paragraph that already has a crosslink or tooltip, never inside headings, links, quotations, citations, Quran or hadith blocks, figures, tables, code, footnotes or any `lang` ar/he/el/syr element. Cap: 3 a page by default (0 to 10), counted apart from the internal cap.
+- Markup: `<a class="ce-crosslink ce-ctx-link ce-ctx-link--sister" rel="noopener">`, same tab; it takes the configured crosslink style and colour.
+- Extra phrases (Links & Tooltips): `phrase | /articles/slug/` or `phrase | https://<sister host>/path/`, one per line; they win over the map. Any other host or local path is ignored.
+- Per-post and per-topic crosslink disables also stop sister links. Filters: `ce_contextual_links_map`, `ce_contextual_links_enabled`.
 
 ---
 
-*Last updated: October 2026 (v2.6.38)*
+*Last updated: October 2026 (v2.6.39)*
 ---
 
 ## 17. Feed Redirector (`inc/class-ce-feed-redirector.php`)

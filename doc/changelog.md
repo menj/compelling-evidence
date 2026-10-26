@@ -6,6 +6,91 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.6.42] — October 2026
+
+### Quran face served as woff2
+
+- `assets/fonts/kfgqpc-hafs-uthmanic-script.woff2` (105 KiB) replaces the original TTF (291 KiB, removed) in `main.css`, the front-page critical `@font-face` in `functions.php`, the front-page preload in `header.php` (`type="font/woff2"`) and the two journey pages. The owner chose on 2026-10-26 to serve a WOFF2 conversion of the KFGQPC HAFS Uthmanic Script (107 KB, from 298 KB), accepting that the KFGQPC licence forbids modifying the font. The conversion is lossless for glyphs, cmap and OpenType layout; the digital signature (DSIG) is dropped. Recorded in `doc/ssot.md`.
+
+### Review fixes
+
+- **Disabled topics now hold for questions.** A `ce_question` keeps its topic as a term name in `_ce_question_topic`, not as a `ce_topic` term, so "Disable crosslinks for categories" never matched an answer page. `ce_ctx_in_disabled_topic()` resolves that name to the topic slug, so both the unified filter and the sister-link pass stand down there.
+- **One sister link a list item, however many paragraphs it holds.** A `<p>` inside an `<li>` now shares the item's paragraph id in `ce_ctx_apply_sister_links()`, so a list item with two paragraphs can no longer take two links.
+- **Glossary tooltips work on answered questions.** `glossary-tooltip.css` and `.js` load on every type the unified filter processes (`ce_ctx_post_types()`), where they loaded only on articles and posts while `ce_question` pages already received tooltip anchors.
+- **The hero ayah number follows Theme Options.** `front-page.php` printed a fixed ١٣; it now prints `ce_hero_verse_number()`, the General tab's Verse Number as bare Arabic-Indic digits (brackets, U+06DD and spaces saved in the old style are dropped, Western digits mapped). The field's help text no longer mentions brackets.
+- **Pages get contextual links.** `page` joins `ce_article`, `post` and `ce_question` in `ce_ctx_post_types()`, so the own-site crosslinks, glossary tooltips and sister-site links all reach pages. The front page stays unlinked: the unified filter and the tooltip assets now check `is_front_page()` as the sister pass already did.
+- `readme.txt` `Version` is 2.6.42, matching `style.css`.
+
+### Bug fixes
+
+- **Verse translations and quotations stay unlinked.** The unified filter ended a citation block at its first `</div>`, the one closing `quran-arabic`, so the translation and reference inside a `quran-citation` could take a crosslink or tooltip; and an `</a>` inside a `<blockquote>` ended the quotation's protection. A citation block now runs to its own closing tag, links and quotations are tracked apart, and Rule 4 checks the same zones.
+- **The hero verse follows Theme Options.** `front-page.php` printed the Arabic, the translation and the reference as fixed text, so the General tab's Arabic Verse, Verse Translation and Verse Reference fields did nothing although the readme says they set the hero. The hero now reads them through `ce_hero_verse()`; an empty field falls back to Ar-Rahman 55:13 as before, the Arabic is fitted to the KFGQPC face, and every value is escaped. The Verse Reference default is now "Surah Ar-Rahman (55:13)", the text the page has always shown, so an unset site looks the same.
+- **Own-site phrases with an apostrophe link again.** The unified filter (20) runs after wptexturize (10), which writes "Muhammad's" as "Muhammad&#8217;s"; its crosslink, Rule 4 and tooltip patterns knew only the straight apostrophe, so "Muhammad's character", "i'jaz", "Ka'b ibn al-Ashraf", "women's rights in islam" and any own-site extra phrase with an apostrophe never linked. They now use `ce_ctx_phrase_alt()`, the apostrophe-tolerant fragment the sister pass already used.
+- **No fatal error without mbstring.** The unified filter called `mb_strtolower()`, which WordPress does not polyfill, so a host without mbstring died on every article. It now uses `ce_ctx_lower()`.
+- **Accented capitals find their sister link without mbstring.** "IBN ISḤĀQ" matched but missed its key, since `ce_ctx_lower()` lowers only ASCII there; `ce_ctx_find_sister_url()` then compares phrase by phrase.
+- **Invalid UTF-8 never empties a paragraph.** A paragraph with one invalid byte made the sister pass's `preg_replace_callback()` return null and the paragraph vanished; matching now leaves such text as it was (`ce_ctx_replace_matches()`). `ce_quran_fit_text()` keeps its text the same way, and the extra-phrases field is split without `/u`, so an invalid byte cannot drop every line.
+- **An oversized phrase list never blanks the page.** With enough extra phrases the sister pattern grew past PCRE's limit, failed to compile, and every paragraph rendered empty. `ce_ctx_sister_patterns()` now tests the pattern and splits it until each part compiles; matches from the parts are merged leftmost-longest, as one pattern would.
+- **Rule 4 never writes a link into an attribute.** The minimum-crosslinks pass searches the whole content and could place a link inside an `alt` or `data-` value; it now skips a match that sits inside a tag.
+- **A sister match passed over no longer hides a phrase that overlaps it.** When the sister pass passed a match over (its page already linked, this page, the limit or the paragraph used), the scan jumped past the whole match, so "Paul of Tarsus" in "Peter and Paul of Tarsus" never linked once "Peter and Paul" had been. `ce_ctx_replace_matches()` now resumes one character after a match it passes over (the callback returns null), and a phrase wholly inside it ("Barnabas" in "Gospel of Barnabas") still stays unlinked. Output on the 142 articles is unchanged.
+- **Rule 4 never links inside a quotation or a citation block.** The first pass already skipped `<blockquote>` and the `quran-citation`, `hadith-citation`, `quran-arabic` and `hadith-arabic` blocks; the minimum-crosslinks pass did not, so an article short of three links could get one inside a quoted verse. It now skips the same zones.
+- **A ">" inside an attribute value no longer opens a text run.** Both passes split the markup at the first ">", so `title="a > The Ebionites"` left `The Ebionites"` to be read as text and linked inside the attribute. Tags are now split quote-aware (`ce_ctx_split_tags()`, comments kept whole), and Rule 4's inside-a-tag check uses the same rule.
+- **Single-quoted `class` and `lang` attributes** now mark a no-link zone in both passes, as double-quoted ones did (`class='quran-citation'`).
+- **Several sister patterns merge as one pattern would.** When the phrase list is split into several patterns, each was searched once and the results merged, so a phrase behind another pattern's overlapping match was lost. Every pattern is now searched again from the end of each match (`ce_ctx_replace_matches()`).
+- **A `www.` sister address in Extra phrases is accepted.** The host was compared with "www." against the map's bare hosts, so the line was dropped silently; both sides now drop a leading "www.".
+- **Percent-encoded addresses survive the save.** `sanitize_textarea_field()` removes every `%XX`, so `/glossary/%D8%A7/` was saved as `/glossary//`; the Extra phrases field is now sanitised with the octets held aside (`ce_ctx_sanitize_extra_lines()`).
+- **Phrases with a space match a non-breaking space.** An editor's `&nbsp;`, `&#160;` or U+00A0 between two words ("Islamic&nbsp;Dilemma", "cosmological&#160;argument") never matched a phrase written with a plain space, in either pass. A space in `ce_ctx_phrase_alt()` now matches any run of these, and `ce_ctx_lower()` reads the run as one space. The sister list now compiles as two patterns, which the rescan above merges exactly as one.
+- **One invalid byte no longer leaves every verse unfitted.** The verse pattern used `/u`, which fails on the whole post at a single invalid byte; since the KFGQPC face is keyed to `data-ce-quran`, every verse then fell back to the Naskh face. The pattern is now byte-wise.
+- **The KFGQPC face only on fitted verses.** `.quran-arabic` uses CE Hadith; `.quran-arabic[data-ce-quran="kfgqpc"]` uses `--font-quran` (also in `print.css`). Text the converter never reached (an element with inner tags, or a post with invalid UTF-8) used to show a round sukun and a stray ornament in the KFGQPC face; it now shows in the Naskh face.
+
+---
+
+## [2.6.41] — October 2026
+
+### Quranic verse text fitted to the KFGQPC encoding
+
+The verses in the article data follow the Tanzil Uthmani encoding; the KFGQPC face follows the King Fahd Complex's own. In the face, U+0652 is the rounded zero (so every Tanzil sukun drew as a circle), the Madani sukun is U+06E1, and U+06DF is a spacing ornament (so the rounded zero over a silent alif drew as a dot beside it). The face also draws the Arabic-Indic digits of an ayah number as the ayah-end medallion by itself, so the ornate brackets round each number drew a second ornament.
+
+**Added**
+- `inc/ce-quran-text.php`: `ce_quran_fit_content()` on `the_content` at priority 8 fits each `.quran-arabic` element, and nothing else, as it renders: sukun U+0652 to U+06E1, rounded zero U+06DF to U+0652, and the ﴿﴾ (or U+06DD) round an ayah number removed so the face draws one medallion. A verse that already carries U+06E1 is in the Complex's encoding and keeps its marks. A fitted element gets `data-ce-quran="kfgqpc"` and is never fitted twice. The stored text stays standard; hadith and all other Arabic are untouched. All 290 verses in the article data were checked.
+
+**Changed**
+- The front-page verse number is the bare digits ١٣ in the KFGQPC face (one medallion), no longer ﴿١٣﴾ in CE Hadith.
+- The two verses in `journeys/muslim-doubts-journey.html`, static HTML that never passes through PHP, carry U+06E1 for sukun.
+
+---
+
+## [2.6.40] — October 2026
+
+### Quranic verses set in KFGQPC HAFS Uthmanic Script
+
+**Changed**
+- Quranic verses, and only Quranic verses, use the original KFGQPC HAFS Uthmanic Script TTF from the King Fahd Glorious Quran Printing Complex (`assets/fonts/kfgqpc-hafs-uthmanic-script.ttf`), through a new `--font-quran` token on `:root`: `.quran-arabic`, `.hero-verse-text`, their print rules, and `.arabic-verse` / `.arabic-large` in the two journey pages that show a verse. Hadith, glossary terms and the verse-number ornament keep CE Hadith.
+- The face is no longer subset: the full font (1,572 glyphs, with the ayah-end sign and the small high marks) replaces the 608-glyph `uthmani-quran.woff2`, and the `unicode-range` limit is gone. The licence permits use and distribution free of cost and forbids modification, so the TTF ships as issued and is never converted or subset; its licence text is in `assets/fonts/licenses/`.
+- The front-page preload and critical `@font-face` now name the TTF. The hero verse line height goes from 1.85 to 2.
+
+**Removed**
+- `assets/fonts/uthmani-quran.woff2`.
+
+---
+
+## [2.6.39] — October 2026
+
+### Contextual links across the network
+
+The first mention of a phrase in an article's running text now links to the inner page that treats it, on this site or on one of the six sister sites. No sections or link lists: the links sit in the text.
+
+**Added**
+- `inc/data/network-links.json`: one phrase map for all seven sites, byte-identical in every theme. Every phrase belongs to exactly one page across the network.
+- `inc/ce-contextual-links.php`: the sister-site pass (`the_content`, priority 21). One link a paragraph or list item, never in a paragraph that already holds a crosslink or tooltip, never in headings, quotations, citations, Quran or hadith blocks, figures, tables or Arabic, Hebrew, Greek or Syriac text. Three a page by default.
+- Theme Options → Links & Tooltips → Sister-Site Links: on/off, cap per article (0 to 10), extra phrases (`phrase | /articles/slug/` or `phrase | https://sister/path/`), and pages without crosslinks.
+
+**Changed**
+- `ce_get_crosslink_phrases()` adds this site's entries from the shared map to the curated list. 27 curated phrases the map gives to a sister site now link there (for example "Islamic Dilemma" to injil.help, "age of Aisha" and "apostasy" to murtadd.org, "jihad" and "abrogation" to bestofislam.org).
+- Crosslinks and sister links now also run on answered questions (`ce_question`); the per-post meta box appears there too.
+- Theme Options styles move from an inline `<style>` block to `assets/css/ce-theme-options-admin.css`, loaded only on that screen.
+
+---
+
 ## [2.6.38] — October 2026
 
 ### Content release: batch 009 and a strengthening pass

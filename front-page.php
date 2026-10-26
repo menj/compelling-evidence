@@ -6,9 +6,10 @@
 <section class="hero">
 
   <div class="hero-verse-img-wrap">
-    <div class="hero-verse-text" lang="ar" dir="rtl" aria-label="فَبِأَيِّ آلَاءِ رَبِّكُمَا تُكَذِّبَانِ">
-      فَبِأَيِّ آلَاءِ رَبِّكُمَا تُكَذِّبَانِ
-      <span class="hero-verse-end" aria-hidden="true">﴿١٣﴾</span>
+    <?php $ce_hero_verse = ce_hero_verse(); ?>
+    <div class="hero-verse-text" lang="ar" dir="rtl" aria-label="<?php echo esc_attr( $ce_hero_verse['arabic'] ); ?>">
+      <?php echo esc_html( $ce_hero_verse['arabic'] ); ?>
+      <span class="hero-verse-end" aria-hidden="true"><?php echo esc_html( ce_hero_verse_number() ); ?></span>
     </div>
     <img
       src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/al-rahman-transparent.png' ); ?>"
@@ -19,7 +20,7 @@
       loading="eager"
       aria-hidden="true"
     >
-    <p class="hero-translation">Then which of the favours of your Lord will you deny?</p>
+    <p class="hero-translation"><?php echo esc_html( $ce_hero_verse['translation'] ); ?></p>
     <div class="hero-citation-row">
       <span class="hero-citation-ornament" aria-hidden="true">
         <svg width="80" height="12" viewBox="0 0 80 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -32,7 +33,7 @@
           <line x1="56" y1="6" x2="80" y2="6" stroke="currentColor" stroke-opacity="0.1" stroke-width="0.75"/>
         </svg>
       </span>
-      <p class="hero-bismillah">Surah Ar-Rahman (55:13)</p>
+      <p class="hero-bismillah"><?php echo esc_html( $ce_hero_verse['ref'] ); ?></p>
       <span class="hero-citation-ornament hero-citation-ornament--right" aria-hidden="true">
         <svg width="80" height="12" viewBox="0 0 80 12" fill="none" xmlns="http://www.w3.org/2000/svg">
           <line x1="80" y1="6" x2="52" y2="6" stroke="currentColor" stroke-opacity="0.35" stroke-width="0.75"/>

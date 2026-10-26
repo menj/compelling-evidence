@@ -24,14 +24,38 @@ if ( ! defined( 'ABSPATH' ) ) exit;
    PHRASE → SLUG MAPPINGS (Internal Cross-Links)
    ═══════════════════════════════════════════════════════════════════════ */
 
+/**
+ * Phrase => article slug for this site: the curated list below, then this
+ * site's entries from the shared network map (inc/data/network-links.json).
+ * A phrase the shared map gives to a sister site leaves this list and is
+ * linked there by ce-contextual-links.php. The custom phrase option and the
+ * admin lines on the Links & Tooltips tab come last, so they win.
+ */
 function ce_get_crosslink_phrases() {
-    // Allow admin override from DB
+    static $cache = null;
+    if ( null !== $cache ) {
+        return $cache;
+    }
+    $phrases = ce_get_default_crosslink_phrases();
+    $seen    = [];
+    foreach ( array_keys( $phrases ) as $phrase ) {
+        $seen[ ce_ctx_lower( $phrase ) ] = true;
+    }
+    foreach ( ce_ctx_own_map_phrases() as $phrase => $slug ) {
+        $lc = ce_ctx_lower( $phrase );
+        if ( isset( $seen[ $lc ] ) ) continue;
+        $seen[ $lc ]        = true;
+        $phrases[ $phrase ] = $slug;
+    }
+    $sister = ce_ctx_sister_owned_phrases();
+    foreach ( array_keys( $phrases ) as $phrase ) {
+        if ( isset( $sister[ ce_ctx_lower( $phrase ) ] ) ) unset( $phrases[ $phrase ] );
+    }
     $custom = get_option( 'ce_crosslink_custom_phrases' );
     if ( is_array( $custom ) && ! empty( $custom ) ) {
-        $base = ce_get_default_crosslink_phrases();
-        return array_merge( $base, $custom );
+        $phrases = array_merge( $phrases, $custom );
     }
-    return ce_get_default_crosslink_phrases();
+    return $cache = array_merge( $phrases, ce_ctx_extra_lines()['own'] );
 }
 
 function ce_get_default_crosslink_phrases() {
@@ -265,8 +289,9 @@ function ce_get_default_crosslink_phrases() {
    ═══════════════════════════════════════════════════════════════════════ */
 
 function ce_unified_link_filter( $content ) {
-    // Only on single articles/posts, not admin
-    if ( is_admin() || ! is_singular( [ 'ce_article', 'post' ] ) ) {
+    // Only on single articles, posts, answered questions and pages; never the
+    // front page or admin
+    if ( is_admin() || is_front_page() || ! is_singular( ce_ctx_post_types() ) ) {
         return $content;
     }
 
@@ -279,15 +304,12 @@ function ce_unified_link_filter( $content ) {
     $post_id = get_the_ID();
     if ( get_post_meta( $post_id, '_ce_disable_crosslinks', true ) === '1' ) $crosslinks_on = false;
     if ( get_post_meta( $post_id, '_ce_disable_tooltips', true ) === '1' ) $tooltips_on = false;
+    if ( ! ce_ctx_enabled_for( get_post( $post_id ) ) ) $crosslinks_on = false;
     if ( ! $crosslinks_on && ! $tooltips_on ) return $content;
 
     // Check per-category disable
-    $disabled_cats = array_filter( explode( ',', get_option( 'ce_crosslink_disabled_categories', '' ) ) );
-    if ( $disabled_cats ) {
-        $post_terms = wp_get_post_terms( $post_id, 'ce_topic', [ 'fields' => 'slugs' ] );
-        if ( ! is_wp_error( $post_terms ) && array_intersect( $post_terms, $disabled_cats ) ) {
-            return $content;
-        }
+    if ( ce_ctx_in_disabled_topic( $post_id ) ) {
+        return $content;
     }
 
     // Settings
@@ -309,14 +331,18 @@ function ce_unified_link_filter( $content ) {
 
     // ── SPLIT CONTENT INTO PARAGRAPHS ──
     // We process paragraph by paragraph so we can enforce "no crosslink + tooltip in same paragraph"
-    $parts = preg_split( '/(<[^>]+>)/s', $content, -1, PREG_SPLIT_DELIM_CAPTURE );
+    $parts = ce_ctx_split_tags( $content );
+    if ( false === $parts ) return $content;
 
     $crosslink_count   = 0;
     $tooltip_count     = 0;
     $used_keywords     = [];  // Rule 1: each keyword linked at most once
     $used_slugs        = [];  // Each target slug linked at most once
     $in_heading        = false;
-    $in_protected      = false; // Inside <a>, citation blocks
+    $in_link           = false; // Inside <a>
+    $quote_depth       = 0;     // Inside <blockquote>, nested or not
+    $cite_tag          = '';    // Tag of the open citation or Arabic block
+    $cite_depth        = 0;     // Its nesting depth; 0 when outside one
     $media_depth       = 0;     // Inside <figure>, <svg> or <table> (2.6.33)
     $para_has_crosslink = false;
     $para_has_tooltip   = false;
@@ -331,13 +357,26 @@ function ce_unified_link_filter( $content ) {
         if ( preg_match( '/^<\/(figure|svg|table)>/i', $part ) ) { $media_depth = max( 0, $media_depth - 1 ); continue; }
         if ( $media_depth > 0 ) continue;
 
+        // A citation or Arabic block is skipped whole, to its own closing tag:
+        // the translation and reference inside a quran-citation included.
+        if ( $cite_depth > 0 ) {
+            if ( preg_match( '/^<' . $cite_tag . '\b/i', $part ) ) $cite_depth++;
+            elseif ( preg_match( '/^<\/' . $cite_tag . '>/i', $part ) ) $cite_depth--;
+            continue;
+        }
+        if ( preg_match( '/^<([a-zA-Z][a-zA-Z0-9]*)\b[^>]*\bclass\s*=\s*["\'][^"\']*(?:quran-citation|hadith-citation|quran-arabic|hadith-arabic)/i', $part, $cite_m ) ) {
+            $cite_tag   = strtolower( $cite_m[1] );
+            $cite_depth = 1;
+            continue;
+        }
+
         // Track HTML context
         if ( preg_match( '/^<(h[1-6])\b/i', $part ) ) { $in_heading = true; continue; }
         if ( preg_match( '/^<\/(h[1-6])>/i', $part ) ) { $in_heading = false; continue; }
-        if ( preg_match( '/^<(a|blockquote)\b/i', $part ) ) { $in_protected = true; continue; }
-        if ( preg_match( '/^<\/(a|blockquote)>/i', $part ) ) { $in_protected = false; continue; }
-        if ( preg_match( '/class="[^"]*(quran-citation|hadith-citation|quran-arabic|hadith-arabic)/i', $part ) ) { $in_protected = true; continue; }
-        if ( $in_protected && preg_match( '/^<\/div>/i', $part ) ) { $in_protected = false; continue; }
+        if ( preg_match( '/^<a\b/i', $part ) ) { $in_link = true; continue; }
+        if ( preg_match( '/^<\/a>/i', $part ) ) { $in_link = false; continue; }
+        if ( preg_match( '/^<blockquote\b/i', $part ) ) { $quote_depth++; continue; }
+        if ( preg_match( '/^<\/blockquote>/i', $part ) ) { $quote_depth = max( 0, $quote_depth - 1 ); continue; }
 
         // Track paragraphs (Rule 3)
         if ( preg_match( '/^<p[\s>]/i', $part ) ) {
@@ -352,7 +391,7 @@ function ce_unified_link_filter( $content ) {
         }
 
         // Skip non-text or protected zones
-        if ( $in_heading || $in_protected ) continue;  // Rule 2: no links in headings
+        if ( $in_heading || $in_link || $quote_depth > 0 ) continue;  // Rule 2: no links in headings
         if ( strpos( $part, '<' ) === 0 ) continue;     // HTML tag, skip
         if ( trim( $part ) === '' ) continue;
 
@@ -366,10 +405,10 @@ function ce_unified_link_filter( $content ) {
                 if ( $slug === $current_slug ) continue;
                 if ( in_array( $slug, $used_slugs, true ) ) continue;
 
-                $lc_phrase = mb_strtolower( $phrase );
+                $lc_phrase = ce_ctx_lower( $phrase );
                 if ( in_array( $lc_phrase, $used_keywords, true ) ) continue; // Rule 1
 
-                $escaped = preg_quote( $phrase, '/' );
+                $escaped = ce_ctx_phrase_alt( $phrase );
                 $pattern = '/(?<![a-zA-Z\x{0600}-\x{06FF}])(' . $escaped . ')(?![a-zA-Z\x{0600}-\x{06FF}])/iu';
 
                 if ( preg_match( $pattern, $text, $match, PREG_OFFSET_CAPTURE ) ) {
@@ -382,7 +421,7 @@ function ce_unified_link_filter( $content ) {
                         $title_attr = ' title="' . esc_attr( get_the_title( $target_post ) ) . '"';
                     }
 
-                    $link = '<a href="' . esc_url( $base_url . $slug . '/' ) . '" class="ce-crosslink"' . $title_attr . '>' . $found . '</a>';
+                    $link = '<a href="' . esc_url( $base_url . $slug . '/' ) . '" class="ce-crosslink ce-ctx-link"' . $title_attr . '>' . $found . '</a>';
                     $text = substr_replace( $text, $link, $offset, strlen( $found ) );
                     $changed = true;
                     $crosslink_count++;
@@ -400,10 +439,10 @@ function ce_unified_link_filter( $content ) {
                 if ( $tooltip_count >= $max_tooltips ) break;
 
                 $term = $term_data['term'];
-                $lc_term = mb_strtolower( $term );
+                $lc_term = ce_ctx_lower( $term );
                 if ( in_array( $lc_term, $used_keywords, true ) ) continue; // Rule 1
 
-                $escaped = preg_quote( $term, '/' );
+                $escaped = ce_ctx_phrase_alt( $term );
                 $pattern = '/\b(' . $escaped . ')\b/iu';
 
                 if ( preg_match( $pattern, $text, $match, PREG_OFFSET_CAPTURE ) ) {
@@ -441,10 +480,10 @@ function ce_unified_link_filter( $content ) {
             if ( $slug === $current_slug ) continue;
             if ( in_array( $slug, $used_slugs, true ) ) continue;
 
-            $lc_phrase = mb_strtolower( $phrase );
+            $lc_phrase = ce_ctx_lower( $phrase );
             if ( in_array( $lc_phrase, $used_keywords, true ) ) continue;
 
-            $escaped = preg_quote( $phrase, '/' );
+            $escaped = ce_ctx_phrase_alt( $phrase );
             // Match in paragraph text only (not headings — use negative lookbehind for <h)
             $pattern = '/(?<=<p[^>]*>(?:[^<]*))(?<![a-zA-Z\x{0600}-\x{06FF}])(' . $escaped . ')(?![a-zA-Z\x{0600}-\x{06FF}])(?=[^<]*<\/p>)/iu';
 
@@ -461,13 +500,32 @@ function ce_unified_link_filter( $content ) {
                 $in_a = preg_match_all( '/<a[\s>]/i', $before ) > preg_match_all( '/<\/a>/i', $before );
                 $prefix = substr( $content, 0, $offset );
                 $in_m   = preg_match_all( '/<(figure|svg|table)\b/i', $prefix ) > preg_match_all( '/<\/(figure|svg|table)>/i', $prefix );
-                if ( $in_h || $in_a || $in_m ) continue;
+                // Never inside a tag's attributes (alt, title, data-*): with
+                // every whole tag removed (quote-aware, so title="a > b" is one
+                // tag), the prefix must not end in an open one.
+                $bare   = preg_replace( '/<!--.*?-->|<[a-zA-Z\/!?](?:[^>"\']|"[^"]*"|\'[^\']*\')*>/s', '', $prefix );
+                $in_tag = null === $bare || (bool) preg_match( '/<[a-zA-Z\/!?][^<]*$/', $bare );
+                // The same protected zones as the first pass: quotations, and a
+                // citation or Arabic block up to its own closing tag.
+                $in_q    = preg_match_all( '/<blockquote\b/i', $prefix ) > preg_match_all( '/<\/blockquote>/i', $prefix );
+                $in_cite = false;
+                if ( preg_match_all( '/<([a-zA-Z][a-zA-Z0-9]*)\b[^>]*\bclass\s*=\s*["\'][^"\']*(?:quran-citation|hadith-citation|quran-arabic|hadith-arabic)/i', $prefix, $cm, PREG_SET_ORDER | PREG_OFFSET_CAPTURE ) ) {
+                    foreach ( $cm as $c ) {
+                        $rest = substr( $prefix, $c[0][1] );
+                        $tag  = $c[1][0];
+                        if ( preg_match_all( '/<' . $tag . '\b/i', $rest ) > preg_match_all( '/<\/' . $tag . '>/i', $rest ) ) {
+                            $in_cite = true;
+                            break;
+                        }
+                    }
+                }
+                if ( $in_h || $in_a || $in_m || $in_tag || $in_q || $in_cite ) continue;
 
                 $title_attr = '';
                 $target_post = get_page_by_path( $slug, OBJECT, 'ce_article' );
                 if ( $target_post ) $title_attr = ' title="' . esc_attr( get_the_title( $target_post ) ) . '"';
 
-                $link = '<a href="' . esc_url( $base_url . $slug . '/' ) . '" class="ce-crosslink"' . $title_attr . '>' . $found . '</a>';
+                $link = '<a href="' . esc_url( $base_url . $slug . '/' ) . '" class="ce-crosslink ce-ctx-link"' . $title_attr . '>' . $found . '</a>';
                 $content = substr_replace( $content, $link, $offset, strlen( $found ) );
                 $crosslink_count++;
                 $used_slugs[] = $slug;
@@ -494,7 +552,7 @@ function ce_crosslink_meta_box() {
         'ce-link-controls',
         'Links & Tooltips',
         'ce_crosslink_meta_box_html',
-        [ 'ce_article', 'post' ],
+        ce_ctx_post_types(),
         'side',
         'default'
     );
@@ -508,7 +566,7 @@ function ce_crosslink_meta_box_html( $post ) {
     ?>
     <label style="display:block;margin-bottom:0.5rem;">
         <input type="checkbox" name="ce_disable_crosslinks" value="1" <?php checked( $disable_cl, '1' ); ?>>
-        Disable internal crosslinks
+        Disable crosslinks (this site and sister sites)
     </label>
     <label style="display:block;">
         <input type="checkbox" name="ce_disable_tooltips" value="1" <?php checked( $disable_tt, '1' ); ?>>

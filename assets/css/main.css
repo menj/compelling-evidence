@@ -8,16 +8,17 @@
    Run assets/fonts/download-fonts.sh to fetch woff2 files.
    ─────────────────────────────────────────────────────── */
 
-/* Uthmani Quran — KFGQPC HAFS Uthmanic Script. Quranic verses ONLY.
-   Covers U+0600-06FF (core Arabic block). Ornate brackets ﴿﴾ and
-   Arabic Presentation Forms fall through to CE Hadith / system fonts. */
+/* KFGQPC HAFS Uthmanic Script (King Fahd Glorious Quran Printing Complex).
+   Quranic verses ONLY, through --font-quran. Served as a woff2 conversion of the
+   original TTF, never subset, by the owner's decision of 2026-10-26
+   (doc/ssot.md) although its licence forbids modification.
+   Ornate brackets ﴿﴾ are not in it and fall through to CE Hadith. */
 @font-face {
-  font-family: 'Uthmani Quran';
-  src: url('../fonts/uthmani-quran.woff2') format('woff2');
+  font-family: 'KFGQPC HAFS Uthmanic Script';
+  src: url('../fonts/kfgqpc-hafs-uthmanic-script.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
-  unicode-range: U+0600-06FF;
 }
 
 /* CE Hadith — Noto Naskh Arabic. For hadith text, ornate brackets,
@@ -81,6 +82,7 @@
   --font-reading: 'Cormorant Garamond', Georgia, serif;
   --font-ui:      'DM Sans', system-ui, sans-serif;
   --font-accent:  var(--font-ui);
+  --font-quran:   'KFGQPC HAFS Uthmanic Script', 'CE Hadith', serif;
   --deep:    #1a0a2e;
   --dark:    #2a1050;
   --mid:     #4a1a7a;
@@ -278,9 +280,9 @@ a { color: inherit; }
 }
 
 .hero-verse-text {
-  font-family: 'Uthmani Quran', 'CE Hadith', serif;
+  font-family: var(--font-quran);
   font-size: clamp(1.7rem, 3.1vw, 3rem);
-  line-height: 1.85;
+  line-height: 2;
   letter-spacing: 0;
   color: rgba(226, 193, 255, 0.95);
   text-align: center;
@@ -294,7 +296,7 @@ a { color: inherit; }
 .hero-verse-end {
   display: inline;
   margin-inline-start: 0.3rem;
-  font-family: 'CE Hadith', serif;
+  font-family: var(--font-quran);
   font-size: 0.78em;
   color: rgba(226, 193, 255, 0.7);
 }
@@ -1834,8 +1836,11 @@ body.page-template-page-journeys {
   border-radius: 14px;
   text-align: center !important;
 }
+/* The KFGQPC face only on verses inc/ce-quran-text.php has fitted to its
+   encoding (data-ce-quran); unfitted Tanzil text would show a round sukun and
+   a stray ornament, so it keeps the Naskh face. */
 .quran-arabic {
-  font-family: 'Uthmani Quran', 'CE Hadith', serif;
+  font-family: 'CE Hadith', serif;
   font-size: clamp(1.2rem, 2.5vw, 1.6rem);
   line-height: 2.2;
   color: rgba(212,168,255,0.85);
@@ -1843,6 +1848,9 @@ body.page-template-page-journeys {
   text-align: center !important;
   margin-bottom: 1rem;
   display: block;
+}
+.quran-arabic[data-ce-quran="kfgqpc"] {
+  font-family: var(--font-quran);
 }
 .quran-translation {
   font-family: var(--font-reading);

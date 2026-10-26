@@ -6,6 +6,30 @@ Only paths explicitly identified in development are documented here.
 
 ---
 
+## Upgrading to v2.6.42 from v2.6.41
+
+**After deploying:** `assets/fonts/kfgqpc-hafs-uthmanic-script.ttf` gives way to `kfgqpc-hafs-uthmanic-script.woff2`. An upload over the old folder leaves the TTF behind; nothing reads it, and it can be deleted. Purge page and CDN caches so the front page preloads the new file.
+
+---
+
+## Upgrading to v2.6.41 from v2.6.40
+
+**After deploying:** nothing to run, and no stored content changes. New verses keep the usual (Tanzil) Uthmani encoding inside `<div class="quran-arabic">`; `inc/ce-quran-text.php` fits them as they render. Verses pasted in the King Fahd Complex's own encoding (sukun U+06E1) render as they are.
+
+---
+
+## Upgrading to v2.6.40 from v2.6.39
+
+**After deploying:** nothing to run. Purge any page or CDN cache that holds `assets/fonts/uthmani-quran.woff2`, which is removed. Child themes or custom CSS that named the `'Uthmani Quran'` family should use `var(--font-quran)` instead.
+
+---
+
+## Upgrading to v2.6.39 from v2.6.38
+
+**After deploying:** nothing to run. Sister-site links are on by default (three per article); turn them off or change the cap under Theme Options → Links & Tooltips → Sister-Site Links. When the shared map changes, copy `inc/data/network-links.json` to all seven themes.
+
+---
+
 ## Upgrading to v2.6.38 from v2.6.37
 
 **After deploying:** load any admin page; the sync creates five articles and updates six. The 15 new images import on the hourly schedule.

@@ -15,7 +15,7 @@
   <?php ce_fonts_preload_tags(); ?>
   <?php if ( is_front_page() || is_home() ) : ?>
   <!-- Preload Arabic fonts — LCP element on homepage is hero-verse-text -->
-  <link rel="preload" href="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/fonts/uthmani-quran.woff2' ); ?>" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/fonts/kfgqpc-hafs-uthmanic-script.woff2' ); ?>" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/fonts/ce-hadith-400.woff2' ); ?>" as="font" type="font/woff2" crossorigin>
   <?php endif; ?>
   <?php wp_head(); ?>

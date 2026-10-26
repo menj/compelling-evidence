@@ -43,7 +43,11 @@ require_once get_stylesheet_directory() . '/inc/class-ce-feed-redirector.php';
 // ── CONTENT SYNC (updates existing articles from data files) ─────────────────
 require_once get_stylesheet_directory() . '/inc/ce-content-sync.php';
 
+// ── QURANIC VERSE TEXT (fitted to the KFGQPC face) ───────────────────────────
+require_once get_stylesheet_directory() . '/inc/ce-quran-text.php';
+
 // ── AUTO CROSS-LINKING (inline article-to-article links) ─────────────────────
+require_once get_stylesheet_directory() . '/inc/ce-contextual-links.php';
 require_once get_stylesheet_directory() . '/inc/ce-crosslinks.php';
 
 // ── GLOSSARY TOOLTIP SYSTEM (auto-link Islamic/Arabic terms) ────────────────
@@ -913,15 +917,15 @@ add_filter( 'script_loader_tag', 'ce_defer_gtm_scripts', 10, 3 );
 
 // ── PERFORMANCE: CRITICAL INLINE FONT CSS FOR LCP ────────────────────────────
 // The LCP element on the front page is the hero Arabic verse text.
-// uthmani-quran.woff2 is discovered late through the CSS chain.
+// The Quran face is discovered late through the CSS chain.
 // Inlining the @font-face declaration in <head> moves discovery to the HTML parse.
 
 function ce_critical_font_inline() {
     if ( ! is_front_page() && ! is_home() ) return;
-    $font_url = get_stylesheet_directory_uri() . '/assets/fonts/uthmani-quran.woff2';
+    $font_url = get_stylesheet_directory_uri() . '/assets/fonts/kfgqpc-hafs-uthmanic-script.woff2';
     $hadith_url = get_stylesheet_directory_uri() . '/assets/fonts/ce-hadith-400.woff2';
     echo '<style id="ce-critical-fonts">
-@font-face{font-family:"Uthmani Quran";src:url("' . esc_url( $font_url ) . '") format("woff2");font-weight:400;font-style:normal;font-display:swap;unicode-range:U+0600-06FF}
+@font-face{font-family:"KFGQPC HAFS Uthmanic Script";src:url("' . esc_url( $font_url ) . '") format("woff2");font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:"CE Hadith";src:url("' . esc_url( $hadith_url ) . '") format("woff2");font-weight:400;font-style:normal;font-display:swap}
 </style>' . "\n";
 }
