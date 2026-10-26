@@ -44,6 +44,7 @@ require_once get_stylesheet_directory() . '/inc/class-ce-feed-redirector.php';
 require_once get_stylesheet_directory() . '/inc/ce-content-sync.php';
 
 // ── AUTO CROSS-LINKING (inline article-to-article links) ─────────────────────
+require_once get_stylesheet_directory() . '/inc/ce-contextual-links.php';
 require_once get_stylesheet_directory() . '/inc/ce-crosslinks.php';
 
 // ── GLOSSARY TOOLTIP SYSTEM (auto-link Islamic/Arabic terms) ────────────────

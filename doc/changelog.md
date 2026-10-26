@@ -6,6 +6,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.6.39] — October 2026
+
+### Contextual links across the network
+
+The first mention of a phrase in an article's running text now links to the inner page that treats it, on this site or on one of the six sister sites. No sections or link lists: the links sit in the text.
+
+**Added**
+- `inc/data/network-links.json`: one phrase map for all seven sites, byte-identical in every theme. Every phrase belongs to exactly one page across the network.
+- `inc/ce-contextual-links.php`: the sister-site pass (`the_content`, priority 21). One link a paragraph or list item, never in a paragraph that already holds a crosslink or tooltip, never in headings, quotations, citations, Quran or hadith blocks, figures, tables or Arabic, Hebrew, Greek or Syriac text. Three a page by default.
+- Theme Options → Links & Tooltips → Sister-Site Links: on/off, cap per article (0 to 10), extra phrases (`phrase | /articles/slug/` or `phrase | https://sister/path/`), and pages without crosslinks.
+
+**Changed**
+- `ce_get_crosslink_phrases()` adds this site's entries from the shared map to the curated list. 27 curated phrases the map gives to a sister site now link there (for example "Islamic Dilemma" to injil.help, "age of Aisha" and "apostasy" to murtadd.org, "jihad" and "abrogation" to bestofislam.org).
+- Crosslinks and sister links now also run on answered questions (`ce_question`); the per-post meta box appears there too.
+- Theme Options styles move from an inline `<style>` block to `assets/css/ce-theme-options-admin.css`, loaded only on that screen.
+
+---
+
 ## [2.6.38] — October 2026
 
 ### Content release: batch 009 and a strengthening pass

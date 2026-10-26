@@ -67,6 +67,10 @@ function ce_options_register() {
     register_setting( 'ce_options_links', 'ce_tooltip_color', [ 'default' => '#0cd4e0' ] );
     register_setting( 'ce_options_links', 'ce_tooltip_show_arabic', [ 'default' => '1' ] );
     register_setting( 'ce_options_links', 'ce_tooltip_trigger', [ 'default' => 'hover' ] );
+    register_setting( 'ce_options_links', 'ce_sister_links_enabled', [ 'default' => '1' ] );
+    register_setting( 'ce_options_links', 'ce_sister_links_max', [ 'default' => '3' ] );
+    register_setting( 'ce_options_links', 'ce_contextual_links_extra', [ 'default' => '' ] );
+    register_setting( 'ce_options_links', 'ce_contextual_links_excluded', [ 'default' => '' ] );
 
     // ── Analytics ──
     register_setting( 'ce_options_analytics', 'ce_analytics_enabled', [ 'default' => '1' ] );
@@ -98,6 +102,12 @@ function ce_options_menu() {
     );
 }
 add_action( 'admin_menu', 'ce_options_menu' );
+
+function ce_options_admin_assets( $hook ) {
+    if ( 'appearance_page_ce-theme-options' !== $hook ) return;
+    wp_enqueue_style( 'ce-theme-options-admin', get_stylesheet_directory_uri() . '/assets/css/ce-theme-options-admin.css', [], wp_get_theme()->get( 'Version' ) );
+}
+add_action( 'admin_enqueue_scripts', 'ce_options_admin_assets' );
 
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -179,7 +189,7 @@ function ce_options_page() {
         <h1 class="ce-options-title">
             <span class="ce-options-logo" title="Compelling Evidence" aria-label="Compelling Evidence">
                 <img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/ce-icon.svg' ); ?>"
-                     alt="CE" width="28" height="28" style="display:block;">
+                     alt="CE" width="28" height="28">
             </span>
             CE Theme Options
         </h1>
@@ -192,7 +202,7 @@ function ce_options_page() {
             <?php if ( $sync_result['success'] ) : ?>
                 <div class="notice notice-success is-dismissible">
                     <p><strong>Sync completed successfully!</strong></p>
-                    <ul style="margin:0;list-style:none;">
+                    <ul class="ce-sync-list">
                         <li>✓ Articles synced: <?php echo intval( $sync_result['synced'] ); ?></li>
                         <li>✓ Topics created: <?php echo intval( $sync_result['topics_created'] ); ?></li>
                         <li>✓ Topics cleaned: <?php echo intval( $sync_result['topics_cleaned'] ); ?></li>
@@ -210,52 +220,6 @@ function ce_options_page() {
                 </div>
             <?php endif; ?>
         <?php endif; ?>
-
-        <style>
-            .ce-options-wrap { max-width: 960px; }
-            .ce-options-title { display: flex; align-items: center; gap: 0.6rem; font-size: 1.6rem; font-weight: 700; margin-bottom: 1.2rem; }
-            .ce-options-logo { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: #180d2e; border-radius: 8px; overflow: hidden; flex-shrink: 0; }
-            .ce-options-logo img { width: 28px; height: 28px; object-fit: contain; }
-
-            .ce-tabs { display: flex; gap: 0; border-bottom: 2px solid #ddd; margin-bottom: 0; background: #fff; border-radius: 8px 8px 0 0; overflow-x: auto; }
-            .ce-tab { display: flex; align-items: center; gap: 0.4rem; padding: 0.85rem 1.1rem; border: none; background: none; color: #666; font-size: 0.82rem; font-weight: 500; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap; transition: all 0.15s; text-decoration: none; }
-            .ce-tab:hover { color: #1d2327; background: rgba(0,0,0,0.02); }
-            .ce-tab.active { color: #2271b1; border-bottom-color: #2271b1; font-weight: 600; }
-            .ce-tab .dashicons { font-size: 16px; width: 16px; height: 16px; line-height: 16px; }
-
-            .ce-panel { background: #fff; border: 1px solid #ddd; border-top: none; border-radius: 0 0 8px 8px; padding: 2rem 2.2rem; }
-
-            .ce-field { margin-bottom: 1.6rem; }
-            .ce-field:last-child { margin-bottom: 0; }
-            .ce-field-label { display: block; font-size: 0.82rem; font-weight: 600; color: #1d2327; margin-bottom: 0.4rem; }
-            .ce-field-desc { font-size: 0.78rem; color: #888; margin-top: 0.3rem; line-height: 1.5; }
-
-            .ce-field input[type="text"],
-            .ce-field input[type="number"],
-            .ce-field textarea,
-            .ce-field select { width: 100%; max-width: 480px; padding: 0.55rem 0.75rem; border: 1px solid #ccc; border-radius: 6px; font-size: 0.85rem; transition: border-color 0.15s; }
-            .ce-field input:focus, .ce-field textarea:focus, .ce-field select:focus { border-color: #2271b1; outline: none; box-shadow: 0 0 0 1px #2271b1; }
-            .ce-field textarea { min-height: 80px; resize: vertical; }
-
-            .ce-field input[type="color"] { width: 50px; height: 36px; padding: 2px; border: 1px solid #ccc; border-radius: 6px; cursor: pointer; }
-            .ce-color-row { display: flex; align-items: center; gap: 0.75rem; }
-            .ce-color-hex { font-size: 0.78rem; color: #666; font-family: monospace; }
-
-            .ce-toggle { display: flex; align-items: center; gap: 0.6rem; }
-            .ce-toggle input[type="checkbox"] { width: 18px; height: 18px; accent-color: #2271b1; }
-
-            .ce-section-title { font-size: 0.92rem; font-weight: 700; color: #1d2327; margin: 0 0 1rem; padding-bottom: 0.6rem; border-bottom: 1px solid #eee; }
-
-            .ce-save-row { margin-top: 1.5rem; padding-top: 1.2rem; border-top: 1px solid #eee; }
-            .ce-save-btn { padding: 0.6rem 1.5rem; background: #2271b1; color: #fff; border: none; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: background 0.15s; }
-            .ce-save-btn:hover { background: #135e96; }
-
-            @media (max-width: 782px) {
-                .ce-tabs { flex-wrap: nowrap; overflow-x: auto; }
-                .ce-tab { padding: 0.7rem 0.8rem; font-size: 0.78rem; }
-                .ce-panel { padding: 1.2rem 1rem; }
-            }
-        </style>
 
         <!-- Tabs -->
         <div class="ce-tabs">
@@ -543,7 +507,7 @@ function ce_get_tab_fields( $tab ) {
 
         'links' => [
             [ 'id' => 'ce_crosslinks_enabled',     'label' => 'Enable automatic internal crosslinks',  'type' => 'checkbox', 'default' => '1', 'section' => 'Internal Cross-Links',
-              'desc' => 'Auto-links key phrases in article text to related articles (161 phrase mappings). Obeys all ground rules.' ],
+              'desc' => 'Auto-links key phrases in article and answer text to related articles: the curated list plus this site\'s entries in the shared network map. Obeys all ground rules.' ],
             [ 'id' => 'ce_crosslink_max_per_article', 'label' => 'Maximum crosslinks per article', 'type' => 'number', 'default' => '5', 'min' => 1, 'max' => 15,
               'desc' => 'Upper limit. Actual count may be lower if fewer phrases match.' ],
             [ 'id' => 'ce_crosslink_min_per_article', 'label' => 'Minimum crosslinks per article', 'type' => 'number', 'default' => '3', 'min' => 0, 'max' => 10,
@@ -555,6 +519,14 @@ function ce_get_tab_fields( $tab ) {
               'desc' => 'Not recommended — internal links should pass link equity. Only enable if you have a specific SEO reason.' ],
             [ 'id' => 'ce_crosslink_disabled_categories', 'label' => 'Disable crosslinks for categories', 'type' => 'text', 'default' => '',
               'desc' => 'Comma-separated topic slugs (e.g. "the-bigger-picture,the-inner-journey"). Articles in these categories will have no auto-crosslinks.' ],
+            [ 'id' => 'ce_sister_links_enabled', 'label' => 'Link to the sister sites', 'type' => 'checkbox', 'default' => '1', 'section' => 'Sister-Site Links',
+              'desc' => 'The first mention of a phrase another site in the network treats (Abrahamic Religions, Best of Islam, The Injil, Apostle of Doom, Murtadd, Lailatulqadar) links to that inner page. Phrases come from inc/data/network-links.json, the same file in all seven themes. Never in headings, quotations, Quran or hadith blocks, figures or tables; one added link a paragraph; never in a paragraph that already has a crosslink or tooltip.' ],
+            [ 'id' => 'ce_sister_links_max', 'label' => 'Maximum sister-site links per article', 'type' => 'number', 'default' => '3', 'min' => 0, 'max' => 10,
+              'desc' => 'Counted apart from the internal crosslinks above. 0 turns them off.' ],
+            [ 'id' => 'ce_contextual_links_extra', 'label' => 'Extra phrases', 'type' => 'textarea', 'default' => '',
+              'desc' => 'One per line: phrase | /articles/slug/ for this site, or phrase | https://injil.help/paul/james/ for a sister site. These win over the shared map. Other addresses are ignored.' ],
+            [ 'id' => 'ce_contextual_links_excluded', 'label' => 'Pages without crosslinks', 'type' => 'textarea', 'default' => '',
+              'desc' => 'Article or question slugs, one per line. These get neither internal nor sister-site links; glossary tooltips are unaffected.' ],
             [ 'id' => 'ce_tooltips_enabled',        'label' => 'Enable glossary tooltips',              'type' => 'checkbox', 'default' => '1', 'section' => 'Glossary Tooltips',
               'desc' => 'Auto-links Islamic/Arabic terms and shows definition tooltips on hover. 53 terms defined.' ],
             [ 'id' => 'ce_tooltip_max_per_article',  'label' => 'Maximum tooltips per article',          'type' => 'number',   'default' => '8', 'min' => 1, 'max' => 20,

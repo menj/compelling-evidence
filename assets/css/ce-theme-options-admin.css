@@ -1,0 +1,50 @@
+/**
+ * CE Theme Options — admin screen styles.
+ * Loaded only on Appearance → CE Theme Options (inc/ce-theme-options.php).
+ */
+
+.ce-options-wrap { max-width: 960px; }
+.ce-options-title { display: flex; align-items: center; gap: 0.6rem; font-size: 1.6rem; font-weight: 700; margin-bottom: 1.2rem; }
+.ce-options-logo { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: #180d2e; border-radius: 8px; overflow: hidden; flex-shrink: 0; }
+.ce-options-logo img { display: block; width: 28px; height: 28px; object-fit: contain; }
+
+.ce-tabs { display: flex; gap: 0; border-bottom: 2px solid #ddd; margin-bottom: 0; background: #fff; border-radius: 8px 8px 0 0; overflow-x: auto; }
+.ce-tab { display: flex; align-items: center; gap: 0.4rem; padding: 0.85rem 1.1rem; border: none; background: none; color: #666; font-size: 0.82rem; font-weight: 500; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap; transition: all 0.15s; text-decoration: none; }
+.ce-tab:hover { color: #1d2327; background: rgba(0,0,0,0.02); }
+.ce-tab.active { color: #2271b1; border-bottom-color: #2271b1; font-weight: 600; }
+.ce-tab .dashicons { font-size: 16px; width: 16px; height: 16px; line-height: 16px; }
+
+.ce-panel { background: #fff; border: 1px solid #ddd; border-top: none; border-radius: 0 0 8px 8px; padding: 2rem 2.2rem; }
+
+.ce-field { margin-bottom: 1.6rem; }
+.ce-field:last-child { margin-bottom: 0; }
+.ce-field-label { display: block; font-size: 0.82rem; font-weight: 600; color: #1d2327; margin-bottom: 0.4rem; }
+.ce-field-desc { font-size: 0.78rem; color: #888; margin-top: 0.3rem; line-height: 1.5; }
+
+.ce-field input[type="text"],
+.ce-field input[type="number"],
+.ce-field textarea,
+.ce-field select { width: 100%; max-width: 480px; padding: 0.55rem 0.75rem; border: 1px solid #ccc; border-radius: 6px; font-size: 0.85rem; transition: border-color 0.15s; }
+.ce-field input:focus, .ce-field textarea:focus, .ce-field select:focus { border-color: #2271b1; outline: none; box-shadow: 0 0 0 1px #2271b1; }
+.ce-field textarea { min-height: 80px; resize: vertical; }
+
+.ce-field input[type="color"] { width: 50px; height: 36px; padding: 2px; border: 1px solid #ccc; border-radius: 6px; cursor: pointer; }
+.ce-color-row { display: flex; align-items: center; gap: 0.75rem; }
+.ce-color-hex { font-size: 0.78rem; color: #666; font-family: monospace; }
+
+.ce-toggle { display: flex; align-items: center; gap: 0.6rem; }
+.ce-toggle input[type="checkbox"] { width: 18px; height: 18px; accent-color: #2271b1; }
+
+.ce-section-title { font-size: 0.92rem; font-weight: 700; color: #1d2327; margin: 0 0 1rem; padding-bottom: 0.6rem; border-bottom: 1px solid #eee; }
+
+.ce-save-row { margin-top: 1.5rem; padding-top: 1.2rem; border-top: 1px solid #eee; }
+.ce-save-btn { padding: 0.6rem 1.5rem; background: #2271b1; color: #fff; border: none; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: background 0.15s; }
+.ce-save-btn:hover { background: #135e96; }
+
+@media (max-width: 782px) {
+    .ce-tabs { flex-wrap: nowrap; overflow-x: auto; }
+    .ce-tab { padding: 0.7rem 0.8rem; font-size: 0.78rem; }
+    .ce-panel { padding: 1.2rem 1rem; }
+}
+
+.ce-sync-list { margin: 0; list-style: none; }

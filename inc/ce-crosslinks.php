@@ -24,14 +24,38 @@ if ( ! defined( 'ABSPATH' ) ) exit;
    PHRASE → SLUG MAPPINGS (Internal Cross-Links)
    ═══════════════════════════════════════════════════════════════════════ */
 
+/**
+ * Phrase => article slug for this site: the curated list below, then this
+ * site's entries from the shared network map (inc/data/network-links.json).
+ * A phrase the shared map gives to a sister site leaves this list and is
+ * linked there by ce-contextual-links.php. The custom phrase option and the
+ * admin lines on the Links & Tooltips tab come last, so they win.
+ */
 function ce_get_crosslink_phrases() {
-    // Allow admin override from DB
+    static $cache = null;
+    if ( null !== $cache ) {
+        return $cache;
+    }
+    $phrases = ce_get_default_crosslink_phrases();
+    $seen    = [];
+    foreach ( array_keys( $phrases ) as $phrase ) {
+        $seen[ ce_ctx_lower( $phrase ) ] = true;
+    }
+    foreach ( ce_ctx_own_map_phrases() as $phrase => $slug ) {
+        $lc = ce_ctx_lower( $phrase );
+        if ( isset( $seen[ $lc ] ) ) continue;
+        $seen[ $lc ]        = true;
+        $phrases[ $phrase ] = $slug;
+    }
+    $sister = ce_ctx_sister_owned_phrases();
+    foreach ( array_keys( $phrases ) as $phrase ) {
+        if ( isset( $sister[ ce_ctx_lower( $phrase ) ] ) ) unset( $phrases[ $phrase ] );
+    }
     $custom = get_option( 'ce_crosslink_custom_phrases' );
     if ( is_array( $custom ) && ! empty( $custom ) ) {
-        $base = ce_get_default_crosslink_phrases();
-        return array_merge( $base, $custom );
+        $phrases = array_merge( $phrases, $custom );
     }
-    return ce_get_default_crosslink_phrases();
+    return $cache = array_merge( $phrases, ce_ctx_extra_lines()['own'] );
 }
 
 function ce_get_default_crosslink_phrases() {
@@ -265,8 +289,8 @@ function ce_get_default_crosslink_phrases() {
    ═══════════════════════════════════════════════════════════════════════ */
 
 function ce_unified_link_filter( $content ) {
-    // Only on single articles/posts, not admin
-    if ( is_admin() || ! is_singular( [ 'ce_article', 'post' ] ) ) {
+    // Only on single articles, posts and answered questions, not admin
+    if ( is_admin() || ! is_singular( ce_ctx_post_types() ) ) {
         return $content;
     }
 
@@ -279,15 +303,12 @@ function ce_unified_link_filter( $content ) {
     $post_id = get_the_ID();
     if ( get_post_meta( $post_id, '_ce_disable_crosslinks', true ) === '1' ) $crosslinks_on = false;
     if ( get_post_meta( $post_id, '_ce_disable_tooltips', true ) === '1' ) $tooltips_on = false;
+    if ( ! ce_ctx_enabled_for( get_post( $post_id ) ) ) $crosslinks_on = false;
     if ( ! $crosslinks_on && ! $tooltips_on ) return $content;
 
     // Check per-category disable
-    $disabled_cats = array_filter( explode( ',', get_option( 'ce_crosslink_disabled_categories', '' ) ) );
-    if ( $disabled_cats ) {
-        $post_terms = wp_get_post_terms( $post_id, 'ce_topic', [ 'fields' => 'slugs' ] );
-        if ( ! is_wp_error( $post_terms ) && array_intersect( $post_terms, $disabled_cats ) ) {
-            return $content;
-        }
+    if ( ce_ctx_in_disabled_topic( $post_id ) ) {
+        return $content;
     }
 
     // Settings
@@ -382,7 +403,7 @@ function ce_unified_link_filter( $content ) {
                         $title_attr = ' title="' . esc_attr( get_the_title( $target_post ) ) . '"';
                     }
 
-                    $link = '<a href="' . esc_url( $base_url . $slug . '/' ) . '" class="ce-crosslink"' . $title_attr . '>' . $found . '</a>';
+                    $link = '<a href="' . esc_url( $base_url . $slug . '/' ) . '" class="ce-crosslink ce-ctx-link"' . $title_attr . '>' . $found . '</a>';
                     $text = substr_replace( $text, $link, $offset, strlen( $found ) );
                     $changed = true;
                     $crosslink_count++;
@@ -467,7 +488,7 @@ function ce_unified_link_filter( $content ) {
                 $target_post = get_page_by_path( $slug, OBJECT, 'ce_article' );
                 if ( $target_post ) $title_attr = ' title="' . esc_attr( get_the_title( $target_post ) ) . '"';
 
-                $link = '<a href="' . esc_url( $base_url . $slug . '/' ) . '" class="ce-crosslink"' . $title_attr . '>' . $found . '</a>';
+                $link = '<a href="' . esc_url( $base_url . $slug . '/' ) . '" class="ce-crosslink ce-ctx-link"' . $title_attr . '>' . $found . '</a>';
                 $content = substr_replace( $content, $link, $offset, strlen( $found ) );
                 $crosslink_count++;
                 $used_slugs[] = $slug;
@@ -494,7 +515,7 @@ function ce_crosslink_meta_box() {
         'ce-link-controls',
         'Links & Tooltips',
         'ce_crosslink_meta_box_html',
-        [ 'ce_article', 'post' ],
+        ce_ctx_post_types(),
         'side',
         'default'
     );
@@ -508,7 +529,7 @@ function ce_crosslink_meta_box_html( $post ) {
     ?>
     <label style="display:block;margin-bottom:0.5rem;">
         <input type="checkbox" name="ce_disable_crosslinks" value="1" <?php checked( $disable_cl, '1' ); ?>>
-        Disable internal crosslinks
+        Disable crosslinks (this site and sister sites)
     </label>
     <label style="display:block;">
         <input type="checkbox" name="ce_disable_tooltips" value="1" <?php checked( $disable_tt, '1' ); ?>>

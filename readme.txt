@@ -6,7 +6,7 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.6.38
+Version: 2.6.39
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Template: twentytwentyfive
@@ -101,6 +101,12 @@ Appearance > CE Theme Options — 8 tabs:
                   Retired URLs (410 Gone path prefixes)
 
 == Changelog ==
+
+= 2.6.39 — October 2026 =
+Contextual links across the network: the first mention of a phrase another of the seven sites
+treats now links to that inner page, alongside the existing links to this site's own articles.
+One shared phrase map, inc/data/network-links.json, identical in all seven themes. Answered
+questions get crosslinks too. Theme Options styles move to their own stylesheet.
 
 = 2.6.38 — October 2026 =
 Content release: five new articles (batch 009, 142 in total) on the Prophet's marriages, alleged

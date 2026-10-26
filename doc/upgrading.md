@@ -6,6 +6,12 @@ Only paths explicitly identified in development are documented here.
 
 ---
 
+## Upgrading to v2.6.39 from v2.6.38
+
+**After deploying:** nothing to run. Sister-site links are on by default (three per article); turn them off or change the cap under Theme Options → Links & Tooltips → Sister-Site Links. When the shared map changes, copy `inc/data/network-links.json` to all seven themes.
+
+---
+
 ## Upgrading to v2.6.38 from v2.6.37
 
 **After deploying:** load any admin page; the sync creates five articles and updates six. The 15 new images import on the hourly schedule.

@@ -1,6 +1,6 @@
 # CE Theme (Compelling Evidence) — WordPress Theme
 
-**Version:** 2.6.38 | **Parent theme:** Twenty Twenty-Five (tested with 1.5) | **Requires:** WordPress 6.7+ (tested to 7.1), PHP 8.0 to 8.4  
+**Version:** 2.6.39 | **Parent theme:** Twenty Twenty-Five (tested with 1.5) | **Requires:** WordPress 6.7+ (tested to 7.1), PHP 8.0 to 8.4  
 **Site:** https://compelling-evidence.com | **Repository:** https://github.com/menj/compelling-evidence | **Author:** [MENJ](https://menj.blog) | **Text domain:** `compelling-evidence`
 
 An Islamic apologetics child theme delivering personalised argumentation journeys across 14 persona paths, 131 articles across 11 investigative categories, a weighted intake quiz, a gamified progress system, a privacy-first analytics layer, and a full engagement suite. Built for a single deployment — not a general-purpose theme.
@@ -77,7 +77,8 @@ compelling-evidence/
 │   ├── ce-icons.php                  Topic line icons for article cards without a featured image
 │   ├── ce-parent-compat.php          Template priority over parent block templates; parent version notice
 │   ├── ce-fonts.php                  Font registry, role variables, font preload tags (Typography tab)
-│   ├── ce-crosslinks.php             Unified crosslink + tooltip filter (197 phrases, 85 glossary terms)
+│   ├── ce-crosslinks.php             Unified crosslink + tooltip filter (curated phrases + shared map, 85 glossary terms)
+│   ├── ce-contextual-links.php       Shared network map loader + sister-site link pass (Links & Tooltips tab)
 │   ├── ce-engagement.php             Voting, resonance, 9-platform social sharing, reading time
 │   ├── ce-glossary.php               85 Islamic/Arabic terms with Arabic script + definitions
 │   ├── ce-migration-2-2-0.php        Category restructure (creates 10 terms, remaps articles)
@@ -256,7 +257,7 @@ All 7 are overridable via Theme Options > Colors (injected as inline CSS at `wp_
 | General | Hero title, subtitle, Arabic verse, translation, footer text |
 | Colors | 7 color pickers (accent, teal, purple, gold, backgrounds) |
 | Typography | Heading font, reading font, label and eyebrow font, font scale |
-| Links & Tooltips | Crosslinks and glossary tooltips configuration |
+| Links & Tooltips | Crosslinks, sister-site links, extra phrases, excluded pages, glossary tooltips, search URLs |
 | Quiz & Journeys | Quiz enable/disable, max selections, progress badges |
 | Engagement | Voting, resonance, crosslinks, search toggles |
 | Analytics | Tracking enable/disable, retention days |
@@ -290,4 +291,4 @@ The `readme.txt` file remains in the theme root for WordPress.org compliance.
 
 ---
 
-*Last updated: October 2026 (v2.6.38)*
+*Last updated: October 2026 (v2.6.39)*

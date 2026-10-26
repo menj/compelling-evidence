@@ -1,7 +1,7 @@
 # SSOT — Single Source of Truth
 ## Compelling Evidence Theme — System Design, Naming Conventions, Configuration Rules
 
-**Version:** 2.6.38  
+**Version:** 2.6.39  
 **Location:** `/doc/SSOT.md`
 
 This document is authoritative. When any other file conflicts with a rule stated here, this document is correct and the other file should be updated.
@@ -427,10 +427,24 @@ The unified crosslink + tooltip engine (`ce-crosslinks.php`) enforces these rule
 4. **Minimum crosslinks** — Every article gets at least 3 crosslinks. Second pass with relaxed rules if needed.
 5. **Per-post disable** — `_ce_disable_crosslinks` and `_ce_disable_tooltips` post meta can disable either system.
 6. **Per-category disable** — Comma-separated slugs in Theme Options disable both systems for those topic categories.
+7. **Post types** — Articles, posts and answered questions (`ce_article`, `post`, `ce_question`; filter `ce_contextual_links_post_types`).
+8. **Excluded pages** — Slugs listed under Links & Tooltips → Pages without crosslinks get no crosslinks of either kind; tooltips stay.
+
+### Shared network map and sister-site links (v2.6.39)
+
+`inc/data/network-links.json` is a **shared file, byte-identical in all seven themes** (Compelling Evidence, Abrahamic Religions, Best of Islam, The Injil, Apostle of Doom, Murtadd, Lailatulqadar). It lists each site's base URL and its inner pages with the phrases that lead to them; every phrase belongs to exactly one page across the network. Edit it in one theme, then copy the same file to the other six.
+
+- This site's entries (`"site": "ce"`) join the curated list in `ce_get_default_crosslink_phrases()` and are linked by the unified engine above.
+- A curated phrase the map gives to a sister site leaves this site's list and links to that sister page instead.
+- `inc/ce-contextual-links.php` links the sister entries at `the_content` priority 21, after the unified engine (20), so its crosslinks and tooltips are already in place and their paragraphs are skipped.
+- Sister-link rules: whole phrase, first mention, each address once a page, one added link a paragraph or list item, never in a paragraph that already has a crosslink or tooltip, never inside headings, links, quotations, citations, Quran or hadith blocks, figures, tables, code, footnotes or any `lang` ar/he/el/syr element. Cap: 3 a page by default (0 to 10), counted apart from the internal cap.
+- Markup: `<a class="ce-crosslink ce-ctx-link ce-ctx-link--sister" rel="noopener">`, same tab; it takes the configured crosslink style and colour.
+- Extra phrases (Links & Tooltips): `phrase | /articles/slug/` or `phrase | https://<sister host>/path/`, one per line; they win over the map. Any other host or local path is ignored.
+- Per-post and per-topic crosslink disables also stop sister links. Filters: `ce_contextual_links_map`, `ce_contextual_links_enabled`.
 
 ---
 
-*Last updated: October 2026 (v2.6.38)*
+*Last updated: October 2026 (v2.6.39)*
 ---
 
 ## 17. Feed Redirector (`inc/class-ce-feed-redirector.php`)
