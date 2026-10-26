@@ -168,13 +168,16 @@ blockquote {
 }
 
 .quran-arabic {
-  font-family: 'KFGQPC HAFS Uthmanic Script', 'CE Hadith', serif;
+  font-family: 'CE Hadith', serif;
   font-size: 14pt;
   direction: rtl;
   text-align: center;
   display: block;
   margin-bottom: 0.5em;
   line-height: 2;
+}
+.quran-arabic[data-ce-quran="kfgqpc"] {
+  font-family: 'KFGQPC HAFS Uthmanic Script', 'CE Hadith', serif;
 }
 .hadith-arabic {
   font-family: 'CE Hadith', serif;

@@ -21,6 +21,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **Pages get contextual links.** `page` joins `ce_article`, `post` and `ce_question` in `ce_ctx_post_types()`, so the own-site crosslinks, glossary tooltips and sister-site links all reach pages. The front page stays unlinked: the unified filter and the tooltip assets now check `is_front_page()` as the sister pass already did.
 - `readme.txt` `Version` is 2.6.42, matching `style.css`.
 
+### Bug fixes
+
+- **Own-site phrases with an apostrophe link again.** The unified filter (20) runs after wptexturize (10), which writes "Muhammad's" as "Muhammad&#8217;s"; its crosslink, Rule 4 and tooltip patterns knew only the straight apostrophe, so "Muhammad's character", "i'jaz", "Ka'b ibn al-Ashraf", "women's rights in islam" and any own-site extra phrase with an apostrophe never linked. They now use `ce_ctx_phrase_alt()`, the apostrophe-tolerant fragment the sister pass already used.
+- **No fatal error without mbstring.** The unified filter called `mb_strtolower()`, which WordPress does not polyfill, so a host without mbstring died on every article. It now uses `ce_ctx_lower()`.
+- **Accented capitals find their sister link without mbstring.** "IBN ISḤĀQ" matched but missed its key, since `ce_ctx_lower()` lowers only ASCII there; `ce_ctx_find_sister_url()` then compares phrase by phrase.
+- **Invalid UTF-8 never empties a paragraph.** A paragraph with one invalid byte made the sister pass's `preg_replace_callback()` return null and the paragraph vanished; matching now leaves such text as it was (`ce_ctx_replace_matches()`). `ce_quran_fit_text()` keeps its text the same way, and the extra-phrases field is split without `/u`, so an invalid byte cannot drop every line.
+- **An oversized phrase list never blanks the page.** With enough extra phrases the sister pattern grew past PCRE's limit, failed to compile, and every paragraph rendered empty. `ce_ctx_sister_patterns()` now tests the pattern and splits it until each part compiles; matches from the parts are merged leftmost-longest, as one pattern would.
+- **Rule 4 never writes a link into an attribute.** The minimum-crosslinks pass searches the whole content and could place a link inside an `alt` or `data-` value; it now skips a match that sits inside a tag.
+- **The KFGQPC face only on fitted verses.** `.quran-arabic` uses CE Hadith; `.quran-arabic[data-ce-quran="kfgqpc"]` uses `--font-quran` (also in `print.css`). Text the converter never reached (an element with inner tags, or a post with invalid UTF-8) used to show a round sukun and a stray ornament in the KFGQPC face; it now shows in the Naskh face.
+
 ---
 
 ## [2.6.41] — October 2026

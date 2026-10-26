@@ -1836,8 +1836,11 @@ body.page-template-page-journeys {
   border-radius: 14px;
   text-align: center !important;
 }
+/* The KFGQPC face only on verses inc/ce-quran-text.php has fitted to its
+   encoding (data-ce-quran); unfitted Tanzil text would show a round sukun and
+   a stray ornament, so it keeps the Naskh face. */
 .quran-arabic {
-  font-family: var(--font-quran);
+  font-family: 'CE Hadith', serif;
   font-size: clamp(1.2rem, 2.5vw, 1.6rem);
   line-height: 2.2;
   color: rgba(212,168,255,0.85);
@@ -1845,6 +1848,9 @@ body.page-template-page-journeys {
   text-align: center !important;
   margin-bottom: 1rem;
   display: block;
+}
+.quran-arabic[data-ce-quran="kfgqpc"] {
+  font-family: var(--font-quran);
 }
 .quran-translation {
   font-family: var(--font-reading);

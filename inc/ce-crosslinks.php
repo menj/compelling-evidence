@@ -388,10 +388,10 @@ function ce_unified_link_filter( $content ) {
                 if ( $slug === $current_slug ) continue;
                 if ( in_array( $slug, $used_slugs, true ) ) continue;
 
-                $lc_phrase = mb_strtolower( $phrase );
+                $lc_phrase = ce_ctx_lower( $phrase );
                 if ( in_array( $lc_phrase, $used_keywords, true ) ) continue; // Rule 1
 
-                $escaped = preg_quote( $phrase, '/' );
+                $escaped = ce_ctx_phrase_alt( $phrase );
                 $pattern = '/(?<![a-zA-Z\x{0600}-\x{06FF}])(' . $escaped . ')(?![a-zA-Z\x{0600}-\x{06FF}])/iu';
 
                 if ( preg_match( $pattern, $text, $match, PREG_OFFSET_CAPTURE ) ) {
@@ -422,10 +422,10 @@ function ce_unified_link_filter( $content ) {
                 if ( $tooltip_count >= $max_tooltips ) break;
 
                 $term = $term_data['term'];
-                $lc_term = mb_strtolower( $term );
+                $lc_term = ce_ctx_lower( $term );
                 if ( in_array( $lc_term, $used_keywords, true ) ) continue; // Rule 1
 
-                $escaped = preg_quote( $term, '/' );
+                $escaped = ce_ctx_phrase_alt( $term );
                 $pattern = '/\b(' . $escaped . ')\b/iu';
 
                 if ( preg_match( $pattern, $text, $match, PREG_OFFSET_CAPTURE ) ) {
@@ -463,10 +463,10 @@ function ce_unified_link_filter( $content ) {
             if ( $slug === $current_slug ) continue;
             if ( in_array( $slug, $used_slugs, true ) ) continue;
 
-            $lc_phrase = mb_strtolower( $phrase );
+            $lc_phrase = ce_ctx_lower( $phrase );
             if ( in_array( $lc_phrase, $used_keywords, true ) ) continue;
 
-            $escaped = preg_quote( $phrase, '/' );
+            $escaped = ce_ctx_phrase_alt( $phrase );
             // Match in paragraph text only (not headings — use negative lookbehind for <h)
             $pattern = '/(?<=<p[^>]*>(?:[^<]*))(?<![a-zA-Z\x{0600}-\x{06FF}])(' . $escaped . ')(?![a-zA-Z\x{0600}-\x{06FF}])(?=[^<]*<\/p>)/iu';
 
@@ -483,7 +483,9 @@ function ce_unified_link_filter( $content ) {
                 $in_a = preg_match_all( '/<a[\s>]/i', $before ) > preg_match_all( '/<\/a>/i', $before );
                 $prefix = substr( $content, 0, $offset );
                 $in_m   = preg_match_all( '/<(figure|svg|table)\b/i', $prefix ) > preg_match_all( '/<\/(figure|svg|table)>/i', $prefix );
-                if ( $in_h || $in_a || $in_m ) continue;
+                // Never inside a tag's attributes (alt, title, data-*).
+                $in_tag = strrpos( $prefix, '<' ) > (int) strrpos( $prefix, '>' );
+                if ( $in_h || $in_a || $in_m || $in_tag ) continue;
 
                 $title_attr = '';
                 $target_post = get_page_by_path( $slug, OBJECT, 'ce_article' );

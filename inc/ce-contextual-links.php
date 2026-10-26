@@ -90,7 +90,8 @@ function ce_ctx_extra_lines() {
     $own    = [];
     $sister = [];
     $hosts  = ce_ctx_sister_hosts();
-    foreach ( preg_split( '/\R/u', (string) get_option( 'ce_contextual_links_extra', '' ) ) as $line ) {
+    // No /u: on invalid UTF-8 a /u split returns false and every line is lost.
+    foreach ( preg_split( '/\r\n|\r|\n/', (string) get_option( 'ce_contextual_links_extra', '' ) ) as $line ) {
         $parts = array_map( 'trim', explode( '|', $line, 2 ) );
         if ( count( $parts ) < 2 || '' === $parts[0] || '' === $parts[1] ) continue;
         [ $phrase, $target ] = $parts;
@@ -175,29 +176,109 @@ function ce_ctx_sister_links() {
 }
 
 /**
- * One case-insensitive whole-phrase pattern of every sister phrase, longest
- * first. A straight apostrophe in a phrase also matches the curly one and its
- * entities, since wptexturize has already run.
+ * One phrase as a pattern fragment: quoted, with every apostrophe form
+ * (straight, curly, or the entity wptexturize writes) matching any other.
+ * Shared by the sister pass and the unified engine.
+ *
+ * @param string $phrase Phrase.
+ * @return string
  */
-function ce_ctx_sister_pattern() {
-    static $pattern = null;
-    if ( null !== $pattern ) {
-        return $pattern;
+function ce_ctx_phrase_alt( $phrase ) {
+    $phrase = str_replace( [ "\u{2019}", '&#8217;', '&#039;', '&#39;', '&rsquo;' ], "'", (string) $phrase );
+    return str_replace( "'", "(?:'|\u{2019}|&\#8217;|&\#0?39;|&rsquo;)", preg_quote( $phrase, '/' ) );
+}
+
+/**
+ * The sister phrases as one or more patterns, longest phrase first. One
+ * pattern normally; when the list is too large for PCRE to compile (many
+ * extra phrases on the settings tab), it is split until each part compiles,
+ * and a phrase that cannot compile alone is dropped.
+ *
+ * @return string[]
+ */
+function ce_ctx_sister_patterns() {
+    static $patterns = null;
+    if ( null !== $patterns ) {
+        return $patterns;
     }
     $phrases = array_column( ce_ctx_sister_links(), 'phrase' );
     if ( ! $phrases ) {
-        return $pattern = '';
+        return $patterns = [];
     }
     $len = function_exists( 'mb_strlen' ) ? 'mb_strlen' : 'strlen';
     usort( $phrases, static function ( $a, $b ) use ( $len ) { return $len( $b ) <=> $len( $a ); } );
-    $alts = array_map(
-        static function ( $p ) {
-            $p = str_replace( "\u{2019}", "'", $p );
-            return str_replace( "'", "(?:'|\u{2019}|&\#8217;|&\#0?39;|&rsquo;)", preg_quote( $p, '/' ) );
-        },
-        $phrases
-    );
-    return $pattern = '/(?<![\p{L}\p{N}])(?:' . implode( '|', $alts ) . ')(?![\p{L}\p{N}])/iu';
+    $alts     = array_map( 'ce_ctx_phrase_alt', $phrases );
+    $wrap     = static function ( $alts ) { return '/(?<![\p{L}\p{N}])(?:' . implode( '|', $alts ) . ')(?![\p{L}\p{N}])/iu'; };
+    $queue    = [ $alts ];
+    $patterns = [];
+    while ( $queue ) {
+        $chunk   = array_shift( $queue );
+        $pattern = $wrap( $chunk );
+        if ( false !== @preg_match( $pattern, '' ) ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged -- the compile test is the point.
+            $patterns[] = $pattern;
+        } elseif ( count( $chunk ) > 1 ) {
+            $half = (int) ceil( count( $chunk ) / 2 );
+            array_unshift( $queue, array_slice( $chunk, 0, $half ), array_slice( $chunk, $half ) );
+        }
+    }
+    return $patterns;
+}
+
+/**
+ * The sister link for a matched phrase. Without mbstring, ce_ctx_lower()
+ * lowers ASCII only, so a match in accented capitals ("IBN ISḤĀQ") misses
+ * its key and is compared phrase by phrase instead.
+ *
+ * @param array  $links Sister links keyed by lower-cased phrase.
+ * @param string $text  Matched text.
+ * @return string Address, or '' when none.
+ */
+function ce_ctx_find_sister_url( $links, $text ) {
+    $key = ce_ctx_lower( $text );
+    if ( isset( $links[ $key ] ) ) {
+        return $links[ $key ]['url'];
+    }
+    if ( ! function_exists( 'mb_strtolower' ) ) {
+        foreach ( $links as $link ) {
+            if ( preg_match( '/^' . ce_ctx_phrase_alt( $link['phrase'] ) . '$/iu', $text ) ) {
+                return $link['url'];
+            }
+        }
+    }
+    return '';
+}
+
+/**
+ * Replace the matches of several patterns in one text as one pattern would:
+ * leftmost first, the longest at the same place, never overlapping.
+ *
+ * @param string   $text     Plain text.
+ * @param string[] $patterns Patterns.
+ * @param callable $callback Receives the matched text, returns the replacement.
+ * @return string The text, unchanged when a pattern fails (invalid UTF-8).
+ */
+function ce_ctx_replace_matches( $text, $patterns, $callback ) {
+    $found = [];
+    foreach ( $patterns as $pattern ) {
+        if ( false === preg_match_all( $pattern, $text, $sets, PREG_OFFSET_CAPTURE ) ) {
+            return $text;
+        }
+        foreach ( $sets[0] as $m ) {
+            $found[] = $m;
+        }
+    }
+    if ( ! $found ) {
+        return $text;
+    }
+    usort( $found, static function ( $a, $b ) { return $a[1] <=> $b[1] ?: strlen( $b[0] ) <=> strlen( $a[0] ); } );
+    $out    = '';
+    $cursor = 0;
+    foreach ( $found as [ $match, $offset ] ) {
+        if ( $offset < $cursor ) continue;
+        $out   .= substr( $text, $cursor, $offset - $cursor ) . $callback( $match );
+        $cursor = $offset + strlen( $match );
+    }
+    return $out . substr( $text, $cursor );
 }
 
 
@@ -268,9 +349,9 @@ add_filter( 'the_content', 'ce_sister_link_filter', 21 );
  * @param string $here    The current page's address.
  */
 function ce_ctx_apply_sister_links( $content, $max, $here ) {
-    $links   = ce_ctx_sister_links();
-    $pattern = ce_ctx_sister_pattern();
-    if ( ! $links || '' === $pattern ) return $content;
+    $links    = ce_ctx_sister_links();
+    $patterns = ce_ctx_sister_patterns();
+    if ( ! $links || ! $patterns ) return $content;
 
     $pieces = preg_split( '/(<[^>]+>)/', $content, -1, PREG_SPLIT_DELIM_CAPTURE );
     if ( false === $pieces ) return $content;
@@ -325,18 +406,18 @@ function ce_ctx_apply_sister_links( $content, $max, $here ) {
         if ( $made >= $max ) break;
         if ( ! isset( $owner[ $i ] ) || ! $owner[ $i ] || $skip_at[ $i ] || isset( $used[ $owner[ $i ] ] ) || '' === trim( $piece ) ) continue;
         $block = $owner[ $i ];
-        $pieces[ $i ] = preg_replace_callback(
-            $pattern,
-            static function ( $m ) use ( $links, $here_key, $block, $max, &$done, &$made, &$used ) {
-                if ( $made >= $max || isset( $used[ $block ] ) ) return $m[0];
-                $url = $links[ ce_ctx_lower( $m[0] ) ]['url'] ?? '';
-                if ( '' === $url || isset( $done[ $url ] ) || untrailingslashit( $url ) === $here_key ) return $m[0];
+        $pieces[ $i ] = ce_ctx_replace_matches(
+            $piece,
+            $patterns,
+            static function ( $match ) use ( $links, $here_key, $block, $max, &$done, &$made, &$used ) {
+                if ( $made >= $max || isset( $used[ $block ] ) ) return $match;
+                $url = ce_ctx_find_sister_url( $links, $match );
+                if ( '' === $url || isset( $done[ $url ] ) || untrailingslashit( $url ) === $here_key ) return $match;
                 $done[ $url ]    = true;
                 $used[ $block ]  = true;
                 ++$made;
-                return '<a class="ce-crosslink ce-ctx-link ce-ctx-link--sister" href="' . esc_url( $url ) . '" rel="noopener">' . $m[0] . '</a>';
-            },
-            $piece
+                return '<a class="ce-crosslink ce-ctx-link ce-ctx-link--sister" href="' . esc_url( $url ) . '" rel="noopener">' . $match . '</a>';
+            }
         );
     }
     return implode( '', $pieces );

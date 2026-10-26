@@ -38,8 +38,9 @@ function ce_quran_fit_text( $text ) {
             )
         );
     }
-    $text = preg_replace( '/[\x{FD3E}\x{FD3F}]\s*([\x{0660}-\x{0669}]+)\s*[\x{FD3E}\x{FD3F}]/u', '$1', $text );
-    $text = preg_replace( '/\x{06DD}\s*([\x{0660}-\x{0669}]+)/u', '$1', $text );
+    // On invalid UTF-8 a /u replace returns null; keep the text as it was.
+    $text = preg_replace( '/[\x{FD3E}\x{FD3F}]\s*([\x{0660}-\x{0669}]+)\s*[\x{FD3E}\x{FD3F}]/u', '$1', $text ) ?? $text;
+    $text = preg_replace( '/\x{06DD}\s*([\x{0660}-\x{0669}]+)/u', '$1', $text ) ?? $text;
     return $text;
 }
 
