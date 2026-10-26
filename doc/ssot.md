@@ -396,6 +396,10 @@ Quranic text uses `--font-quran` (defined on `:root` in `main.css`), and only Qu
 2. **CE Hadith** — Fallback for the few code points the Quran face lacks, and the font for all non-Quranic Arabic (hadith, glossary terms, the verse-number ornament).
 3. **System fonts** — Noto Naskh Arabic (Android/Linux), Traditional Arabic (Windows), Geeza Pro (macOS/iOS).
 
+### Verse encoding
+
+The KFGQPC face follows the King Fahd Complex's encoding, not Tanzil's: its sukun is U+06E1, its rounded zero is U+0652, U+06DF is a spacing ornament, and Arabic-Indic digits in a verse draw as the ayah-end medallion. The article data is Tanzil-encoded and stays so. `inc/ce-quran-text.php` (`ce_quran_fit_content()`, `the_content` priority 8, before media injection and all link passes) rewrites only the text inside `.quran-arabic` elements: U+0652 to U+06E1, U+06DF to U+0652, and ﴿n﴾ or U+06DD n to n. It skips a verse that already carries U+06E1, and marks each fitted element `data-ce-quran="kfgqpc"` so it never runs twice. Hadith (`.hadith-arabic`), glossary terms and any other Arabic are never touched. The static journey pages carry U+06E1 in their verse markup directly.
+
 ### Known Limitation
 Ornate brackets ﴿﴾ (U+FD3E-FD3F) are not in the KFGQPC face. They render via CE Hadith.
 

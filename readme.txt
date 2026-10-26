@@ -102,6 +102,10 @@ Appearance > CE Theme Options — 8 tabs:
 
 == Changelog ==
 
+= 2.6.41 — October 2026 =
+Quranic verse text is fitted to the KFGQPC encoding as it renders (sukun, the rounded zero, and
+one ayah-number medallion in place of brackets round a medallion). Stored text is unchanged.
+
 = 2.6.40 — October 2026 =
 Quranic verses, and only Quranic verses, are set in the original KFGQPC HAFS Uthmanic Script
 TTF, distributed unmodified under its licence. It replaces the subset uthmani-quran.woff2.

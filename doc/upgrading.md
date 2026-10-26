@@ -6,6 +6,12 @@ Only paths explicitly identified in development are documented here.
 
 ---
 
+## Upgrading to v2.6.41 from v2.6.40
+
+**After deploying:** nothing to run, and no stored content changes. New verses keep the usual (Tanzil) Uthmani encoding inside `<div class="quran-arabic">`; `inc/ce-quran-text.php` fits them as they render. Verses pasted in the King Fahd Complex's own encoding (sukun U+06E1) render as they are.
+
+---
+
 ## Upgrading to v2.6.40 from v2.6.39
 
 **After deploying:** nothing to run. Purge any page or CDN cache that holds `assets/fonts/uthmani-quran.woff2`, which is removed. Child themes or custom CSS that named the `'Uthmani Quran'` family should use `var(--font-quran)` instead.

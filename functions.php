@@ -43,6 +43,9 @@ require_once get_stylesheet_directory() . '/inc/class-ce-feed-redirector.php';
 // ── CONTENT SYNC (updates existing articles from data files) ─────────────────
 require_once get_stylesheet_directory() . '/inc/ce-content-sync.php';
 
+// ── QURANIC VERSE TEXT (fitted to the KFGQPC face) ───────────────────────────
+require_once get_stylesheet_directory() . '/inc/ce-quran-text.php';
+
 // ── AUTO CROSS-LINKING (inline article-to-article links) ─────────────────────
 require_once get_stylesheet_directory() . '/inc/ce-contextual-links.php';
 require_once get_stylesheet_directory() . '/inc/ce-crosslinks.php';

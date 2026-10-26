@@ -6,6 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.6.41] — October 2026
+
+### Quranic verse text fitted to the KFGQPC encoding
+
+The verses in the article data follow the Tanzil Uthmani encoding; the KFGQPC face follows the King Fahd Complex's own. In the face, U+0652 is the rounded zero (so every Tanzil sukun drew as a circle), the Madani sukun is U+06E1, and U+06DF is a spacing ornament (so the rounded zero over a silent alif drew as a dot beside it). The face also draws the Arabic-Indic digits of an ayah number as the ayah-end medallion by itself, so the ornate brackets round each number drew a second ornament.
+
+**Added**
+- `inc/ce-quran-text.php`: `ce_quran_fit_content()` on `the_content` at priority 8 fits each `.quran-arabic` element, and nothing else, as it renders: sukun U+0652 to U+06E1, rounded zero U+06DF to U+0652, and the ﴿﴾ (or U+06DD) round an ayah number removed so the face draws one medallion. A verse that already carries U+06E1 is in the Complex's encoding and keeps its marks. A fitted element gets `data-ce-quran="kfgqpc"` and is never fitted twice. The stored text stays standard; hadith and all other Arabic are untouched. All 290 verses in the article data were checked.
+
+**Changed**
+- The front-page verse number is the bare digits ١٣ in the KFGQPC face (one medallion), no longer ﴿١٣﴾ in CE Hadith.
+- The two verses in `journeys/muslim-doubts-journey.html`, static HTML that never passes through PHP, carry U+06E1 for sukun.
+
+---
+
 ## [2.6.40] — October 2026
 
 ### Quranic verses set in KFGQPC HAFS Uthmanic Script
