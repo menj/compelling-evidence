@@ -173,7 +173,7 @@ function ce_options_page() {
                     } elseif ( $field['type'] === 'number' ) {
                         $value = absint( $value );
                     } elseif ( $field['type'] === 'textarea' ) {
-                        $value = sanitize_textarea_field( $value );
+                        $value = 'ce_contextual_links_extra' === $key && function_exists( 'ce_ctx_sanitize_extra_lines' ) ? ce_ctx_sanitize_extra_lines( $value ) : sanitize_textarea_field( $value );
                     } else {
                         $value = sanitize_text_field( $value );
                     }

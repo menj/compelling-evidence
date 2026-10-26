@@ -37,6 +37,24 @@ function ce_ctx_post_types() {
     return (array) apply_filters( 'ce_contextual_links_post_types', [ 'ce_article', 'post', 'ce_question', 'page' ] );
 }
 
+/**
+ * Split markup into tags and text runs. A tag is quote-aware, so a ">" inside
+ * an attribute value (title="a > b") never ends it early and its value is
+ * never read as text; comments are whole tags.
+ *
+ * @param string $content Markup.
+ * @return string[]|false Pieces, tags captured.
+ */
+function ce_ctx_split_tags( $content ) {
+    return preg_split( '/(<!--.*?-->|<[a-zA-Z\/!?](?:[^>"\']|"[^"]*"|\'[^\']*\')*>)/s', $content, -1, PREG_SPLIT_DELIM_CAPTURE );
+}
+
+/** Lower-case host without a leading "www.". */
+function ce_ctx_host( $url ) {
+    $host = strtolower( (string) wp_parse_url( $url, PHP_URL_HOST ) );
+    return 0 === strpos( $host, 'www.' ) ? substr( $host, 4 ) : $host;
+}
+
 function ce_ctx_lower( $text ) {
     $text = str_replace( [ "\u{2019}", '&#8217;', '&#039;', '&#39;', '&rsquo;' ], "'", (string) $text );
     return function_exists( 'mb_strtolower' ) ? mb_strtolower( $text, 'UTF-8' ) : strtolower( $text );
@@ -69,7 +87,7 @@ function ce_ctx_sister_hosts() {
     $hosts = [];
     foreach ( ce_ctx_network_map()['sites'] as $key => $base ) {
         if ( CE_SITE_KEY === $key ) continue;
-        $host = strtolower( (string) wp_parse_url( $base, PHP_URL_HOST ) );
+        $host = ce_ctx_host( $base );
         if ( $host ) $hosts[ $host ] = $key;
     }
     return $hosts;
@@ -101,13 +119,26 @@ function ce_ctx_extra_lines() {
             continue;
         }
         if ( preg_match( '#^https://#i', $target ) ) {
-            $host = strtolower( (string) wp_parse_url( $target, PHP_URL_HOST ) );
+            $host = ce_ctx_host( $target );
             if ( isset( $hosts[ $host ] ) && ! isset( $sister[ $lc ] ) ) {
                 $sister[ $lc ] = [ 'phrase' => $phrase, 'url' => $target ];
             }
         }
     }
     return $cache = [ 'own' => $own, 'sister' => $sister ];
+}
+
+/**
+ * Sanitise the Extra phrases field. sanitize_textarea_field() removes every
+ * percent-encoded octet, so an address such as /glossary/%D8%A7/ would be
+ * saved as /glossary//; the octets are held aside while it runs.
+ *
+ * @param string $value Raw field value.
+ * @return string
+ */
+function ce_ctx_sanitize_extra_lines( $value ) {
+    $value = preg_replace( '/%([0-9A-Fa-f]{2})/', "\u{E000}$1", (string) $value ) ?? (string) $value;
+    return str_replace( "\u{E000}", '%', sanitize_textarea_field( $value ) );
 }
 
 /**
@@ -258,25 +289,27 @@ function ce_ctx_find_sister_url( $links, $text ) {
  * @return string The text, unchanged when a pattern fails (invalid UTF-8).
  */
 function ce_ctx_replace_matches( $text, $patterns, $callback ) {
-    $found = [];
-    foreach ( $patterns as $pattern ) {
-        if ( false === preg_match_all( $pattern, $text, $sets, PREG_OFFSET_CAPTURE ) ) {
-            return $text;
-        }
-        foreach ( $sets[0] as $m ) {
-            $found[] = $m;
-        }
-    }
-    if ( ! $found ) {
-        return $text;
-    }
-    usort( $found, static function ( $a, $b ) { return $a[1] <=> $b[1] ?: strlen( $b[0] ) <=> strlen( $a[0] ); } );
+    // Each pattern is searched again from the cursor after every match, so a
+    // phrase hidden behind another pattern's overlapping match is still found.
     $out    = '';
     $cursor = 0;
-    foreach ( $found as [ $match, $offset ] ) {
-        if ( $offset < $cursor ) continue;
-        $out   .= substr( $text, $cursor, $offset - $cursor ) . $callback( $match );
-        $cursor = $offset + strlen( $match );
+    $len    = strlen( $text );
+    while ( $cursor < $len ) {
+        $best = null;
+        foreach ( $patterns as $pattern ) {
+            $r = preg_match( $pattern, $text, $m, PREG_OFFSET_CAPTURE, $cursor );
+            if ( false === $r ) {
+                return $text;
+            }
+            if ( $r && ( null === $best || $m[0][1] < $best[1] || ( $m[0][1] === $best[1] && strlen( $m[0][0] ) > strlen( $best[0] ) ) ) ) {
+                $best = $m[0];
+            }
+        }
+        if ( null === $best ) {
+            break;
+        }
+        $out   .= substr( $text, $cursor, $best[1] - $cursor ) . $callback( $best[0] );
+        $cursor = $best[1] + max( 1, strlen( $best[0] ) );
     }
     return $out . substr( $text, $cursor );
 }
@@ -353,12 +386,12 @@ function ce_ctx_apply_sister_links( $content, $max, $here ) {
     $patterns = ce_ctx_sister_patterns();
     if ( ! $links || ! $patterns ) return $content;
 
-    $pieces = preg_split( '/(<[^>]+>)/', $content, -1, PREG_SPLIT_DELIM_CAPTURE );
+    $pieces = ce_ctx_split_tags( $content );
     if ( false === $pieces ) return $content;
 
     $skip_tags  = [ 'a', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'q', 'figure', 'figcaption', 'cite', 'code', 'pre', 'sup', 'sub', 'nav', 'table', 'button', 'label', 'select', 'textarea', 'summary', 'script', 'style', 'svg' ];
-    $skip_class = '/\bclass\s*=\s*"[^"]*\b(?:quran-citation|hadith-citation|quran-arabic|hadith-arabic|quran-translation|hadith-translation|quran-ref|hadith-ref|ce-toc|footnotes?|qa-pending)\b/i';
-    $skip_lang  = '/\blang\s*=\s*"(?:ar|he|el|syr)(?:-[^"]*)?"/i';
+    $skip_class = '/\bclass\s*=\s*["\'][^"\']*\b(?:quran-citation|hadith-citation|quran-arabic|hadith-arabic|quran-translation|hadith-translation|quran-ref|hadith-ref|ce-toc|footnotes?|qa-pending)\b/i';
+    $skip_lang  = '/\blang\s*=\s*["\']?(?:ar|he|el|syr)(?![a-z])/i';
     $void       = [ 'br', 'img', 'hr', 'wbr', 'input', 'source', 'meta', 'link', 'area', 'col', 'embed', 'param', 'track' ];
 
     // First walk: give each piece the paragraph or list item it sits in, and

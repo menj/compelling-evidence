@@ -54,8 +54,11 @@ function ce_quran_fit_content( $content ) {
     if ( false === strpos( $content, 'quran-arabic' ) ) {
         return $content;
     }
+    // Byte-wise (no /u): the delimiters are ASCII, so a stray invalid byte
+    // elsewhere in the post neither stops every verse being fitted nor, with
+    // the font now keyed to data-ce-quran, leaves them in the fallback face.
     $out = preg_replace_callback(
-        '#<(div|span|p)(\b[^>]*\bclass="[^"]*\bquran-arabic\b[^"]*"[^>]*)>([^<]*)</\1>#u',
+        '#<(div|span|p)(\b[^>]*\bclass="[^"]*\bquran-arabic\b[^"]*"[^>]*)>([^<]*)</\1>#',
         static function ( $m ) {
             if ( false !== strpos( $m[2], 'data-ce-quran=' ) ) {
                 return $m[0];

@@ -331,7 +331,8 @@ function ce_unified_link_filter( $content ) {
 
     // ── SPLIT CONTENT INTO PARAGRAPHS ──
     // We process paragraph by paragraph so we can enforce "no crosslink + tooltip in same paragraph"
-    $parts = preg_split( '/(<[^>]+>)/s', $content, -1, PREG_SPLIT_DELIM_CAPTURE );
+    $parts = ce_ctx_split_tags( $content );
+    if ( false === $parts ) return $content;
 
     $crosslink_count   = 0;
     $tooltip_count     = 0;
@@ -358,7 +359,7 @@ function ce_unified_link_filter( $content ) {
         if ( preg_match( '/^<\/(h[1-6])>/i', $part ) ) { $in_heading = false; continue; }
         if ( preg_match( '/^<(a|blockquote)\b/i', $part ) ) { $in_protected = true; continue; }
         if ( preg_match( '/^<\/(a|blockquote)>/i', $part ) ) { $in_protected = false; continue; }
-        if ( preg_match( '/class="[^"]*(quran-citation|hadith-citation|quran-arabic|hadith-arabic)/i', $part ) ) { $in_protected = true; continue; }
+        if ( '<' === ( $part[0] ?? '' ) && preg_match( '/\bclass\s*=\s*["\'][^"\']*(quran-citation|hadith-citation|quran-arabic|hadith-arabic)/i', $part ) ) { $in_protected = true; continue; }
         if ( $in_protected && preg_match( '/^<\/div>/i', $part ) ) { $in_protected = false; continue; }
 
         // Track paragraphs (Rule 3)
@@ -483,13 +484,16 @@ function ce_unified_link_filter( $content ) {
                 $in_a = preg_match_all( '/<a[\s>]/i', $before ) > preg_match_all( '/<\/a>/i', $before );
                 $prefix = substr( $content, 0, $offset );
                 $in_m   = preg_match_all( '/<(figure|svg|table)\b/i', $prefix ) > preg_match_all( '/<\/(figure|svg|table)>/i', $prefix );
-                // Never inside a tag's attributes (alt, title, data-*).
-                $in_tag = strrpos( $prefix, '<' ) > (int) strrpos( $prefix, '>' );
+                // Never inside a tag's attributes (alt, title, data-*): with
+                // every whole tag removed (quote-aware, so title="a > b" is one
+                // tag), the prefix must not end in an open one.
+                $bare   = preg_replace( '/<!--.*?-->|<[a-zA-Z\/!?](?:[^>"\']|"[^"]*"|\'[^\']*\')*>/s', '', $prefix );
+                $in_tag = null === $bare || (bool) preg_match( '/<[a-zA-Z\/!?][^<]*$/', $bare );
                 // The same protected zones as the first pass: quotations, and a
                 // citation or Arabic block up to its first closing </div>.
                 $in_q    = preg_match_all( '/<blockquote\b/i', $prefix ) > preg_match_all( '/<\/blockquote>/i', $prefix );
                 $in_cite = false;
-                if ( preg_match_all( '/class="[^"]*(?:quran-citation|hadith-citation|quran-arabic|hadith-arabic)/i', $prefix, $cm, PREG_OFFSET_CAPTURE ) ) {
+                if ( preg_match_all( '/\bclass\s*=\s*["\'][^"\']*(?:quran-citation|hadith-citation|quran-arabic|hadith-arabic)/i', $prefix, $cm, PREG_OFFSET_CAPTURE ) ) {
                     $last    = end( $cm[0] );
                     $in_cite = false === stripos( substr( $prefix, $last[1] ), '</div>' );
                 }
