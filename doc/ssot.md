@@ -366,7 +366,7 @@ All fonts are self-hosted (zero external Google Fonts requests).
 | Special Elite | 400 | Optional typewriter label font (Apache 2.0) | 49KB |
 | Sabon Next LT | 400, 700, 400i, 700i | Optional heading / reading font (commercial, licensed by the site owner) | ~100-107KB each |
 | CE Hadith | 400 | Arabic text (Noto Naskh Arabic subset) | ~69KB |
-| KFGQPC HAFS Uthmanic Script | 400 | Quranic verses only (`--font-quran`), original TTF | 291KB |
+| KFGQPC HAFS Uthmanic Script | 400 | Quranic verses only (`--font-quran`), woff2 conversion of the original TTF | 105KB |
 
 **Note:** Amiri font was removed in v2.2.76 (Latin-subset only, useless for Arabic).
 
@@ -392,7 +392,7 @@ CSS never names a Latin family directly outside `@font-face`. It uses four role 
 ### Arabic Font Rendering Chain
 
 Quranic text uses `--font-quran` (defined on `:root` in `main.css`), and only Quranic text: `.quran-arabic`, `.hero-verse-text`, and `.arabic-verse` / `.arabic-large` in the two journey pages that show a verse.
-1. **KFGQPC HAFS Uthmanic Script** — Primary. The original TTF from the King Fahd Glorious Quran Printing Complex, 1,572 glyphs, including the ayah-end sign (U+06DD) and the small high marks. Its licence permits use, copying and distribution free of cost and forbids any modification, so the file is never subset, converted to WOFF2 or re-saved (sha256 `aa68bffce289b4c0ebac68e90502eb69e42356abcd1603cb2b8e99c2c723f145`). Its licence text is in `assets/fonts/licenses/`.
+1. **KFGQPC HAFS Uthmanic Script** — Primary. From the King Fahd Glorious Quran Printing Complex, 1,572 glyphs, including the ayah-end sign (U+06DD) and the small high marks. Served as `assets/fonts/kfgqpc-hafs-uthmanic-script.woff2`, never subset. Its licence permits use, copying and distribution free of cost and forbids any modification. The owner chose on 2026-10-26 to serve a WOFF2 conversion of the KFGQPC HAFS Uthmanic Script (107 KB, from 298 KB), accepting that the KFGQPC licence forbids modifying the font. The conversion is lossless for glyphs, cmap and OpenType layout; the digital signature (DSIG) is dropped. Its licence text is in `assets/fonts/licenses/`.
 2. **CE Hadith** — Fallback for the few code points the Quran face lacks, and the font for all non-Quranic Arabic (hadith, glossary terms, the verse-number ornament).
 3. **System fonts** — Noto Naskh Arabic (Android/Linux), Traditional Arabic (Windows), Geeza Pro (macOS/iOS).
 

@@ -220,7 +220,7 @@ Single quotes in excerpts must be escaped as `\'`. Article titles with apostroph
 ### Font Preloading
 
 On front page only, two Arabic fonts are preloaded in `header.php`:
-- `kfgqpc-hafs-uthmanic-script.ttf` (291 KiB, unmodified TTF; its licence forbids subsetting or conversion) — LCP element font
+- `kfgqpc-hafs-uthmanic-script.woff2` (105 KiB, a woff2 conversion of the original TTF, served by the owner's decision although its licence forbids modification; see `doc/ssot.md`) — LCP element font
 - `ce-hadith-400.woff2` (69 KiB)
 
 ### Cache Strategy

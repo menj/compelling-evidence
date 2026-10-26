@@ -102,6 +102,10 @@ Appearance > CE Theme Options — 8 tabs:
 
 == Changelog ==
 
+= 2.6.42 — October 2026 =
+The Quran face is served as a woff2 conversion (105 KiB, from 291 KiB) in place of the original
+TTF, by the owner's decision, accepting that the font's licence forbids modifying it.
+
 = 2.6.41 — October 2026 =
 Quranic verse text is fitted to the KFGQPC encoding as it renders (sukun, the rounded zero, and
 one ayah-number medallion in place of brackets round a medallion). Stored text is unchanged.
@@ -346,7 +350,7 @@ Upgrading from below 2.2.0: run the category migration — see UPGRADING.md.
 == Credits ==
 
 Parent theme: Twenty Twenty-Five by Automattic (GPL-2.0-or-later).
-KFGQPC HAFS Uthmanic Script, King Fahd Glorious Quran Printing Complex, distributed unmodified under its licence (Quranic verses only).
+KFGQPC HAFS Uthmanic Script, King Fahd Glorious Quran Printing Complex (Quranic verses only), served as a woff2 conversion of the original TTF by the owner's decision, although its licence forbids modification.
 CE Hadith font: Noto Naskh Arabic (Google, Apache 2.0).
 Playfair Display, DM Sans, Cormorant Garamond: Google Fonts (SIL Open Font License).
 All fonts self-hosted — zero external font requests at runtime.

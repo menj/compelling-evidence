@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.6.42] — October 2026
+
+### Quran face served as woff2
+
+- `assets/fonts/kfgqpc-hafs-uthmanic-script.woff2` (105 KiB) replaces the original TTF (291 KiB, removed) in `main.css`, the front-page critical `@font-face` in `functions.php`, the front-page preload in `header.php` (`type="font/woff2"`) and the two journey pages. The owner chose on 2026-10-26 to serve a WOFF2 conversion of the KFGQPC HAFS Uthmanic Script (107 KB, from 298 KB), accepting that the KFGQPC licence forbids modifying the font. The conversion is lossless for glyphs, cmap and OpenType layout; the digital signature (DSIG) is dropped. Recorded in `doc/ssot.md`.
+
+---
+
 ## [2.6.41] — October 2026
 
 ### Quranic verse text fitted to the KFGQPC encoding

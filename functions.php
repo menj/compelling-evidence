@@ -922,10 +922,10 @@ add_filter( 'script_loader_tag', 'ce_defer_gtm_scripts', 10, 3 );
 
 function ce_critical_font_inline() {
     if ( ! is_front_page() && ! is_home() ) return;
-    $font_url = get_stylesheet_directory_uri() . '/assets/fonts/kfgqpc-hafs-uthmanic-script.ttf';
+    $font_url = get_stylesheet_directory_uri() . '/assets/fonts/kfgqpc-hafs-uthmanic-script.woff2';
     $hadith_url = get_stylesheet_directory_uri() . '/assets/fonts/ce-hadith-400.woff2';
     echo '<style id="ce-critical-fonts">
-@font-face{font-family:"KFGQPC HAFS Uthmanic Script";src:url("' . esc_url( $font_url ) . '") format("truetype");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"KFGQPC HAFS Uthmanic Script";src:url("' . esc_url( $font_url ) . '") format("woff2");font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:"CE Hadith";src:url("' . esc_url( $hadith_url ) . '") format("woff2");font-weight:400;font-style:normal;font-display:swap}
 </style>' . "\n";
 }

@@ -6,6 +6,12 @@ Only paths explicitly identified in development are documented here.
 
 ---
 
+## Upgrading to v2.6.42 from v2.6.41
+
+**After deploying:** `assets/fonts/kfgqpc-hafs-uthmanic-script.ttf` gives way to `kfgqpc-hafs-uthmanic-script.woff2`. An upload over the old folder leaves the TTF behind; nothing reads it, and it can be deleted. Purge page and CDN caches so the front page preloads the new file.
+
+---
+
 ## Upgrading to v2.6.41 from v2.6.40
 
 **After deploying:** nothing to run, and no stored content changes. New verses keep the usual (Tanzil) Uthmani encoding inside `<div class="quran-arabic">`; `inc/ce-quran-text.php` fits them as they render. Verses pasted in the King Fahd Complex's own encoding (sukun U+06E1) render as they are.

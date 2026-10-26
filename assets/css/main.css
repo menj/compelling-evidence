@@ -9,12 +9,13 @@
    ─────────────────────────────────────────────────────── */
 
 /* KFGQPC HAFS Uthmanic Script (King Fahd Glorious Quran Printing Complex).
-   Quranic verses ONLY, through --font-quran. Shipped as the original TTF:
-   its licence forbids modification, so it is never subset or converted.
+   Quranic verses ONLY, through --font-quran. Served as a woff2 conversion of the
+   original TTF, never subset, by the owner's decision of 2026-10-26
+   (doc/ssot.md) although its licence forbids modification.
    Ornate brackets ﴿﴾ are not in it and fall through to CE Hadith. */
 @font-face {
   font-family: 'KFGQPC HAFS Uthmanic Script';
-  src: url('../fonts/kfgqpc-hafs-uthmanic-script.ttf') format('truetype');
+  src: url('../fonts/kfgqpc-hafs-uthmanic-script.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
