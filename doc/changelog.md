@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.6.44] — October 2026
+
+### Islamic dilemma article optimised, network block added
+
+- **`islamic-dilemma-quran-and-bible` (batch-007).** Slug unchanged (it is already the network's canonical URL and carries the keyword). Title is now "The Islamic Dilemma: Does the Quran Confirm the Bible It Contradicts?"; excerpt and `seo.json` title (54 chars) and description (144 chars) lead with the focus keyword; Rank Math focus keyword is `islamic dilemma, tahrif, muhaymin`.
+- New sections: where the argument comes from (James White, David Wood), the proof-texts 3:3, 5:68 and 10:94, *taḥrīf al-maʿnā* and *taḥrīf al-lafẓ* (Ibn Ḥazm, Ibn Taymiyya), the classical exegetes on *muhaymin* (Ibn Kathīr 3:128, citing Ibn Jurayj and al-Ṭabarī, Arabic copied from shamela.ws/book/8473/1393), the revelation and the later texts, a step-by-step table, an FAQ and a Sources list. Quran text from api.quran.com (`text_uthmani`).
+- **"The Islamic dilemma across the network" box** (styled with the existing `ce-murtadd-card` classes) links the six sister pieces on abrahamic-religions.com, injil.help, bestofislam.org, apostleofdoom.org, murtadd.org and lailatulqadar.guide; the body also links to four of them and to three related articles here.
+- Body: 3,671 words, 75 uses of "Islamic dilemma" (2.04% by count, 4.09% counting the phrase as two words).
+- `manifest.json` checksum updated for batch-007. `Version` is 2.6.44 in `style.css`, `readme.txt` and `doc/readme.md`.
+
+---
+
 ## [2.6.43] — October 2026
 
 ### Added (cross-links with murtadd.org)
