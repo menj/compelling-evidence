@@ -8,7 +8,7 @@
   <div class="hero-verse-img-wrap">
     <div class="hero-verse-text" lang="ar" dir="rtl" aria-label="فَبِأَيِّ آلَاءِ رَبِّكُمَا تُكَذِّبَانِ">
       فَبِأَيِّ آلَاءِ رَبِّكُمَا تُكَذِّبَانِ
-      <span class="hero-verse-end" aria-hidden="true">١٣</span>
+      <span class="hero-verse-end" aria-hidden="true"><?php echo esc_html( ce_hero_verse_number() ); ?></span>
     </div>
     <img
       src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/al-rahman-transparent.png' ); ?>"

@@ -6,7 +6,7 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.6.39
+Version: 2.6.42
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Template: twentytwentyfive
@@ -105,6 +105,8 @@ Appearance > CE Theme Options — 8 tabs:
 = 2.6.42 — October 2026 =
 The Quran face is served as a woff2 conversion (105 KiB, from 291 KiB) in place of the original
 TTF, by the owner's decision, accepting that the font's licence forbids modifying it.
+Review fixes: disabled topics hold for answered questions, one sister link per list item,
+glossary tooltips load on answered questions, and the hero ayah number follows Theme Options.
 
 = 2.6.41 — October 2026 =
 Quranic verse text is fitted to the KFGQPC encoding as it renders (sukun, the rounded zero, and

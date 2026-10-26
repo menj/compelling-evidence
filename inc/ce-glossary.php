@@ -221,8 +221,8 @@ function ce_is_already_linked( $content, $position ) {
  * Enqueue glossary tooltip assets
  */
 function ce_glossary_enqueue_assets() {
-    // Only on single articles and posts
-    if ( ! is_singular( ['ce_article', 'post'] ) ) {
+    // Wherever the unified filter places tooltips: articles, posts, answered questions
+    if ( ! is_singular( ce_ctx_post_types() ) ) {
         return;
     }
 

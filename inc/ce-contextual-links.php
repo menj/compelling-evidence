@@ -213,12 +213,22 @@ function ce_ctx_enabled_for( $post ) {
     return (bool) apply_filters( 'ce_contextual_links_enabled', $on, $post );
 }
 
-/** True when the post sits in a topic listed under "Disable crosslinks for categories". */
+/**
+ * True when the post sits in a topic listed under "Disable crosslinks for
+ * categories". Questions carry their topic as a term name in
+ * `_ce_question_topic`, not as a `ce_topic` term, so that name is resolved too.
+ */
 function ce_ctx_in_disabled_topic( $post_id ) {
     $disabled = array_filter( array_map( 'trim', explode( ',', (string) get_option( 'ce_crosslink_disabled_categories', '' ) ) ) );
     if ( ! $disabled ) return false;
     $terms = wp_get_post_terms( $post_id, 'ce_topic', [ 'fields' => 'slugs' ] );
-    return ! is_wp_error( $terms ) && (bool) array_intersect( $terms, $disabled );
+    $terms = is_wp_error( $terms ) ? [] : (array) $terms;
+    $name  = (string) get_post_meta( $post_id, '_ce_question_topic', true );
+    if ( '' !== $name ) {
+        $term    = get_term_by( 'name', $name, 'ce_topic' );
+        $terms[] = $term ? $term->slug : sanitize_title( $name );
+    }
+    return (bool) array_intersect( $terms, $disabled );
 }
 
 
@@ -291,7 +301,10 @@ function ce_ctx_apply_sister_links( $content, $max, $here ) {
                     }
                     if ( ( 'p' === $tag || 'li' === $tag ) && $blocks ) array_pop( $blocks );
                 } elseif ( ! in_array( $tag, $void, true ) && '/' !== substr( $piece, -2, 1 ) ) {
-                    if ( 'p' === $tag || 'li' === $tag ) $blocks[] = ++$next_block;
+                    // A paragraph inside a list item shares the item's id, so
+                    // the item still takes one link however many paragraphs.
+                    if ( 'li' === $tag ) $blocks[] = ++$next_block;
+                    if ( 'p' === $tag ) $blocks[] = $blocks ? end( $blocks ) : ++$next_block;
                     $stack[] = [ $tag, in_array( $tag, $skip_tags, true ) || preg_match( $skip_class, $piece ) || preg_match( $skip_lang, $piece ) ];
                     if ( 'a' === $tag && $blocks && preg_match( '/\bclass\s*=\s*"[^"]*\b(?:ce-crosslink|ce-glossary-term)\b/i', $piece ) ) {
                         $used[ end( $blocks ) ] = true;

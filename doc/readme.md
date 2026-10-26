@@ -214,7 +214,7 @@ Single quotes in excerpts must be escaped as `\'`. Article titles with apostroph
 | `main.css` | All pages | 60.5 KiB |
 | `templates.css` | Non-front-page only | 42.4 KiB |
 | `ce-engagement.css` | `is_singular('ce_article')` only | — |
-| `glossary-tooltip.css` | `is_singular('ce_article')` only | — |
+| `glossary-tooltip.css` + `.js` | Singular article, post or answered question (`ce_ctx_post_types()`) | — |
 | `print.css` | All pages, media="print" | 5 KiB |
 
 ### Font Preloading

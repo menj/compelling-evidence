@@ -66,3 +66,16 @@ function ce_quran_fit_content( $content ) {
     return null === $out ? $content : $out;
 }
 add_filter( 'the_content', 'ce_quran_fit_content', 8 );
+
+/**
+ * The hero verse's ayah number from Theme Options, as bare Arabic-Indic
+ * digits for the face to draw as one medallion. Brackets, U+06DD and spaces
+ * saved under the old bracketed style are dropped; Western digits are mapped.
+ *
+ * @return string
+ */
+function ce_hero_verse_number() {
+    $raw    = strtr( (string) get_option( 'ce_hero_verse_number', '١٣' ), array_combine( range( '0', '9' ), array( '٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩' ) ) );
+    $digits = preg_replace( '/[^\x{0660}-\x{0669}]/u', '', $raw );
+    return '' === (string) $digits ? '١٣' : $digits;
+}

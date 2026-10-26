@@ -12,6 +12,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - `assets/fonts/kfgqpc-hafs-uthmanic-script.woff2` (105 KiB) replaces the original TTF (291 KiB, removed) in `main.css`, the front-page critical `@font-face` in `functions.php`, the front-page preload in `header.php` (`type="font/woff2"`) and the two journey pages. The owner chose on 2026-10-26 to serve a WOFF2 conversion of the KFGQPC HAFS Uthmanic Script (107 KB, from 298 KB), accepting that the KFGQPC licence forbids modifying the font. The conversion is lossless for glyphs, cmap and OpenType layout; the digital signature (DSIG) is dropped. Recorded in `doc/ssot.md`.
 
+### Review fixes
+
+- **Disabled topics now hold for questions.** A `ce_question` keeps its topic as a term name in `_ce_question_topic`, not as a `ce_topic` term, so "Disable crosslinks for categories" never matched an answer page. `ce_ctx_in_disabled_topic()` resolves that name to the topic slug, so both the unified filter and the sister-link pass stand down there.
+- **One sister link a list item, however many paragraphs it holds.** A `<p>` inside an `<li>` now shares the item's paragraph id in `ce_ctx_apply_sister_links()`, so a list item with two paragraphs can no longer take two links.
+- **Glossary tooltips work on answered questions.** `glossary-tooltip.css` and `.js` load on every type the unified filter processes (`ce_ctx_post_types()`), where they loaded only on articles and posts while `ce_question` pages already received tooltip anchors.
+- **The hero ayah number follows Theme Options.** `front-page.php` printed a fixed ١٣; it now prints `ce_hero_verse_number()`, the General tab's Verse Number as bare Arabic-Indic digits (brackets, U+06DD and spaces saved in the old style are dropped, Western digits mapped). The field's help text no longer mentions brackets.
+- `readme.txt` `Version` is 2.6.42, matching `style.css`.
+
 ---
 
 ## [2.6.41] — October 2026

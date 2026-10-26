@@ -422,7 +422,7 @@ function ce_get_tab_fields( $tab ) {
             [ 'id' => 'ce_hero_title',             'label' => 'Hero Title',               'type' => 'text',     'default' => 'What if the evidence pointed somewhere you didn\'t expect?', 'section' => 'Hero Section' ],
             [ 'id' => 'ce_hero_subtitle',           'label' => 'Hero Subtitle',            'type' => 'text',     'default' => 'Challenging what you think you know — with evidence, not assertion.', 'desc' => 'Appears below the Arabic verse on the homepage.' ],
             [ 'id' => 'ce_hero_verse_arabic',       'label' => 'Arabic Verse',             'type' => 'text',     'default' => 'فَبِأَيِّ آلَاءِ رَبِّكُمَا تُكَذِّبَانِ' ],
-            [ 'id' => 'ce_hero_verse_number',       'label' => 'Verse Number (Arabic)',     'type' => 'text',     'default' => '١٣', 'desc' => 'Displayed inside ornate brackets ﴿…﴾ after the verse.' ],
+            [ 'id' => 'ce_hero_verse_number',       'label' => 'Verse Number (Arabic)',     'type' => 'text',     'default' => '١٣', 'desc' => 'Ayah number after the verse, in Arabic-Indic digits (١٣); the Quran face draws it inside the ayah medallion, so no brackets.' ],
             [ 'id' => 'ce_hero_verse_translation',  'label' => 'Verse Translation',        'type' => 'text',     'default' => 'Then which of the favours of your Lord will you deny?' ],
             [ 'id' => 'ce_hero_verse_ref',          'label' => 'Verse Reference',          'type' => 'text',     'default' => 'Ar-Rahman 55:13' ],
             [ 'id' => 'ce_footer_text',             'label' => 'Footer Text',              'type' => 'text',     'default' => '© Compelling Evidence. All rights reserved.', 'section' => 'Footer' ],
