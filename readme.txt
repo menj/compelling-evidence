@@ -6,7 +6,7 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.6.42
+Version: 2.6.43
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Template: twentytwentyfive
@@ -101,6 +101,13 @@ Appearance > CE Theme Options — 8 tabs:
                   Retired URLs (410 Gone path prefixes)
 
 == Changelog ==
+
+= 2.6.43 — October 2026 =
+Content review fixes: author credits restored on the journey pages (C.S. Lewis, Alvin Plantinga,
+Sam Harris), hadith references and gradings corrected against shamela.ws, Quran blocks show their
+full verse ranges, the hidden-treasure saying is presented as having no chain, the FAQ describes
+the analytics truthfully, the cosmological-constant claim is corrected, and the untranslated
+ms-MY journey copies are removed so the English pages are served.
 
 = 2.6.42 — October 2026 =
 The Quran face is served as a woff2 conversion (105 KiB, from 291 KiB) in place of the original

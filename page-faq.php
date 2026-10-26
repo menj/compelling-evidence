@@ -24,7 +24,7 @@ $faq_sections = [
         'What is the quiz?' =>
             'A 10-question assessment that identifies your starting point — atheist, agnostic, spiritual seeker, questioning Muslim, etc. — and routes you to a personalised reading journey designed for where you actually are, not where someone wishes you were.',
         'Is my quiz data stored on a server?' =>
-            'No. Your quiz answers and journey progress are stored locally in your browser using localStorage. Nothing is sent to any server. If you clear your browser data, your progress is lost.',
+            'Partly. Your quiz result and journey progress are saved in your browser (localStorage); if you clear your browser data, that progress is lost. Separately, the site records anonymous usage events on its own server, with no cookies and no third-party services: each answer you choose in the quiz, the persona the quiz assigns you, the journey screens you view, page and article views, scroll depth, and search terms. Each event is stored with a one-way hash of your IP address (not the address itself), a random session ID, the page address, and whether you use a phone, tablet or desktop. Your name and email are never collected by the quiz.',
         'What are journeys?' =>
             'Each journey is a curated sequence of articles ordered for a specific persona. A classical atheist starts with cosmological arguments. A questioning Muslim starts with doubt and inner struggle. The content is the same 100 articles — the sequencing is different.',
         'Can I read articles without taking the quiz?' =>

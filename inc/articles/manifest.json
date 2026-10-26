@@ -6,25 +6,25 @@
     {
       "file": "batch-001.json",
       "source": "inc/articles/backup/articles-data.php",
-      "checksum": "90825d7a4b971cb6e33ea8824e85c87749e5b2e2bd8e3a78149d43fd553fdb82",
+      "checksum": "5668a6e574b71c4b3718f5c3c2dd689a5a2e535b2010d049d499fe48155b2d69",
       "articles": 24
     },
     {
       "file": "batch-002.json",
       "source": "inc/articles/backup/articles-data-2.php",
-      "checksum": "e1181c400008fe4b706ddc9e50238792f8dce2fcc632cc7613bc88b9cd177d8f",
+      "checksum": "84d9e97790545f690f9419ace1d4b42566c223fbf9c644034fc63842cff007e2",
       "articles": 24
     },
     {
       "file": "batch-003.json",
       "source": "inc/articles/backup/articles-data-3.php",
-      "checksum": "b10bf3ad617fc5a67820801d4773dc667c015efd15b96301514d9511e78dc64c",
+      "checksum": "224c86359ac146fa92e3113a25ebaf6572aec0888fa32845ae7cf53538665913",
       "articles": 24
     },
     {
       "file": "batch-004.json",
       "source": "inc/articles/backup/articles-data-4.php",
-      "checksum": "0b0e00e3c87c2ff42ba6b15590fbcff5c9ba131071f5f9673321dad9000b648b",
+      "checksum": "bfa27f8a951673c30ad8a7f47986d900f91631446bd1d0adae1fa22cbf868a6f",
       "articles": 24
     },
     {
@@ -48,13 +48,13 @@
     {
       "file": "batch-008.json",
       "source": "Drafted for v2.6.37 from the Answering Islam corpus analysis: Haman, moon god, first revelation, critics, Word of God, Muhammad in the Bible",
-      "checksum": "7a79e15002d3f9a58cff0458f87f6bae8fb232bed119eab1f299f8c1f72b512d",
+      "checksum": "a8d53759d33a7303ba6087a2994ff2e1aefa7266c49900481129122ef1e1b2bb",
       "articles": 6
     },
     {
       "file": "batch-009.json",
       "source": "Drafted for v2.6.38 from the Answering Islam corpus review (claims C11, C09, C07 second half, C21, C18): original responses with verified Quran, hadith and Bible citations",
-      "checksum": "389cbb58ff640e853fd201b4cf6d863e4b41a058c1ec4dbeb2bab049ec562a9d",
+      "checksum": "a123a083598c3c8f917b71d2625a2cbb8afcf84551cbc52f6bc16dda7b778a5b",
       "articles": 5
     }
   ],

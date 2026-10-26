@@ -6,6 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.6.43] — October 2026
+
+### Content review fixes (High findings H1–H10)
+
+- **Author credits on the journey pages (H6, H7).** A find-and-replace had credited C.S. Lewis's books to Thomas Nagel, Alvin Plantinga's to David Chalmers and Sam Harris's to Christopher Hitchens. The Key Thinkers lists and the prose now name the right author: Lewis for *Mere Christianity*, *The Problem of Pain*, *Miracles*, *Surprised by Joy* and *The Abolition of Man*; Plantinga for the Free Will Defence, the Evolutionary Argument Against Naturalism, *Warranted Christian Belief*, *The Nature of Necessity*, *God, Freedom and Evil* and *Where the Conflict Really Lies*; Harris for *The End of Faith*, *Waking Up* and *The Moral Landscape*. Victor Reppert's book is *C.S. Lewis's Dangerous Idea*. The new-atheist page's *Moral Landscape* section and its consciousness note now name Harris (the note no longer carries an unverified quotation), and stray "Plantinga" substitutions for "philosopher" are undone.
+- **Sunan al-Tirmidhī 2460 (H1).** Graded "ḥasan" before; it now gives al-Albānī's grading (very weak, though its line on remembering death is sound) and al-Tirmidhī's own *gharīb*. The Arabic matches the Bashshār edition (`إِنَّمَا الْقَبْرُ…`), and the prose in `near-death-experiences` and `what-does-islam-say-happens-after-death` no longer builds on it as proof.
+- **Musnad Aḥmad 11149 → 11133 (H2).** The "one of three things" report is no. 11133 in the Risāla edition (chain *jayyid*), also *al-Adab al-Mufrad* 710; the Arabic follows that entry.
+- **Musnad Aḥmad 17999 → 18001 (H3).** The long Wābiṣa wording is no. 18001; the Arabic and translation now follow it (`اسْتَفْتِ نَفْسَكَ…`), with the Risāla editors' grading (very weak chain) and al-Nawawī's *ḥasan* (Forty, no. 27).
+- **The "hidden treasure" saying (H4).** No longer shown as a ḥadīth qudsī in a hadith box; `why-create-knowing-suffering` and the spiritual-seeker journey present it as a Sufi saying with no chain, and cite 51:56.
+- **Quran blocks (H5).** 112:1–4, 53:19–23, 96:1–5 and 11:106–108 now show every verse of the range, verbatim from api.quran.com (`text_uthmani`, the encoding the article data already uses), with the basmala removed.
+- **FAQ privacy answer (H8).** Now says what `inc/ce-analytics.php` records: quiz answers, persona, journey screens, page and article views, scroll depth and search terms, each with an IP hash, a session ID, the page address and the device type.
+- **Cosmological constant (H9).** "Measured/calibrated to one part in 10^120" now reads that the constant is about 120 orders of magnitude smaller than naive theoretical estimates, a value that appears finely tuned, on every journey.
+- **Malay journeys (H10).** The 13 HTML files in `journeys/ms-MY/` were English (11 byte-identical, 2 stale) and are removed, so `ce_get_journey_file()` and `ce_get_quiz_file()` serve the English pages. `ms-MY/README.txt` stays as the guide for real translations.
+- `manifest.json` checksums updated for the edited batches. `Version` is 2.6.43 in `style.css`, `readme.txt` and `doc/readme.md`.
+
+---
+
 ## [2.6.42] — October 2026
 
 ### Quran face served as woff2

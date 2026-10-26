@@ -3,6 +3,10 @@ MALAY (ms-MY) JOURNEY FILES
 
 This folder holds Malay translations of the 14 journey HTML files and quiz.
 
+STATUS (2.6.43): no translations yet. The English copies that sat here, labelled
+as Malay, were removed, so every Malay-locale visitor is served the English
+files. Add a file here only once it is a real, reviewed Malay translation.
+
 When WordPress is set to Malay (Malaysia), page-journey.php and page-quiz.php
 will automatically serve files from this folder instead of the English defaults
 in the parent /journeys/ directory.
