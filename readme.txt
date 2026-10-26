@@ -108,6 +108,9 @@ Sam Harris), hadith references and gradings corrected against shamela.ws, Quran 
 full verse ranges, the hidden-treasure saying is presented as having no chain, the FAQ describes
 the analytics truthfully, the cosmological-constant claim is corrected, and the untranslated
 ms-MY journey copies are removed so the English pages are served.
+Articles that murtadd.org entries name as their counterpart end with a "Read this on murtadd.org"
+card (data in inc/data/murtadd-counterparts.json, built by bin/build-murtadd-counterparts.py;
+switch in CE Theme Options → Links & Tooltips).
 
 = 2.6.42 — October 2026 =
 The Quran face is served as a woff2 conversion (105 KiB, from 291 KiB) in place of the original
