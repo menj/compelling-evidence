@@ -364,7 +364,7 @@ function ce_unified_link_filter( $content ) {
             elseif ( preg_match( '/^<\/' . $cite_tag . '>/i', $part ) ) $cite_depth--;
             continue;
         }
-        if ( preg_match( '/^<([a-zA-Z][a-zA-Z0-9]*)\b[^>]*\bclass\s*=\s*["\'][^"\']*(?:quran-citation|hadith-citation|quran-arabic|hadith-arabic)/i', $part, $cite_m ) ) {
+        if ( preg_match( '/^<([a-zA-Z][a-zA-Z0-9]*)\b[^>]*\bclass\s*=\s*["\'][^"\']*(?:quran-citation|hadith-citation|quran-arabic|hadith-arabic|ce-lanah)/i', $part, $cite_m ) ) {
             $cite_tag   = strtolower( $cite_m[1] );
             $cite_depth = 1;
             continue;
@@ -509,7 +509,7 @@ function ce_unified_link_filter( $content ) {
                 // citation or Arabic block up to its own closing tag.
                 $in_q    = preg_match_all( '/<blockquote\b/i', $prefix ) > preg_match_all( '/<\/blockquote>/i', $prefix );
                 $in_cite = false;
-                if ( preg_match_all( '/<([a-zA-Z][a-zA-Z0-9]*)\b[^>]*\bclass\s*=\s*["\'][^"\']*(?:quran-citation|hadith-citation|quran-arabic|hadith-arabic)/i', $prefix, $cm, PREG_SET_ORDER | PREG_OFFSET_CAPTURE ) ) {
+                if ( preg_match_all( '/<([a-zA-Z][a-zA-Z0-9]*)\b[^>]*\bclass\s*=\s*["\'][^"\']*(?:quran-citation|hadith-citation|quran-arabic|hadith-arabic|ce-lanah)/i', $prefix, $cm, PREG_SET_ORDER | PREG_OFFSET_CAPTURE ) ) {
                     foreach ( $cm as $c ) {
                         $rest = substr( $prefix, $c[0][1] );
                         $tag  = $c[1][0];

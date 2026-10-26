@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.6.45] — October 2026
+
+### laʿnat Allāh after the name of Paul of Tarsus
+
+- **`[ce_lanah]` shortcode** (`inc/ce-media.php`): لعنة الله, "the curse of God", set after Paul's name as a calligraphic mark. `.ce-lanah` (`assets/css/main.css`) draws `assets/images/lanat-allah.svg` (copied from injil.help) as a mask in `--accent`, the palette's red, so it follows the Theme Options colours; in forced-colours mode it is drawn in `CanvasText`. The words "laʿnat Allāh, the curse of God" stay inside, visually hidden, for screen readers, search and a copy and paste, and show as written where the browser cannot draw a mask. The sister-link engine (`ce-contextual-links.php`) and the crosslink and glossary engine (`ce-crosslinks.php`) skip `.ce-lanah`.
+- **One placement**, in `islamic-dilemma-quran-and-bible` (batch-007), the paragraph on Paul's letters: "yet the Quran never mentions Paul لعنة الله or any letter". No other article is substantially about Paul; passing mentions (Paul's revision of Jewish law, Paul's letters as historical sources, the physicist Paul Davies) carry none.
+- Policy: placed by hand and kept rare; never in titles, headings, excerpts, SEO descriptions, menus, alt text, structured data or quotations. The article has its own excerpt, so the description fallback that reads raw content is not used.
+- Font licence: the calligraphy is drawn from the outlines of Dubidam Arabic (NamelaType), whose metadata names a free personal-use licence. A web licence is the site owner's to hold.
+- `manifest.json` checksum updated for batch-007. `Version` is 2.6.45 in `style.css`, `readme.txt` and `doc/readme.md`; the version change runs the content sync.
+
+---
+
 ## [2.6.44] — October 2026
 
 ### Islamic dilemma article optimised, network block added

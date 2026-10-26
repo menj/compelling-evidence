@@ -382,3 +382,19 @@ function ce_media_status_html(): string {
 	}
 	return $html;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   [ce_lanah]
+   ═══════════════════════════════════════════════════════════════════════
+   The curse "laʿnat Allāh" (the curse of God) after the name of Paul of
+   Tarsus, as calligraphy (assets/images/lanat-allah.svg, drawn as a mask in
+   the --accent red, so it follows the Theme Options colours). The words
+   stay inside, visually hidden, for screen readers, search and a copy and
+   paste, and show as written where the mask cannot draw. It appears only
+   where an article places the shortcode, by hand and rarely. */
+
+function ce_lanah_shortcode(): string {
+	$words = 'laʿnat Allāh, the curse of God';
+	return '<span class="ce-lanah" lang="ar-Latn" title="' . esc_attr( $words ) . '"><span class="ce-lanah__text">' . esc_html( $words ) . '</span></span>';
+}
+add_shortcode( 'ce_lanah', 'ce_lanah_shortcode' );
