@@ -339,7 +339,10 @@ function ce_unified_link_filter( $content ) {
     $used_keywords     = [];  // Rule 1: each keyword linked at most once
     $used_slugs        = [];  // Each target slug linked at most once
     $in_heading        = false;
-    $in_protected      = false; // Inside <a>, citation blocks
+    $in_link           = false; // Inside <a>
+    $quote_depth       = 0;     // Inside <blockquote>, nested or not
+    $cite_tag          = '';    // Tag of the open citation or Arabic block
+    $cite_depth        = 0;     // Its nesting depth; 0 when outside one
     $media_depth       = 0;     // Inside <figure>, <svg> or <table> (2.6.33)
     $para_has_crosslink = false;
     $para_has_tooltip   = false;
@@ -354,13 +357,26 @@ function ce_unified_link_filter( $content ) {
         if ( preg_match( '/^<\/(figure|svg|table)>/i', $part ) ) { $media_depth = max( 0, $media_depth - 1 ); continue; }
         if ( $media_depth > 0 ) continue;
 
+        // A citation or Arabic block is skipped whole, to its own closing tag:
+        // the translation and reference inside a quran-citation included.
+        if ( $cite_depth > 0 ) {
+            if ( preg_match( '/^<' . $cite_tag . '\b/i', $part ) ) $cite_depth++;
+            elseif ( preg_match( '/^<\/' . $cite_tag . '>/i', $part ) ) $cite_depth--;
+            continue;
+        }
+        if ( preg_match( '/^<([a-zA-Z][a-zA-Z0-9]*)\b[^>]*\bclass\s*=\s*["\'][^"\']*(?:quran-citation|hadith-citation|quran-arabic|hadith-arabic)/i', $part, $cite_m ) ) {
+            $cite_tag   = strtolower( $cite_m[1] );
+            $cite_depth = 1;
+            continue;
+        }
+
         // Track HTML context
         if ( preg_match( '/^<(h[1-6])\b/i', $part ) ) { $in_heading = true; continue; }
         if ( preg_match( '/^<\/(h[1-6])>/i', $part ) ) { $in_heading = false; continue; }
-        if ( preg_match( '/^<(a|blockquote)\b/i', $part ) ) { $in_protected = true; continue; }
-        if ( preg_match( '/^<\/(a|blockquote)>/i', $part ) ) { $in_protected = false; continue; }
-        if ( '<' === ( $part[0] ?? '' ) && preg_match( '/\bclass\s*=\s*["\'][^"\']*(quran-citation|hadith-citation|quran-arabic|hadith-arabic)/i', $part ) ) { $in_protected = true; continue; }
-        if ( $in_protected && preg_match( '/^<\/div>/i', $part ) ) { $in_protected = false; continue; }
+        if ( preg_match( '/^<a\b/i', $part ) ) { $in_link = true; continue; }
+        if ( preg_match( '/^<\/a>/i', $part ) ) { $in_link = false; continue; }
+        if ( preg_match( '/^<blockquote\b/i', $part ) ) { $quote_depth++; continue; }
+        if ( preg_match( '/^<\/blockquote>/i', $part ) ) { $quote_depth = max( 0, $quote_depth - 1 ); continue; }
 
         // Track paragraphs (Rule 3)
         if ( preg_match( '/^<p[\s>]/i', $part ) ) {
@@ -375,7 +391,7 @@ function ce_unified_link_filter( $content ) {
         }
 
         // Skip non-text or protected zones
-        if ( $in_heading || $in_protected ) continue;  // Rule 2: no links in headings
+        if ( $in_heading || $in_link || $quote_depth > 0 ) continue;  // Rule 2: no links in headings
         if ( strpos( $part, '<' ) === 0 ) continue;     // HTML tag, skip
         if ( trim( $part ) === '' ) continue;
 
@@ -490,12 +506,18 @@ function ce_unified_link_filter( $content ) {
                 $bare   = preg_replace( '/<!--.*?-->|<[a-zA-Z\/!?](?:[^>"\']|"[^"]*"|\'[^\']*\')*>/s', '', $prefix );
                 $in_tag = null === $bare || (bool) preg_match( '/<[a-zA-Z\/!?][^<]*$/', $bare );
                 // The same protected zones as the first pass: quotations, and a
-                // citation or Arabic block up to its first closing </div>.
+                // citation or Arabic block up to its own closing tag.
                 $in_q    = preg_match_all( '/<blockquote\b/i', $prefix ) > preg_match_all( '/<\/blockquote>/i', $prefix );
                 $in_cite = false;
-                if ( preg_match_all( '/\bclass\s*=\s*["\'][^"\']*(?:quran-citation|hadith-citation|quran-arabic|hadith-arabic)/i', $prefix, $cm, PREG_OFFSET_CAPTURE ) ) {
-                    $last    = end( $cm[0] );
-                    $in_cite = false === stripos( substr( $prefix, $last[1] ), '</div>' );
+                if ( preg_match_all( '/<([a-zA-Z][a-zA-Z0-9]*)\b[^>]*\bclass\s*=\s*["\'][^"\']*(?:quran-citation|hadith-citation|quran-arabic|hadith-arabic)/i', $prefix, $cm, PREG_SET_ORDER | PREG_OFFSET_CAPTURE ) ) {
+                    foreach ( $cm as $c ) {
+                        $rest = substr( $prefix, $c[0][1] );
+                        $tag  = $c[1][0];
+                        if ( preg_match_all( '/<' . $tag . '\b/i', $rest ) > preg_match_all( '/<\/' . $tag . '>/i', $rest ) ) {
+                            $in_cite = true;
+                            break;
+                        }
+                    }
                 }
                 if ( $in_h || $in_a || $in_m || $in_tag || $in_q || $in_cite ) continue;
 
