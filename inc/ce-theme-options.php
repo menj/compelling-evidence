@@ -21,7 +21,7 @@ function ce_options_register() {
     register_setting( 'ce_options_general', 'ce_hero_subtitle', [ 'default' => 'Challenging what you think you know — with evidence, not assertion.' ] );
     register_setting( 'ce_options_general', 'ce_hero_verse_arabic', [ 'default' => 'فَبِأَيِّ آلَاءِ رَبِّكُمَا تُكَذِّبَانِ' ] );
     register_setting( 'ce_options_general', 'ce_hero_verse_translation', [ 'default' => 'Then which of the favours of your Lord will you deny?' ] );
-    register_setting( 'ce_options_general', 'ce_hero_verse_ref', [ 'default' => 'Ar-Rahman 55:13' ] );
+    register_setting( 'ce_options_general', 'ce_hero_verse_ref', [ 'default' => 'Surah Ar-Rahman (55:13)' ] );
     register_setting( 'ce_options_general', 'ce_hero_verse_number', [ 'default' => '١٣' ] );
     register_setting( 'ce_options_general', 'ce_footer_text', [ 'default' => '© Compelling Evidence. All rights reserved.' ] );
 
@@ -424,7 +424,7 @@ function ce_get_tab_fields( $tab ) {
             [ 'id' => 'ce_hero_verse_arabic',       'label' => 'Arabic Verse',             'type' => 'text',     'default' => 'فَبِأَيِّ آلَاءِ رَبِّكُمَا تُكَذِّبَانِ' ],
             [ 'id' => 'ce_hero_verse_number',       'label' => 'Verse Number (Arabic)',     'type' => 'text',     'default' => '١٣', 'desc' => 'Ayah number after the verse, in Arabic-Indic digits (١٣); the Quran face draws it inside the ayah medallion, so no brackets.' ],
             [ 'id' => 'ce_hero_verse_translation',  'label' => 'Verse Translation',        'type' => 'text',     'default' => 'Then which of the favours of your Lord will you deny?' ],
-            [ 'id' => 'ce_hero_verse_ref',          'label' => 'Verse Reference',          'type' => 'text',     'default' => 'Ar-Rahman 55:13' ],
+            [ 'id' => 'ce_hero_verse_ref',          'label' => 'Verse Reference',          'type' => 'text',     'default' => 'Surah Ar-Rahman (55:13)' ],
             [ 'id' => 'ce_footer_text',             'label' => 'Footer Text',              'type' => 'text',     'default' => '© Compelling Evidence. All rights reserved.', 'section' => 'Footer' ],
         ],
 

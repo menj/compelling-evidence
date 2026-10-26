@@ -23,6 +23,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Bug fixes
 
+- **The hero verse follows Theme Options.** `front-page.php` printed the Arabic, the translation and the reference as fixed text, so the General tab's Arabic Verse, Verse Translation and Verse Reference fields did nothing although the readme says they set the hero. The hero now reads them through `ce_hero_verse()`; an empty field falls back to Ar-Rahman 55:13 as before, the Arabic is fitted to the KFGQPC face, and every value is escaped. The Verse Reference default is now "Surah Ar-Rahman (55:13)", the text the page has always shown, so an unset site looks the same.
 - **Own-site phrases with an apostrophe link again.** The unified filter (20) runs after wptexturize (10), which writes "Muhammad's" as "Muhammad&#8217;s"; its crosslink, Rule 4 and tooltip patterns knew only the straight apostrophe, so "Muhammad's character", "i'jaz", "Ka'b ibn al-Ashraf", "women's rights in islam" and any own-site extra phrase with an apostrophe never linked. They now use `ce_ctx_phrase_alt()`, the apostrophe-tolerant fragment the sister pass already used.
 - **No fatal error without mbstring.** The unified filter called `mb_strtolower()`, which WordPress does not polyfill, so a host without mbstring died on every article. It now uses `ce_ctx_lower()`.
 - **Accented capitals find their sister link without mbstring.** "IBN ISḤĀQ" matched but missed its key, since `ce_ctx_lower()` lowers only ASCII there; `ce_ctx_find_sister_url()` then compares phrase by phrase.

@@ -72,6 +72,28 @@ function ce_quran_fit_content( $content ) {
 add_filter( 'the_content', 'ce_quran_fit_content', 8 );
 
 /**
+ * The hero verse from Theme Options: Arabic (fitted to the KFGQPC face),
+ * translation and reference. An empty field falls back to the verse the
+ * front page has always shown, Ar-Rahman 55:13. Values are unescaped.
+ *
+ * @return array{arabic:string,translation:string,ref:string}
+ */
+function ce_hero_verse() {
+    $fallback = array(
+        'arabic'      => 'فَبِأَيِّ آلَاءِ رَبِّكُمَا تُكَذِّبَانِ',
+        'translation' => 'Then which of the favours of your Lord will you deny?',
+        'ref'         => 'Surah Ar-Rahman (55:13)',
+    );
+    $verse = array();
+    foreach ( $fallback as $key => $default ) {
+        $value         = trim( (string) get_option( 'ce_hero_verse_' . $key, $default ) );
+        $verse[ $key ] = '' === $value ? $default : $value;
+    }
+    $verse['arabic'] = ce_quran_fit_text( $verse['arabic'] );
+    return $verse;
+}
+
+/**
  * The hero verse's ayah number from Theme Options, as bare Arabic-Indic
  * digits for the face to draw as one medallion. Brackets, U+06DD and spaces
  * saved under the old bracketed style are dropped; Western digits are mapped.
