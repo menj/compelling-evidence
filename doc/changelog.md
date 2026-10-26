@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **One sister link a list item, however many paragraphs it holds.** A `<p>` inside an `<li>` now shares the item's paragraph id in `ce_ctx_apply_sister_links()`, so a list item with two paragraphs can no longer take two links.
 - **Glossary tooltips work on answered questions.** `glossary-tooltip.css` and `.js` load on every type the unified filter processes (`ce_ctx_post_types()`), where they loaded only on articles and posts while `ce_question` pages already received tooltip anchors.
 - **The hero ayah number follows Theme Options.** `front-page.php` printed a fixed ١٣; it now prints `ce_hero_verse_number()`, the General tab's Verse Number as bare Arabic-Indic digits (brackets, U+06DD and spaces saved in the old style are dropped, Western digits mapped). The field's help text no longer mentions brackets.
+- **Pages get contextual links.** `page` joins `ce_article`, `post` and `ce_question` in `ce_ctx_post_types()`, so the own-site crosslinks, glossary tooltips and sister-site links all reach pages. The front page stays unlinked: the unified filter and the tooltip assets now check `is_front_page()` as the sister pass already did.
 - `readme.txt` `Version` is 2.6.42, matching `style.css`.
 
 ---

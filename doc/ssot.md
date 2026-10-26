@@ -431,7 +431,7 @@ The unified crosslink + tooltip engine (`ce-crosslinks.php`) enforces these rule
 4. **Minimum crosslinks** — Every article gets at least 3 crosslinks. Second pass with relaxed rules if needed.
 5. **Per-post disable** — `_ce_disable_crosslinks` and `_ce_disable_tooltips` post meta can disable either system.
 6. **Per-category disable** — Comma-separated slugs in Theme Options disable both systems for those topic categories.
-7. **Post types** — Articles, posts and answered questions (`ce_article`, `post`, `ce_question`; filter `ce_contextual_links_post_types`).
+7. **Post types** — Articles, posts, answered questions and pages (`ce_article`, `post`, `ce_question`, `page`; filter `ce_contextual_links_post_types`), never the front page.
 8. **Excluded pages** — Slugs listed under Links & Tooltips → Pages without crosslinks get no crosslinks of either kind; tooltips stay.
 
 ### Shared network map and sister-site links (v2.6.39)

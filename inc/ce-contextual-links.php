@@ -34,7 +34,7 @@ if ( ! defined( 'CE_SITE_KEY' ) ) {
    ═══════════════════════════════════════════════════════════════════════ */
 
 function ce_ctx_post_types() {
-    return (array) apply_filters( 'ce_contextual_links_post_types', [ 'ce_article', 'post', 'ce_question' ] );
+    return (array) apply_filters( 'ce_contextual_links_post_types', [ 'ce_article', 'post', 'ce_question', 'page' ] );
 }
 
 function ce_ctx_lower( $text ) {

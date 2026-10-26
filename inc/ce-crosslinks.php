@@ -289,8 +289,9 @@ function ce_get_default_crosslink_phrases() {
    ═══════════════════════════════════════════════════════════════════════ */
 
 function ce_unified_link_filter( $content ) {
-    // Only on single articles, posts and answered questions, not admin
-    if ( is_admin() || ! is_singular( ce_ctx_post_types() ) ) {
+    // Only on single articles, posts, answered questions and pages; never the
+    // front page or admin
+    if ( is_admin() || is_front_page() || ! is_singular( ce_ctx_post_types() ) ) {
         return $content;
     }
 
