@@ -2125,3 +2125,79 @@
   background: rgba(12,212,224,0.10);
 }
 .srp-label { color: rgba(12,212,224,0.85); }
+
+/* ── "Read this on murtadd.org" card (inc/ce-murtadd-counterparts.php) ── */
+.ce-murtadd-card {
+  margin: 2.5rem 0 1.5rem;
+  padding: 1.4rem 1.5rem;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(107,47,160,0.15);
+  border-radius: 14px;
+}
+.ce-murtadd-card-kicker {
+  font-family: var(--font-ui);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(12,212,224,0.6);
+  margin: 0 0 0.4rem;
+}
+.ce-murtadd-card-title {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: rgba(242,238,255,0.9);
+  line-height: 1.3;
+  margin: 0 0 0.5rem;
+}
+.ce-murtadd-card-body {
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin: 0 0 1rem;
+}
+.ce-murtadd-card-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.ce-murtadd-card-list li { margin: 0; }
+.ce-murtadd-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: 100%;
+  padding: 0.45rem 0.9rem 0.45rem 0.45rem;
+  border: 1px solid rgba(107,47,160,0.25);
+  border-radius: 50px;
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  color: rgba(242,238,255,0.85);
+  text-decoration: none;
+  transition: border-color 0.2s, transform 0.15s;
+}
+.ce-murtadd-card-link:hover,
+.ce-murtadd-card-link:focus-visible {
+  border-color: rgba(12,212,224,0.4);
+  transform: translateY(-1px);
+}
+.ce-murtadd-card-link:focus-visible { outline: 2px solid rgba(12,212,224,0.6); outline-offset: 2px; }
+.ce-murtadd-card-type {
+  flex-shrink: 0;
+  padding: 0.15rem 0.55rem;
+  border-radius: 50px;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: rgba(232,69,90,0.14);
+  color: #f7a3ae;
+}
+.ce-murtadd-card-type--doubt { background: rgba(12,212,224,0.12); color: #7fe9f0; }
+.ce-murtadd-card-arrow { color: rgba(242,238,255,0.4); }
+@media (prefers-reduced-motion: reduce) {
+  .ce-murtadd-card-link { transition: none; }
+  .ce-murtadd-card-link:hover, .ce-murtadd-card-link:focus-visible { transform: none; }
+}

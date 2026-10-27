@@ -6,6 +6,92 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.6.48] - October 2026
+
+### Coverage review of the articles (TF*IDF)
+
+- I ran a TF*IDF comparison over the 143 articles, 14 journeys, the quiz, the FAQ and the glossary, and fixed what it found with the smallest edits that help a reader. No existing sentence, fact or source was changed.
+- Three articles never used their focus term in the text, only in a figure caption. Each gains one sentence after the lead: `argument-from-reason` ("the argument from reason"), `quran-written-by-humans` ("written by humans") and `religion-of-your-birth` ("the religion of your birth").
+- `no-compulsion-in-religion` never mentioned apostasy, which its three nearest articles all discuss. One sentence now names it and points to the apostasy article.
+- The closest pair of articles, `anger-at-religion` and `the-anger-is-real`, is left as it is. One describes the anger phase and the research on it; the other asks what anger can tell you about God. Telling them further apart needs new material from the owner.
+- `manifest.json` checksums updated for batches 001, 002 and 005. `Version` is 2.6.48 in `style.css`, `readme.txt` and `doc/readme.md`; the version change runs the content sync.
+
+---
+
+## [2.6.47] - October 2026
+
+### Quiz reviewed against the new content
+
+- `journeys/quiz.html`: questions 1, 6, 8 and 10 gain a seventh option (G) for readers who met arguments online, follow another faith and are comparing it with Islam, compare religions side by side, or ask whether Islam is true. Each G option has scoring weights, and 6G lowers the two Muslim paths unless 6A or 6E is also chosen. The owner's existing question, option and persona wording is unchanged.
+- The result screen shows a "Read next" list of one or two links per path (`READ_NEXT`). They include `is-islam-false`, `islamic-dilemma-quran-and-bible`, the retitled `quran-contradictions-method` and `why-islam-not-christianity`, and two murtadd.org pages already linked from the articles. Every slug was checked against `inc/articles/batch-*.json`, and each label is the current article title.
+- Four journey files (`new-atheist`, `antitheist`, `muslim-doubts`, `ex-believer`) linked the retired slug `if-god-answers-prayer-why-cant-you-prove-it`. They now link `does-god-answer-prayer` directly, without the redirect.
+- The canonical, `og:url` and structured-data URLs of the Questioning Muslim and Committed Muslim journeys now use `/journeys/muslim-doubts/` and `/journeys/true-muslim/`, to match the other journeys.
+- `journeys/readme.txt` describes the G options and `READ_NEXT`, and says there are no Malay journey files yet.
+- No article batch changed, so `manifest.json` checksums stay as they are. `Version` is 2.6.47 in `style.css`, `readme.txt` and `doc/readme.md`.
+
+---
+
+## [2.6.46] - October 2026
+
+### New article "Is Islam False? The Arguments Weighed"; three articles retitled for their search clusters
+
+- New article `is-islam-false` (batch-009, order 143, topic Revelation & Meaning). It targets "is islam fake", "is islam false", "is islam a fake religion", "islam fake religion", "why islam is false" and "reasons why islam is false/fake" in the title, excerpt, `seo.json` title and description, and the first 100 words. It states nine common arguments (human authorship, borrowing from the Bible, contradictions and errors, preservation, the Prophet's conduct, hadith, science, morality, the cult comparison), answers each briefly and links to the article here that answers it in full. An FAQ covers six question variants. A "Struggling with doubt yourself?" card (existing `ce-murtadd-card` classes) links six murtadd.org doubt pages, checked against murtadd `inc/data/seed/doubts.json`. Quran text and translation (2:23, 2:111, 4:82, 15:9; 17:36 cited) checked against api.quran.com (`text_uthmani`, Sahih International). No hadith quoted.
+- I checked for duplicates first. No existing article asks whether Islam is true or false. Articles that overlap in part (`why-islam-not-christianity`, `quran-written-by-humans`, `was-muhammad-who-he-claimed-to-be` and the single-objection articles) are linked from the new one.
+- Three articles are retitled, with slugs unchanged. The title, H1, excerpt, `seo.json` and opening sentence change: `quran-contradictions-method` → "Islam Contradictions: Are There Errors and Problems in Islam?" (SEO title "Islam Contradictions: How to Test the Claims"); `is-islam-a-cult` → "Is Islam a Cult? The Cult Religion Claim Examined"; `why-islam-not-christianity` → "Islam or Christianity: Which Is True? The Evidence".
+- Rank Math fills `seo.json` values only into empty fields, so the three retitled articles keep any SEO title or description already saved in Rank Math until those fields are cleared.
+- Prose revised to the house style.
+- `manifest.json` checksums updated for the edited batches (143 articles). `Version` is 2.6.46 in `style.css`, `readme.txt` and `doc/readme.md`; the version change runs the content sync.
+
+---
+
+## [2.6.45] - October 2026
+
+### laʿnat Allāh after the name of Paul of Tarsus
+
+- A new `[ce_lanah]` shortcode (`inc/ce-media.php`) sets لعنة الله, "the curse of God", after Paul's name as a calligraphic mark. `.ce-lanah` (`assets/css/main.css`) draws `assets/images/lanat-allah.svg` (copied from injil.help) as a mask in `--accent`, the palette's red, so it follows the Theme Options colours; in forced-colours mode it is drawn in `CanvasText`. The words "laʿnat Allāh, the curse of God" stay inside, visually hidden, for screen readers, search and a copy and paste, and show as written where the browser cannot draw a mask. The sister-link engine (`ce-contextual-links.php`) and the crosslink and glossary engine (`ce-crosslinks.php`) skip `.ce-lanah`.
+- There is one placement, in `islamic-dilemma-quran-and-bible` (batch-007), in the paragraph on Paul's letters: "yet the Quran never mentions Paul لعنة الله or any letter". No other article is substantially about Paul. Passing mentions (Paul's revision of Jewish law, Paul's letters as historical sources, the physicist Paul Davies) carry none.
+- The mark is placed by hand and kept rare. It never goes in titles, headings, excerpts, SEO descriptions, menus, alt text, structured data or quotations. The article has its own excerpt, so the description fallback that reads raw content is not used.
+- The calligraphy is drawn from the outlines of Dubidam Arabic (NamelaType), whose metadata names a free personal-use licence. A web licence is the site owner's to hold.
+- `manifest.json` checksum updated for batch-007. `Version` is 2.6.45 in `style.css`, `readme.txt` and `doc/readme.md`; the version change runs the content sync.
+
+---
+
+## [2.6.44] - October 2026
+
+### Islamic dilemma article revised for search, network block added
+
+- `islamic-dilemma-quran-and-bible` (batch-007) keeps its slug, which is already the network's canonical URL and carries the keyword. The title is now "The Islamic Dilemma: Does the Quran Confirm the Bible It Contradicts?". The excerpt and the `seo.json` title (54 chars) and description (144 chars) lead with the focus keyword. The Rank Math focus keyword is `islamic dilemma, tahrif, muhaymin`.
+- New sections: where the argument comes from (James White, David Wood), the proof-texts 3:3, 5:68 and 10:94, *taḥrīf al-maʿnā* and *taḥrīf al-lafẓ* (Ibn Ḥazm, Ibn Taymiyya), the classical exegetes on *muhaymin* (Ibn Kathīr 3:128, citing Ibn Jurayj and al-Ṭabarī, Arabic copied from shamela.ws/book/8473/1393), the revelation and the later texts, a step-by-step table, an FAQ and a Sources list. Quran text from api.quran.com (`text_uthmani`).
+- A new box, "The Islamic dilemma across the network" (styled with the existing `ce-murtadd-card` classes), links the six sister pieces on abrahamic-religions.com, injil.help, bestofislam.org, apostleofdoom.org, murtadd.org and lailatulqadar.guide. The body also links to four of them and to three related articles here.
+- Body: 3,671 words, 75 uses of "Islamic dilemma" (2.04% by count, 4.09% counting the phrase as two words).
+- `manifest.json` checksum updated for batch-007. `Version` is 2.6.44 in `style.css`, `readme.txt` and `doc/readme.md`.
+
+---
+
+## [2.6.43] - October 2026
+
+### Added (cross-links with murtadd.org)
+
+- Articles that murtadd.org rebuttals or doubts name as their counterpart (their `ce_slug`) now end with a "Read this on murtadd.org" card. It is rounded and lists those entries as pill links (type badge, title, `target="_blank" rel="noopener"`), placed after the article text and before the share and vote row. `inc/ce-murtadd-counterparts.php` renders it with escaped output; styles are in `assets/css/templates.css`. 36 articles get the card, 67 links in all.
+- The data file is `inc/data/murtadd-counterparts.json` (read with `json_decode()`, data only), generated by `bin/build-murtadd-counterparts.py` from murtadd's `inc/data/seed/rebuttals.json` and `doubts.json`. URLs follow murtadd's rewrites: `/rebuttals/<slug>/` and `/doubts/<slug>/`. The script drops and reports any `ce_slug` with no article here; none are missing today.
+- The card has a switch in CE Theme Options → Links & Tooltips → "Link to murtadd.org counterparts" (`ce_murtadd_counterparts_enabled`, on by default).
+- Topic-level links between the two sites are left out because murtadd's topics and CE's `ce_topic` terms do not correspond one to one.
+
+### Content review fixes (High findings H1–H10)
+
+- H6 and H7 fix the author credits on the journey pages. A find-and-replace had credited C.S. Lewis's books to Thomas Nagel, Alvin Plantinga's to David Chalmers and Sam Harris's to Christopher Hitchens. The Key Thinkers lists and the prose now name the right author: Lewis for *Mere Christianity*, *The Problem of Pain*, *Miracles*, *Surprised by Joy* and *The Abolition of Man*; Plantinga for the Free Will Defence, the Evolutionary Argument Against Naturalism, *Warranted Christian Belief*, *The Nature of Necessity*, *God, Freedom and Evil* and *Where the Conflict Really Lies*; Harris for *The End of Faith*, *Waking Up* and *The Moral Landscape*. Victor Reppert's book is *C.S. Lewis's Dangerous Idea*. The new-atheist page's *Moral Landscape* section and its consciousness note now name Harris (the note drops an unverified quotation), and stray "Plantinga" substitutions for "philosopher" are undone.
+- H1 regrades Sunan al-Tirmidhī 2460. It was graded "ḥasan" before; it now gives al-Albānī's grading (very weak, though its line on remembering death is sound) and al-Tirmidhī's own *gharīb*. The Arabic matches the Bashshār edition (`إِنَّمَا الْقَبْرُ…`), and the prose in `near-death-experiences` and `what-does-islam-say-happens-after-death` no longer builds on it as proof.
+- H2 moves Musnad Aḥmad 11149 to 11133. The "one of three things" report is no. 11133 in the Risāla edition (chain *jayyid*), also *al-Adab al-Mufrad* 710; the Arabic follows that entry.
+- H3 moves Musnad Aḥmad 17999 to 18001. The long Wābiṣa wording is no. 18001; the Arabic and translation now follow it (`اسْتَفْتِ نَفْسَكَ…`), with the Risāla editors' grading (very weak chain) and al-Nawawī's *ḥasan* (Forty, no. 27).
+- H4 removes the "hidden treasure" saying from the hadith boxes, where it appeared as a ḥadīth qudsī. `why-create-knowing-suffering` and the spiritual-seeker journey present it as a Sufi saying with no chain, and cite 51:56.
+- H5 completes the Quran blocks. 112:1–4, 53:19–23, 96:1–5 and 11:106–108 now show every verse of the range, verbatim from api.quran.com (`text_uthmani`, the encoding the article data already uses), with the basmala removed.
+- H8 corrects the FAQ privacy answer. It now says what `inc/ce-analytics.php` records: quiz answers, persona, journey screens, page and article views, scroll depth and search terms, each with an IP hash, a session ID, the page address and the device type.
+- H9 corrects the cosmological constant. "Measured/calibrated to one part in 10^120" now reads that the constant is about 120 orders of magnitude smaller than naive theoretical estimates, a value that appears finely tuned, on every journey.
+- H10 removes the Malay journeys. The 13 HTML files in `journeys/ms-MY/` were English (11 byte-identical, 2 stale), so `ce_get_journey_file()` and `ce_get_quiz_file()` now serve the English pages. `ms-MY/README.txt` stays as the guide for real translations.
+- `manifest.json` checksums updated for the edited batches. `Version` is 2.6.43 in `style.css`, `readme.txt` and `doc/readme.md`.
+
+---
+
 ## [2.6.42] — October 2026
 
 ### Quran face served as woff2

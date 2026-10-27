@@ -412,7 +412,7 @@ function ce_ctx_apply_sister_links( $content, $max, $here ) {
     if ( false === $pieces ) return $content;
 
     $skip_tags  = [ 'a', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'q', 'figure', 'figcaption', 'cite', 'code', 'pre', 'sup', 'sub', 'nav', 'table', 'button', 'label', 'select', 'textarea', 'summary', 'script', 'style', 'svg' ];
-    $skip_class = '/\bclass\s*=\s*["\'][^"\']*\b(?:quran-citation|hadith-citation|quran-arabic|hadith-arabic|quran-translation|hadith-translation|quran-ref|hadith-ref|ce-toc|footnotes?|qa-pending)\b/i';
+    $skip_class = '/\bclass\s*=\s*["\'][^"\']*\b(?:quran-citation|hadith-citation|quran-arabic|hadith-arabic|quran-translation|hadith-translation|quran-ref|hadith-ref|ce-toc|footnotes?|qa-pending|ce-lanah)\b/i';
     $skip_lang  = '/\blang\s*=\s*["\']?(?:ar|he|el|syr)(?![a-z])/i';
     $void       = [ 'br', 'img', 'hr', 'wbr', 'input', 'source', 'meta', 'link', 'area', 'col', 'embed', 'param', 'track' ];
 

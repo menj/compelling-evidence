@@ -49,6 +49,7 @@ require_once get_stylesheet_directory() . '/inc/ce-quran-text.php';
 // ── AUTO CROSS-LINKING (inline article-to-article links) ─────────────────────
 require_once get_stylesheet_directory() . '/inc/ce-contextual-links.php';
 require_once get_stylesheet_directory() . '/inc/ce-crosslinks.php';
+require_once get_stylesheet_directory() . '/inc/ce-murtadd-counterparts.php';
 
 // ── GLOSSARY TOOLTIP SYSTEM (auto-link Islamic/Arabic terms) ────────────────
 require_once get_stylesheet_directory() . '/inc/ce-glossary.php';

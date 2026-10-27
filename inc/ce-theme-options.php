@@ -68,6 +68,7 @@ function ce_options_register() {
     register_setting( 'ce_options_links', 'ce_tooltip_show_arabic', [ 'default' => '1' ] );
     register_setting( 'ce_options_links', 'ce_tooltip_trigger', [ 'default' => 'hover' ] );
     register_setting( 'ce_options_links', 'ce_sister_links_enabled', [ 'default' => '1' ] );
+    register_setting( 'ce_options_links', 'ce_murtadd_counterparts_enabled', [ 'default' => '1' ] );
     register_setting( 'ce_options_links', 'ce_sister_links_max', [ 'default' => '3' ] );
     register_setting( 'ce_options_links', 'ce_contextual_links_extra', [ 'default' => '' ] );
     register_setting( 'ce_options_links', 'ce_contextual_links_excluded', [ 'default' => '' ] );
@@ -523,6 +524,8 @@ function ce_get_tab_fields( $tab ) {
               'desc' => 'The first mention of a phrase another site in the network treats (Abrahamic Religions, Best of Islam, The Injil, Apostle of Doom, Murtadd, Lailatulqadar) links to that inner page. Phrases come from inc/data/network-links.json, the same file in all seven themes. Never in headings, quotations, Quran or hadith blocks, figures or tables; one added link a paragraph; never in a paragraph that already has a crosslink or tooltip.' ],
             [ 'id' => 'ce_sister_links_max', 'label' => 'Maximum sister-site links per article', 'type' => 'number', 'default' => '3', 'min' => 0, 'max' => 10,
               'desc' => 'Counted apart from the internal crosslinks above. 0 turns them off.' ],
+            [ 'id' => 'ce_murtadd_counterparts_enabled', 'label' => 'Link to murtadd.org counterparts', 'type' => 'checkbox', 'default' => '1',
+              'desc' => 'A "Read this on murtadd.org" card after the article text, listing the murtadd rebuttals and doubts that name this article as their counterpart. Data: inc/data/murtadd-counterparts.json, rebuilt with bin/build-murtadd-counterparts.py.' ],
             [ 'id' => 'ce_contextual_links_extra', 'label' => 'Extra phrases', 'type' => 'textarea', 'default' => '',
               'desc' => 'One per line: phrase | /articles/slug/ for this site, or phrase | https://injil.help/paul/james/ for a sister site. These win over the shared map. Other addresses are ignored.' ],
             [ 'id' => 'ce_contextual_links_excluded', 'label' => 'Pages without crosslinks', 'type' => 'textarea', 'default' => '',

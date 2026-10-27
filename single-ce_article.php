@@ -101,6 +101,8 @@ $reading_secs = $word_count * 0.3; // approx seconds for progress tracking
         ]);
         ?>
 
+        <?php ce_render_murtadd_counterparts(); ?>
+
         <!-- Engagement: Share + Vote + Resonance -->
         <div class="ce-engagement-footer">
           <div class="ce-share-vote-row">
