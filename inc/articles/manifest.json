@@ -6,7 +6,7 @@
     {
       "file": "batch-001.json",
       "source": "inc/articles/backup/articles-data.php",
-      "checksum": "185be5787fb87c9f732fcb22c43e2323ca9789a99549f5be51ccc17edb500013",
+      "checksum": "8f647d7a849792f176c44214fece77748dbe5fa2900d0afdf78922121769ef4f",
       "articles": 24
     },
     {
@@ -54,7 +54,7 @@
     {
       "file": "batch-009.json",
       "source": "Drafted for v2.6.38 from the Answering Islam corpus review (claims C11, C09, C07 second half, C21, C18): original responses with verified Quran, hadith and Bible citations",
-      "checksum": "122c2a388c61cd7f9ae7b714aed3648ea88a560def17b52990dbdecbfee11ed4",
+      "checksum": "d31d94fc1d0c8364289f0079e25ad355c548d749ccf48d6800776291371488d3",
       "articles": 6
     }
   ],
