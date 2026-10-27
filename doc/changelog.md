@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.6.46] — October 2026
+
+### New article "Is Islam False? The Arguments Weighed"; three articles retitled for their search clusters
+
+- **`is-islam-false` (new, batch-009, order 143, topic Revelation & Meaning).** Targets "is islam fake", "is islam false", "is islam a fake religion", "islam fake religion", "why islam is false" and "reasons why islam is false/fake" in the title, excerpt, `seo.json` title and description, and the first 100 words. States nine common arguments (human authorship, borrowing from the Bible, contradictions and errors, preservation, the Prophet's conduct, hadith, science, morality, the cult comparison), weighs each briefly and links to the article here that answers it in full rather than repeating it. FAQ with six question variants; a "Struggling with doubt yourself?" card (existing `ce-murtadd-card` classes) links six murtadd.org doubt pages, checked against murtadd `inc/data/seed/doubts.json`. Quran text and translation (2:23, 2:111, 4:82, 15:9; 17:36 cited) checked against api.quran.com (`text_uthmani`, Sahih International). No hadith quoted.
+- **Duplicate check.** No existing article asks whether Islam is true or false. Partial overlaps (`why-islam-not-christianity`, `quran-written-by-humans`, `was-muhammad-who-he-claimed-to-be` and the single-objection articles) are linked, not repeated.
+- **Retitled (slugs unchanged; title, H1, excerpt, `seo.json` and opening sentence):** `quran-contradictions-method` → "Islam Contradictions: Are There Errors and Problems in Islam?" (SEO title "Islam Contradictions: How to Test the Claims"); `is-islam-a-cult` → "Is Islam a Cult? The Cult Religion Claim Examined"; `why-islam-not-christianity` → "Islam or Christianity: Which Is True? The Evidence".
+- Rank Math fills `seo.json` values only into empty fields, so the three retitled articles keep any SEO title or description already saved in Rank Math until those fields are cleared.
+- `manifest.json` checksums updated for batch-001, batch-005 and batch-009 (143 articles). `Version` is 2.6.46 in `style.css`, `readme.txt` and `doc/readme.md`; the version change runs the content sync.
+
+---
+
 ## [2.6.45] — October 2026
 
 ### laʿnat Allāh after the name of Paul of Tarsus

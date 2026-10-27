@@ -1,12 +1,12 @@
 {
-  "version": "2.6.38",
+  "version": "2.6.46",
   "generated": "2026-09-27T09:00:00+00:00",
-  "total_articles": 142,
+  "total_articles": 143,
   "batches": [
     {
       "file": "batch-001.json",
       "source": "inc/articles/backup/articles-data.php",
-      "checksum": "5668a6e574b71c4b3718f5c3c2dd689a5a2e535b2010d049d499fe48155b2d69",
+      "checksum": "185be5787fb87c9f732fcb22c43e2323ca9789a99549f5be51ccc17edb500013",
       "articles": 24
     },
     {
@@ -30,7 +30,7 @@
     {
       "file": "batch-005.json",
       "source": "inc/articles/backup/articles-data-5.php + articles-data-6.php",
-      "checksum": "52745a545d835bb1535ae4337fbc55214ec1cf61cb0f9e0cd9d6b9405a74a51c",
+      "checksum": "3577049d8bf92a1f1fd32aa8c2186a64b79ace331f93cad3e9730855f634a7b4",
       "articles": 24
     },
     {
@@ -54,8 +54,8 @@
     {
       "file": "batch-009.json",
       "source": "Drafted for v2.6.38 from the Answering Islam corpus review (claims C11, C09, C07 second half, C21, C18): original responses with verified Quran, hadith and Bible citations",
-      "checksum": "a123a083598c3c8f917b71d2625a2cbb8afcf84551cbc52f6bc16dda7b778a5b",
-      "articles": 5
+      "checksum": "122c2a388c61cd7f9ae7b714aed3648ea88a560def17b52990dbdecbfee11ed4",
+      "articles": 6
     }
   ],
   "checksum": "999e2458bc31e354a33072e0cf8a2cbad82712ccc09f6e4fd10115eb91cc958b"
