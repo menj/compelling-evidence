@@ -1151,10 +1151,14 @@ add_action( 'after_setup_theme', 'ce_init_feed_redirector' );
  * @since 2.6.31
  */
 function ce_redirect_topic_placeholder_pages() {
-    if ( ! is_page() ) {
+    if ( is_page() ) {
+        $slug = get_post_field( 'post_name', get_queried_object_id() );
+    } elseif ( is_404() ) {
+        // Drafted duplicates no longer resolve as pages; match the request path.
+        $slug = trim( (string) wp_parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ), '/' );
+    } else {
         return;
     }
-    $slug = get_post_field( 'post_name', get_queried_object_id() );
     if ( preg_match( '/^rights-freedom(-\d+)?$/', (string) $slug ) ) {
         $target = get_term_link( 'rights-freedom', 'ce_topic' );
         if ( ! is_wp_error( $target ) ) {
@@ -1164,6 +1168,37 @@ function ce_redirect_topic_placeholder_pages() {
     }
 }
 add_action( 'template_redirect', 'ce_redirect_topic_placeholder_pages', 1 );
+
+/**
+ * Move unedited rights-freedom-N duplicate pages to draft, once.
+ *
+ * Older theme versions inserted a new copy on every activation. A copy is
+ * left alone if anyone edited it (content differs from the placeholder or
+ * it was modified after creation). The 301 above still covers its URL.
+ *
+ * @since 2.6.49
+ */
+function ce_draft_rights_freedom_duplicates() {
+    if ( get_option( 'ce_rights_freedom_dupes_drafted' ) ) {
+        return;
+    }
+    global $wpdb;
+    $rows = $wpdb->get_results( $wpdb->prepare(
+        "SELECT ID, post_name, post_content, post_date, post_modified FROM {$wpdb->posts} WHERE post_type = 'page' AND post_status = 'publish' AND post_name LIKE %s",
+        $wpdb->esc_like( 'rights-freedom-' ) . '%'
+    ) );
+    foreach ( (array) $rows as $row ) {
+        if ( ! preg_match( '/^rights-freedom-\d+$/', $row->post_name ) ) {
+            continue;
+        }
+        $placeholder = false !== strpos( $row->post_content, 'Redirected to /topic/' ) || '' === trim( $row->post_content );
+        if ( $placeholder && $row->post_modified === $row->post_date ) {
+            wp_update_post( [ 'ID' => (int) $row->ID, 'post_status' => 'draft' ] );
+        }
+    }
+    update_option( 'ce_rights_freedom_dupes_drafted', time(), false );
+}
+add_action( 'admin_init', 'ce_draft_rights_freedom_duplicates' );
 
 /**
  * Keep reader-specific pages out of the index.

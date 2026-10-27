@@ -1,5 +1,5 @@
 {
-  "version": "2.6.48",
+  "version": "2.6.49",
   "generated": "2026-09-27T09:00:00+00:00",
   "total_articles": 143,
   "batches": [
@@ -42,7 +42,7 @@
     {
       "file": "batch-007.json",
       "source": "Drafted directly for v2.6.22, critique coverage gaps (Islamic Dilemma, 9:5 and 9:29, terrorism data, Jews, 4:34, divine love, salvation, citizenship)",
-      "checksum": "c82b43fdddd665eb01c86a2261302c4734dc15e74e38e9f59b44f15e9d3d0b9f",
+      "checksum": "17ee843cf5797c03de8ad6e10ce665b2f3a7e6edbe2005a5d06c0ef9b78188c1",
       "articles": 8
     },
     {
@@ -54,7 +54,7 @@
     {
       "file": "batch-009.json",
       "source": "Drafted for v2.6.38 from the Answering Islam corpus review (claims C11, C09, C07 second half, C21, C18): original responses with verified Quran, hadith and Bible citations",
-      "checksum": "1a8d1657f48b2f4801e3214c5b26c0ac23f215a572a63f0d676b74c12aa0070a",
+      "checksum": "c4dafa5aaee93808f77397eeff7777282dc7488dad4770bf8bcdd63234145b49",
       "articles": 6
     }
   ],

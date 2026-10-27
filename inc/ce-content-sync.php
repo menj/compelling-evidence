@@ -46,9 +46,41 @@ function ce_get_slug_rename_map(): array {
     return [
         // v2.3.6 slug rename
         'if-god-answers-prayer-why-cant-you-prove-it' => 'does-god-answer-prayer',
+        // v2.6.49: no verse numbers in URL slugs
+        'sword-verse-jizya-9-5-9-29' => 'sword-verse-jizya',
+        'quran-4-34-wife-beating'    => 'quran-wife-beating',
+        'crucifixion-quran-4-157'    => 'crucifixion-of-jesus-quran',
         // Add more renames here as needed
     ];
 }
+
+/**
+ * 301 a retired article slug to its current address.
+ *
+ * WordPress keeps _wp_old_slug when the sync renames a post, but that only
+ * covers sites where the rename has already run. This catches every old
+ * address in the rename map, before or after the sync, so no old URL 404s.
+ *
+ * @since 2.6.49
+ */
+function ce_redirect_renamed_article_slugs() {
+    if ( ! is_404() ) {
+        return;
+    }
+    $path = trim( (string) wp_parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ), '/' );
+    if ( ! preg_match( '#^articles/([a-z0-9-]+)$#', $path, $m ) ) {
+        return;
+    }
+    $map = ce_get_slug_rename_map();
+    if ( ! isset( $map[ $m[1] ] ) ) {
+        return;
+    }
+    $post = get_page_by_path( $map[ $m[1] ], OBJECT, [ 'ce_article', 'post' ] );
+    $url  = $post ? get_permalink( $post ) : home_url( '/articles/' . $map[ $m[1] ] . '/' );
+    wp_safe_redirect( $url, 301 );
+    exit;
+}
+add_action( 'template_redirect', 'ce_redirect_renamed_article_slugs', 5 );
 
 /**
  * Clean up deprecated topic terms that are no longer used

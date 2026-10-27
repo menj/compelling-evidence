@@ -6,6 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.6.49] - October 2026
+
+### Verse numbers out of article URLs
+
+- Three article slugs carried verse numbers. Each post is renamed in place by the content sync (same ID, edits and history):
+  - `/articles/sword-verse-jizya-9-5-9-29/` is now `/articles/sword-verse-jizya/`
+  - `/articles/quran-4-34-wife-beating/` is now `/articles/quran-wife-beating/`
+  - `/articles/crucifixion-quran-4-157/` is now `/articles/crucifixion-of-jesus-quran/`
+- The old slugs are in `ce_get_slug_rename_map()`. WordPress stores `_wp_old_slug` on rename, and the new `ce_redirect_renamed_article_slugs()` sends a 301 from any old address in the map, so no old URL returns 404.
+- The internal links in batches 007 and 009, the crosslink keyword map, the archive grouping, `seo.json` and `media.json` use the new slugs. Titles and text are unchanged. `inc/data/network-links.json` is untouched.
+- Rights & Freedom duplicates: the seeding guard was fixed in 2.6.31, so no new copies are made. On existing sites, published `rights-freedom-N` pages that nobody edited move to draft once, from `admin_init`. `/rights-freedom/` and `/rights-freedom-N/` still 301 to `/topic/rights-freedom/`, now also when the page is a draft.
+- `manifest.json` checksums updated for batches 007 and 009. `Version` is 2.6.49 in `style.css`, `readme.txt` and `doc/readme.md`; the version change runs the content sync.
+
+---
+
 ## [2.6.48] - October 2026
 
 ### Coverage review of the articles (TF*IDF)
