@@ -6,7 +6,7 @@
     {
       "file": "batch-001.json",
       "source": "inc/articles/backup/articles-data.php",
-      "checksum": "8f647d7a849792f176c44214fece77748dbe5fa2900d0afdf78922121769ef4f",
+      "checksum": "dd54cdc312a9492ff05e9e61bfc3f600201b270c40c8037c88f4234f8b933133",
       "articles": 24
     },
     {
@@ -18,19 +18,19 @@
     {
       "file": "batch-003.json",
       "source": "inc/articles/backup/articles-data-3.php",
-      "checksum": "224c86359ac146fa92e3113a25ebaf6572aec0888fa32845ae7cf53538665913",
+      "checksum": "644fa96d1173a55ebb8e673f9718b44c425f1373e2e203446670d3ea3b084797",
       "articles": 24
     },
     {
       "file": "batch-004.json",
       "source": "inc/articles/backup/articles-data-4.php",
-      "checksum": "bfa27f8a951673c30ad8a7f47986d900f91631446bd1d0adae1fa22cbf868a6f",
+      "checksum": "01e6830882e2864377bd2003b7cc3b06241d6e3e34d3b2b77dea07f6aa291001",
       "articles": 24
     },
     {
       "file": "batch-005.json",
       "source": "inc/articles/backup/articles-data-5.php + articles-data-6.php",
-      "checksum": "3577049d8bf92a1f1fd32aa8c2186a64b79ace331f93cad3e9730855f634a7b4",
+      "checksum": "ab96d6402be30caba528ccaaa796ba3459cc78820d6c19f5e6db5ba8a58916c7",
       "articles": 24
     },
     {
@@ -42,7 +42,7 @@
     {
       "file": "batch-007.json",
       "source": "Drafted directly for v2.6.22, critique coverage gaps (Islamic Dilemma, 9:5 and 9:29, terrorism data, Jews, 4:34, divine love, salvation, citizenship)",
-      "checksum": "cd6b80b61d9b618d0320af627440331a0bae2973a52607f293e8692429040235",
+      "checksum": "c82b43fdddd665eb01c86a2261302c4734dc15e74e38e9f59b44f15e9d3d0b9f",
       "articles": 8
     },
     {
@@ -54,7 +54,7 @@
     {
       "file": "batch-009.json",
       "source": "Drafted for v2.6.38 from the Answering Islam corpus review (claims C11, C09, C07 second half, C21, C18): original responses with verified Quran, hadith and Bible citations",
-      "checksum": "d31d94fc1d0c8364289f0079e25ad355c548d749ccf48d6800776291371488d3",
+      "checksum": "1a8d1657f48b2f4801e3214c5b26c0ac23f215a572a63f0d676b74c12aa0070a",
       "articles": 6
     }
   ],
