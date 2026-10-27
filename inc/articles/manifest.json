@@ -1,18 +1,18 @@
 {
-  "version": "2.6.46",
+  "version": "2.6.48",
   "generated": "2026-09-27T09:00:00+00:00",
   "total_articles": 143,
   "batches": [
     {
       "file": "batch-001.json",
       "source": "inc/articles/backup/articles-data.php",
-      "checksum": "dd54cdc312a9492ff05e9e61bfc3f600201b270c40c8037c88f4234f8b933133",
+      "checksum": "e85934f031aedd194a81ab3df13fca90273c1edfd04ced6d0e6828ffd580a418",
       "articles": 24
     },
     {
       "file": "batch-002.json",
       "source": "inc/articles/backup/articles-data-2.php",
-      "checksum": "84d9e97790545f690f9419ace1d4b42566c223fbf9c644034fc63842cff007e2",
+      "checksum": "926ba6df592b6f81941db13dcc85629194d3332a542caded36f540b5b0027a01",
       "articles": 24
     },
     {
@@ -30,7 +30,7 @@
     {
       "file": "batch-005.json",
       "source": "inc/articles/backup/articles-data-5.php + articles-data-6.php",
-      "checksum": "ab96d6402be30caba528ccaaa796ba3459cc78820d6c19f5e6db5ba8a58916c7",
+      "checksum": "a9d9f564b0dcfd1aaf655fb45c93ec051772d3d88a44518ac82d6117b3c60944",
       "articles": 24
     },
     {

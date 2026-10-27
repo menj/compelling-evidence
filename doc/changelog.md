@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.6.48] - October 2026
+
+### Coverage review of the articles (TF*IDF)
+
+- I ran a TF*IDF comparison over the 143 articles, 14 journeys, the quiz, the FAQ and the glossary, and fixed what it found with the smallest edits that help a reader. No existing sentence, fact or source was changed.
+- Three articles never used their focus term in the text, only in a figure caption. Each gains one sentence after the lead: `argument-from-reason` ("the argument from reason"), `quran-written-by-humans` ("written by humans") and `religion-of-your-birth` ("the religion of your birth").
+- `no-compulsion-in-religion` never mentioned apostasy, which its three nearest articles all discuss. One sentence now names it and points to the apostasy article.
+- The closest pair of articles, `anger-at-religion` and `the-anger-is-real`, is left as it is. One describes the anger phase and the research on it; the other asks what anger can tell you about God. Telling them further apart needs new material from the owner.
+- `manifest.json` checksums updated for batches 001, 002 and 005. `Version` is 2.6.48 in `style.css`, `readme.txt` and `doc/readme.md`; the version change runs the content sync.
+
+---
+
 ## [2.6.47] - October 2026
 
 ### Quiz reviewed against the new content
