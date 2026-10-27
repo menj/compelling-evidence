@@ -1,0 +1,31 @@
+/**
+ * CE Theme Options: Security tab tools and reports (inc/ce-security.php).
+ * Uses the same tokens as ce-theme-options-admin.css: #2271b1 accent,
+ * #ddd and #eee lines, 6px and 8px radii.
+ */
+
+.ce-sec { margin-top: 2rem; padding-top: 1.6rem; border-top: 1px solid #eee; }
+.ce-sec .ce-section-title { margin-top: 2rem; }
+.ce-sec > .ce-section-title:first-of-type { margin-top: 0; }
+.ce-sec-sub { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: #888; margin: 1.4rem 0 0.6rem; }
+.ce-sec .notice.inline { margin: 0 0 1.2rem; }
+
+.ce-sec-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; margin: 0.8rem 0; }
+.ce-sec-form { margin: 0; }
+.ce-sec-status { color: #50575e; font-size: 0.8rem; }
+
+.ce-sec-scroll { max-height: 420px; overflow: auto; border: 1px solid #ddd; border-radius: 8px; margin: 0.6rem 0 0.8rem; }
+.ce-sec-scroll--tall { max-height: 560px; }
+.ce-sec-table { border: 0; font-size: 0.8rem; }
+.ce-sec-table td, .ce-sec-table th { vertical-align: top; }
+.ce-sec-table thead th, .ce-sec-table thead td { font-weight: 600; color: #1d2327; }
+.ce-sec-links { display: flex; gap: 0.7rem; margin-top: 0.25rem; font-size: 0.75rem; }
+.ce-sec-reason { display: inline-block; margin: 0 0.3rem 0.3rem 0; padding: 0 0.55rem; border-radius: 999px; background: #f8f5ff; color: #6b2fa0; font-size: 0.7rem; line-height: 1.5rem; }
+
+.ce-sec-list { margin: 0.5rem 0 0.8rem 1.2rem; list-style: disc; font-size: 0.82rem; }
+.ce-sec-list li { margin: 0.15rem 0; }
+
+@media (max-width: 782px) {
+	.ce-sec-bar { flex-direction: column; align-items: stretch; }
+	.ce-sec-bar .button { width: 100%; text-align: center; }
+}

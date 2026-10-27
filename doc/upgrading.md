@@ -6,6 +6,24 @@ Only paths explicitly identified in development are documented here.
 
 ---
 
+## Upgrading to v2.7.0 from v2.6.49
+
+**After deploying:** load any admin page once (the version change runs the content sync). The new Security tab under Appearance > CE Theme Options is on by default: XML-RPC, application passwords and REST writes from outside the browser stop at once.
+
+After the October 2026 attack on the sister site, the owner checklist:
+
+1. Change the password of every administrator to a long random one used nowhere else, then Log Out Everywhere Else (Users > Profile), or press "Log out all sessions" on the Security tab.
+2. Create a new administrator whose name is not the site name, log in as it, and delete the old account, attributing its content to the new one.
+3. Press "Revoke all application passwords".
+4. Check Plugins for anything not installed by you (auto-posting, AI writers, remote management) and remove it. Check Users for unknown accounts.
+5. Run the spam scan, select the results, move them to the trash, then delete the empty spam categories.
+6. Purge any page cache, then resubmit the sitemap in Google Search Console.
+7. Optional, at the server: deny xmlrpc.php in .htaccess as well, so the requests never reach PHP. Jetpack needs XML-RPC; if Jetpack is used, switch "Turn off XML-RPC" off instead (password logins through XML-RPC stay refused).
+
+WPS Hide Login keeps guarding the login address; nothing here changes it. If a lock breaks a tool you rely on, `define( 'CE_SECURITY_LOCK', false );` in wp-config.php turns the three locks off without changing the options. A tool that must write through REST with an application password can be let through with the `ce_sec_rest_allow` filter (route prefixes), after switching application passwords back on.
+
+---
+
 ## Upgrading to v2.6.42 from v2.6.41
 
 **After deploying:** `assets/fonts/kfgqpc-hafs-uthmanic-script.ttf` gives way to `kfgqpc-hafs-uthmanic-script.woff2`. An upload over the old folder leaves the TTF behind; nothing reads it, and it can be deleted. Purge page and CDN caches so the front page preloads the new file.

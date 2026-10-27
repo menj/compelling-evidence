@@ -6,7 +6,7 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.6.49
+Version: 2.7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Template: twentytwentyfive
@@ -99,8 +99,16 @@ Appearance > CE Theme Options — 8 tabs:
 7. Analytics     Toggle tracking, scroll depth logging, search query logging; data retention; auto-purge
 8. Performance   Toggle parallax, font preloading, inline script minification;
                   Retired URLs (410 Gone path prefixes)
+9. Security      XML-RPC, application password and REST locks; spam gate;
+                  spam scan and trash; reports and security log
 
 == Changelog ==
+
+= 2.7.0 - October 2026 =
+Security tab under CE Theme Options, ported from the Abrahamic theme after the October 2026 attack
+on abrahamic-religions.com: XML-RPC off, application passwords off, REST writes only from a
+browser session, gambling spam and remote publishing held as Pending, a spam scan that moves
+spam to the trash, 410 Gone for removed spam, reports and a security log. See doc/upgrading.md.
 
 = 2.6.43 — October 2026 =
 Content review fixes: author credits restored on the journey pages (C.S. Lewis, Alvin Plantinga,

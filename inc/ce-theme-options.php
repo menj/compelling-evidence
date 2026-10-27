@@ -85,6 +85,11 @@ function ce_options_register() {
     register_setting( 'ce_options_performance', 'ce_minify_inline', [ 'default' => '0' ] );
     register_setting( 'ce_options_performance', 'ce_gone_enabled', [ 'default' => '1' ] );
     register_setting( 'ce_options_performance', 'ce_gone_paths', [ 'default' => ce_gone_default_paths() ] );
+
+    // Security (inc/ce-security.php)
+    foreach ( [ 'ce_sec_xmlrpc_off', 'ce_sec_app_passwords_off', 'ce_sec_rest_lock', 'ce_sec_spam_gate', 'ce_sec_gone' ] as $ce_sec_key ) {
+        register_setting( 'ce_options_security', $ce_sec_key, [ 'default' => '1' ] );
+    }
 }
 add_action( 'admin_init', 'ce_options_register' );
 
@@ -129,6 +134,7 @@ function ce_options_page() {
         'engagement'  => [ 'label' => 'Engagement',        'icon' => 'dashicons-thumbs-up' ],
         'analytics'   => [ 'label' => 'Analytics',         'icon' => 'dashicons-chart-area' ],
         'performance' => [ 'label' => 'Performance',       'icon' => 'dashicons-performance' ],
+        'security'    => [ 'label' => 'Security',          'icon' => 'dashicons-shield' ],
         'tools'       => [ 'label' => 'Tools & Sync',      'icon' => 'dashicons-admin-tools' ],
     ];
 
@@ -397,6 +403,10 @@ function ce_options_page() {
                     </div>
                 <?php endif; ?>
             </form>
+
+            <?php if ( 'security' === $active && function_exists( 'ce_sec_render_tools' ) ) : ?>
+                <?php ce_sec_render_tools(); ?>
+            <?php endif; ?>
         </div>
     </div>
 
@@ -564,6 +574,14 @@ function ce_get_tab_fields( $tab ) {
             [ 'id' => 'ce_minify_inline',    'label' => 'Minify inline script output',      'type' => 'checkbox', 'default' => '0', 'desc' => 'Strips whitespace from wp_localize_script output. Minor savings.' ],
             [ 'id' => 'ce_gone_enabled',     'label' => 'Answer retired URLs with 410 Gone', 'type' => 'checkbox', 'default' => '1', 'section' => 'Retired URLs', 'desc' => 'Returns a lightweight 410 response, before the main query runs, for paths that never belonged to this site (left behind by a past spam injection). Crawlers drop 410 URLs faster than 404 URLs.' ],
             [ 'id' => 'ce_gone_paths',       'label' => 'Retired path prefixes',            'type' => 'textarea', 'default' => ce_gone_default_paths(), 'desc' => 'One path prefix per line, starting with a slash. Any request whose path begins with a listed prefix receives 410. Never list a prefix used by real content.' ],
+        ],
+
+        'security' => [
+            [ 'id' => 'ce_sec_xmlrpc_off',        'label' => 'Turn off XML-RPC',                                  'type' => 'checkbox', 'default' => '1', 'section' => 'Remote publishing', 'desc' => 'Spam tools publish from outside the site with a stored password; these switches close the doors they use, and writing in the editor is not affected. xmlrpc.php answers 403, counted per day, and the pingback header goes. The Jetpack plugin and old mobile apps need XML-RPC.' ],
+            [ 'id' => 'ce_sec_app_passwords_off', 'label' => 'Turn off application passwords',                    'type' => 'checkbox', 'default' => '1', 'desc' => 'Stored application passwords stop working at once. Revoke them as well, below, so they cannot return if this is switched off.' ],
+            [ 'id' => 'ce_sec_rest_lock',         'label' => 'Allow REST API changes only from a logged-in browser', 'type' => 'checkbox', 'default' => '1', 'desc' => 'A logged-in request that creates, changes or deletes content must come from a browser session on this site with a valid nonce. Basic authentication and passwords sent in a header are refused. Reading through the API, the block editor, Rank Math, contact forms and the quiz work as before, and visitors who are not logged in are not affected.' ],
+            [ 'id' => 'ce_sec_spam_gate',         'label' => 'Hold suspected gambling spam as Pending',           'type' => 'checkbox', 'default' => '1', 'section' => 'New content', 'desc' => 'A post, page, article or question going public whose title, address or text reads as casino or betting spam is saved as Pending and logged below. So is anything published from outside the editor. The articles and pages the theme seeds are exempt, and questions sent through Ask a Question arrive as Pending as before.' ],
+            [ 'id' => 'ce_sec_gone',              'label' => 'Answer 410 Gone on the address of removed spam',    'type' => 'checkbox', 'default' => '1', 'desc' => 'Search engines drop a 410 address faster than a 404 one. Only addresses of spam moved to the trash from this tab are affected. Retired URL prefixes stay under Performance.' ],
         ],
 
         'tools' => [

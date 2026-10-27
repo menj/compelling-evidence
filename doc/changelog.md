@@ -6,6 +6,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.7.0] - October 2026
+
+### Security tab against remote-publishing spam
+
+Ported from the Abrahamic theme (2.87.0), which was built from the access logs of the October 2026 attack on the sister site abrahamic-religions.com: password guessing through xmlrpc.php from 701 rotating addresses under forged "Jetpack by WordPress.com" user agents, a correct password found, then a casino post every 18 to 20 minutes through wp.newPost under the owner's own account.
+
+- New `inc/ce-security.php`, `inc/ce-security-detector.php`, `assets/js/ce-security.js` and `assets/css/ce-security.css`. A Security tab (`dashicons-shield`) joins Appearance > CE Theme Options, with its five switches in `ce_get_tab_fields( 'security' )` and saved like every other tab. The tools and reports render under the form on that tab only, and the JS and CSS load only there.
+- Options `ce_sec_xmlrpc_off`, `ce_sec_app_passwords_off`, `ce_sec_rest_lock`, `ce_sec_spam_gate` and `ce_sec_gone`, all `'1'` by default. `define( 'CE_SECURITY_LOCK', false );` in wp-config.php turns the first three off without touching the options.
+- Remote-publishing lockdown: xmlrpc.php answers 403, counted per day and not logged per request (forged Jetpack agents counted apart); application passwords are off; a logged-in REST request that writes must come from a cookie session with a valid `wp_rest` nonce. Anonymous requests and reads are unchanged, so Contact Form 7, the Ask a Question form (admin-post), the quiz, journey progress, votes and analytics (admin-ajax), the block editor and Rank Math work as before. The theme registers no REST routes of its own.
+- A correct password sent through XML-RPC is refused even with XML-RPC switched back on, logged, and raises an admin notice to change it. Failed logins are counted by account name over a rolling day; ten or more on a real account raise a notice.
+- Spam gate: a post, page, `ce_article` or `ce_question` going public whose title, slug or text reads as gambling spam is saved as Pending and logged; so is anything published from outside the editor. Questions from the Ask a Question form are saved as Pending exactly as before, and the gate leaves them alone until someone makes one public. `ce_topic` and `ce_qstatus` terms are never touched.
+- Exempt from the gate and the scan: every article slug in `inc/articles/batch-*.json` (and the old and new slugs in `ce_get_slug_rename_map()`), the pages the theme creates (secondary pages, quiz, progress, journeys, every journey page and its `_ce_journey_key`, `rights-freedom` and its old `-N` copies). The topic names and the 2.2.0 migration terms are never offered for deletion.
+- Clean-up: a scan in batches of 100 lists suspected spam with its reasons; selected items move to the trash after a second check, never deleted for good. Trashed spam addresses answer 410 Gone. Empty spam categories are deleted only on request. Buttons revoke every application password and end every session. The existing retired-URL 410 under Performance is unchanged.
+- Reports: attacks seen per day, accounts being guessed, administrators with last login, sessions and application passwords, posts and articles per day with burst publishing, seeded content carrying gambling links, and a security log of the last 200 events.
+- Detector tuned for this site: weak terms alone ("bet", "betting", "odds", as in Pascal's wager in the Scientist journey) stay below the threshold unless a casino-game word joins them. `tests/security-detector-test.php` scores all 143 articles, their topics, `seo.json`, `media.json`, every journey, the seeded pages and the page templates (3,749 items, no false positive) and catches all 53 attack samples.
+- `Version` is 2.7.0 in `style.css`, `readme.txt` and `doc/readme.md`; the version change runs the content sync as usual.
+
+---
+
 ## [2.6.49] - October 2026
 
 ### Verse numbers out of article URLs

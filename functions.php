@@ -6,6 +6,10 @@
 // ── ENGAGEMENT SYSTEM (voting, resonance, share, widget) ─────────────────────
 require_once get_stylesheet_directory() . '/inc/ce-db.php';
 require_once get_stylesheet_directory() . '/inc/ce-gone.php';
+
+// ── SECURITY (remote-publishing lock, spam gate, clean-up; Security tab) ─────
+require_once get_stylesheet_directory() . '/inc/ce-security-detector.php';
+require_once get_stylesheet_directory() . '/inc/ce-security.php';
 require_once get_stylesheet_directory() . '/inc/ce-engagement.php';
 
 // ── SEO & SCHEMA MARKUP (JSON-LD, OG tags, print CSS) ───────────────────────
