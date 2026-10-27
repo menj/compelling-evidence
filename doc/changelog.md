@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.6.47] - October 2026
+
+### Quiz reviewed against the new content
+
+- `journeys/quiz.html`: questions 1, 6, 8 and 10 gain a seventh option (G) for readers who met arguments online, follow another faith and are comparing it with Islam, compare religions side by side, or ask whether Islam is true. Each G option has scoring weights, and 6G lowers the two Muslim paths unless 6A or 6E is also chosen. The owner's existing question, option and persona wording is unchanged.
+- The result screen shows a "Read next" list of one or two links per path (`READ_NEXT`). They include `is-islam-false`, `islamic-dilemma-quran-and-bible`, the retitled `quran-contradictions-method` and `why-islam-not-christianity`, and two murtadd.org pages already linked from the articles. Every slug was checked against `inc/articles/batch-*.json`, and each label is the current article title.
+- Four journey files (`new-atheist`, `antitheist`, `muslim-doubts`, `ex-believer`) linked the retired slug `if-god-answers-prayer-why-cant-you-prove-it`. They now link `does-god-answer-prayer` directly, without the redirect.
+- The canonical, `og:url` and structured-data URLs of the Questioning Muslim and Committed Muslim journeys now use `/journeys/muslim-doubts/` and `/journeys/true-muslim/`, to match the other journeys.
+- `journeys/readme.txt` describes the G options and `READ_NEXT`, and says there are no Malay journey files yet.
+- No article batch changed, so `manifest.json` checksums stay as they are. `Version` is 2.6.47 in `style.css`, `readme.txt` and `doc/readme.md`.
+
+---
+
 ## [2.6.46] - October 2026
 
 ### New article "Is Islam False? The Arguments Weighed"; three articles retitled for their search clusters

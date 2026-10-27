@@ -48,8 +48,17 @@ openResonance()             - Open resonance widget modal
 
 LOCALISATION
 ------------
-Malay translations are in /journeys/ms-MY/ folder.
-When WordPress locale is set to ms-MY, page-journey.php serves files from that folder.
+There are no Malay translations yet. The English files in this folder are the
+only copies; /journeys/ms-MY/ holds a README only. When a reviewed Malay file
+is added there, functions.php serves it to ms-MY visitors.
+
+QUIZ OPTIONS
+------------
+Questions 1, 6, 8 and 10 have a seventh option (G) since 2.6.47: arguments met
+online (1G), another faith comparing with Islam (6G), comparing religions (8G)
+and whether Islam is true (10G). The result screen shows one or two "Read next"
+links per persona from READ_NEXT in quiz.html; each must be an existing slug in
+inc/articles/batch-*.json or a murtadd.org page linked from those articles.
 
 DO NOT MODIFY
 -------------

@@ -122,6 +122,10 @@ body{
 .res-resonances{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:1.4rem 1.8rem;margin:0 auto 2rem;max-width:500px;}
 .rr-label{font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--dimmed);margin-bottom:0.8rem;display:block;}
 .rr-items{display:flex;flex-wrap:wrap;gap:0.5rem;}
+.res-read{max-width:500px;margin:0 auto 2rem;}
+.rn-items{display:flex;flex-direction:column;gap:0.5rem;}
+.rn-item{display:block;font-size:0.88rem;padding:0.75rem 1rem;border-radius:10px;border:1px solid rgba(12,212,224,0.22);color:#0cd4e0;background:rgba(12,212,224,0.05);text-decoration:none;line-height:1.4;}
+.rn-item:hover{border-color:rgba(12,212,224,0.5);}
 .rr-item{font-size:0.78rem;padding:0.3rem 0.75rem;border-radius:50px;border:1px solid rgba(107,47,160,0.3);color:rgba(242,238,255,0.6);background:rgba(107,47,160,0.08);}
 .btn-journey{display:inline-flex;align-items:center;gap:0.5rem;padding:1.1rem 2.5rem;border-radius:50px;background:linear-gradient(135deg,var(--gold),#d4a017);color:#0d0820;font-family:var(--body);font-size:1rem;font-weight:700;cursor:pointer;border:none;box-shadow:0 6px 28px rgba(245,197,24,0.22);transition:all 0.2s;margin-bottom:1rem;}
 .btn-journey:hover{transform:translateY(-2px);}
@@ -227,6 +231,7 @@ body{
         <div class="q-option" role="option" tabindex="0" data-q="1" data-v="D"><div class="opt-radio"></div><div><div class="opt-text">Searched across traditions and ideas, still looking</div><div class="opt-sub">You've explored widely but haven't found a framework that holds together</div></div></div>
         <div class="q-option" role="option" tabindex="0" data-q="1" data-v="E"><div class="opt-radio"></div><div><div class="opt-text">Saw what religion does to people and turned against it</div><div class="opt-sub">The harm was too real, too widespread, and too systemic to ignore</div></div></div>
         <div class="q-option" role="option" tabindex="0" data-q="1" data-v="F"><div class="opt-radio"></div><div><div class="opt-text">Grew up in a faith tradition — still processing what that means</div><div class="opt-sub">Whether you stayed, left, or drifted, the background shapes everything</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="1" data-v="G"><div class="opt-radio"></div><div><div class="opt-text">Arguments I met online, such as the Islamic dilemma or claims that Islam is false</div><div class="opt-sub">Videos, debates or forum threads raised questions you had not faced before</div></div></div>
       </div>
       <div class="q-nav">
         <div></div>
@@ -322,6 +327,7 @@ body{
         <div class="q-option" role="option" tabindex="0" data-q="6" data-v="D"><div class="opt-radio"></div><div><div class="opt-text">Never religious — I've always been secular</div><div class="opt-sub">Faith was never part of your identity or worldview</div></div></div>
         <div class="q-option" role="option" tabindex="0" data-q="6" data-v="E"><div class="opt-radio"></div><div><div class="opt-text">Muslim, but struggling with serious doubts I can't resolve</div><div class="opt-sub">You haven't left — but specific questions are getting harder to ignore</div></div></div>
         <div class="q-option" role="option" tabindex="0" data-q="6" data-v="F"><div class="opt-radio"></div><div><div class="opt-text">Religion just isn't part of my identity — it's a non-issue</div><div class="opt-sub">Not hostile, not searching — it's simply not on your radar</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="6" data-v="G"><div class="opt-radio"></div><div><div class="opt-text">I follow another faith, such as Christianity, and I am comparing it with Islam</div><div class="opt-sub">You hold a faith of your own and want to see how the claims compare</div></div></div>
       </div>
       <div class="q-nav">
         <button class="btn-prev" onclick="goPrev(6)"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back</button>
@@ -360,6 +366,7 @@ body{
         <div class="q-option" role="option" tabindex="0" data-q="8" data-v="D"><div class="opt-radio"></div><div><div class="opt-text">Curiosity — not urgent, just interested</div><div class="opt-sub">Low stakes — you're browsing, not searching</div></div></div>
         <div class="q-option" role="option" tabindex="0" data-q="8" data-v="E"><div class="opt-radio"></div><div><div class="opt-text">Processing my own departure from religion</div><div class="opt-sub">You left, or you're leaving, and you're still working through it</div></div></div>
         <div class="q-option" role="option" tabindex="0" data-q="8" data-v="F"><div class="opt-radio"></div><div><div class="opt-text">Searching — I haven't found the right framework yet</div><div class="opt-sub">You know something is out there, but nothing has clicked</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="8" data-v="G"><div class="opt-radio"></div><div><div class="opt-text">Comparing religions to see which one, if any, is true</div><div class="opt-sub">Islam, Christianity or others: you want to test their claims side by side</div></div></div>
       </div>
       <div class="q-nav">
         <button class="btn-prev" onclick="goPrev(8)"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back</button>
@@ -398,6 +405,7 @@ body{
         <div class="q-option" role="option" tabindex="0" data-q="10" data-v="D"><div class="opt-radio"></div><div><div class="opt-text">How do I reconcile specific problems in my tradition?</div><div class="opt-sub">Not God in general — particular issues in the faith you know</div></div></div>
         <div class="q-option" role="option" tabindex="0" data-q="10" data-v="E"><div class="opt-radio"></div><div><div class="opt-text">Can consciousness and fine-tuning be explained without God?</div><div class="opt-sub">The scientific frontier — where the natural explanation seems to run out</div></div></div>
         <div class="q-option" role="option" tabindex="0" data-q="10" data-v="F"><div class="opt-radio"></div><div><div class="opt-text">How do I live most faithfully with what I actually believe?</div><div class="opt-sub">Not what's true — how to live with integrity given what you hold</div></div></div>
+        <div class="q-option" role="option" tabindex="0" data-q="10" data-v="G"><div class="opt-radio"></div><div><div class="opt-text">Is Islam true, or does the case against it hold?</div><div class="opt-sub">The Islamic dilemma, the contradiction and cult charges: you want the arguments set out fairly</div></div></div>
       </div>
       <div class="q-nav">
         <button class="btn-prev" onclick="goPrev(10)"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back</button>
@@ -419,6 +427,10 @@ body{
       <span class="rr-label">Your profile also resonates with</span>
       <div class="rr-items" id="rr-items"></div>
     </div>
+    <div class="res-read" id="res-read" style="display:none;">
+      <span class="rr-label">Read next</span>
+      <div class="rn-items" id="rn-items"></div>
+    </div>
     <div class="score-bars">
       <span class="sb-label">How your answers map</span>
       <div id="sb-rows"></div>
@@ -431,13 +443,30 @@ body{
 
 </div>
 <script>
-var SCORING = {"1A":{"apatheist":3,"secular-humanist":2,"agnostic":1},"1B":{"classical-atheist":3,"scientist":3,"freethinker":2},"1C":{"ex-believer":3,"muslim-doubts":2,"antitheist":1},"1D":{"deist":3,"spiritual-seeker":2,"agnostic":2},"1E":{"antitheist":3,"new-atheist":2,"ex-believer":1},"1F":{"true-muslim":4,"muslim-doubts":2,"materialist":1},"2A":{"classical-atheist":3,"materialist":3,"new-atheist":2},"2B":{"agnostic":3,"scientist":2,"freethinker":2},"2C":{"deist":3,"spiritual-seeker":3,"freethinker":1},"2D":{"apatheist":3,"secular-humanist":2},"2E":{"antitheist":3,"ex-believer":2,"new-atheist":1},"2F":{"true-muslim":4,"muslim-doubts":2,"spiritual-seeker":1},"3A":{"classical-atheist":3,"scientist":2,"freethinker":1},"3B":{"scientist":3,"materialist":2,"new-atheist":1},"3C":{"muslim-doubts":2,"ex-believer":2,"agnostic":2},"3D":{"freethinker":3,"agnostic":2,"deist":1},"3E":{"spiritual-seeker":4,"deist":2,"apatheist":1},"3F":{"true-muslim":3,"secular-humanist":3,"antitheist":1},"4A":{"antitheist":3,"ex-believer":2,"new-atheist":2},"4B":{"new-atheist":3,"classical-atheist":2,"scientist":2,"freethinker":1},"4C":{"muslim-doubts":3,"ex-believer":2},"4D":{"apatheist":3,"secular-humanist":3,"agnostic":1},"4E":{"materialist":3,"scientist":2,"classical-atheist":1},"4F":{"deist":3,"spiritual-seeker":2,"true-muslim":1},"5A":{"materialist":3,"scientist":2,"classical-atheist":1},"5B":{"new-atheist":3,"freethinker":2,"antitheist":1},"5C":{"secular-humanist":4,"apatheist":2},"5D":{"muslim-doubts":3,"ex-believer":2,"agnostic":1},"5E":{"deist":3,"agnostic":2,"freethinker":1},"5F":{"true-muslim":4,"spiritual-seeker":4,"deist":1},"6A":{"true-muslim":5,"muslim-doubts":1},"6B":{"deist":3,"spiritual-seeker":3,"agnostic":1},"6C":{"ex-believer":3,"antitheist":2,"muslim-doubts":1},"6D":{"classical-atheist":2,"materialist":2,"secular-humanist":2,"new-atheist":1,"apatheist":1,"scientist":1,"freethinker":1},"6E":{"muslim-doubts":4,"true-muslim":1,"ex-believer":1},"6F":{"apatheist":3,"secular-humanist":2,"materialist":1},"7A":{"muslim-doubts":3,"agnostic":2,"ex-believer":2},"7B":{"true-muslim":3,"deist":1,"spiritual-seeker":1},"7C":{"freethinker":3,"new-atheist":2,"antitheist":1},"7D":{"apatheist":3,"materialist":2,"secular-humanist":1},"7E":{"scientist":3,"classical-atheist":2,"freethinker":1},"7F":{"true-muslim":3,"muslim-doubts":1},"8A":{"muslim-doubts":3,"agnostic":2,"spiritual-seeker":1,"ex-believer":1},"8B":{"true-muslim":4,"muslim-doubts":1},"8C":{"scientist":2,"freethinker":2,"agnostic":2,"new-atheist":1,"classical-atheist":1,"deist":1},"8D":{"secular-humanist":3,"apatheist":2,"materialist":1,"spiritual-seeker":1},"8E":{"ex-believer":3,"antitheist":2,"new-atheist":1},"8F":{"deist":2,"spiritual-seeker":3,"freethinker":1,"agnostic":1},"9A":{"new-atheist":2,"freethinker":2,"agnostic":1},"9B":{"apatheist":3,"secular-humanist":1,"materialist":1},"9C":{"true-muslim":4,"muslim-doubts":1,"deist":1},"9D":{"classical-atheist":3,"materialist":2,"antitheist":1},"9E":{"scientist":3,"agnostic":2,"deist":1},"9F":{"spiritual-seeker":4,"ex-believer":1,"muslim-doubts":1},"10A":{"ex-believer":2,"muslim-doubts":2,"antitheist":1,"spiritual-seeker":1},"10B":{"agnostic":3,"scientist":2,"freethinker":1,"classical-atheist":1},"10C":{"deist":3,"apatheist":2,"materialist":1,"spiritual-seeker":1},"10D":{"muslim-doubts":3,"ex-believer":2,"new-atheist":1},"10E":{"scientist":3,"materialist":2,"new-atheist":1},"10F":{"true-muslim":3,"secular-humanist":3,"antitheist":1,"freethinker":1}};
+var SCORING = {"1A":{"apatheist":3,"secular-humanist":2,"agnostic":1},"1B":{"classical-atheist":3,"scientist":3,"freethinker":2},"1C":{"ex-believer":3,"muslim-doubts":2,"antitheist":1},"1D":{"deist":3,"spiritual-seeker":2,"agnostic":2},"1E":{"antitheist":3,"new-atheist":2,"ex-believer":1},"1F":{"true-muslim":4,"muslim-doubts":2,"materialist":1},"1G":{"muslim-doubts":3,"ex-believer":2,"new-atheist":1},"2A":{"classical-atheist":3,"materialist":3,"new-atheist":2},"2B":{"agnostic":3,"scientist":2,"freethinker":2},"2C":{"deist":3,"spiritual-seeker":3,"freethinker":1},"2D":{"apatheist":3,"secular-humanist":2},"2E":{"antitheist":3,"ex-believer":2,"new-atheist":1},"2F":{"true-muslim":4,"muslim-doubts":2,"spiritual-seeker":1},"3A":{"classical-atheist":3,"scientist":2,"freethinker":1},"3B":{"scientist":3,"materialist":2,"new-atheist":1},"3C":{"muslim-doubts":2,"ex-believer":2,"agnostic":2},"3D":{"freethinker":3,"agnostic":2,"deist":1},"3E":{"spiritual-seeker":4,"deist":2,"apatheist":1},"3F":{"true-muslim":3,"secular-humanist":3,"antitheist":1},"4A":{"antitheist":3,"ex-believer":2,"new-atheist":2},"4B":{"new-atheist":3,"classical-atheist":2,"scientist":2,"freethinker":1},"4C":{"muslim-doubts":3,"ex-believer":2},"4D":{"apatheist":3,"secular-humanist":3,"agnostic":1},"4E":{"materialist":3,"scientist":2,"classical-atheist":1},"4F":{"deist":3,"spiritual-seeker":2,"true-muslim":1},"5A":{"materialist":3,"scientist":2,"classical-atheist":1},"5B":{"new-atheist":3,"freethinker":2,"antitheist":1},"5C":{"secular-humanist":4,"apatheist":2},"5D":{"muslim-doubts":3,"ex-believer":2,"agnostic":1},"5E":{"deist":3,"agnostic":2,"freethinker":1},"5F":{"true-muslim":4,"spiritual-seeker":4,"deist":1},"6A":{"true-muslim":5,"muslim-doubts":1},"6B":{"deist":3,"spiritual-seeker":3,"agnostic":1},"6C":{"ex-believer":3,"antitheist":2,"muslim-doubts":1},"6D":{"classical-atheist":2,"materialist":2,"secular-humanist":2,"new-atheist":1,"apatheist":1,"scientist":1,"freethinker":1},"6E":{"muslim-doubts":4,"true-muslim":1,"ex-believer":1},"6F":{"apatheist":3,"secular-humanist":2,"materialist":1},"6G":{"spiritual-seeker":3,"deist":2,"freethinker":2,"agnostic":1},"7A":{"muslim-doubts":3,"agnostic":2,"ex-believer":2},"7B":{"true-muslim":3,"deist":1,"spiritual-seeker":1},"7C":{"freethinker":3,"new-atheist":2,"antitheist":1},"7D":{"apatheist":3,"materialist":2,"secular-humanist":1},"7E":{"scientist":3,"classical-atheist":2,"freethinker":1},"7F":{"true-muslim":3,"muslim-doubts":1},"8A":{"muslim-doubts":3,"agnostic":2,"spiritual-seeker":1,"ex-believer":1},"8B":{"true-muslim":4,"muslim-doubts":1},"8C":{"scientist":2,"freethinker":2,"agnostic":2,"new-atheist":1,"classical-atheist":1,"deist":1},"8D":{"secular-humanist":3,"apatheist":2,"materialist":1,"spiritual-seeker":1},"8E":{"ex-believer":3,"antitheist":2,"new-atheist":1},"8F":{"deist":2,"spiritual-seeker":3,"freethinker":1,"agnostic":1},"8G":{"freethinker":2,"spiritual-seeker":2,"agnostic":2,"deist":1},"9A":{"new-atheist":2,"freethinker":2,"agnostic":1},"9B":{"apatheist":3,"secular-humanist":1,"materialist":1},"9C":{"true-muslim":4,"muslim-doubts":1,"deist":1},"9D":{"classical-atheist":3,"materialist":2,"antitheist":1},"9E":{"scientist":3,"agnostic":2,"deist":1},"9F":{"spiritual-seeker":4,"ex-believer":1,"muslim-doubts":1},"10A":{"ex-believer":2,"muslim-doubts":2,"antitheist":1,"spiritual-seeker":1},"10B":{"agnostic":3,"scientist":2,"freethinker":1,"classical-atheist":1},"10C":{"deist":3,"apatheist":2,"materialist":1,"spiritual-seeker":1},"10D":{"muslim-doubts":3,"ex-believer":2,"new-atheist":1},"10E":{"scientist":3,"materialist":2,"new-atheist":1},"10F":{"true-muslim":3,"secular-humanist":3,"antitheist":1,"freethinker":1},"10G":{"muslim-doubts":2,"ex-believer":2,"new-atheist":1,"antitheist":1,"agnostic":1}};
 
 var QUESTION_WEIGHTS = {1:1.55,2:1.45,3:0.9,4:1.45,5:1.0,6:1.9,7:0.8,8:1.45,9:0.8,10:1.35};
 var CORE_QUESTIONS = new Set([1,2,4,6,8,10]);
 var MAX_SELECTIONS = 3;
 
 var PERSONAS = {"new-atheist":{"name":"The New Atheist","file":"/journey/new-atheist/","desc":"You engage religion directly and critically. The issue is not whether it matters, but whether its claims survive scrutiny."},"agnostic":{"name":"The Agnostic","file":"/journey/agnostic/","desc":"You keep the question open. You want a case strong enough to justify commitment, not pressure to decide before the evidence is there."},"secular-humanist":{"name":"The Secular Humanist","file":"/journey/secular-humanist/","desc":"You have built a moral outlook around human dignity and the common good without relying on religion to hold it together."},"antitheist":{"name":"The Antitheist","file":"/journey/antitheist/","desc":"You see religion not merely as mistaken but as socially damaging, and that judgment shapes how you hear its claims."},"materialist":{"name":"The Materialist","file":"/journey/materialist/","desc":"You are inclined to think reality is ultimately physical, and that mind, value, and meaning arise from that physical base."},"muslim-doubts":{"name":"The Questioning Muslim","file":"/journey/muslim-doubts/","desc":"You still stand close enough to Islam for the questions to matter, but specific issues have become hard to ignore."},"apatheist":{"name":"The Apatheist","file":"/journey/apatheist/","desc":"The God question no longer feels urgent. It has not necessarily been answered; it has mostly slipped to the edges of life."},"deist":{"name":"The Deist","file":"/journey/deist/","desc":"You see good reason to think reality has a source, but remain unconvinced that any revealed tradition has yet made a compelling case."},"scientist":{"name":"The Scientist","file":"/journey/scientist/","desc":"You trust disciplined inquiry, careful evidence, and claims that can bear scrutiny. This path takes that instinct seriously."},"classical-atheist":{"name":"The Classical Atheist","file":"/journey/classical-atheist/","desc":"Your objections are conceptual as much as evidential. The issue is not only whether God is unproved, but whether the idea itself makes sense."},"ex-believer":{"name":"The Ex-Believer","file":"/journey/ex-believer/","desc":"You once believed sincerely, but something important fractured that trust. This path begins from that break."},"spiritual-seeker":{"name":"The Spiritual Seeker","file":"/journey/spiritual-seeker/","desc":"You remain open to transcendence and have found fragments of insight in more than one place, but no single framework has persuaded you to stay."},"true-muslim":{"name":"The Committed Muslim","file":"/journey/true-muslim/","desc":"You already believe, but you want that belief to be thoughtful, articulate, and able to face serious questions without fear."},"freethinker":{"name":"The Freethinker","file":"/journey/freethinker/","desc":"You are wary of inherited answers and prefer to examine things yourself. This path asks where consistent reasoning leads."}};
+
+var READ_NEXT = {
+ "new-atheist":[["/articles/is-islam-false/","Is Islam False? The Arguments Weighed"],["/articles/quran-contradictions-method/","Islam Contradictions: Are There Errors and Problems in Islam?"]],
+ "agnostic":[["/articles/how-do-we-evaluate-competing-claims-to-revelation/","How Do We Evaluate Competing Claims to Revelation?"],["/articles/is-islam-false/","Is Islam False? The Arguments Weighed"]],
+ "secular-humanist":[["/articles/objective-morality/","Is Morality Just Opinion?"],["/articles/religion-cause-harm/","Hasn't Religion Caused Enough Harm?"]],
+ "antitheist":[["/articles/religion-cause-harm/","Hasn't Religion Caused Enough Harm?"],["/articles/is-islam-false/","Is Islam False? The Arguments Weighed"]],
+ "materialist":[["/articles/consciousness-hard-problem/","The One Thing Neuroscience Cannot Explain"],["/articles/science-limits/","What Science Cannot Tell You"]],
+ "muslim-doubts":[["/articles/doubt-permitted-in-islam/","Is Doubt Permitted in Islam?"],["https://murtadd.org/guides/is-islam-false/","Is Islam False? A Fair Guide for Doubters (murtadd.org)"]],
+ "apatheist":[["/articles/does-god-communicate-with-humanity/","Does God Communicate With Humanity?"]],
+ "deist":[["/articles/does-god-communicate-with-humanity/","Does God Communicate With Humanity?"],["/articles/islamic-dilemma-quran-and-bible/","The Islamic Dilemma: Does the Quran Confirm the Bible It Contradicts?"]],
+ "scientist":[["/articles/fine-tuning-universe/","The Universe Is Absurdly Specific"],["/articles/multiverse-objection/","Does the Multiverse Explain Away Fine-Tuning?"]],
+ "classical-atheist":[["/articles/problem-of-evil/","If God Is Good, Why Is There Suffering?"],["/articles/objective-morality/","Is Morality Just Opinion?"]],
+ "ex-believer":[["/articles/is-islam-false/","Is Islam False? The Arguments Weighed"],["https://murtadd.org/doubts/i-studied-islam-and-still-left/","I studied Islam, and I still left (murtadd.org)"]],
+ "spiritual-seeker":[["/articles/why-islam-not-christianity/","Islam or Christianity: Which Is True? The Evidence"],["/articles/islamic-dilemma-quran-and-bible/","The Islamic Dilemma: Does the Quran Confirm the Bible It Contradicts?"]],
+ "true-muslim":[["/articles/islamic-dilemma-quran-and-bible/","The Islamic Dilemma: Does the Quran Confirm the Bible It Contradicts?"],["/articles/quran-contradictions-method/","Islam Contradictions: Are There Errors and Problems in Islam?"]],
+ "freethinker":[["/articles/how-do-we-evaluate-competing-claims-to-revelation/","How Do We Evaluate Competing Claims to Revelation?"],["/articles/why-islam-not-christianity/","Islam or Christianity: Which Is True? The Evidence"]]
+};
 
 
 var answers = {};
@@ -485,7 +514,11 @@ function calcScores(){
   if(has(6,'A')&&(has(8,'B')||has(9,'C')))boost('true-muslim',5);
   if(has(6,'A')||has(6,'E'))boost('true-muslim',3);
   if(has(6,'E')&&(has(8,'A')||has(10,'D')))boost('muslim-doubts',5);
-  if(has(1,'C')&&has(6,'E'))boost('muslim-doubts',3);
+  if((has(1,'C')||has(1,'G'))&&has(6,'E'))boost('muslim-doubts',3);
+  if(has(6,'E')&&has(10,'G'))boost('muslim-doubts',2);
+
+  // Another faith, comparing with Islam
+  if(has(6,'G')&&(has(8,'G')||has(10,'G')))boost('spiritual-seeker',3);
 
   // Ex-believer
   if(has(6,'C')&&(has(4,'A')||has(4,'C')))boost('ex-believer',4);
@@ -532,6 +565,7 @@ function calcScores(){
   if(has(6,'A')||has(6,'E')){Object.keys(PERSONAS).forEach(function(p){if(p!=='true-muslim'&&p!=='muslim-doubts'&&p!=='ex-believer')dampen(p,0.25);});}
   if(has(6,'D')||has(6,'F')){dampen('true-muslim',0.15);dampen('muslim-doubts',0.2);}
   if(has(6,'C')){dampen('true-muslim',0.1);}
+  if(has(6,'G')&&!has(6,'A')&&!has(6,'E')){dampen('true-muslim',0.3);dampen('muslim-doubts',0.3);}
 
   return scores;
 }
@@ -555,6 +589,8 @@ function showResult(){
   else{resNote.style.display='none';}
   var rr=document.getElementById('res-resonances');
   if(secondaries.length>0){rr.style.display='block';document.getElementById('rr-items').innerHTML=secondaries.map(function(p){return'<div class="rr-item">'+PERSONAS[p].name+'</div>';}).join('');}else{rr.style.display='none';}
+  var rn=document.getElementById('res-read'),links=READ_NEXT[primary]||[];
+  if(links.length){rn.style.display='block';document.getElementById('rn-items').innerHTML=links.map(function(l){var ext=/^https?:/.test(l[0]);return'<a class="rn-item" href="'+l[0]+'"'+(ext?' target="_blank" rel="noopener"':'')+'>'+l[1]+'</a>';}).join('');}else{rn.style.display='none';}
   document.getElementById('sb-rows').innerHTML=sorted.slice(0,6).map(function(e){var p=e[0],s=e[1],pct=maxScore>0?Math.round((s/maxScore)*100):0;return'<div class="sb-row"><div class="sb-name">'+PERSONAS[p].name+'</div><div class="sb-track"><div class="sb-fill'+(p===primary?' primary':'')+'" style="width:'+pct+'%"></div></div></div>';}).join('');
 }
 
