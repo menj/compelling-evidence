@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+<<<<<<< HEAD
 ## [2.6.50] - October 2026
 
 ### Seed data as JSON
@@ -17,6 +18,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+=======
+>>>>>>> origin/claude/happy-bardeen-qe5ky8
 ## [2.6.49] - October 2026
 
 ### Wording: the two claims of the Islamic dilemma

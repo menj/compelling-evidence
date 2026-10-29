@@ -15,6 +15,10 @@
     },
     {
       "file": "batch-003.json",
+<<<<<<< HEAD
+=======
+      "source": "inc/articles/backup/articles-data-3.php",
+>>>>>>> origin/claude/happy-bardeen-qe5ky8
       "checksum": "49dfcb4ae336355b84933d3ffabad40d751eae5447986cf9309721adf901d40b",
       "articles": 24
     },
@@ -35,6 +39,10 @@
     },
     {
       "file": "batch-007.json",
+<<<<<<< HEAD
+=======
+      "source": "Drafted directly for v2.6.22, critique coverage gaps (Islamic Dilemma, 9:5 and 9:29, terrorism data, Jews, 4:34, divine love, salvation, citizenship)",
+>>>>>>> origin/claude/happy-bardeen-qe5ky8
       "checksum": "c51b46d657a5a94f6459a670909cb2b3a33428c4a949492f6743c20830b0c4f8",
       "articles": 8
     },
