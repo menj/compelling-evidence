@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.6.50] - October 2026
+
+### Seed data as JSON
+
+- The pages the theme creates are data in `inc/data/seed-pages.json`, read with `json_decode()` by `ce_seed_pages_data()` and never executed. The file holds About, Editorial Policy, Privacy Policy, Contact and Ask a Question (`ce_create_secondary_pages()`, and the About refresh in `ce_update_about_page_v2()`, which used a second copy of the same text), FAQ and Glossary (`ce_create_v2_pages()`), the fourteen journeys and the quiz, progress, journeys and placeholder pages (`ce_get_journey_paths()`, `ce_create_journey_pages()`), and the question statuses (`ce_seed_question_statuses()`).
+- If the file cannot be read, nothing is created and the run-once flags stay unset, so the pages are made on a later load.
+- Checked against the old code with stubbed WordPress calls: every insert, meta write and option is the same, so nothing on a live site changes.
+- Removed the PHP article sources in `inc/articles/backup/` and `build-articles.php`. They no longer matched the batches: the text differed in every one of the 98 articles they shared, and 25 articles had no PHP copy at all. A build run would have written the old text over the current one. The batch files are now the only copy, edited as JSON. The `source` fields pointing at the old files are gone from `manifest.json` and `manifest-clean.json`; `doc/ssot.md` and `doc/readme.md` match.
+
+---
+
 ## [2.6.49] - October 2026
 
 ### Wording: the two claims of the Islamic dilemma

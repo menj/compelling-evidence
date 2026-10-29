@@ -88,13 +88,8 @@ function ce_seed_question_statuses() {
     if ( get_option( 'ce_qstatus_seeded' ) === '1' ) return;
     if ( ! taxonomy_exists( 'ce_qstatus' ) ) return;
 
-    $statuses = [
-        'new'       => 'New',
-        'review'    => 'In Review',
-        'answered'  => 'Answered',
-        'published' => 'Published',
-        'archived'  => 'Archived',
-    ];
+    $statuses = ce_seed_pages_data( 'question_statuses' );
+    if ( ! $statuses ) return; // Seed file unreadable: try again on the next load.
 
     $complete = true;
     foreach ( $statuses as $slug => $name ) {

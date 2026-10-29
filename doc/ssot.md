@@ -74,8 +74,6 @@ inc/articles/
 └── batch-005.json            # 24 articles (including order 120, added v2.3.1)
 ```
 
-**Note on batch-006:** After the next `build-articles.php` run, `articles-data-6.php` will produce a separate `batch-006.json` (1 article). At that point update `$expected_batches` in `class-ce-article-loader.php` from 5 → 6.
-
 **The WordPress database is a cache.** `ce-content-sync.php` overwrites `post_content` and `post_excerpt` in `wp_posts` on every version bump. Do not edit articles in the WordPress editor with the expectation that edits will persist across upgrades.
 
 **Security Features:**
@@ -133,21 +131,7 @@ topic   // string — must exactly match a registered ce_topic term name
 'content' // string — full HTML article body
 ```
 
-**Article Data Migration:**
-
-The build script `build-articles.php` converts legacy PHP files to JSON:
-
-```bash
-# Convert all PHP article files to secure JSON
-php build-articles.php
-```
-
-**Security note:** The script is CLI-only (`php_sapi_name() !== 'cli'` check) and uses regex parsing — it never executes the PHP files, only reads them as text.
-
-This generates:
-- 5 JSON batch files with embedded SHA256 checksums
-- `manifest.json` with registry of all batches
-- Content is preserved exactly, format changes only
+**No PHP sources (since 2.6.50):** The batch files are edited directly. The old PHP article files in `inc/articles/backup/` and the `build-articles.php` script that converted them were removed in 2.6.50: by then the PHP copies were out of step with the JSON in nearly every article, and a build run would have overwritten the current text with the old. After editing a batch, recompute its SHA-256 over the exact bytes on disk and update its `checksum` in `manifest.json`.
 
 **Security Comparison:**
 
@@ -189,7 +173,7 @@ These are the only valid values for the `'topic'` key in article data. Exact str
 | Islamic Beliefs & Practice | Islamic Practice & Ritual | v2.3.6 |
 | Rights, Freedoms & Hard Questions | Rights & Freedom | v2.3.6 |
 
-`ce-content-sync.php` automatically remaps deprecated topic names during sync. `build-articles.php` should not produce deprecated topic names in new batch files.
+`ce-content-sync.php` automatically remaps deprecated topic names during sync. New batch entries should not use deprecated topic names.
 
 ---
 
@@ -293,10 +277,9 @@ When incrementing the version in `style.css`:
 4. [ ] Add entry to `doc/changelog.md`
 5. [ ] Add entry to `doc/upgrading.md` (if migration needed)
 6. [ ] Update `readme.txt` version header and changelog section
-7. [ ] Regenerate `manifest.json` via `php build-articles.php` if batch files changed
+7. [ ] Update the batch checksums in `manifest.json` if batch files changed (SHA-256 of the bytes on disk)
 8. [ ] Test content sync fires on next admin page load
 9. [ ] Verify all 131 articles re-sync correctly
-10. [ ] Confirm `inc/articles/backup/articles-data-5.php` topics match `batch-005.json`
 
 ---
 
@@ -496,7 +479,7 @@ Rules: a blank line or a bare `/` is ignored, so the whole site can never be ret
 
 ## 19. Directly Drafted Batches and Citation Rules (since 2.6.22)
 
-Batches 006 and 007 are written directly as JSON; they have no PHP source in `inc/articles/backup/` and `build-articles.php` does not regenerate them. When adding a batch this way: write the file with 2-space indentation and unescaped Unicode, compute its SHA-256 over the exact bytes on disk, add the entry to `manifest.json`, and update `total_articles`.
+Every batch is written directly as JSON. When adding a batch: write the file with 2-space indentation and unescaped Unicode, compute its SHA-256 over the exact bytes on disk, add the entry to `manifest.json`, and update `total_articles`.
 
 Citation blocks in new articles follow two rules. Quran Arabic is copied verbatim from a verified Uthmani source, never typed. Hadith Arabic must match the source text of the cited collection, and the batch-007 build script refused to run on any mismatch. From batch-007 onward, `quran-ref` and `hadith-ref` lines carry no leading dash.
 
