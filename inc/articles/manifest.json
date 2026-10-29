@@ -5,55 +5,46 @@
   "batches": [
     {
       "file": "batch-001.json",
-      "source": "inc/articles/backup/articles-data.php",
       "checksum": "e85934f031aedd194a81ab3df13fca90273c1edfd04ced6d0e6828ffd580a418",
       "articles": 24
     },
     {
       "file": "batch-002.json",
-      "source": "inc/articles/backup/articles-data-2.php",
       "checksum": "926ba6df592b6f81941db13dcc85629194d3332a542caded36f540b5b0027a01",
       "articles": 24
     },
     {
       "file": "batch-003.json",
-      "source": "inc/articles/backup/articles-data-3.php",
       "checksum": "49dfcb4ae336355b84933d3ffabad40d751eae5447986cf9309721adf901d40b",
       "articles": 24
     },
     {
       "file": "batch-004.json",
-      "source": "inc/articles/backup/articles-data-4.php",
       "checksum": "01e6830882e2864377bd2003b7cc3b06241d6e3e34d3b2b77dea07f6aa291001",
       "articles": 24
     },
     {
       "file": "batch-005.json",
-      "source": "inc/articles/backup/articles-data-5.php + articles-data-6.php",
       "checksum": "a9d9f564b0dcfd1aaf655fb45c93ec051772d3d88a44518ac82d6117b3c60944",
       "articles": 24
     },
     {
       "file": "batch-006.json",
-      "source": "Drafted directly for v2.6.0 — Logic Over Faith critique coverage gaps",
       "checksum": "53092798f90196858d39bc5709cc47e80e2f189f4f81aeda25b5f1adc11c728b",
       "articles": 3
     },
     {
       "file": "batch-007.json",
-      "source": "Drafted directly for v2.6.22, critique coverage gaps (Islamic Dilemma, 9:5 and 9:29, terrorism data, Jews, 4:34, divine love, salvation, citizenship)",
       "checksum": "c51b46d657a5a94f6459a670909cb2b3a33428c4a949492f6743c20830b0c4f8",
       "articles": 8
     },
     {
       "file": "batch-008.json",
-      "source": "Drafted for v2.6.37 from the Answering Islam corpus analysis: Haman, moon god, first revelation, critics, Word of God, Muhammad in the Bible",
       "checksum": "a8d53759d33a7303ba6087a2994ff2e1aefa7266c49900481129122ef1e1b2bb",
       "articles": 6
     },
     {
       "file": "batch-009.json",
-      "source": "Drafted for v2.6.38 from the Answering Islam corpus review (claims C11, C09, C07 second half, C21, C18): original responses with verified Quran, hadith and Bible citations",
       "checksum": "1a8d1657f48b2f4801e3214c5b26c0ac23f215a572a63f0d676b74c12aa0070a",
       "articles": 6
     }

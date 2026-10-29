@@ -558,83 +558,48 @@ function ce_excerpt_chars( $post = null, int $limit = 120 ): string {
 
 
 function ce_get_journey_paths() {
-    return [
-        'new-atheist'       => 'The New Atheist',
-        'agnostic'          => 'The Agnostic',
-        'secular-humanist'  => 'The Secular Humanist',
-        'antitheist'        => 'The Antitheist',
-        'materialist'       => 'The Materialist',
-        'muslim-doubts'     => 'The Questioning Muslim',
-        'apatheist'         => 'The Apatheist',
-        'deist'             => 'The Deist',
-        'scientist'         => 'The Scientist',
-        'classical-atheist' => 'The Classical Atheist',
-        'ex-believer'       => 'The Ex-Believer',
-        'spiritual-seeker'  => 'The Spiritual Seeker',
-        'freethinker'       => 'The Freethinker',
-        'true-muslim'       => 'The Committed Muslim',
-    ];
+    return array_map( 'strval', ce_seed_pages_data( 'journeys' ) );
 }
 
 function ce_create_journey_pages() {
-    // Quiz page
-    if ( ! get_page_by_path('quiz') ) {
-        $quiz_id = wp_insert_post([
-            'post_title'     => 'Find Your Path',
-            'post_name'      => 'quiz',
+    // Quiz, My Progress and the journeys overview, from journey_pages in
+    // inc/data/seed-pages.json.
+    foreach ( ce_seed_pages_data( 'journey_pages' ) as $def ) {
+        if ( get_page_by_path( $def['slug'] ) ) {
+            continue;
+        }
+        $id = wp_insert_post([
+            'post_title'     => $def['title'],
+            'post_name'      => $def['slug'],
             'post_status'    => 'publish',
             'post_type'      => 'page',
-            'page_template'  => 'page-quiz.php',
+            'page_template'  => $def['template'],
             'comment_status' => 'closed',
         ]);
-        update_post_meta( $quiz_id, '_wp_page_template', 'page-quiz.php' );
-    }
-
-    // My Progress page
-    if ( ! get_page_by_path('my-progress') ) {
-        $prog_id = wp_insert_post([
-            'post_title'     => 'My Progress',
-            'post_name'      => 'my-progress',
-            'post_status'    => 'publish',
-            'post_type'      => 'page',
-            'page_template'  => 'page-progress.php',
-            'comment_status' => 'closed',
-        ]);
-        update_post_meta( $prog_id, '_wp_page_template', 'page-progress.php' );
-    }
-
-    // Journeys overview page
-    if ( ! get_page_by_path('journeys') ) {
-        $map_id = wp_insert_post([
-            'post_title'     => 'Your Journey',
-            'post_name'      => 'journeys',
-            'post_status'    => 'publish',
-            'post_type'      => 'page',
-            'page_template'  => 'page-journeys.php',
-            'comment_status' => 'closed',
-        ]);
-        update_post_meta( $map_id, '_wp_page_template', 'page-journeys.php' );
+        update_post_meta( $id, '_wp_page_template', $def['template'] );
     }
 
     // Individual journey pages
     $journey_paths = ce_get_journey_paths();
+    $parent_def    = ce_seed_pages_data( 'journey_parent' );
+    $template      = (string) ( $parent_def['template'] ?? '' );
 
     foreach ( $journey_paths as $slug => $title ) {
         $path = 'journey/' . $slug;
         if ( ! get_page_by_path( $path ) ) {
             // Create parent /journey/ page if it doesn't exist
-            $parent = get_page_by_path('journey');
+            $parent = get_page_by_path( $parent_def['slug'] );
             if ( ! $parent ) {
                 $parent_id = wp_insert_post([
-                    'post_title'     => 'Journey',
-                    'post_name'      => 'journey',
+                    'post_title'     => $parent_def['title'],
+                    'post_name'      => $parent_def['slug'],
                     'post_status'    => 'publish',
                     'post_type'      => 'page',
-                    'post_content'   => '<!-- Redirected to /journeys/ by theme -->',
+                    'post_content'   => $parent_def['content'],
                     'comment_status' => 'closed',
                 ]);
                 // Assign the journey template so the FSE block theme doesn't constrain width
-                update_post_meta( $parent_id, '_wp_page_template', 'page-journey.php' );
+                update_post_meta( $parent_id, '_wp_page_template', $parent_def['template'] );
             } else {
                 $parent_id = $parent->ID;
             }
@@ -645,10 +610,10 @@ function ce_create_journey_pages() {
                 'post_parent'    => $parent_id,
                 'post_status'    => 'publish',
                 'post_type'      => 'page',
-                'page_template'  => 'page-journey.php',
+                'page_template'  => $template,
                 'comment_status' => 'closed',
             ]);
-            update_post_meta( $page_id, '_wp_page_template', 'page-journey.php' );
+            update_post_meta( $page_id, '_wp_page_template', $template );
             update_post_meta( $page_id, '_ce_journey_key', $slug );
         }
     }
@@ -658,15 +623,17 @@ function ce_create_journey_pages() {
     // theme activation added another copy (rights-freedom-2, -3, …), each a thin
     // duplicate of the topic page. Fixed in 2.6.31; see also
     // ce_redirect_topic_placeholder_pages().
-    if ( ! get_page_by_path('rights-freedom') ) {
-        wp_insert_post([
-            'post_title'     => 'Rights & Freedom',
-            'post_name'      => 'rights-freedom',
-            'post_status'    => 'publish',
-            'post_type'      => 'page',
-            'post_content'   => '<!-- Redirected to /topic/hard-questions/ by theme -->',
-            'comment_status' => 'closed',
-        ]);
+    foreach ( ce_seed_pages_data( 'placeholder_pages' ) as $def ) {
+        if ( ! get_page_by_path( $def['slug'] ) ) {
+            wp_insert_post([
+                'post_title'     => $def['title'],
+                'post_name'      => $def['slug'],
+                'post_status'    => 'publish',
+                'post_type'      => 'page',
+                'post_content'   => $def['content'],
+                'comment_status' => 'closed',
+            ]);
+        }
     }
 }
 add_action( 'after_switch_theme', 'ce_create_journey_pages' );

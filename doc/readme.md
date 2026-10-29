@@ -1,6 +1,6 @@
 # CE Theme (Compelling Evidence) — WordPress Theme
 
-**Version:** 2.6.49 | **Parent theme:** Twenty Twenty-Five (tested with 1.5) | **Requires:** WordPress 6.7+ (tested to 7.1), PHP 8.0 to 8.4  
+**Version:** 2.6.50 | **Parent theme:** Twenty Twenty-Five (tested with 1.5) | **Requires:** WordPress 6.7+ (tested to 7.1), PHP 8.0 to 8.4  
 **Site:** https://compelling-evidence.com | **Repository:** https://github.com/menj/compelling-evidence | **Author:** [MENJ](https://menj.blog) | **Text domain:** `compelling-evidence`
 
 An Islamic apologetics child theme delivering personalised argumentation journeys across 14 persona paths, 131 articles across 11 investigative categories, a weighted intake quiz, a gamified progress system, a privacy-first analytics layer, and a full engagement suite. Built for a single deployment — not a general-purpose theme.
@@ -64,11 +64,8 @@ compelling-evidence/
 │   └── SSOT.md                       System design and naming conventions
 │
 ├── inc/                              PHP includes
-│   ├── articles-data.php             Articles 1-20 (Does God Exist? + Problem of Evil)
-│   ├── articles-data-2.php           Articles 21-41 (Ethics, Science, Quran, Sources)
-│   ├── articles-data-3.php           Articles 42-76 (History, Rights, Inner Journey)
-│   ├── articles-data-4.php           Articles 77-90 (Bigger Picture)
-│   ├── articles-data-next.php        Articles 91-119 (next-question articles + additions)
+│   ├── articles/                     Article batches (JSON) and manifest.json with their SHA-256 checksums
+│   ├── data/                         Seed and lookup data (JSON): seed-pages.json, network-links.json, murtadd-counterparts.json
 │   ├── ce-analytics.php              Privacy-first analytics: 12 event types, IP hashing, dashboard
 │   ├── ce-content-sync.php           Version-keyed content sync (data files → WP database)
 │   ├── ce-db.php                     Custom-table helpers (no dbDelta/upgrade.php dependency)
