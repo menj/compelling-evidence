@@ -18,7 +18,7 @@
     {
       "file": "batch-003.json",
       "source": "inc/articles/backup/articles-data-3.php",
-      "checksum": "644fa96d1173a55ebb8e673f9718b44c425f1373e2e203446670d3ea3b084797",
+      "checksum": "49dfcb4ae336355b84933d3ffabad40d751eae5447986cf9309721adf901d40b",
       "articles": 24
     },
     {
@@ -42,7 +42,7 @@
     {
       "file": "batch-007.json",
       "source": "Drafted directly for v2.6.22, critique coverage gaps (Islamic Dilemma, 9:5 and 9:29, terrorism data, Jews, 4:34, divine love, salvation, citizenship)",
-      "checksum": "c82b43fdddd665eb01c86a2261302c4734dc15e74e38e9f59b44f15e9d3d0b9f",
+      "checksum": "c51b46d657a5a94f6459a670909cb2b3a33428c4a949492f6743c20830b0c4f8",
       "articles": 8
     },
     {
