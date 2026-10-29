@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.6.49] - October 2026
+
+### Wording: the two claims of the Islamic dilemma
+
+- `islamic-dilemma-quran-and-bible` calls the two parts of the argument its two claims ("the two claims of the Islamic dilemma are total reliability and total corruption", "its first claim", "the two-part modern form"), the term the sister sites use.
+- `euthyphro-dilemma` names the two options of Euthyphro's question its first and second answers, in the body and in the backup source `inc/articles/backup/articles-data-3.php`.
+- `FARUQI.md` sets out the Faruqian core, al-tawḥīd as al-Fārūqī set it out in *Al Tawhid: Its Implications for Thought and Life*, which every site in the network rests on. `CLAUDE.md` points contributors to it first.
+- `manifest.json` checksums updated for batches 003 and 007. `Version` is 2.6.49 in `style.css`, `readme.txt` and `doc/readme.md`; the version change runs the content sync.
+
+---
+
 ## [2.6.48] - October 2026
 
 ### Coverage review of the articles (TF*IDF)
@@ -993,7 +1004,7 @@ This topic required substantial citation work: 4 of 5 articles had zero Quran or
 
 - *What Ethics & Morality In Irreligion?* (ethics-morality): 693 → 1,356 words (7 min). The shortest in the topic at 4 min display, this article needed the most expansion. Added a section on the genealogy problem (secular ethics inheriting concepts like inherent human dignity from monotheistic intellectual traditions whose theological grounding it has officially removed), a section on fitrah with Sūrat al-Rūm 30:30, and the consult-your-heart hadith from Musnad Aḥmad 17999. Added Sūrat al-Naḥl 16:90 grounding the theistic answer in the Quran's explicit statement.
 
-- *Is Goodness What God Commands, Or Does God Command What Is Good?* (euthyphro-dilemma): 829 → 1,254 words (7 min). Expanded the Ashʿarite/Muʿtazilite section with the names of the major Ashʿarite contributors (al-Ashʿarī, al-Bāqillānī, al-Juwaynī, al-Ghazālī). Added Ṣaḥīḥ Muslim 2577 (the hadith qudsī "I have forbidden injustice on Myself") which forecloses the dilemma's first horn at the level of the tradition's own most explicit text. Added Sūrat al-Nisāʾ 4:135 on standing firm for justice even against oneself, supporting the claim that Quranic moral epistemology relies on the believer's capacity to recognise justice independently.
+- *Is Goodness What God Commands, Or Does God Command What Is Good?* (euthyphro-dilemma): 829 → 1,254 words (7 min). Expanded the Ashʿarite/Muʿtazilite section with the names of the major Ashʿarite contributors (al-Ashʿarī, al-Bāqillānī, al-Juwaynī, al-Ghazālī). Added Ṣaḥīḥ Muslim 2577 (the hadith qudsī "I have forbidden injustice on Myself") which forecloses the dilemma's first answer at the level of the tradition's own most explicit text. Added Sūrat al-Nisāʾ 4:135 on standing firm for justice even against oneself, supporting the claim that Quranic moral epistemology relies on the believer's capacity to recognise justice independently.
 
 All 5 articles now display 7 min reading time, contain at least one Quran and one hadith citation, pass the banned-word audit, pass the contrastive-negation audit, and have em-dash counts of 1–3 per article (down from 11–19). Pre-existing HTML structure issues in three of the articles (dangling sentence fragments after closing `</p>` tags, unmatched paragraph tags) were repaired during the rewrite.
 

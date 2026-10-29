@@ -689,7 +689,7 @@ CE_ARTICLE_13,
             'content' => <<<'CE_ARTICLE_14'
 <p class="article-lead">The dilemma is ancient — it appears in Plato's dialogue Euthyphro, formulated as a question about piety — but its force has not diminished in two and a half millennia. Applied to theism: is something morally good because God commands it? Or does God command it because it is morally good? Both options appear to damage theism, and the argument is taken seriously in contemporary philosophy of religion.</p>
 
-<p>If the first horn: morality is arbitrary. God could command cruelty, and cruelty would thereby become good. The command-theory of morality gives God no moral character — just infinite power to define. If the second horn: goodness is a standard independent of God, to which God conforms. God is then constrained by something above Himself, and we could in principle know what is good without reference to God at all.</p>
+<p>If the first answer: morality is arbitrary. God could command cruelty, and cruelty would thereby become good. The command-theory of morality gives God no moral character — just infinite power to define. If the second answer: goodness is a standard independent of God, to which God conforms. God is then constrained by something above Himself, and we could in principle know what is good without reference to God at all.</p>
 
 <h2>The third option: divine nature theory</h2>
 
@@ -699,7 +699,7 @@ CE_ARTICLE_13,
 
 <h2>The Islamic articulation</h2>
 
-<p>Within Islamic theology, the relevant debate is between the Ash'arites and the Mu'tazilites. The Mu'tazilites held that good and evil are rationally knowable independent of divine command — which places them closer to the second horn of the dilemma. The Ash'arites held that divine command is constitutive of moral obligation — which risks the first horn. But the most sophisticated Ash'arite position is not simple divine command theory. It holds that God, being perfectly good, necessarily commands what accords with His nature. The arbitrariness worry does not arise because divine nature is not arbitrary.</p>
+<p>Within Islamic theology, the relevant debate is between the Ash'arites and the Mu'tazilites. The Mu'tazilites held that good and evil are rationally knowable independent of divine command — which places them closer to the second answer of the dilemma. The Ash'arites held that divine command is constitutive of moral obligation — which risks the first answer. But the most sophisticated Ash'arite position is not simple divine command theory. It holds that God, being perfectly good, necessarily commands what accords with His nature. The arbitrariness worry does not arise because divine nature is not arbitrary.</p>
 
 <div class="quran-citation">
 <div class="quran-arabic">إِنَّ ٱللَّهَ يَأْمُرُ بِٱلْعَدْلِ وَٱلْإِحْسَٰنِ ﴿٩٠﴾</div>
