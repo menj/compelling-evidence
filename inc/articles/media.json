@@ -7382,6 +7382,24 @@
    "variant": "photo",
    "crop": null,
    "verified": "2026-10-03"
+  },
+  "pexels-39326747": {
+   "source": "pexels",
+   "file": "39326747",
+   "url": "https://images.pexels.com/photos/39326747/pexels-photo-39326747.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+   "thumb": "https://images.pexels.com/photos/39326747/pexels-photo-39326747.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+   "page": "https://www.pexels.com/photo/vintage-book-with-magnifying-glass-39326747/",
+   "author": "Ilo Frey",
+   "author_url": "https://www.pexels.com/@couleur",
+   "license": "Pexels License",
+   "license_url": "https://www.pexels.com/license/",
+   "alt": "An old book with a magnifying glass over its text in warm light, an image for Is Islam False? The Arguments Weighed",
+   "width": 6240,
+   "height": 4160,
+   "variant": "photo",
+   "crop": null,
+   "verified": "2026-10-31",
+   "featured_for": "is-islam-false"
   }
  }
 }

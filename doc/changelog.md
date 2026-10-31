@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.6.51] - October 2026
+
+### A featured image for "Is Islam False?"
+
+- `is-islam-false` was the one article of 143 without a featured image. Its lead figure, `pexels-29342494`, is shared with an article in batch 002 and names no article in `featured_for`, and the automatic lead images skip any article that already holds a `[ce_figure]`, so nothing would ever fill it. The registry gains `pexels-39326747` (an old book under a magnifying glass, Ilo Frey, Pexels License, checked 31 October 2026) with `featured_for` set to `is-islam-false`. It is imported with the other registry images and becomes the featured image on the next admin load; the article text is unchanged.
+- `Version` is 2.6.51 in `style.css`, `readme.txt` and `doc/readme.md`.
+
+---
+
 ## [2.6.50] - October 2026
 
 ### Seed data as JSON
