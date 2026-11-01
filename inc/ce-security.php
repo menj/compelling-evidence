@@ -415,7 +415,7 @@ add_filter( 'authenticate', 'ce_sec_refuse_remote_password', 100 );
  * @param string $login Account name or email tried.
  */
 function ce_sec_failed_login( $login ) {
-	ce_sec_count( 'failed-login' );
+	ce_sec_tally( 'failed-login' );
 	$login  = sanitize_user( (string) $login, true );
 	$failed = get_option( CE_SEC_FAILED, array() );
 	$failed = is_array( $failed ) ? $failed : array();

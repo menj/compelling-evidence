@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.7.2] - November 2026
+
+- Failed logins are counted with `ce_sec_tally()` instead of rewriting `ce_security_counts` on every attempt, so password guessing (including XML-RPC logins refused while XML-RPC is on) costs one small row write.
+
+---
+
 ## [2.7.1] - November 2026
 
 ### xmlrpc.php blocked in .htaccess, cheaper XML-RPC counting
