@@ -6,26 +6,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
-## [2.7.2] - November 2026
+## [2.8.0] - November 2026
+
+This release gathers the work drafted on a branch as 2.6.49 (slugs), 2.7.0, 2.7.1 and 2.7.2, merged after main released 2.6.49 and 2.6.50.
+
+### Drafted as 2.7.2
 
 - Failed logins are counted with `ce_sec_tally()` instead of rewriting `ce_security_counts` on every attempt, so password guessing (including XML-RPC logins refused while XML-RPC is on) costs one small row write.
 
----
+### Drafted as 2.7.1
 
-## [2.7.1] - November 2026
-
-### xmlrpc.php blocked in .htaccess, cheaper XML-RPC counting
+#### xmlrpc.php blocked in .htaccess, cheaper XML-RPC counting
 
 - One switch: `ce_sec_xmlrpc_off` ("Turn off XML-RPC") now controls the WordPress-level block and a server-level block. On Apache, `ce_sec_sync_htaccess()` writes a `Block xmlrpc.php` marker section into the site's `.htaccess` with `insert_with_markers()` (Apache 2.4 `Require all denied` and 2.2 `Deny from all`, each inside `IfModule`). The marker name matches the Abrahamic theme and the other sister themes, so switching between them never writes the block twice.
 - The section is checked at most once an hour on `admin_init` (transient `ce_sec_htaccess_checked`) and repaired if missing or changed; it is re-synced when the switch is saved and on `after_switch_theme`, and removed on `switch_theme` or when the switch is off. State is kept in `ce_security_htaccess` (`written`, `off`, `unavailable`) and shown on the Security tab, with a warning when the file cannot be written.
 - Refused XML-RPC requests (and forged Jetpack agents) are no longer counted by rewriting the thirty-day `ce_security_counts` array on every request. `ce_sec_tally()` does one atomic upsert on a small non-autoloaded row per event and day (`ce_security_tally_{key}_{Ymd}`); `ce_sec_counts()` folds past days into `ce_security_counts` once a day when the reports are shown. Abrahamic's `abr_sec_count()` still does the full read and rewrite per request; this is the lighter form.
-- `Version` is 2.7.1 in `style.css`, `readme.txt` and `doc/readme.md`.
+- `Version` is 2.8.0 in `style.css`, `readme.txt` and `doc/readme.md`.
 
----
+### Drafted as 2.7.0
 
-## [2.7.0] - October 2026
-
-### Security tab against remote-publishing spam
+#### Security tab against remote-publishing spam
 
 Ported from the Abrahamic theme (2.87.0), which was built from the access logs of the October 2026 attack on the sister site abrahamic-religions.com: password guessing through xmlrpc.php from 701 rotating addresses under forged "Jetpack by WordPress.com" user agents, a correct password found, then a casino post every 18 to 20 minutes through wp.newPost under the owner's own account.
 
@@ -38,13 +38,11 @@ Ported from the Abrahamic theme (2.87.0), which was built from the access logs o
 - Clean-up: a scan in batches of 100 lists suspected spam with its reasons; selected items move to the trash after a second check, never deleted for good. Trashed spam addresses answer 410 Gone. Empty spam categories are deleted only on request. Buttons revoke every application password and end every session. The existing retired-URL 410 under Performance is unchanged.
 - Reports: attacks seen per day, accounts being guessed, administrators with last login, sessions and application passwords, posts and articles per day with burst publishing, seeded content carrying gambling links, and a security log of the last 200 events.
 - Detector tuned for this site: weak terms alone ("bet", "betting", "odds", as in Pascal's wager in the Scientist journey) stay below the threshold unless a casino-game word joins them. `tests/security-detector-test.php` scores all 143 articles, their topics, `seo.json`, `media.json`, every journey, the seeded pages and the page templates (3,749 items, no false positive) and catches all 53 attack samples.
-- `Version` is 2.7.0 in `style.css`, `readme.txt` and `doc/readme.md`; the version change runs the content sync as usual.
+- `Version` is 2.8.0 in `style.css`, `readme.txt` and `doc/readme.md`; the version change runs the content sync as usual.
 
----
+### Drafted as 2.6.49
 
-## [2.6.49] - October 2026
-
-### Verse numbers out of article URLs
+#### Verse numbers out of article URLs
 
 - Three article slugs carried verse numbers. Each post is renamed in place by the content sync (same ID, edits and history):
   - `/articles/sword-verse-jizya-9-5-9-29/` is now `/articles/sword-verse-jizya/`
@@ -53,7 +51,29 @@ Ported from the Abrahamic theme (2.87.0), which was built from the access logs o
 - The old slugs are in `ce_get_slug_rename_map()`. WordPress stores `_wp_old_slug` on rename, and the new `ce_redirect_renamed_article_slugs()` sends a 301 from any old address in the map, so no old URL returns 404.
 - The internal links in batches 007 and 009, the crosslink keyword map, the archive grouping, `seo.json` and `media.json` use the new slugs. Titles and text are unchanged. `inc/data/network-links.json` is untouched.
 - Rights & Freedom duplicates: the seeding guard was fixed in 2.6.31, so no new copies are made. On existing sites, published `rights-freedom-N` pages that nobody edited move to draft once, from `admin_init`. `/rights-freedom/` and `/rights-freedom-N/` still 301 to `/topic/rights-freedom/`, now also when the page is a draft.
-- `manifest.json` checksums updated for batches 007 and 009. `Version` is 2.6.49 in `style.css`, `readme.txt` and `doc/readme.md`; the version change runs the content sync.
+- `manifest.json` checksums updated for batches 007 and 009. `Version` is 2.8.0 in `style.css`, `readme.txt` and `doc/readme.md`; the version change runs the content sync.
+
+---
+
+## [2.6.50] - October 2026
+
+### Seed data as JSON
+
+- The pages the theme creates are data in `inc/data/seed-pages.json`, read with `json_decode()` by `ce_seed_pages_data()` and never executed. The file holds About, Editorial Policy, Privacy Policy, Contact and Ask a Question (`ce_create_secondary_pages()`, and the About refresh in `ce_update_about_page_v2()`, which used a second copy of the same text), FAQ and Glossary (`ce_create_v2_pages()`), the fourteen journeys and the quiz, progress, journeys and placeholder pages (`ce_get_journey_paths()`, `ce_create_journey_pages()`), and the question statuses (`ce_seed_question_statuses()`).
+- If the file cannot be read, nothing is created and the run-once flags stay unset, so the pages are made on a later load.
+- Checked against the old code with stubbed WordPress calls: every insert, meta write and option is the same, so nothing on a live site changes.
+- Removed the PHP article sources in `inc/articles/backup/` and `build-articles.php`. They no longer matched the batches: the text differed in every one of the 98 articles they shared, and 25 articles had no PHP copy at all. A build run would have written the old text over the current one. The batch files are now the only copy, edited as JSON. The `source` fields pointing at the old files are gone from `manifest.json` and `manifest-clean.json`; `doc/ssot.md` and `doc/readme.md` match.
+
+---
+
+## [2.6.49] - October 2026
+
+### Wording: the two claims of the Islamic dilemma
+
+- `islamic-dilemma-quran-and-bible` calls the two parts of the argument its two claims ("the two claims of the Islamic dilemma are total reliability and total corruption", "its first claim", "the two-part modern form"), the term the sister sites use.
+- `euthyphro-dilemma` names the two options of Euthyphro's question its first and second answers, in the body and in the backup source `inc/articles/backup/articles-data-3.php`.
+- `FARUQI.md` sets out the Faruqian core, al-tawḥīd as al-Fārūqī set it out in *Al Tawhid: Its Implications for Thought and Life*, which every site in the network rests on. `CLAUDE.md` points contributors to it first.
+- `manifest.json` checksums updated for batches 003 and 007. `Version` is 2.6.49 in `style.css`, `readme.txt` and `doc/readme.md`; the version change runs the content sync.
 
 ---
 
@@ -1044,7 +1064,7 @@ This topic required substantial citation work: 4 of 5 articles had zero Quran or
 
 - *What Ethics & Morality In Irreligion?* (ethics-morality): 693 → 1,356 words (7 min). The shortest in the topic at 4 min display, this article needed the most expansion. Added a section on the genealogy problem (secular ethics inheriting concepts like inherent human dignity from monotheistic intellectual traditions whose theological grounding it has officially removed), a section on fitrah with Sūrat al-Rūm 30:30, and the consult-your-heart hadith from Musnad Aḥmad 17999. Added Sūrat al-Naḥl 16:90 grounding the theistic answer in the Quran's explicit statement.
 
-- *Is Goodness What God Commands, Or Does God Command What Is Good?* (euthyphro-dilemma): 829 → 1,254 words (7 min). Expanded the Ashʿarite/Muʿtazilite section with the names of the major Ashʿarite contributors (al-Ashʿarī, al-Bāqillānī, al-Juwaynī, al-Ghazālī). Added Ṣaḥīḥ Muslim 2577 (the hadith qudsī "I have forbidden injustice on Myself") which forecloses the dilemma's first horn at the level of the tradition's own most explicit text. Added Sūrat al-Nisāʾ 4:135 on standing firm for justice even against oneself, supporting the claim that Quranic moral epistemology relies on the believer's capacity to recognise justice independently.
+- *Is Goodness What God Commands, Or Does God Command What Is Good?* (euthyphro-dilemma): 829 → 1,254 words (7 min). Expanded the Ashʿarite/Muʿtazilite section with the names of the major Ashʿarite contributors (al-Ashʿarī, al-Bāqillānī, al-Juwaynī, al-Ghazālī). Added Ṣaḥīḥ Muslim 2577 (the hadith qudsī "I have forbidden injustice on Myself") which forecloses the dilemma's first answer at the level of the tradition's own most explicit text. Added Sūrat al-Nisāʾ 4:135 on standing firm for justice even against oneself, supporting the claim that Quranic moral epistemology relies on the believer's capacity to recognise justice independently.
 
 All 5 articles now display 7 min reading time, contain at least one Quran and one hadith citation, pass the banned-word audit, pass the contrastive-negation audit, and have em-dash counts of 1–3 per article (down from 11–19). Pre-existing HTML structure issues in three of the articles (dangling sentence fragments after closing `</p>` tags, unmatched paragraph tags) were repaired during the rewrite.
 
