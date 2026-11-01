@@ -38,11 +38,38 @@ $check = function ( $label, $title, $slug, $content ) use ( &$fail, &$n, &$noisy
 	}
 };
 
+/**
+ * Read a JSON file the test expects; a missing or invalid file fails the run.
+ *
+ * @param string $path Path.
+ * @return array
+ */
+$load = function ( $path ) {
+	if ( ! is_readable( $path ) ) {
+		echo 'MISSING FILE: ' . $path . "\n";
+		exit( 1 );
+	}
+	$data = json_decode( (string) file_get_contents( $path ), true );
+	if ( ! is_array( $data ) ) {
+		echo 'INVALID JSON: ' . $path . ' (' . json_last_error_msg() . ")\n";
+		exit( 1 );
+	}
+	return $data;
+};
+
 // Articles.
-$manifest = json_decode( file_get_contents( $root . '/inc/articles/manifest.json' ), true );
+$manifest = $load( $root . '/inc/articles/manifest.json' );
+if ( empty( $manifest['batches'] ) || ! is_array( $manifest['batches'] ) ) {
+	echo "INVALID MANIFEST: no batches\n";
+	exit( 1 );
+}
 $topics   = array();
 foreach ( $manifest['batches'] as $batch ) {
-	$data = json_decode( file_get_contents( $root . '/inc/articles/' . $batch['file'] ), true );
+	$data = $load( $root . '/inc/articles/' . $batch['file'] );
+	if ( empty( $data['articles'] ) || ! is_array( $data['articles'] ) ) {
+		echo 'INVALID BATCH: ' . $batch['file'] . "\n";
+		exit( 1 );
+	}
 	foreach ( $data['articles'] as $a ) {
 		$check( 'article ' . $a['slug'], $a['title'], $a['slug'], $a['content'] . ' ' . $a['excerpt'] );
 		$topics[ $a['topic'] ] = true;
@@ -55,7 +82,7 @@ foreach ( array_keys( $topics ) as $topic ) {
 // Every string in the SEO and media data.
 foreach ( array( 'seo.json', 'media.json' ) as $file ) {
 	$strings = array();
-	$data    = json_decode( file_get_contents( $root . '/inc/articles/' . $file ), true );
+	$data    = $load( $root . '/inc/articles/' . $file );
 	array_walk_recursive(
 		$data,
 		function ( $v, $k ) use ( &$strings ) {
@@ -130,6 +157,7 @@ $spam = array(
 	array( 'Bet Big Win Big with Bodog Sports Edge', '' ),
 	array( 'Exclusive Coolbet Bonus Code Unlocks Big Wins', '' ),
 	array( 'Скачать Пинап КЗ: Официальный сайт', '' ),
+	array( 'ОНЛАЙН КАЗИНО ВАВАДА', '' ),
 	array( 'Krok po kroku: Kompleksowy przewodnik po Pelican Casino', '' ),
 	array( 'Live-Roulette bei Mr Pacho', '' ),
 	array( 'Crash-Games als neuer Trend', '' ),

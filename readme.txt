@@ -6,7 +6,7 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.8.0
+Version: 2.8.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Template: twentytwentyfive
@@ -103,6 +103,12 @@ Appearance > CE Theme Options — 8 tabs:
                   spam scan and trash; reports and security log
 
 == Changelog ==
+
+= 2.8.1 - November 2026 =
+Security fixes: the spam gate exempts only posts with the theme's seed marker, holds WP-CLI publishing,
+leaves private posts private, and catches upper-case Cyrillic without mbstring. Failed logins older than
+a day drop out of the report, trashed spam answers 410 at /?p=ID, and the Trash button waits for the scan.
+See doc/changelog.md.
 
 = 2.7.1 - November 2026 =
 "Turn off XML-RPC" now also blocks xmlrpc.php in .htaccess on Apache (a "Block xmlrpc.php" section

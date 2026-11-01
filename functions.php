@@ -566,6 +566,7 @@ function ce_get_journey_paths() {
 }
 
 function ce_create_journey_pages() {
+    $ce_seed_scope = function_exists( 'ce_sec_seeding_scope' ) ? ce_sec_seeding_scope() : null; // Theme seeding run: exempt from the spam gate.
     // Quiz, My Progress and the journeys overview, from journey_pages in
     // inc/data/seed-pages.json.
     foreach ( ce_seed_pages_data( 'journey_pages' ) as $def ) {
@@ -1127,6 +1128,11 @@ function ce_redirect_topic_placeholder_pages() {
     } elseif ( is_404() ) {
         // Drafted duplicates no longer resolve as pages; match the request path.
         $slug = trim( (string) wp_parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ), '/' );
+        // Under a subdirectory install the path starts with the home path.
+        $home = trim( (string) wp_parse_url( home_url(), PHP_URL_PATH ), '/' );
+        if ( '' !== $home && ( $slug === $home || 0 === strpos( $slug, $home . '/' ) ) ) {
+            $slug = trim( substr( $slug, strlen( $home ) ), '/' );
+        }
     } else {
         return;
     }

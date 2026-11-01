@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.8.1] - November 2026
+
+### Fixed
+- Security: the spam gate exempts a post only when it carries the theme's `_ce_seeded` or `_ce_journey_key` marker, or is written by the theme's own seeding run. A title or slug no longer counts, so a deleted seeded slug grants nothing. Existing seeded posts get the marker once.
+- Security: WP-CLI counts as outside the editor for the remote hold; the theme's seeding functions stay exempt when run through WP-CLI.
+- Security: private posts are logged as flagged but no longer changed to Pending.
+- Security: gambling patterns use the `i` flag, so upper-case Cyrillic is caught without mbstring.
+- Security: the daily tally fold deletes only the value it read; the report keeps 30 days including today.
+- Security: failed logins older than 24 hours are ignored in the notice and report, and a row restarts its count when its first failure is a day old.
+- Security: .htaccess state reads "written" only when `insert_with_markers()` succeeded.
+- Security: trashed spam answers 410 at `/?p=ID` too.
+- Security tab: "Move selected to Trash" stays disabled while a scan or a trash run is going.
+- The detector self-test fails on a missing or invalid JSON file.
+- The rights-freedom-N redirect works under a subdirectory install.
+- `inc/articles/manifest.json` version reads 2.8.1. `Version` is 2.8.1 in `style.css`, `readme.txt` and `doc/readme.md`.
+
 ## [2.8.0] - November 2026
 
 This release gathers the work drafted on a branch as 2.6.49 (slugs), 2.7.0, 2.7.1 and 2.7.2, merged after main released 2.6.49 and 2.6.50.

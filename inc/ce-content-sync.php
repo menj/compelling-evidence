@@ -159,6 +159,7 @@ function ce_ensure_topics_exist() {
  *                        for direct-URL access with manage_options capability.
  */
 function ce_sync_article_content( bool $force_run = false ) {
+    $ce_seed_scope = function_exists( 'ce_sec_seeding_scope' ) ? ce_sec_seeding_scope() : null; // Theme seeding run: exempt from the spam gate.
     $theme_version = wp_get_theme()->get( 'Version' );
     $version_key   = 'ce_content_sync_' . str_replace( '.', '_', $theme_version );
 

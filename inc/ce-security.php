@@ -149,12 +149,18 @@ function ce_sec_sync_htaccess( $force = false ) {
 	}
 	$want    = ce_sec_on( 'ce_sec_xmlrpc_off' );
 	$current = function_exists( 'extract_from_markers' ) ? extract_from_markers( $file, 'Block xmlrpc.php' ) : array();
+	$ok      = true;
 	if ( $want && $current !== ce_sec_htaccess_lines() ) {
-		insert_with_markers( $file, 'Block xmlrpc.php', ce_sec_htaccess_lines() );
+		$ok = true === insert_with_markers( $file, 'Block xmlrpc.php', ce_sec_htaccess_lines() );
 	} elseif ( ! $want && $current ) {
 		insert_with_markers( $file, 'Block xmlrpc.php', array() );
 	}
-	update_option( 'ce_security_htaccess', $want ? 'written' : 'off', false );
+	if ( ! $want ) {
+		$state = 'off';
+	} else {
+		$state = $ok ? 'written' : 'unavailable';
+	}
+	update_option( 'ce_security_htaccess', $state, false );
 }
 add_action( 'admin_init', 'ce_sec_sync_htaccess' );
 add_action( 'after_switch_theme', function () { ce_sec_sync_htaccess( true ); } );
@@ -331,18 +337,25 @@ function ce_sec_counts() {
 			$live[ $m[1] ] = (int) $row->option_value;
 			continue;
 		}
-		$counts[ $day ][ $m[1] ] = ( isset( $counts[ $day ][ $m[1] ] ) ? (int) $counts[ $day ][ $m[1] ] : 0 ) + (int) $row->option_value;
-		$done[]                  = $row->option_name;
-	}
-	krsort( $counts );
-	$counts = array_slice( $counts, 0, 30, true );
-	if ( $done ) {
-		update_option( CE_SEC_COUNTS, $counts, false );
-		foreach ( $done as $name ) {
-			delete_option( $name );
+		// Delete only the value read: an increment that lands between the
+		// read and the delete leaves the row in place for the next fold.
+		$gone = $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name = %s AND option_value = %s", $row->option_name, $row->option_value ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		if ( $gone ) {
+			$counts[ $day ][ $m[1] ] = ( isset( $counts[ $day ][ $m[1] ] ) ? (int) $counts[ $day ][ $m[1] ] : 0 ) + (int) $row->option_value;
+			$done[]                  = $row->option_name;
 		}
 	}
 	$day = gmdate( 'Y-m-d' );
+	krsort( $counts );
+	// Thirty days including today.
+	$counts = array_slice( $counts, 0, isset( $counts[ $day ] ) ? 30 : 29, true );
+	if ( $done ) {
+		update_option( CE_SEC_COUNTS, $counts, false );
+		wp_cache_delete( 'alloptions', 'options' );
+		foreach ( $done as $name ) {
+			wp_cache_delete( $name, 'options' );
+		}
+	}
 	foreach ( $live as $key => $n ) {
 		$counts[ $day ][ $key ] = ( isset( $counts[ $day ][ $key ] ) ? (int) $counts[ $day ][ $key ] : 0 ) + $n;
 	}
@@ -366,13 +379,14 @@ function ce_sec_fake_jetpack() {
 }
 
 /**
- * Whether this request is a remote, non-browser call: XML-RPC, or REST with
- * an application password or other header login.
+ * Whether this request is a remote, non-browser call: XML-RPC, WP-CLI, or
+ * REST with an application password or other header login. The theme's own
+ * seeding runs are exempt from the gate before this is asked.
  *
  * @return bool
  */
 function ce_sec_is_remote() {
-	if ( defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST ) {
+	if ( ( defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST ) || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
 		return true;
 	}
 	if ( defined( 'REST_REQUEST' ) && REST_REQUEST && is_user_logged_in() ) {
@@ -432,6 +446,10 @@ function ce_sec_failed_login( $login ) {
 		return;
 	}
 	$row = isset( $failed[ $login ] ) ? $failed[ $login ] : array( 'n' => 0, 'first' => $now, 'last' => $now, 'ips' => array() );
+	if ( $now - (int) $row['first'] > DAY_IN_SECONDS ) {
+		// The window has moved on: count only failures in the last day.
+		$row = array( 'n' => 0, 'first' => $now, 'last' => $now, 'ips' => array() );
+	}
 	$row['n']++;
 	$row['last'] = $now;
 	$ip          = ce_sec_ip();
@@ -444,6 +462,23 @@ function ce_sec_failed_login( $login ) {
 add_action( 'wp_login_failed', 'ce_sec_failed_login' );
 
 /**
+ * Failed-login rows whose last failure is within the last 24 hours.
+ *
+ * @return array login => row
+ */
+function ce_sec_failed_rows() {
+	$failed = get_option( CE_SEC_FAILED, array() );
+	$out    = array();
+	$now    = time();
+	foreach ( is_array( $failed ) ? $failed : array() as $name => $row ) {
+		if ( is_array( $row ) && isset( $row['last'] ) && $now - (int) $row['last'] <= DAY_IN_SECONDS ) {
+			$out[ $name ] = $row;
+		}
+	}
+	return $out;
+}
+
+/**
  * Admin notice when an existing account is being guessed at: ten or more
  * failures in a day, or a correct password refused on the remote route.
  */
@@ -451,9 +486,9 @@ function ce_sec_attack_notice() {
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
-	$failed = get_option( CE_SEC_FAILED, array() );
+	$failed = ce_sec_failed_rows();
 	$hit    = array();
-	foreach ( (array) $failed as $name => $row ) {
+	foreach ( $failed as $name => $row ) {
 		if ( (int) $row['n'] >= 10 && ( username_exists( $name ) || email_exists( $name ) ) ) {
 			$hit[] = sprintf( '%s (%d, %d)', $name, (int) $row['n'], count( (array) $row['ips'] ) );
 		}
@@ -614,39 +649,115 @@ function ce_sec_seed_index() {
 }
 
 /**
- * Whether a post is content this theme seeds: an article whose slug is in the
- * article batches, a page the theme creates (journey pages also carry
- * _ce_journey_key), or one of the rights-freedom-N copies of earlier versions.
- * Slugs are unique per type, so spam cannot borrow a seeded slug: WordPress
- * gives a new post with a taken slug a -2 suffix.
+ * Mark the theme's own seeding run. Hold the returned object for the length
+ * of the run; the flag drops when it goes out of scope. Posts written while
+ * the flag is up get the _ce_seeded marker.
+ *
+ * @return object
+ */
+function ce_sec_seeding_scope() {
+	return new class() {
+		/**
+		 * Flag before this scope.
+		 *
+		 * @var bool
+		 */
+		private $prev;
+
+		/** Raise the flag. */
+		public function __construct() {
+			$this->prev                  = ! empty( $GLOBALS['ce_sec_seeding'] );
+			$GLOBALS['ce_sec_seeding'] = true;
+		}
+
+		/** Restore the flag. */
+		public function __destruct() {
+			$GLOBALS['ce_sec_seeding'] = $this->prev;
+		}
+	};
+}
+
+/**
+ * Whether this request is inside the theme's own seeding run.
+ *
+ * @return bool
+ */
+function ce_sec_seeding() {
+	return ! empty( $GLOBALS['ce_sec_seeding'] );
+}
+
+/**
+ * Whether a post is content this theme seeds. Only the theme's own markers
+ * count: the _ce_seeded meta (written by the seeding run), _ce_journey_key on
+ * journey pages, or a new post written by the seeding run itself. A title or
+ * slug alone never counts, so spam that takes the slug of a deleted seeded
+ * post, or arrives remotely with a seeded title, is not exempt.
  *
  * @param int    $post_id Post ID, 0 for a new post.
- * @param string $title   Title.
- * @param string $slug    Slug.
- * @param string $type    Post type.
+ * @param string $title   Title (unused; kept for callers).
+ * @param string $slug    Slug (unused; kept for callers).
+ * @param string $type    Post type (unused; kept for callers).
  * @return bool
  */
 function ce_sec_is_seeded( $post_id, $title = '', $slug = '', $type = '' ) {
-	if ( $post_id && '' !== (string) get_post_meta( $post_id, '_ce_journey_key', true ) ) {
-		return true;
+	unset( $title, $slug, $type );
+	if ( $post_id ) {
+		return '' !== (string) get_post_meta( $post_id, '_ce_seeded', true ) || '' !== (string) get_post_meta( $post_id, '_ce_journey_key', true );
 	}
-	if ( '' === $type && $post_id ) {
-		$type = (string) get_post_type( $post_id );
-	}
-	$slug  = strtolower( rawurldecode( (string) $slug ) );
-	$index = ce_sec_seed_index();
-	if ( in_array( $type, array( 'ce_article', 'post' ), true ) ) {
-		if ( isset( $index['slugs']['article'][ $slug ] ) ) {
-			return true;
-		}
-		// A new article from the sync before WordPress has set its slug.
-		return '' === $slug && '' !== $title && isset( $index['titles'][ $title ] );
-	}
-	if ( 'page' === $type ) {
-		return isset( $index['slugs']['page'][ $slug ] ) || (bool) preg_match( '/^rights-freedom-\d+$/', $slug );
-	}
-	return false;
+	return ce_sec_seeding();
 }
+
+/**
+ * Give the seed marker to a post the seeding run wrote.
+ *
+ * @param int $post_id Post ID.
+ */
+function ce_sec_mark_seed( $post_id ) {
+	if ( ce_sec_seeding() && ! wp_is_post_revision( $post_id ) ) {
+		update_post_meta( $post_id, '_ce_seeded', 1 );
+	}
+}
+add_action( 'wp_insert_post', 'ce_sec_mark_seed', 0 );
+
+/**
+ * Once per theme version, give the marker to existing posts that the theme
+ * seeded before markers existed: a post whose slug is in the seed index, that
+ * was not held by the gate and does not read as spam.
+ */
+function ce_sec_backfill_seed_marks() {
+	$index = ce_sec_seed_index();
+	if ( get_option( 'ce_sec_seed_marked' ) === $index['version'] ) {
+		return;
+	}
+	$map = array(
+		'ce_article' => array_keys( $index['slugs']['article'] ),
+		'page'       => array_keys( $index['slugs']['page'] ),
+	);
+	foreach ( $map as $type => $slugs ) {
+		foreach ( array_chunk( $slugs, 200 ) as $chunk ) {
+			$posts = get_posts(
+				array(
+					'post_type'      => $type,
+					'post_status'    => array( 'publish', 'pending', 'draft', 'future', 'private' ),
+					'post_name__in'  => $chunk,
+					'posts_per_page' => -1,
+					'no_found_rows'  => true,
+				)
+			);
+			foreach ( $posts as $post ) {
+				if ( get_post_meta( $post->ID, '_ce_spam_held', true ) ) {
+					continue;
+				}
+				$verdict = ce_spam_score( $post->post_title, $post->post_name, $post->post_content );
+				if ( ! $verdict['spam'] ) {
+					update_post_meta( $post->ID, '_ce_seeded', 1 );
+				}
+			}
+		}
+	}
+	update_option( 'ce_sec_seed_marked', $index['version'], false );
+}
+add_action( 'admin_init', 'ce_sec_backfill_seed_marks', 20 );
 
 /**
  * Post types the gate and the scan look at: posts, pages, the theme's own
@@ -674,7 +785,7 @@ function ce_sec_gate( $data, $postarr ) {
 	if ( ! ce_sec_on( 'ce_sec_spam_gate' ) || ! in_array( $data['post_type'], ce_sec_types(), true ) ) {
 		return $data;
 	}
-	$public = in_array( $data['post_status'], array( 'publish', 'future', 'private' ), true );
+	$public = in_array( $data['post_status'], array( 'publish', 'future' ), true );
 	$id     = isset( $postarr['ID'] ) ? (int) $postarr['ID'] : 0;
 	$title  = wp_unslash( $data['post_title'] );
 	$slug   = $data['post_name'];
@@ -688,7 +799,9 @@ function ce_sec_gate( $data, $postarr ) {
 	$verdict = ce_spam_score( $title, $slug, wp_unslash( $data['post_content'] ) );
 	if ( ! $verdict['spam'] && $public && ce_sec_is_remote() ) {
 		// The spam arrived through wp.newPost: anything published from
-		// outside the editor waits for review, whatever it says.
+		// outside the editor (XML-RPC, REST without a cookie session, WP-CLI)
+		// waits for review, whatever it says. The theme's seeding run is
+		// exempt above.
 		$verdict = array( 'spam' => true, 'reasons' => array( __( 'published from outside the editor', 'compelling-evidence' ) . ' (' . ce_sec_request_type() . ')' ) );
 	}
 	if ( ! $verdict['spam'] ) {
@@ -698,7 +811,7 @@ function ce_sec_gate( $data, $postarr ) {
 		$data['post_status'] = 'pending';
 	}
 	$GLOBALS['ce_sec_held'] = array(
-		'event'   => $public ? 'held' : 'flagged-draft',
+		'event'   => $public ? 'held' : ( 'private' === $data['post_status'] ? 'flagged-private' : 'flagged-draft' ),
 		'title'   => $title,
 		'reasons' => $verdict['reasons'],
 	);
@@ -779,6 +892,13 @@ function ce_sec_send_gone() {
 	}
 	$uri  = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
 	$path = ce_sec_path( $uri );
+	$pid  = isset( $_GET['p'] ) ? absint( $_GET['p'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	if ( $pid && in_array( $pid, array_map( 'intval', $gone ), true ) ) {
+		status_header( 410 );
+		nocache_headers();
+		header( 'X-Robots-Tag: noindex', true );
+		return;
+	}
 	$last = basename( $path );
 	if ( isset( $gone[ $path ] ) || ( '' !== $last && isset( $gone[ $last ] ) && false === strpos( $path, '/' ) ) ) {
 		status_header( 410 );
@@ -1358,8 +1478,7 @@ function ce_sec_render_tools() {
 		<h4 class="ce-sec-sub"><?php esc_html_e( 'Accounts being guessed, last 24 hours', 'compelling-evidence' ); ?></h4>
 		<p class="ce-field-desc"><?php esc_html_e( 'Attackers change address on every try, so failures are counted by account name. An account of yours in this list should get a new, long password, and ideally a new name that is not the site name.', 'compelling-evidence' ); ?></p>
 		<?php
-		$failed = get_option( CE_SEC_FAILED, array() );
-		$failed = is_array( $failed ) ? $failed : array();
+		$failed = ce_sec_failed_rows();
 		uasort(
 			$failed,
 			function ( $x, $y ) {

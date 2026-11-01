@@ -59,7 +59,13 @@
 		return tbody ? Array.prototype.slice.call( tbody.querySelectorAll( 'input[type="checkbox"]' ) ) : [];
 	}
 
+	var busy = false;
+
 	function refresh() {
+		if ( busy ) {
+			trashBtn.disabled = true;
+			return;
+		}
 		var picked = boxes().filter( function ( b ) {
 			return b.checked;
 		} );
@@ -127,6 +133,7 @@
 			table.hidden = true;
 			scanBtn.disabled = true;
 			trashBtn.disabled = true;
+			busy = true;
 
 			function step( offset ) {
 				post( 'ce_sec_scan', { offset: offset } )
@@ -139,6 +146,7 @@
 						if ( data.done ) {
 							status.textContent = found ? format( i18n.done, data.next, found ) : i18n.none;
 							scanBtn.disabled = false;
+							busy = false;
 							refresh();
 							return;
 						}
@@ -148,6 +156,8 @@
 					.catch( function ( err ) {
 						status.textContent = err.message;
 						scanBtn.disabled = false;
+						busy = false;
+						refresh();
 					} );
 			}
 			step( 0 );
@@ -183,12 +193,14 @@
 			var skipped = 0;
 			trashBtn.disabled = true;
 			scanBtn.disabled = true;
+			busy = true;
 
 			function step() {
 				var chunk = ids.splice( 0, 100 );
 				if ( ! chunk.length ) {
 					status.textContent = format( i18n.trashed, moved, skipped );
 					scanBtn.disabled = false;
+					busy = false;
 					refresh();
 					return;
 				}
@@ -208,6 +220,7 @@
 					.catch( function ( err ) {
 						status.textContent = err.message;
 						scanBtn.disabled = false;
+						busy = false;
 						refresh();
 					} );
 			}
