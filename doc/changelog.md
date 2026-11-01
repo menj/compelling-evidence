@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.7.1] - November 2026
+
+### xmlrpc.php blocked in .htaccess, cheaper XML-RPC counting
+
+- One switch: `ce_sec_xmlrpc_off` ("Turn off XML-RPC") now controls the WordPress-level block and a server-level block. On Apache, `ce_sec_sync_htaccess()` writes a `Block xmlrpc.php` marker section into the site's `.htaccess` with `insert_with_markers()` (Apache 2.4 `Require all denied` and 2.2 `Deny from all`, each inside `IfModule`). The marker name matches the Abrahamic theme and the other sister themes, so switching between them never writes the block twice.
+- The section is checked at most once an hour on `admin_init` (transient `ce_sec_htaccess_checked`) and repaired if missing or changed; it is re-synced when the switch is saved and on `after_switch_theme`, and removed on `switch_theme` or when the switch is off. State is kept in `ce_security_htaccess` (`written`, `off`, `unavailable`) and shown on the Security tab, with a warning when the file cannot be written.
+- Refused XML-RPC requests (and forged Jetpack agents) are no longer counted by rewriting the thirty-day `ce_security_counts` array on every request. `ce_sec_tally()` does one atomic upsert on a small non-autoloaded row per event and day (`ce_security_tally_{key}_{Ymd}`); `ce_sec_counts()` folds past days into `ce_security_counts` once a day when the reports are shown. Abrahamic's `abr_sec_count()` still does the full read and rewrite per request; this is the lighter form.
+- `Version` is 2.7.1 in `style.css`, `readme.txt` and `doc/readme.md`.
+
+---
+
 ## [2.7.0] - October 2026
 
 ### Security tab against remote-publishing spam

@@ -6,6 +6,12 @@ Only paths explicitly identified in development are documented here.
 
 ---
 
+## Upgrading to v2.7.1 from v2.7.0
+
+**After deploying:** load any admin page once. On Apache, with "Turn off XML-RPC" on, the theme adds a `# BEGIN Block xmlrpc.php` section to `.htaccess`; if a sister theme already wrote it, it is left as it is. If the Security tab says the file could not be written, ask the host to deny xmlrpc.php at the server. Switching "Turn off XML-RPC" off, or switching to a theme outside the sister themes, removes the section. Step 7 of the 2.7.0 checklist is now done by the theme on Apache.
+
+---
+
 ## Upgrading to v2.7.0 from v2.6.49
 
 **After deploying:** load any admin page once (the version change runs the content sync). The new Security tab under Appearance > CE Theme Options is on by default: XML-RPC, application passwords and REST writes from outside the browser stop at once.

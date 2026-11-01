@@ -71,9 +71,11 @@ function ce_sec_xmlrpc() {
 	if ( defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST ) {
 		// Counted, not logged one by one: the October 2026 attack sent over
 		// 17,000 requests in twelve days from 701 addresses.
-		ce_sec_count( 'xmlrpc' );
+		// One cheap row write per request (ce_sec_tally), folded into the
+		// thirty-day counts once a day, never a rewrite of the whole array.
+		ce_sec_tally( 'xmlrpc' );
 		if ( ce_sec_fake_jetpack() ) {
-			ce_sec_count( 'fake-jetpack' );
+			ce_sec_tally( 'fake-jetpack' );
 		}
 		status_header( 403 );
 		header( 'Content-Type: text/plain; charset=utf-8' );
@@ -82,6 +84,95 @@ function ce_sec_xmlrpc() {
 	}
 }
 add_action( 'after_setup_theme', 'ce_sec_xmlrpc', 1 );
+
+/**
+ * Lines that deny xmlrpc.php at the web server, for Apache 2.4 and 2.2. The
+ * marker name is shared by all seven sister themes, so switching between
+ * them never writes the block twice.
+ *
+ * @return string[]
+ */
+function ce_sec_htaccess_lines() {
+	return array(
+		'<Files xmlrpc.php>',
+		'<IfModule mod_authz_core.c>',
+		'Require all denied',
+		'</IfModule>',
+		'<IfModule !mod_authz_core.c>',
+		'Order Deny,Allow',
+		'Deny from all',
+		'</IfModule>',
+		'</Files>',
+	);
+}
+
+/**
+ * Path of the site's .htaccess, or '' when the server is not Apache or the
+ * file cannot be written.
+ *
+ * @return string
+ */
+function ce_sec_htaccess_file() {
+	if ( ! function_exists( 'get_home_path' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+	}
+	if ( ! function_exists( 'insert_with_markers' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/misc.php';
+	}
+	global $is_apache;
+	if ( empty( $is_apache ) ) {
+		return '';
+	}
+	$file = get_home_path() . '.htaccess';
+	if ( file_exists( $file ) ? ! wp_is_writable( $file ) : ! wp_is_writable( dirname( $file ) ) ) {
+		return '';
+	}
+	return $file;
+}
+
+/**
+ * Keep the server-level block in step with the XML-RPC switch: written while
+ * the switch is on, removed when it is off. Runs in the admin, at most once an
+ * hour, so a lost or overwritten .htaccess is repaired without any action.
+ *
+ * @param bool $force Skip the hourly throttle.
+ */
+function ce_sec_sync_htaccess( $force = false ) {
+	if ( ! $force && get_transient( 'ce_sec_htaccess_checked' ) ) {
+		return;
+	}
+	set_transient( 'ce_sec_htaccess_checked', 1, HOUR_IN_SECONDS );
+	$file = ce_sec_htaccess_file();
+	if ( '' === $file ) {
+		update_option( 'ce_security_htaccess', 'unavailable', false );
+		return;
+	}
+	$want    = ce_sec_on( 'ce_sec_xmlrpc_off' );
+	$current = function_exists( 'extract_from_markers' ) ? extract_from_markers( $file, 'Block xmlrpc.php' ) : array();
+	if ( $want && $current !== ce_sec_htaccess_lines() ) {
+		insert_with_markers( $file, 'Block xmlrpc.php', ce_sec_htaccess_lines() );
+	} elseif ( ! $want && $current ) {
+		insert_with_markers( $file, 'Block xmlrpc.php', array() );
+	}
+	update_option( 'ce_security_htaccess', $want ? 'written' : 'off', false );
+}
+add_action( 'admin_init', 'ce_sec_sync_htaccess' );
+add_action( 'after_switch_theme', function () { ce_sec_sync_htaccess( true ); } );
+add_action( 'add_option_ce_sec_xmlrpc_off', function () { ce_sec_sync_htaccess( true ); } );
+add_action( 'update_option_ce_sec_xmlrpc_off', function () { ce_sec_sync_htaccess( true ); } );
+
+/**
+ * Take the block out when the theme is switched to one outside the sister
+ * themes. A sister theme writes the same block back on its first admin load.
+ */
+function ce_sec_remove_htaccess() {
+	$file = ce_sec_htaccess_file();
+	if ( '' !== $file ) {
+		insert_with_markers( $file, 'Block xmlrpc.php', array() );
+	}
+	delete_transient( 'ce_sec_htaccess_checked' );
+}
+add_action( 'switch_theme', 'ce_sec_remove_htaccess' );
 
 /**
  * Application passwords off.
@@ -199,6 +290,64 @@ function ce_sec_count( $key ) {
 	}
 	$counts[ $day ][ $key ] = ( isset( $counts[ $day ][ $key ] ) ? (int) $counts[ $day ][ $key ] : 0 ) + 1;
 	update_option( CE_SEC_COUNTS, $counts, false );
+}
+
+/**
+ * Cheap counter for events that can arrive thousands of times a day, such as
+ * refused XML-RPC requests. Each hit is one atomic upsert on a small,
+ * non-autoloaded row for today (ce_security_tally_{key}_{Ymd}); no option is
+ * read, unserialised or rewritten. ce_sec_fold_tallies() moves the rows into
+ * the thirty-day counts once a day.
+ *
+ * @param string $key Event key (lower case letters and dashes).
+ */
+function ce_sec_tally( $key ) {
+	global $wpdb;
+	$name = 'ce_security_tally_' . sanitize_key( $key ) . '_' . gmdate( 'Ymd' );
+	$wpdb->query( $wpdb->prepare( "INSERT INTO {$wpdb->options} (option_name, option_value, autoload) VALUES (%s, '1', 'off') ON DUPLICATE KEY UPDATE option_value = option_value + 1", $name ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+}
+
+/**
+ * Counts for display: CE_SEC_COUNTS plus the tally rows. Rows from past days
+ * are added to CE_SEC_COUNTS and deleted, so that happens once a day; today's
+ * row is added to the figures returned but stays in place.
+ *
+ * @return array date => array key => count, newest first.
+ */
+function ce_sec_counts() {
+	global $wpdb;
+	$counts = get_option( CE_SEC_COUNTS, array() );
+	$counts = is_array( $counts ) ? $counts : array();
+	$rows   = $wpdb->get_results( "SELECT option_name, option_value FROM {$wpdb->options} WHERE option_name LIKE 'ce\\_security\\_tally\\_%'" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+	$today  = gmdate( 'Ymd' );
+	$live   = array();
+	$done   = array();
+	foreach ( (array) $rows as $row ) {
+		if ( ! preg_match( '/^ce_security_tally_([a-z0-9_-]+)_(\d{8})$/', $row->option_name, $m ) ) {
+			continue;
+		}
+		$day = substr( $m[2], 0, 4 ) . '-' . substr( $m[2], 4, 2 ) . '-' . substr( $m[2], 6, 2 );
+		if ( $m[2] === $today ) {
+			$live[ $m[1] ] = (int) $row->option_value;
+			continue;
+		}
+		$counts[ $day ][ $m[1] ] = ( isset( $counts[ $day ][ $m[1] ] ) ? (int) $counts[ $day ][ $m[1] ] : 0 ) + (int) $row->option_value;
+		$done[]                  = $row->option_name;
+	}
+	krsort( $counts );
+	$counts = array_slice( $counts, 0, 30, true );
+	if ( $done ) {
+		update_option( CE_SEC_COUNTS, $counts, false );
+		foreach ( $done as $name ) {
+			delete_option( $name );
+		}
+	}
+	$day = gmdate( 'Y-m-d' );
+	foreach ( $live as $key => $n ) {
+		$counts[ $day ][ $key ] = ( isset( $counts[ $day ][ $key ] ) ? (int) $counts[ $day ][ $key ] : 0 ) + $n;
+	}
+	krsort( $counts );
+	return $counts;
 }
 
 /**
@@ -1084,6 +1233,12 @@ function ce_sec_render_tools() {
 		<?php if ( defined( 'CE_SECURITY_LOCK' ) && ! CE_SECURITY_LOCK ) : ?>
 			<div class="notice notice-warning inline"><p><?php esc_html_e( 'CE_SECURITY_LOCK is false in wp-config.php, so the three remote-publishing switches above are off whatever they show.', 'compelling-evidence' ); ?></p></div>
 		<?php endif; ?>
+		<?php $ce_sec_ht = get_option( 'ce_security_htaccess', '' ); ?>
+		<?php if ( 'written' === $ce_sec_ht ) : ?>
+			<p class="ce-field-desc"><?php esc_html_e( 'The web server also refuses xmlrpc.php: the theme keeps a "Block xmlrpc.php" section in .htaccess and repairs it if it goes missing.', 'compelling-evidence' ); ?></p>
+		<?php elseif ( 'unavailable' === $ce_sec_ht && ce_sec_on( 'ce_sec_xmlrpc_off' ) ) : ?>
+			<div class="notice notice-warning inline"><p><?php esc_html_e( 'The theme could not write .htaccess (the server is not Apache, or the file is read-only). WordPress still refuses xmlrpc.php; ask the host to deny it at the server as well.', 'compelling-evidence' ); ?></p></div>
+		<?php endif; ?>
 
 		<h3 class="ce-section-title"><?php esc_html_e( 'Clean up spam', 'compelling-evidence' ); ?></h3>
 		<p class="ce-field-desc"><?php esc_html_e( 'The scan reads every post, page, article and question that is published, pending, scheduled, private or a draft, 100 at a time, and lists those that read as gambling spam. Content the theme seeds (its articles and pages) is never listed. Nothing changes until you move posts to the trash, and the trash can restore them.', 'compelling-evidence' ); ?></p>
@@ -1177,9 +1332,7 @@ function ce_sec_render_tools() {
 
 		<h3 class="ce-section-title"><?php esc_html_e( 'Attacks seen', 'compelling-evidence' ); ?></h3>
 		<?php
-		$counts = get_option( CE_SEC_COUNTS, array() );
-		$counts = is_array( $counts ) ? $counts : array();
-		krsort( $counts );
+		$counts = ce_sec_counts();
 		$labels = array(
 			'xmlrpc'          => __( 'XML-RPC requests refused', 'compelling-evidence' ),
 			'fake-jetpack'    => __( 'of them posing as Jetpack', 'compelling-evidence' ),

@@ -6,7 +6,7 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.7.0
+Version: 2.7.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Template: twentytwentyfive
@@ -103,6 +103,12 @@ Appearance > CE Theme Options — 8 tabs:
                   spam scan and trash; reports and security log
 
 == Changelog ==
+
+= 2.7.1 - November 2026 =
+"Turn off XML-RPC" now also blocks xmlrpc.php in .htaccess on Apache (a "Block xmlrpc.php" section
+shared with the sister themes), repairs it hourly from the admin and removes it when switched off or
+when the theme is switched. Refused XML-RPC requests are counted with one small row write each. See
+doc/upgrading.md.
 
 = 2.7.0 - October 2026 =
 Security tab under CE Theme Options, ported from the Abrahamic theme after the October 2026 attack
@@ -357,6 +363,9 @@ Uthmani Quran font replaced with KFGQPC HAFS version (608 glyphs). CE Hadith add
 For full version history see CHANGELOG.md.
 
 == Upgrade Notice ==
+
+= 2.7.1 =
+Upload and load any admin page once. On Apache the theme writes the xmlrpc.php block into .htaccess.
 
 = 2.5.0 =
 Upload and activate. Content sync fires automatically on first admin page load.
