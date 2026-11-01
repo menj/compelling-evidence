@@ -33,6 +33,7 @@ function ce_seed_pages_data( $part ) {
 }
 
 function ce_create_secondary_pages() {
+    $ce_seed_scope = function_exists( 'ce_sec_seeding_scope' ) ? ce_sec_seeding_scope() : null; // Theme seeding run: exempt from the spam gate.
     $pages = ce_seed_pages_data( 'pages' );
 
     foreach ( $pages as $page ) {
@@ -71,6 +72,7 @@ add_action( 'admin_init', 'ce_maybe_create_secondary_pages' );
  * Uses its own flag so it runs once on upgrade.
  */
 function ce_create_v2_pages() {
+    $ce_seed_scope = function_exists( 'ce_sec_seeding_scope' ) ? ce_sec_seeding_scope() : null; // Theme seeding run: exempt from the spam gate.
     if ( get_option( 'ce_v2_pages_created' ) ) return;
 
     $pages = ce_seed_pages_data( 'pages_v2' );
@@ -112,6 +114,7 @@ add_action( 'admin_init', 'ce_create_v2_pages' );
  * upgrade has run.
  */
 function ce_update_about_page_v2() {
+    $ce_seed_scope = function_exists( 'ce_sec_seeding_scope' ) ? ce_sec_seeding_scope() : null; // Theme seeding run: exempt from the spam gate.
     if ( get_option( 'ce_about_v2_updated' ) ) return;
 
     $about = get_page_by_path( 'about-compelling-evidence' );

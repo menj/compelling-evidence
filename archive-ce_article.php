@@ -209,7 +209,7 @@ $active_term = $is_filtered ? get_queried_object() : null;
           ],
           'Difficult Passages & Doctrines' => [
               'mercy-harsh-passages',
-              'sword-verse-jizya-9-5-9-29',
+              'sword-verse-jizya',
               'meccan-medinan-abrogation',
               'scientific-miracles-quran',
               'quran-cosmology-flat-earth-seven-heavens',
@@ -258,7 +258,7 @@ $active_term = $is_filtered ? get_queried_object() : null;
           ],
           'Gender, Body & Sexuality' => [
               'women-in-islam',
-              'quran-4-34-wife-beating',
+              'quran-wife-beating',
               'islam-and-same-sex-attraction',
               'ritual-purity-wudu-menstruation',
           ],
@@ -327,7 +327,7 @@ $active_term = $is_filtered ? get_queried_object() : null;
               'does-the-quran-teach-hatred-of-jews',
               'is-allah-a-moon-god',
               'jesus-word-of-god-spirit-quran',
-              'crucifixion-quran-4-157',
+              'crucifixion-of-jesus-quran',
           ],
       ],
       'The Problem of Evil' => [

@@ -6,7 +6,7 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.6.50
+Version: 2.8.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Template: twentytwentyfive
@@ -99,8 +99,28 @@ Appearance > CE Theme Options — 8 tabs:
 7. Analytics     Toggle tracking, scroll depth logging, search query logging; data retention; auto-purge
 8. Performance   Toggle parallax, font preloading, inline script minification;
                   Retired URLs (410 Gone path prefixes)
+9. Security      XML-RPC, application password and REST locks; spam gate;
+                  spam scan and trash; reports and security log
 
 == Changelog ==
+
+= 2.8.1 - November 2026 =
+Security fixes: the spam gate exempts only posts with the theme's seed marker, holds WP-CLI publishing,
+leaves private posts private, and catches upper-case Cyrillic without mbstring. Failed logins older than
+a day drop out of the report, trashed spam answers 410 at /?p=ID, and the Trash button waits for the scan.
+See doc/changelog.md.
+
+= 2.7.1 - November 2026 =
+"Turn off XML-RPC" now also blocks xmlrpc.php in .htaccess on Apache (a "Block xmlrpc.php" section
+shared with the sister themes), repairs it hourly from the admin and removes it when switched off or
+when the theme is switched. Refused XML-RPC requests are counted with one small row write each. See
+doc/upgrading.md.
+
+= 2.7.0 - October 2026 =
+Security tab under CE Theme Options, ported from the Abrahamic theme after the October 2026 attack
+on abrahamic-religions.com: XML-RPC off, application passwords off, REST writes only from a
+browser session, gambling spam and remote publishing held as Pending, a spam scan that moves
+spam to the trash, 410 Gone for removed spam, reports and a security log. See doc/upgrading.md.
 
 = 2.6.43 — October 2026 =
 Content review fixes: author credits restored on the journey pages (C.S. Lewis, Alvin Plantinga,
@@ -349,6 +369,9 @@ Uthmani Quran font replaced with KFGQPC HAFS version (608 glyphs). CE Hadith add
 For full version history see CHANGELOG.md.
 
 == Upgrade Notice ==
+
+= 2.7.1 =
+Upload and load any admin page once. On Apache the theme writes the xmlrpc.php block into .htaccess.
 
 = 2.5.0 =
 Upload and activate. Content sync fires automatically on first admin page load.
