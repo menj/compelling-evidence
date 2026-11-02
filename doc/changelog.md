@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.8.4] - November 2026
+
+### Fixed
+- The rest of the content the 2.8.2 style pass had cut is back: about 330 more qualifiers and contrasts, most of them in the journeys ("genuinely wrong, and not merely widely disliked", "It seems tolerant, too", "This does not prove that materialism is false"). A second pairing of every old and new sentence finds no claim, qualifier or citation missing. What remains are synonym rewordings and a few negated halves that added nothing ("That is not small." before "That is the largest thing conceivable").
+- Some broken sentences from the first rewrite are fixed ("And because it can that can produce", "The figures are shared.").
+- `inc/articles/manifest.json` carries the new batch checksums and reads 2.8.4. `Version` is 2.8.4 in `style.css`, `readme.txt` and `doc/readme.md`.
+
 ## [2.8.3] - November 2026
 
 ### Fixed
