@@ -62,3 +62,7 @@
   .ce-nav .nav-path { display: none; }
   .ce-nav .nav-logo-text { font-size: 1.05rem; }
 }
+
+/* One chapter at a time: goTo() marks the current screen .active. */
+.screen { display: none; }
+.screen.active { display: block; }
