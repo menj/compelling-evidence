@@ -1,51 +1,51 @@
 {
-  "version": "2.8.1",
+  "version": "2.8.2",
   "generated": "2026-09-27T09:00:00+00:00",
   "total_articles": 143,
   "batches": [
     {
       "file": "batch-001.json",
-      "checksum": "e85934f031aedd194a81ab3df13fca90273c1edfd04ced6d0e6828ffd580a418",
+      "checksum": "7e6e871d584dc865f0a3f152d73b238804eb2639d08806c1b0e6d107514ac44c",
       "articles": 24
     },
     {
       "file": "batch-002.json",
-      "checksum": "926ba6df592b6f81941db13dcc85629194d3332a542caded36f540b5b0027a01",
+      "checksum": "3fba901bbc08df0cd010e7e6bf0f6b7d66f88933940c63e7637e1020f3d979ff",
       "articles": 24
     },
     {
       "file": "batch-003.json",
-      "checksum": "49dfcb4ae336355b84933d3ffabad40d751eae5447986cf9309721adf901d40b",
+      "checksum": "bb3b72b7f75fbc34347333cef82985e1f0f6f079afe889aa2791ec7461174f5d",
       "articles": 24
     },
     {
       "file": "batch-004.json",
-      "checksum": "01e6830882e2864377bd2003b7cc3b06241d6e3e34d3b2b77dea07f6aa291001",
+      "checksum": "1f50ae307d78ac1f1d82914b8813a028b724dbd7b576a63d81123bcc67f2cc99",
       "articles": 24
     },
     {
       "file": "batch-005.json",
-      "checksum": "a9d9f564b0dcfd1aaf655fb45c93ec051772d3d88a44518ac82d6117b3c60944",
+      "checksum": "6c3167f0aff711ada6a7a7d86b517e7e6fafd04d034fd39798d6e2ba6d28502d",
       "articles": 24
     },
     {
       "file": "batch-006.json",
-      "checksum": "53092798f90196858d39bc5709cc47e80e2f189f4f81aeda25b5f1adc11c728b",
+      "checksum": "8f62492d304a58cd0f346feedfccba0a226f002717ceccdf11c27c33ae35608d",
       "articles": 3
     },
     {
       "file": "batch-007.json",
-      "checksum": "5256e47cb43529d82bdb2a3cf324d4a6498a49ddda5bc8e2ee001fcf4837d70f",
+      "checksum": "cc5b5577fbf9a19e55b68d0d407105891bee28bb3d5922d74e019b5aea6911fa",
       "articles": 8
     },
     {
       "file": "batch-008.json",
-      "checksum": "a8d53759d33a7303ba6087a2994ff2e1aefa7266c49900481129122ef1e1b2bb",
+      "checksum": "d9e24e2d110a34701022ffd8c6f7f91ad1e4565bff3a7f08c23cc92d8ab2e55e",
       "articles": 6
     },
     {
       "file": "batch-009.json",
-      "checksum": "c4dafa5aaee93808f77397eeff7777282dc7488dad4770bf8bcdd63234145b49",
+      "checksum": "abf9eaa57baf49c4703ef6d4a2d282dcb4c1c66bb0ce5da1574262f31c9016c3",
       "articles": 6
     }
   ],

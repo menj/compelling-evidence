@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.8.2] - November 2026
+
+### Changed
+- All article text in `inc/articles/batch-*.json` and the journey pages in `journeys/` follow the owner's anti-AI writing style (v2). About 5,700 em dashes became commas, colons, semicolons, parentheses or full stops. About 1,250 contractions are spelled out, and question titles read "Is Religion Not Just A Tool Of Political Control?" and the like.
+- Around 300 banned words are replaced with plain ones, most of them in the stock photo captions ("showing" for "showcasing", "detailed" for "intricate"). Some 830 negated reframes ("X is not A. It is B.") now state the claim directly, and 60 runs of sentences that opened with the same words have varied openings.
+- Quotations, Quran and hadith translations, testimonies and the quoted sources keep their wording. Proper names and titles stay as published: the New Testament, David Foster Wallace, and Frank Jackson's "What Mary Didn't Know".
+- Citation lines under Quran and hadith blocks drop their leading dash. Journey share text and social titles use " | " before the site name.
+- `inc/articles/manifest.json` carries the new batch checksums and reads 2.8.2. `Version` is 2.8.2 in `style.css`, `readme.txt` and `doc/readme.md`, so live sites re-sync every article on the next admin page load.
+
 ## [2.8.1] - November 2026
 
 ### Fixed
