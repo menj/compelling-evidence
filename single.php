@@ -224,7 +224,7 @@ $reading_secs = $word_count * 0.3; // approx seconds for progress tracking
     'spiritual-seeker':'The Spiritual Seeker',
     'freethinker':'The Freethinker','true-muslim':'The Committed Muslim',
   };
-  var SCREENS = ['horizon','singularity','calibration','emergence','entropy','constant','signal','resonance','transmission','conclusion'];
+  var SCREENS = ['horizon','singularity','calibration','emergence','constant','entropy','signal','resonance','transmission','conclusion'];
   var SCREEN_LABELS = ['Horizon','Singularity','Calibration','Emergence','Entropy','Constant','Signal','Resonance','Transmission','Conclusion'];
 
   window.addEventListener('load', function() {

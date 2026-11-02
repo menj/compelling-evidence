@@ -8,6 +8,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [2.8.5] - November 2026
 
+- The progress figures on the progress page, the front page and the article templates use the same Constant-then-Entropy order, so chapter V no longer shows a higher percentage than chapter VI.
+- In the New Atheist journey, "Notice the echo of ." named nothing and now reads "Notice the echo."
+
 - Journey and quiz titles read `<page> | Compelling Evidence` again. 2.8.4 changed the source titles to `Compelling Evidence: X`, which the rewrite in `ce_standalone_html_seo()` no longer matched; it now accepts a dash, colon or pipe and puts the brand last after a pipe.
 - A stray `<p.` tag in the closing section of 12 journeys is removed, and the one in the Deist sidebar is now `<p>`.
 
