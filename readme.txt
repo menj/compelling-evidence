@@ -6,7 +6,7 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.8.6
+Version: 2.8.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Template: twentytwentyfive
@@ -104,6 +104,10 @@ Appearance > CE Theme Options — 8 tabs:
                   spam scan and trash; reports and security log
 
 == Changelog ==
+
+= 2.8.7 - November 2026 =
+* Each persona journey now shows one chapter at a time. The stylesheets never hid the inactive chapters, so every journey rendered all of them as one long page, and Next or a sidebar step only jumped back to the top. `journey-base.css`, which every journey loads, now hides every `.screen` except the one `goTo()` marks active.
+* The Freethinker journey's completion badge and share text said "The Agnostic" and now say "The Freethinker".
 
 = 2.8.6 - November 2026 =
 The 14 journeys and the quiz load their shared CSS and JS from theme files in assets/css and assets/js,

@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.8.7] - November 2026
+
+### Fixed
+- Each persona journey now shows one chapter at a time. The stylesheets never hid the inactive chapters, so every journey rendered all of them as one long page, and Next or a sidebar step only jumped back to the top. `journey-base.css`, which every journey loads, now hides every `.screen` except the one `goTo()` marks active.
+- The Freethinker journey's completion badge and share text said "The Agnostic" and now say "The Freethinker".
+
 ## [2.8.6] - November 2026
 
 ### Changed
