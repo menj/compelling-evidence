@@ -6,7 +6,7 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.8.5
+Version: 2.8.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Template: twentytwentyfive
@@ -72,7 +72,8 @@ excerpt, content). Bump the theme version in style.css — content sync publishe
 = Where are journey files served from? =
 
 /journeys/[slug]-journey.html. Served via page-journey.php which bypasses wp_head/wp_footer.
-No WordPress rendering fires inside a journey — the HTML files are self-contained applications.
+Each file holds the prose, its own few styles and a CE_JOURNEY data object. The shared code is in
+assets/css/journey.css and assets/js/journey.js, printed by inc/ce-journey-assets.php.
 
 = How do I change the hero Arabic verse? =
 
@@ -103,6 +104,11 @@ Appearance > CE Theme Options — 8 tabs:
                   spam scan and trash; reports and security log
 
 == Changelog ==
+
+= 2.8.6 - November 2026 =
+The 14 journeys and the quiz load their shared CSS and JS from theme files in assets/css and assets/js,
+with a file-time version, in place of the copies pasted into each page. Pages look and behave as before.
+The analytics snippet survives blocked storage. See doc/changelog.md.
 
 = 2.8.5 - November 2026 =
 * Journey and quiz titles read `<page> | Compelling Evidence` again. 2.8.4 changed the source titles to `Compelling Evidence: X`, which the rewrite in `ce_standalone_html_seo()` no longer matched; it now accepts a dash, colon or pipe and puts the brand last after a pipe.

@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.8.6] - November 2026
+
+### Changed
+- The CSS and JS that every journey carried inline now load from the theme. `assets/css/journey.css` holds the 92 rules the journeys shared and `assets/js/journey.js` holds navigation, progress and resume, the resonance widget, "Go deeper" and the completion badge. Each journey keeps its prose, the styles only it uses and a `window.CE_JOURNEY` object with its chapters, sidebar symbol and article links. A journey page is 15 to 31 KB smaller, and the browser caches the shared files between journeys.
+- The quiz loads `assets/css/quiz.css` and `assets/js/quiz.js`. Its questions, scoring table, personas and reading list stay in `journeys/quiz.html`.
+- `inc/ce-journey-assets.php` registers these files and `journey-base.css` with `wp_register_style()` and `wp_register_script()`, versioned by file time, and prints them in place of the `<!-- ce:... -->` markers. The pages never call `wp_head()`, so plain enqueuing would print nothing.
+- Links to other journeys in the resonance widget come from `home_url()`, printed as `window.ceHomeUrl`, since the shared script sits outside the URL rewrite in `page-journey.php`.
+- The New Atheist journey keeps all of its styles inline. It styles its nav, hero, sidebar and cards with other declarations for 22 of the shared selectors, and the shared file would change how it looks.
+- Where the copies had drifted, the shared script uses the version 11 or more journeys had. The Ex-Believer and Questioning Muslim pages had a shorter resonance script, and the Committed Muslim page had a resume banner without the blur and the `nowrap` on its button.
+- A Playwright run over all 15 pages at 375 px and 1280 px, before and after, found the same text, the same sidebar results, the same saved progress, no console errors, and the same computed style on every element.
+
+### Fixed
+- The analytics snippet on the journeys and the quiz reads and writes `sessionStorage` inside `try`/`catch`. Where storage is blocked, `ceTrack()` is defined and events are sent.
+- Six stray `</nav>` lines in the New Atheist journey are gone.
+- `Version` is 2.8.6 in `style.css`, `readme.txt` and `doc/readme.md`.
+
 ## [2.8.5] - November 2026
 
 - The progress figures on the progress page, the front page and the article templates use the same Constant-then-Entropy order, so chapter V no longer shows a higher percentage than chapter VI.

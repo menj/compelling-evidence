@@ -49,9 +49,8 @@ $html = str_replace( '"/articles/', '"' . home_url('/articles/'), $html );
 $html = str_replace( "'/articles/", "'" . home_url('/articles/'), $html );
 $html = str_replace( 'href="/"',    'href="' . home_url('/') . '"', $html );
 
-// ── Inject shared journey base CSS ──
-$base_css_url = get_stylesheet_directory_uri() . '/assets/css/journey-base.css?v=' . wp_get_theme()->get('Version');
-$html = str_replace( '</head>', '<link rel="stylesheet" href="' . esc_url( $base_css_url ) . '">' . "\n" . '</head>', $html ); // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet -- standalone HTML document; wp_head() does not run here.
+// ── Shared journey CSS and JS (inc/ce-journey-assets.php) ──
+$html = ce_standalone_assets( $html, 'journey' );
 
 // ── Inject Auto Justify Content styles into self-contained journey HTML ──
 // The AJC plugin cannot reach these pages (no wp_head fires), so we inject
@@ -78,7 +77,7 @@ if ( $ajc_justify_css ) {
 // ── Inject analytics tracker into standalone journey HTML ──
 $analytics_js = '<script>'
     . 'window.CE={ajaxUrl:"' . admin_url('admin-ajax.php') . '",nonce:"' . wp_create_nonce('ce_nonce') . '"};'
-    . '(function(){var s=sessionStorage.getItem("ce_analytics_sid");if(!s){s=Math.random().toString(36).substr(2,12)+Date.now().toString(36);sessionStorage.setItem("ce_analytics_sid",s);}window.ceTrack=function(t,d){var b=new FormData();b.append("action","ce_analytics");b.append("nonce",CE.nonce);b.append("event_type",t);b.append("event_data",JSON.stringify(d||{}));b.append("session_id",s);fetch(CE.ajaxUrl,{method:"POST",body:b,credentials:"same-origin"}).catch(function(){});};'
+    . '(function(){var s=null;try{s=sessionStorage.getItem("ce_analytics_sid");}catch(e){}if(!s){s=Math.random().toString(36).substr(2,12)+Date.now().toString(36);try{sessionStorage.setItem("ce_analytics_sid",s);}catch(e){}}window.ceTrack=function(t,d){var b=new FormData();b.append("action","ce_analytics");b.append("nonce",CE.nonce);b.append("event_type",t);b.append("event_data",JSON.stringify(d||{}));b.append("session_id",s);fetch(CE.ajaxUrl,{method:"POST",body:b,credentials:"same-origin"}).catch(function(){});};'
     . 'ceTrack("pageview",{page:"journey",path:location.pathname});'
     . 'ceTrack("journey_start",{persona:"' . esc_js($journey_key) . '"});'
     . '})();'

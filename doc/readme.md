@@ -1,6 +1,6 @@
 # CE Theme (Compelling Evidence) — WordPress Theme
 
-**Version:** 2.8.5 | **Parent theme:** Twenty Twenty-Five (tested with 1.5) | **Requires:** WordPress 6.7+ (tested to 7.1), PHP 8.0 to 8.4  
+**Version:** 2.8.6 | **Parent theme:** Twenty Twenty-Five (tested with 1.5) | **Requires:** WordPress 6.7+ (tested to 7.1), PHP 8.0 to 8.4  
 **Site:** https://compelling-evidence.com | **Repository:** https://github.com/menj/compelling-evidence | **Author:** [MENJ](https://menj.blog) | **Text domain:** `compelling-evidence`
 
 An Islamic apologetics child theme delivering personalised argumentation journeys across 14 persona paths, 131 articles across 11 investigative categories, a weighted intake quiz, a gamified progress system, a privacy-first analytics layer, and a full engagement suite. Built for a single deployment — not a general-purpose theme.
@@ -85,12 +85,13 @@ compelling-evidence/
 │   ├── ce-secondary-pages.php        Auto-creates About, Editorial, Privacy, Contact, FAQ,
 │   │                                 Glossary, Ask a Question pages on activation
 │   ├── ce-seo.php                    Meta, canonical, OG/Twitter, JSON-LD (14 schema types)
+│   ├── ce-journey-assets.php         Registers and prints the shared journey and quiz CSS/JS
 │   └── class-ce-feed-redirector.php  Feed suppression (301 redirects, noindex, robots.txt, sitemap)
 │   ├── ce-theme-options.php          8-tab admin settings UI
 │
-├── journeys/                         Journey HTML files (self-contained SPAs)
-│   ├── quiz.html                     10-question intake quiz
-│   ├── [14 persona]-journey.html     Individual journey paths
+├── journeys/                         Journey HTML files (prose, page styles and data)
+│   ├── quiz.html                     10-question intake quiz (questions and scoring data)
+│   ├── [14 persona]-journey.html     Individual journey paths (prose, CE_JOURNEY config)
 │   └── ms-MY/                        Malay translations
 │
 ├── assets/                           Static assets
@@ -215,6 +216,11 @@ Single quotes in excerpts must be escaped as `\'`. Article titles with apostroph
 | `ce-engagement.css` | `is_singular('ce_article')` only | — |
 | `glossary-tooltip.css` + `.js` | Singular article, post or answered question (`ce_ctx_post_types()`) | — |
 | `print.css` | All pages, media="print" | 5 KiB |
+| `journey.css` + `journey.js` | Journey pages, printed by `page-journey.php` | 12.8 + 19.1 KiB |
+| `journey-base.css` | Journey pages, last in the head | 2.1 KiB |
+| `quiz.css` + `quiz.js` | Quiz page, printed by `page-quiz.php` | 15.0 + 12.4 KiB |
+
+The journey and quiz pages never call `wp_head()`, so `inc/ce-journey-assets.php` registers these files and prints them with `wp_print_styles()` and `wp_print_scripts()` where the HTML has a `<!-- ce:journey-css -->`, `<!-- ce:journey-js -->`, `<!-- ce:quiz-css -->` or `<!-- ce:quiz-js -->` marker. Each file's version is its modification time.
 
 ### Font Preloading
 
