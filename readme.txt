@@ -6,7 +6,7 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.8.4
+Version: 2.8.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Template: twentytwentyfive
@@ -103,6 +103,10 @@ Appearance > CE Theme Options — 8 tabs:
                   spam scan and trash; reports and security log
 
 == Changelog ==
+
+= 2.8.5 - November 2026 =
+In the thirteen persona journeys, chapter V of the sidebar opens Constant and chapter VI opens Entropy.
+The closing section has valid markup again. See doc/changelog.md.
 
 = 2.8.4 - November 2026 =
 The last claims and qualifiers the style pass had cut are back, in the articles and the journeys.
