@@ -6,7 +6,7 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.8.2
+Version: 2.8.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Template: twentytwentyfive
@@ -103,6 +103,11 @@ Appearance > CE Theme Options — 8 tabs:
                   spam scan and trash; reports and security log
 
 == Changelog ==
+
+= 2.8.3 - November 2026 =
+A second pass over the 2.8.2 style rewrite. Claims and qualifiers the rewrite had cut are back, leftover
+reframes are rewritten, broken punctuation is fixed, and quotations match their sources again. Articles
+re-sync on the next admin page load. See doc/changelog.md.
 
 = 2.8.2 - November 2026 =
 Article and journey text follows the owner's writing style: no em dashes or contractions, plain words

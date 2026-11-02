@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.8.3] - November 2026
+
+### Fixed
+- A sentence-by-sentence check of the 2.8.2 style rewrite against the previous text. About 315 sentences had lost a claim, a qualifier or a denial when a reframe was cut ("these words were from Satan" had dropped "and not from God"). Each claim is back, stated directly or split into two sentences.
+- About 95 reframes the rewrite missed are rewritten, including the "not X, not Y, but Z" form and "Not a refutation: a complication."
+- Punctuation left by em dash removal is fixed where a colon or semicolon broke a sentence: "the very same surah (An-Najm) in which", "In a world of rigid hierarchies (Roman, Persian, Hindu caste)".
+- 98 edits inside quotations, pull quotes, objection boxes and Quran translations are reverted, so quoted words match the sources again.
+- Question headings read naturally ("Why does the question not matter to you?", "Should theism not carry the evidential burden?"). The quiz links and an article link use the new article titles. Journey meta descriptions spell out their contractions.
+- `inc/articles/manifest.json` carries the new batch checksums and reads 2.8.3. `Version` is 2.8.3 in `style.css`, `readme.txt` and `doc/readme.md`.
+
 ## [2.8.2] - November 2026
 
 ### Changed
