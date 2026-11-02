@@ -894,8 +894,8 @@ function ce_standalone_html_seo( string $html, string $permalink, string $key = 
     $html = str_replace( 'https://compelling-evidence.com', $home, $html );
 
     // Title: topic first, brand last.
-    $html = preg_replace_callback( '#<title>\s*Compelling Evidence\s*[—–-]\s*(.*?)</title>#su', static function ( $m ) {
-        return '<title>' . trim( $m[1] ) . ' – Compelling Evidence</title>';
+    $html = preg_replace_callback( '#<title>\s*Compelling Evidence\s*[—–:|-]\s*(.*?)</title>#su', static function ( $m ) {
+        return '<title>' . trim( $m[1] ) . ' | Compelling Evidence</title>';
     }, $html, 1 );
 
     // Meta description: house limit of 130 characters, call to action included.

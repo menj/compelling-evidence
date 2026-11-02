@@ -105,6 +105,8 @@ Appearance > CE Theme Options — 8 tabs:
 == Changelog ==
 
 = 2.8.5 - November 2026 =
+* Journey and quiz titles read `<page> | Compelling Evidence` again. 2.8.4 changed the source titles to `Compelling Evidence: X`, which the rewrite in `ce_standalone_html_seo()` no longer matched; it now accepts a dash, colon or pipe and puts the brand last after a pipe.
+* A stray `<p.` tag in the closing section of 12 journeys is removed, and the one in the Deist sidebar is now `<p>`.
 In the thirteen persona journeys, chapter V of the sidebar opens Constant and chapter VI opens Entropy.
 The closing section has valid markup again. See doc/changelog.md.
 
