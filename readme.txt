@@ -107,6 +107,7 @@ Appearance > CE Theme Options — 8 tabs:
 
 = 2.8.7 - November 2026 =
 * Each persona journey now shows one chapter at a time. The stylesheets never hid the inactive chapters, so every journey rendered all of them as one long page, and Next or a sidebar step only jumped back to the top. `journey-base.css`, which every journey loads, now hides every `.screen` except the one `goTo()` marks active.
+* When a keyboard user presses a button that moves to another chapter, focus now moves to the new chapter. Before, the button was hidden with its chapter and focus fell back to the page.
 * The Freethinker journey's completion badge and share text said "The Agnostic" and now say "The Freethinker".
 
 = 2.8.6 - November 2026 =
