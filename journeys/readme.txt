@@ -2,8 +2,8 @@ JOURNEY FILES
 =============
 
 This folder contains the 14 persona journey HTML files and the intake quiz.
-These are self-contained single-page applications that run independently of WordPress
-templating (they bypass wp_head/wp_footer for performance).
+These are single-page applications that run outside WordPress templating (they bypass
+wp_head/wp_footer). Their shared CSS and JS live in assets/css and assets/js.
 
 FILES
 -----
@@ -26,8 +26,16 @@ true-muslim-journey.html     - Journey for committed Muslims (8-screen variant)
 ARCHITECTURE
 ------------
 Each journey file is a complete HTML document with:
-- Embedded CSS (no external dependencies)
-- Embedded JavaScript (progress saving, navigation, resonance widgets)
+- The styles only that persona uses, in one <style> block
+- A window.CE_JOURNEY object: chapter ids and names, the sidebar symbol for the
+  conclusion, the "Go deeper" links, and whether the page shows the resonance
+  widget and the completion badge
+- Markers that page-journey.php swaps for the shared files:
+  <!-- ce:journey-css --> for assets/css/journey.css, <!-- ce:journey-js --> for
+  assets/js/journey.js (navigation, progress, resonance, go deeper, share).
+  The quiz has <!-- ce:quiz-css --> and <!-- ce:quiz-js --> for quiz.css and quiz.js.
+- new-atheist-journey.html keeps all its styles inline. Its nav, hero, sidebar and
+  cards use other declarations for 22 of the shared selectors.
 - 9-15 screens per journey, each with unique content
 - Arabic verses with Uthmani script rendering
 - Conclusion screen with CTA to explore articles
