@@ -6,6 +6,32 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.8.4] - November 2026
+
+### Fixed
+- The rest of the content the 2.8.2 style pass had cut is back: about 330 more qualifiers and contrasts, most of them in the journeys ("genuinely wrong, and not merely widely disliked", "It seems tolerant, too", "This does not prove that materialism is false"). A second pairing of every old and new sentence finds no claim, qualifier or citation missing. What remains are synonym rewordings and a few negated halves that added nothing ("That is not small." before "That is the largest thing conceivable").
+- Some broken sentences from the first rewrite are fixed ("And because it can that can produce", "The figures are shared.").
+- `inc/articles/manifest.json` carries the new batch checksums and reads 2.8.4. `Version` is 2.8.4 in `style.css`, `readme.txt` and `doc/readme.md`.
+
+## [2.8.3] - November 2026
+
+### Fixed
+- A sentence-by-sentence check of the 2.8.2 style rewrite against the previous text. About 315 sentences had lost a claim, a qualifier or a denial when a reframe was cut ("these words were from Satan" had dropped "and not from God"). Each claim is back, stated directly or split into two sentences.
+- About 95 reframes the rewrite missed are rewritten, including the "not X, not Y, but Z" form and "Not a refutation: a complication."
+- Punctuation left by em dash removal is fixed where a colon or semicolon broke a sentence: "the very same surah (An-Najm) in which", "In a world of rigid hierarchies (Roman, Persian, Hindu caste)".
+- 98 edits inside quotations, pull quotes, objection boxes and Quran translations are reverted, so quoted words match the sources again.
+- Question headings read naturally ("Why does the question not matter to you?", "Should theism not carry the evidential burden?"). The quiz links and an article link use the new article titles. Journey meta descriptions spell out their contractions.
+- `inc/articles/manifest.json` carries the new batch checksums and reads 2.8.3. `Version` is 2.8.3 in `style.css`, `readme.txt` and `doc/readme.md`.
+
+## [2.8.2] - November 2026
+
+### Changed
+- All article text in `inc/articles/batch-*.json` and the journey pages in `journeys/` follow the owner's anti-AI writing style (v2). About 5,700 em dashes became commas, colons, semicolons, parentheses or full stops. About 1,250 contractions are spelled out, and question titles read "Is Religion Not Just A Tool Of Political Control?" and the like.
+- Around 300 banned words are replaced with plain ones, most of them in the stock photo captions ("showing" for "showcasing", "detailed" for "intricate"). Some 830 negated reframes ("X is not A. It is B.") now state the claim directly, and 60 runs of sentences that opened with the same words have varied openings.
+- Quotations, Quran and hadith translations, testimonies and the quoted sources keep their wording. Proper names and titles stay as published: the New Testament, David Foster Wallace, and Frank Jackson's "What Mary Didn't Know".
+- Citation lines under Quran and hadith blocks drop their leading dash. Journey share text and social titles use " | " before the site name.
+- `inc/articles/manifest.json` carries the new batch checksums and reads 2.8.2. `Version` is 2.8.2 in `style.css`, `readme.txt` and `doc/readme.md`, so live sites re-sync every article on the next admin page load.
+
 ## [2.8.1] - November 2026
 
 ### Fixed

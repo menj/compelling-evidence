@@ -6,7 +6,7 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.8.1
+Version: 2.8.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Template: twentytwentyfive
@@ -103,6 +103,20 @@ Appearance > CE Theme Options — 8 tabs:
                   spam scan and trash; reports and security log
 
 == Changelog ==
+
+= 2.8.4 - November 2026 =
+The last claims and qualifiers the style pass had cut are back, in the articles and the journeys.
+Articles re-sync on the next admin page load. See doc/changelog.md.
+
+= 2.8.3 - November 2026 =
+A second pass over the 2.8.2 style rewrite. Claims and qualifiers the rewrite had cut are back, leftover
+reframes are rewritten, broken punctuation is fixed, and quotations match their sources again. Articles
+re-sync on the next admin page load. See doc/changelog.md.
+
+= 2.8.2 - November 2026 =
+Article and journey text follows the owner's writing style: no em dashes or contractions, plain words
+for the banned list, and claims stated directly. Quotations and scripture
+translations are unchanged. Articles re-sync on the next admin page load. See doc/changelog.md.
 
 = 2.8.1 - November 2026 =
 Security fixes: the spam gate exempts only posts with the theme's seed marker, holds WP-CLI publishing,
