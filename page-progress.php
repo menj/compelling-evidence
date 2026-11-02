@@ -64,7 +64,7 @@ get_header();
     {key:'freethinker',       name:'The Freethinker'},
     {key:'true-muslim',       name:'The Committed Muslim'},
   ];
-  var SCREENS = ['horizon','singularity','calibration','emergence','entropy','constant','signal','resonance','transmission','conclusion'];
+  var SCREENS = ['horizon','singularity','calibration','emergence','constant','entropy','signal','resonance','transmission','conclusion'];
   var TM_SCREENS = ['foundation','understanding','honesty','equipping','compassion','knowledge','mission','conclusion'];
   var SCREEN_LABELS = {
     horizon:'Horizon', singularity:'Singularity', calibration:'Calibration',

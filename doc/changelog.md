@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.8.5] - November 2026
+
+- The progress figures on the progress page, the front page and the article templates use the same Constant-then-Entropy order, so chapter V no longer shows a higher percentage than chapter VI.
+- In the New Atheist journey, "Notice the echo of ." named nothing and now reads "Notice the echo."
+
+- Journey and quiz titles read `<page> | Compelling Evidence` again. 2.8.4 changed the source titles to `Compelling Evidence: X`, which the rewrite in `ce_standalone_html_seo()` no longer matched; it now accepts a dash, colon or pipe and puts the brand last after a pipe.
+- A stray `<p.` tag in the closing section of 12 journeys is removed, and the one in the Deist sidebar is now `<p>`.
+
+### Fixed
+- In the thirteen persona journeys, a click on chapter V in the sidebar opened Entropy, and a click on VI opened Constant. The chapter order is now Constant (ethics), then Entropy (theodicy), as the sidebar, the chapter list on the first screen, the "next chapter" cards and the closing summary already had it. The `screens` and `labels` arrays, the top progress dots, the order of the two screens in the page and the sidebar on the Resonance and Transmission screens follow that order. Next walks the chapters in the same order.
+- The closing Resonance screen opened a `<strong>` after "every single one points in the same direction" and never closed it, and a few lines below it had a broken `<p</strong>` tag. The `<strong>` now closes after "Creator." and the broken tag is a plain `<p>`. No text changed.
+- `Version` is 2.8.5 in `style.css`, `readme.txt` and `doc/readme.md`. The journeys are static files with no version key, and the article manifest stays at 2.8.4 because no article changed.
+
 ## [2.8.4] - November 2026
 
 ### Fixed
