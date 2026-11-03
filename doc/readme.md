@@ -1,6 +1,6 @@
 # CE Theme (Compelling Evidence) — WordPress Theme
 
-**Version:** 2.8.7 | **Parent theme:** Twenty Twenty-Five (tested with 1.5) | **Requires:** WordPress 6.7+ (tested to 7.1), PHP 8.0 to 8.4  
+**Version:** 2.9.0 | **Parent theme:** Twenty Twenty-Five (tested with 1.5) | **Requires:** WordPress 6.7+ (tested to 7.1), PHP 8.0 to 8.4  
 **Site:** https://compelling-evidence.com | **Repository:** https://github.com/menj/compelling-evidence | **Author:** [MENJ](https://menj.blog) | **Text domain:** `compelling-evidence`
 
 An Islamic apologetics child theme delivering personalised argumentation journeys across 14 persona paths, 131 articles across 11 investigative categories, a weighted intake quiz, a gamified progress system, a privacy-first analytics layer, and a full engagement suite. Built for a single deployment — not a general-purpose theme.
@@ -45,7 +45,7 @@ compelling-evidence/
 ├── archive-ce_article.php            /articles/ — 10 topic sections in logical reading order
 ├── taxonomy-ce_topic.php             /topic/[slug]/ — delegates to archive-ce_article.php
 ├── page-quiz.php                     /quiz — renders /journeys/quiz.html
-├── page-journey.php                  /journey/[slug]/ — renders journey HTML (bypasses wp_head)
+├── page-journey.php                  /journey/[slug]/, built from the journey template (bypasses wp_head)
 ├── page-journeys.php                 /journeys — all-paths overview grid
 ├── page-progress.php                 /my-progress — localStorage-driven progress dashboard
 ├── page-faq.php                      /faq — accordion UI + FAQPage JSON-LD schema
@@ -86,13 +86,16 @@ compelling-evidence/
 │   │                                 Glossary, Ask a Question pages on activation
 │   ├── ce-seo.php                    Meta, canonical, OG/Twitter, JSON-LD (14 schema types)
 │   ├── ce-journey-assets.php         Registers and prints the shared journey and quiz CSS/JS
+│   ├── ce-journey-template.php       Finds, loads and renders a journey's data folder
 │   └── class-ce-feed-redirector.php  Feed suppression (301 redirects, noindex, robots.txt, sitemap)
 │   ├── ce-theme-options.php          8-tab admin settings UI
 │
-├── journeys/                         Journey HTML files (prose, page styles and data)
+├── template-parts/journey/           Journey template: document, nav, screen, v2-preview, scripts
+├── journeys/                         Journey data and the quiz
 │   ├── quiz.html                     10-question intake quiz (questions and scoring data)
-│   ├── [14 persona]-journey.html     Individual journey paths (prose, CE_JOURNEY config)
-│   └── ms-MY/                        Malay translations
+│   ├── data/[14 persona]/            journey.json, style.css, screens/<chapter>.html
+│   ├── i18n/en.php                   Interface text for the template and journey.js
+│   └── ms-MY/                        Malay translations (none yet)
 │
 ├── assets/                           Static assets
 │   ├── css/                          Stylesheets
@@ -220,7 +223,7 @@ Single quotes in excerpts must be escaped as `\'`. Article titles with apostroph
 | `journey-base.css` | Journey pages, last in the head | 2.1 KiB |
 | `quiz.css` + `quiz.js` | Quiz page, printed by `page-quiz.php` | 15.0 + 12.4 KiB |
 
-The journey and quiz pages never call `wp_head()`, so `inc/ce-journey-assets.php` registers these files and prints them with `wp_print_styles()` and `wp_print_scripts()` where the HTML has a `<!-- ce:journey-css -->`, `<!-- ce:journey-js -->`, `<!-- ce:quiz-css -->` or `<!-- ce:quiz-js -->` marker. Each file's version is its modification time.
+A journey page is built by `inc/ce-journey-template.php` from `journeys/data/<key>/` and the parts in `template-parts/journey/`; the template writes the same markers. The journey and quiz pages never call `wp_head()`, so `inc/ce-journey-assets.php` registers these files and prints them with `wp_print_styles()` and `wp_print_scripts()` where the HTML has a `<!-- ce:journey-css -->`, `<!-- ce:journey-js -->`, `<!-- ce:quiz-css -->` or `<!-- ce:quiz-js -->` marker. Each file's version is its modification time.
 
 ### Font Preloading
 
@@ -279,7 +282,7 @@ Shipped translations: `ms_MY` (Malay). Compile with:
 msgfmt languages/ms_MY.po -o languages/ms_MY.mo
 ```
 
-Journey translations: place translated HTML at `/journeys/ms-MY/[slug]-journey.html`. `page-journey.php` and `page-quiz.php` handle locale detection and fallback to English.
+Journey translations: copy `journeys/data/[slug]/` to `journeys/ms-MY/data/[slug]/` and translate the text in `journey.json` and `screens/`, then copy `journeys/i18n/en.php` to `journeys/i18n/ms-MY.php` and translate the values. A hand-made `journeys/ms-MY/[slug]-journey.html` still works where no data folder exists. `page-journey.php` and `page-quiz.php` handle locale detection and fallback to English.
 
 ---
 

@@ -1,0 +1,400 @@
+{
+ "key": "agnostic",
+ "seo": {
+  "title": "Compelling Evidence: The Agnostic Path",
+  "description": "An honest exploration for agnostics: What would evidence for God actually look like? A personalised journey through physics, philosophy, and the questions that matter.",
+  "og:title": "The Agnostic Path | Compelling Evidence",
+  "og:description": "What would evidence for God actually look like? A personalised journey for those who refuse to believe without sufficient reason.",
+  "og:type": "article",
+  "og:url": "https://compelling-evidence.com/journeys/agnostic/",
+  "og:site_name": "Compelling Evidence",
+  "twitter:card": "summary_large_image",
+  "twitter:title": "The Agnostic Path | Compelling Evidence",
+  "twitter:description": "An honest exploration for agnostics: What would evidence for God actually look like?",
+  "canonical": "https://compelling-evidence.com/journeys/agnostic/"
+ },
+ "schema": [
+  {
+   "@context": "https://schema.org",
+   "@type": "Organization",
+   "name": "Compelling Evidence",
+   "url": "https://compelling-evidence.com",
+   "logo": "https://compelling-evidence.com/assets/logo.png",
+   "sameAs": []
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "Article",
+   "headline": "The Agnostic Path | Compelling Evidence",
+   "description": "An honest exploration for agnostics: What would evidence for God actually look like? A personalised journey through physics, philosophy, and the questions that matter.",
+   "url": "https://compelling-evidence.com/journeys/agnostic/",
+   "author": {
+    "@type": "Organization",
+    "name": "Compelling Evidence"
+   },
+   "publisher": {
+    "@type": "Organization",
+    "name": "Compelling Evidence",
+    "logo": {
+     "@type": "ImageObject",
+     "url": "https://compelling-evidence.com/assets/logo.png"
+    }
+   },
+   "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://compelling-evidence.com/journeys/agnostic/"
+   },
+   "about": {
+    "@type": "Thing",
+    "name": "Philosophy of Religion",
+    "sameAs": "https://en.wikipedia.org/wiki/Philosophy_of_religion"
+   },
+   "keywords": "agnosticism, evidence for God, philosophy of religion, physics, cosmology, fine-tuning, moral argument, Islam",
+   "inLanguage": "en",
+   "isAccessibleForFree": true,
+   "articleSection": "Philosophy of Religion"
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "What would count as evidence for God's existence?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Evidence would need to meet the same standard as other scientific or philosophical truths: explanatory power, predictive capacity, and convergence from multiple independent sources. For God specifically, relevant evidence includes cosmological origins, fine-tuning of physical constants, consciousness as non-physical, objective moral facts, and the reliability of reason itself."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Is agnosticism the same as atheism?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "No. Atheism asserts that God does not exist; agnosticism holds that the evidence is insufficient to form a definite conclusion. Properly held agnosticism is intellectual honesty: refusal to claim knowledge beyond what the evidence warrants. It is a position about what can be known, and no middle ground between belief and unbelief."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Can you prove God exists?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Proof in the mathematical sense is not possible for any existential claim, including atheism. What is possible is a cumulative case: multiple independent lines of evidence converging on the same conclusion. The cosmological, fine-tuning, moral, and consciousness arguments each have independent force; together they form a compelling picture."
+     }
+    }
+   ]
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Compelling Evidence",
+     "item": "https://compelling-evidence.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Journeys",
+     "item": "https://compelling-evidence.com/journeys/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "The Agnostic Path",
+     "item": "https://compelling-evidence.com/journeys/agnostic/"
+    }
+   ]
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "WebPage",
+   "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [
+     ".art-title",
+     ".art-body"
+    ]
+   }
+  }
+ ],
+ "shared_css": true,
+ "v2_preview": {
+  "icon": "🔭",
+  "title": "Volume II: <em>Which God?</em>",
+  "sub": "Apply the same standard of evidence. No assumptions, no shortcuts.",
+  "intro": "While Volume II is being written, you can explore the articles that will form its foundation:",
+  "links": [
+   {
+    "href": "/articles/does-god-communicate-with-humanity/",
+    "text": "Does God communicate with humanity?"
+   },
+   {
+    "href": "/articles/what-would-authentic-revelation-look-like/",
+    "text": "What would authentic revelation look like?"
+   },
+   {
+    "href": "/articles/how-do-we-evaluate-competing-claims-to-revelation/",
+    "text": "How do we evaluate competing claims?"
+   }
+  ]
+ },
+ "nav": {
+  "path_label": "The Agnostic",
+  "dots": [
+   {
+    "id": "horizon",
+    "title": "Horizon"
+   },
+   {
+    "id": "singularity",
+    "title": "Singularity"
+   },
+   {
+    "id": "calibration",
+    "title": "Calibration"
+   },
+   {
+    "id": "emergence",
+    "title": "Emergence"
+   },
+   {
+    "id": "constant",
+    "title": "Constant"
+   },
+   {
+    "id": "entropy",
+    "title": "Entropy"
+   },
+   {
+    "id": "signal",
+    "title": "Signal"
+   },
+   {
+    "id": "resonance",
+    "title": "Resonance"
+   },
+   {
+    "id": "transmission",
+    "title": "Transmission"
+   },
+   {
+    "id": "conclusion",
+    "title": "Conclusion",
+    "style": "background:rgba(245,197,24,0.15);"
+   },
+   {
+    "sep": true
+   },
+   {
+    "id": "v2-preview",
+    "title": "Volume II",
+    "v2": true
+   }
+  ]
+ },
+ "screens": [
+  {
+   "id": "horizon",
+   "label": "Horizon"
+  },
+  {
+   "id": "singularity",
+   "label": "Singularity"
+  },
+  {
+   "id": "calibration",
+   "label": "Calibration"
+  },
+  {
+   "id": "emergence",
+   "label": "Emergence"
+  },
+  {
+   "id": "constant",
+   "label": "Constant"
+  },
+  {
+   "id": "entropy",
+   "label": "Entropy"
+  },
+  {
+   "id": "signal",
+   "label": "Signal"
+  },
+  {
+   "id": "resonance",
+   "label": "Resonance"
+  },
+  {
+   "id": "transmission",
+   "label": "Transmission"
+  },
+  {
+   "id": "conclusion",
+   "label": "Conclusion"
+  },
+  {
+   "id": "v2-preview",
+   "template": "v2-preview",
+   "label": "Volume II"
+  }
+ ],
+ "journey": {
+  "star": "✶",
+  "resonance": true,
+  "shareName": "The Agnostic",
+  "articles": {
+   "horizon": [
+    {
+     "href": "/articles/does-god-exist/",
+     "title": "Does A Higher Power Exist?",
+     "label": "The starting question"
+    },
+    {
+     "href": "/articles/burden-of-proof/",
+     "title": "Who Bears The Burden of Proof?",
+     "label": "Evidential standards"
+    },
+    {
+     "href": "/articles/divine-hiddenness/",
+     "title": "If God Wants To Be Known, Why Is God Hidden?",
+     "label": "The hiddenness problem"
+    }
+   ],
+   "singularity": [
+    {
+     "href": "/articles/why-does-anything-exist/",
+     "title": "Why Does Anything Exist Rather Than Nothing?",
+     "label": "Cosmological argument"
+    },
+    {
+     "href": "/articles/big-bang-creation/",
+     "title": "The Universe Had a Beginning",
+     "label": "The scientific evidence"
+    },
+    {
+     "href": "/articles/existence-come-out-of-nothing/",
+     "title": "Can Existence Come Out Of Nothing?",
+     "label": "Hawking & Krauss addressed"
+    }
+   ],
+   "calibration": [
+    {
+     "href": "/articles/fine-tuning-universe/",
+     "title": "The Universe Is Absurdly Specific",
+     "label": "Fine-tuning argument"
+    },
+    {
+     "href": "/articles/multiverse-objection/",
+     "title": "Does the Multiverse Explain Fine-Tuning?",
+     "label": "The main objection"
+    }
+   ],
+   "emergence": [
+    {
+     "href": "/articles/consciousness-hard-problem/",
+     "title": "The One Thing Neuroscience Cannot Explain",
+     "label": "The Hard Problem"
+    },
+    {
+     "href": "/articles/near-death-experiences/",
+     "title": "Near-Death Experiences: Evidence for What?",
+     "label": "Consciousness beyond death"
+    },
+    {
+     "href": "/articles/religious-experience-neuroscience/",
+     "title": "Can Neuroscience Explain Religious Experience?",
+     "label": "Neurotheology"
+    }
+   ],
+   "entropy": [
+    {
+     "href": "/articles/problem-of-evil/",
+     "title": "If God Is Good, Why Is There Suffering?",
+     "label": "Problem of evil"
+    },
+    {
+     "href": "/articles/problem-of-evil-response/",
+     "title": "Earthquakes, Cancer, and a Good God",
+     "label": "Natural evil"
+    },
+    {
+     "href": "/articles/why-create-knowing-suffering/",
+     "title": "Why Create Knowing We Would Suffer?",
+     "label": "The creation problem"
+    }
+   ],
+   "constant": [
+    {
+     "href": "/articles/moral-argument-god/",
+     "title": "Where Do Moral Facts Live?",
+     "label": "Moral argument"
+    },
+    {
+     "href": "/articles/objective-morality/",
+     "title": "Is Morality Just Opinion?",
+     "label": "Moral realism"
+    },
+    {
+     "href": "/articles/euthyphro-dilemma/",
+     "title": "Is Goodness What God Commands?",
+     "label": "Euthyphro answered"
+    }
+   ],
+   "signal": [
+    {
+     "href": "/articles/argument-from-reason/",
+     "title": "If Your Brain Is Just Atoms, Can You Trust It?",
+     "label": "Argument from reason"
+    },
+    {
+     "href": "/articles/science-and-religion/",
+     "title": "What Science Cannot Tell You",
+     "label": "Limits of scientism"
+    },
+    {
+     "href": "/articles/god-as-psychological-projection/",
+     "title": "Is God Just a Projection?",
+     "label": "Freud & Feuerbach"
+    }
+   ],
+   "resonance": [
+    {
+     "href": "/articles/ontological-argument/",
+     "title": "The God Who Cannot Not Exist",
+     "label": "Ontological argument"
+    },
+    {
+     "href": "/articles/why-humans-believe-in-god/",
+     "title": "Why Do Human Beings Believe In God?",
+     "label": "The universality of belief"
+    },
+    {
+     "href": "/articles/purpose-of-life/",
+     "title": "What Is the Purpose of Life?",
+     "label": "Purpose and meaning"
+    }
+   ],
+   "transmission": [
+    {
+     "href": "/articles/quran-historical-reliability/",
+     "title": "How the Quran Was Preserved",
+     "label": "Textual evidence"
+    },
+    {
+     "href": "/articles/quran-literary-argument/",
+     "title": "The Quran as Literary Argument",
+     "label": "Inimitability claim"
+    },
+    {
+     "href": "/articles/quran-written-by-humans/",
+     "title": "Could Humans Have Written The Quran?",
+     "label": "Authorship question"
+    }
+   ]
+  }
+ }
+}

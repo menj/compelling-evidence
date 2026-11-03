@@ -1,0 +1,339 @@
+{
+ "key": "ex-believer",
+ "seo": {
+  "title": "Compelling Evidence: The Ex-Believer Path",
+  "description": "For those who left faith: Understanding your journey with intellectual honesty. Examining the evidence you were not shown before you made your decision.",
+  "og:title": "The Ex-Believer Path | Compelling Evidence",
+  "og:description": "Understanding your journey with intellectual honesty. Examining the evidence you were not shown before you left faith.",
+  "og:type": "article",
+  "og:url": "https://compelling-evidence.com/journeys/ex-believer/",
+  "og:site_name": "Compelling Evidence",
+  "twitter:card": "summary_large_image",
+  "twitter:title": "The Ex-Believer Path | Compelling Evidence",
+  "twitter:description": "Examining the evidence you were not shown before you made your decision to leave faith.",
+  "canonical": "https://compelling-evidence.com/journeys/ex-believer/"
+ },
+ "schema": [
+  {
+   "@context": "https://schema.org",
+   "@type": "Organization",
+   "name": "Compelling Evidence",
+   "url": "https://compelling-evidence.com",
+   "logo": "https://compelling-evidence.com/assets/logo.png"
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "Article",
+   "headline": "The Ex-Believer Path | Compelling Evidence",
+   "description": "For those who left faith: Understanding your journey with intellectual honesty. Examining the evidence you were not shown before you made your decision.",
+   "url": "https://compelling-evidence.com/journeys/ex-believer/",
+   "author": {
+    "@type": "Organization",
+    "name": "Compelling Evidence"
+   },
+   "publisher": {
+    "@type": "Organization",
+    "name": "Compelling Evidence"
+   },
+   "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://compelling-evidence.com/journeys/ex-believer/"
+   },
+   "keywords": "ex-believer, leaving faith, religious doubt, apostasy, evidence for God, philosophy, Islam",
+   "inLanguage": "en",
+   "isAccessibleForFree": true
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "WebPage",
+   "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [
+     ".art-title",
+     ".art-body"
+    ]
+   }
+  }
+ ],
+ "shared_css": true,
+ "v2_preview": {
+  "icon": "🔭",
+  "title": "Volume II: <em>Which God?</em>",
+  "sub": "The evidence may lead somewhere you did not expect.",
+  "intro": "While Volume II is being written, you can explore the articles that will form its foundation:",
+  "links": [
+   {
+    "href": "/articles/does-god-communicate-with-humanity/",
+    "text": "Does God communicate with humanity?"
+   },
+   {
+    "href": "/articles/what-would-authentic-revelation-look-like/",
+    "text": "What would authentic revelation look like?"
+   },
+   {
+    "href": "/articles/how-do-we-evaluate-competing-claims-to-revelation/",
+    "text": "How do we evaluate competing claims?"
+   }
+  ]
+ },
+ "nav": {
+  "path_label": "The Ex-Believer",
+  "dots": [
+   {
+    "id": "horizon",
+    "title": "Horizon"
+   },
+   {
+    "id": "singularity",
+    "title": "Singularity"
+   },
+   {
+    "id": "calibration",
+    "title": "Calibration"
+   },
+   {
+    "id": "emergence",
+    "title": "Emergence"
+   },
+   {
+    "id": "constant",
+    "title": "Constant"
+   },
+   {
+    "id": "entropy",
+    "title": "Entropy"
+   },
+   {
+    "id": "signal",
+    "title": "Signal"
+   },
+   {
+    "id": "resonance",
+    "title": "Resonance"
+   },
+   {
+    "id": "transmission",
+    "title": "Transmission"
+   },
+   {
+    "id": "conclusion",
+    "title": "Conclusion",
+    "style": "background:rgba(245,197,24,0.15);"
+   },
+   {
+    "sep": true
+   },
+   {
+    "id": "v2-preview",
+    "title": "Volume II",
+    "v2": true
+   }
+  ]
+ },
+ "screens": [
+  {
+   "id": "horizon",
+   "label": "Horizon"
+  },
+  {
+   "id": "singularity",
+   "label": "Singularity"
+  },
+  {
+   "id": "calibration",
+   "label": "Calibration"
+  },
+  {
+   "id": "emergence",
+   "label": "Emergence"
+  },
+  {
+   "id": "constant",
+   "label": "Constant"
+  },
+  {
+   "id": "entropy",
+   "label": "Entropy"
+  },
+  {
+   "id": "signal",
+   "label": "Signal"
+  },
+  {
+   "id": "resonance",
+   "label": "Resonance"
+  },
+  {
+   "id": "transmission",
+   "label": "Transmission"
+  },
+  {
+   "id": "conclusion",
+   "label": "Conclusion"
+  },
+  {
+   "id": "v2-preview",
+   "template": "v2-preview",
+   "label": "Volume II"
+  }
+ ],
+ "journey": {
+  "star": "✶",
+  "resonance": true,
+  "shareName": "The Ex-Believer",
+  "articles": {
+   "horizon": [
+    {
+     "href": "/articles/the-anger-is-real/",
+     "title": "The Anger Is Real",
+     "label": "Engaging the anger honestly"
+    },
+    {
+     "href": "/articles/when-religion-was-imposed-not-discovered/",
+     "title": "When Religion Was Imposed",
+     "label": "Coercion vs discovery"
+    },
+    {
+     "href": "/articles/the-islam-i-was-defending/",
+     "title": "The Islam I Was Defending Did Not Exist",
+     "label": "What you rejected"
+    },
+    {
+     "href": "/articles/does-god-answer-prayer/",
+     "label": "If God answers prayer, why can't you prove it?"
+    }
+   ],
+   "singularity": [
+    {
+     "href": "/articles/why-does-anything-exist/",
+     "title": "Why Does Anything Exist Rather Than Nothing?",
+     "label": "Cosmological argument"
+    },
+    {
+     "href": "/articles/big-bang-creation/",
+     "title": "The Universe Had a Beginning",
+     "label": "The scientific evidence"
+    },
+    {
+     "href": "/articles/existence-come-out-of-nothing/",
+     "title": "Can Existence Come Out Of Nothing?",
+     "label": "Hawking & Krauss addressed"
+    }
+   ],
+   "calibration": [
+    {
+     "href": "/articles/fine-tuning-universe/",
+     "title": "The Universe Is Absurdly Specific",
+     "label": "Fine-tuning argument"
+    },
+    {
+     "href": "/articles/multiverse-objection/",
+     "title": "Does the Multiverse Explain Fine-Tuning?",
+     "label": "The main objection"
+    }
+   ],
+   "emergence": [
+    {
+     "href": "/articles/consciousness-hard-problem/",
+     "title": "The One Thing Neuroscience Cannot Explain",
+     "label": "The Hard Problem"
+    },
+    {
+     "href": "/articles/near-death-experiences/",
+     "title": "Near-Death Experiences: Evidence for What?",
+     "label": "Consciousness beyond death"
+    },
+    {
+     "href": "/articles/religious-experience-neuroscience/",
+     "title": "Can Neuroscience Explain Religious Experience?",
+     "label": "Neurotheology"
+    }
+   ],
+   "entropy": [
+    {
+     "href": "/articles/problem-of-evil/",
+     "title": "If God Is Good, Why Suffering?",
+     "label": "The objection that broke it"
+    },
+    {
+     "href": "/articles/religious-trauma/",
+     "title": "When Religion Hurts",
+     "label": "Religious trauma"
+    },
+    {
+     "href": "/articles/why-create-knowing-suffering/",
+     "title": "Why Create Knowing We Would Suffer?",
+     "label": "The creation problem"
+    }
+   ],
+   "constant": [
+    {
+     "href": "/articles/moral-argument-god/",
+     "title": "Where Do Moral Facts Live?",
+     "label": "Moral argument"
+    },
+    {
+     "href": "/articles/apostasy-and-freedom/",
+     "title": "Why Can't People Leave?",
+     "label": "Freedom question"
+    },
+    {
+     "href": "/articles/the-dual-life/",
+     "title": "Living Two Lives",
+     "label": "The weight of hidden doubt"
+    }
+   ],
+   "signal": [
+    {
+     "href": "/articles/argument-from-reason/",
+     "title": "If Your Brain Is Just Atoms, Can You Trust It?",
+     "label": "Argument from reason"
+    },
+    {
+     "href": "/articles/science-and-religion/",
+     "title": "What Science Cannot Tell You",
+     "label": "Limits of scientism"
+    },
+    {
+     "href": "/articles/god-as-psychological-projection/",
+     "title": "Is God Just a Projection?",
+     "label": "Freud & Feuerbach"
+    }
+   ],
+   "resonance": [
+    {
+     "href": "/articles/how-muslims-leave-the-sociology/",
+     "title": "How Muslims Actually Leave",
+     "label": "The sociology"
+    },
+    {
+     "href": "/articles/social-cost-of-leaving/",
+     "title": "The Real Cost Of Leaving",
+     "label": "What no one tells you"
+    },
+    {
+     "href": "/articles/post-muslim-identity/",
+     "title": "Can You Leave And Still Be Yourself?",
+     "label": "Identity after faith"
+    }
+   ],
+   "transmission": [
+    {
+     "href": "/articles/quran-historical-reliability/",
+     "title": "How the Quran Was Preserved",
+     "label": "Fresh eyes"
+    },
+    {
+     "href": "/articles/meccan-medinan-abrogation/",
+     "title": "The Meccan/Medinan Distinction",
+     "label": "Reading the Quran honestly"
+    },
+    {
+     "href": "/articles/quran-in-arabic/",
+     "title": "Why Is God's Message In Arabic?",
+     "label": "The language question"
+    }
+   ]
+  }
+ }
+}

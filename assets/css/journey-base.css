@@ -55,6 +55,11 @@
   .art-body { padding: 2rem 1.25rem 3rem; }
   .art-content, .reading { min-width: 0; overflow-wrap: break-word; }
   .reading table, .reading pre { display: block; max-width: 100%; overflow-x: auto; }
+  /* The meta row wraps, so the path badge fits instead of running past
+     the right edge (Scientist set no flex-wrap). Two-column cards may
+     shrink below their text width (Classical Atheist ran 6px over). */
+  .art-meta { flex-wrap: wrap; }
+  .two-col { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 }
 
 /* Small phones: the logo and chapter dots need the space. */
@@ -66,3 +71,7 @@
 /* One chapter at a time: goTo() marks the current screen .active. */
 .screen { display: none; }
 .screen.active { display: block; }
+
+/* Keyboard: journey.js gives the choice cards, reading-path steps, header
+   dots and the completion badge a button role and a tab stop. */
+[role="button"]:focus-visible { outline: 2px solid var(--teal, #0cd4e0); outline-offset: 3px; }

@@ -11,12 +11,18 @@
  *   resonance  true to fill the "paths that resonate" widget
  *   shareName  persona name on the completion badge; empty for no badge
  * window.ceHomeUrl (printed by the theme) is the site root for path links.
+ * window.CE_JOURNEY_STRINGS (printed by the theme from journeys/i18n/) holds
+ * the interface text below, so a translation changes no code.
  *
  * The parts run in the order the inline copies did, because each one wraps
  * goTo() on window load: navigation, progress, resonance, go deeper, share.
  *
  * @since 2.8.6
  */
+
+/* ── Interface text ── */
+const ceT=window.CE_JOURNEY_STRINGS||{};
+function ceStr(k,fallback){return typeof ceT[k]==='string'?ceT[k]:fallback;}
 
 /* ── Navigation ── */
 const screens=CE_JOURNEY.screens;const labels=CE_JOURNEY.labels;let cur=0;
@@ -26,6 +32,15 @@ const ceSidebarMap=(function(){var r=['I','II','III','IV','V','VI','VII','VIII',
 function goTo(id){const i=screens.indexOf(id);if(i<0)return;if(window.ceTrack){ceTrack('journey_screen',{persona:PATH,screen:id});if(id==='conclusion')ceTrack('journey_complete',{persona:PATH});}screens.forEach(s=>{const el=document.getElementById('s-'+s);if(el)el.classList.remove('active');});const nx=document.getElementById('s-'+id);const ae=document.activeElement;nx.classList.add('active');cur=i;window.scrollTo(0,0);updateNav();if(ae&&ae!==document.body&&!nx.contains(ae)&&ae.closest('.screen')){if(!nx.hasAttribute('tabindex'))nx.setAttribute('tabindex','-1');nx.focus({preventScroll:true});}}
 function updateNav(){document.getElementById('nav-current').textContent=labels[cur];document.querySelectorAll('.np-dot').forEach((d,i)=>{d.classList.remove('active','done');if(i<cur){d.classList.add('done');d.style.background=i===ceGold?'rgba(245,197,24,0.5)':'rgba(12,212,224,0.4)';}else if(i===cur){d.classList.add('active');d.style.background=i===ceGold?'rgba(245,197,24,0.8)':'var(--teal)';}else{d.style.background=i===ceGold?'rgba(245,197,24,0.12)':'rgba(255,255,255,0.1)';}}); }
 document.addEventListener('click',function(e){if(e.target.closest('.choice')){goTo(screens[Math.min(cur+1,screens.length-1)]);return;}if(e.target.closest('.btn-teal')){goTo(screens[Math.min(cur+1,screens.length-1)]);return;}if(e.target.closest('.btn-gold')){goTo('conclusion');return;}const ps=e.target.closest('.ps:not(.locked)');if(ps){const n=ps.querySelector('.ps-n');if(!n)return;const m=ceSidebarMap;const t=n.textContent.trim();if(t in m){cur=m[t];goTo(screens[m[t]]);}}}); updateNav();
+
+/* ── Keyboard ── */
+// The choice cards, reading-path steps, header dots and logo are divs and
+// spans with click handlers. Give them a button role and a tab stop, and let
+// Enter and Space press them; goTo() then moves focus into the new chapter.
+const ceOperable='.choice, .ps:not(.locked), .np-dot, .nav-logo, .nav-path-step, #ce-completion-badge';
+function ceMakeOperable(root){(root||document).querySelectorAll(ceOperable).forEach(function(el){if(el.matches('a,button,input,select,textarea'))return;if(el.classList.contains('ps')){var n=el.querySelector('.ps-n');if(!n||!(n.textContent.trim() in ceSidebarMap))return;}if(!el.hasAttribute('role'))el.setAttribute('role','button');if(!el.hasAttribute('tabindex'))el.setAttribute('tabindex','0');if(!el.hasAttribute('aria-label')){var lab=el.getAttribute('title');if(lab)el.setAttribute('aria-label',lab);}});}
+document.addEventListener('keydown',function(e){if(e.key!=='Enter'&&e.key!==' '&&e.key!=='Spacebar')return;const el=e.target.closest&&e.target.closest('[role="button"]');if(!el||el!==e.target||el.matches('a,button'))return;e.preventDefault();el.click();});
+ceMakeOperable();
 
 /* ── Progress and resume ── */
 (function() {
@@ -83,10 +98,11 @@ document.addEventListener('click',function(e){if(e.target.closest('.choice')){go
       var banner = document.createElement("div");
       banner.id = "ce-resume-banner";
       banner.style.cssText = "position:fixed;bottom:1.5rem;right:1.5rem;z-index:999;background:rgba(13,8,32,0.95);border:1px solid rgba(12,212,224,0.25);border-radius:12px;padding:0.9rem 1.2rem;display:flex;align-items:center;gap:1rem;font-family:\'DM Sans\',sans-serif;font-size:0.82rem;color:rgba(242,238,255,0.7);box-shadow:0 8px 32px rgba(0,0,0,0.4);backdrop-filter:blur(8px);max-width:300px;";
-      var screenLabel = saved.charAt(0).toUpperCase() + saved.slice(1);
-      banner.innerHTML = "<div><div style=\"font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(12,212,224,0.5);margin-bottom:0.2rem;\">Resume where you left off</div><div style=\"color:rgba(242,238,255,0.9);\">" + screenLabel + "</div></div>" +
-        "<button onclick=\"window.goTo(\'" + saved + "\');document.getElementById(\'ce-resume-banner\').remove();\" style=\"padding:0.5rem 1rem;border-radius:50px;background:rgba(12,212,224,0.15);border:1px solid rgba(12,212,224,0.3);color:var(--teal,#0cd4e0);font-family:inherit;font-size:0.8rem;cursor:pointer;white-space:nowrap;\">Resume</button>" +
-        "<button onclick=\"document.getElementById(\'ce-resume-banner\').remove();\" style=\"background:none;border:none;color:rgba(242,238,255,0.3);cursor:pointer;font-size:1.2rem;line-height:1;padding:0;\">&times;</button>";
+      var savedAt = CE_JOURNEY.screens.indexOf(saved);
+      var screenLabel = CE_JOURNEY.labels && CE_JOURNEY.labels[savedAt] ? CE_JOURNEY.labels[savedAt] : saved.charAt(0).toUpperCase() + saved.slice(1);
+      banner.innerHTML = "<div><div style=\"font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(12,212,224,0.5);margin-bottom:0.2rem;\">" + ceStr('resumeTitle', 'Resume where you left off') + "</div><div style=\"color:rgba(242,238,255,0.9);\">" + screenLabel + "</div></div>" +
+        "<button onclick=\"window.goTo(\'" + saved + "\');document.getElementById(\'ce-resume-banner\').remove();\" style=\"padding:0.5rem 1rem;border-radius:50px;background:rgba(12,212,224,0.15);border:1px solid rgba(12,212,224,0.3);color:var(--teal,#0cd4e0);font-family:inherit;font-size:0.8rem;cursor:pointer;white-space:nowrap;\">" + ceStr('resume', 'Resume') + "</button>" +
+        "<button onclick=\"document.getElementById(\'ce-resume-banner\').remove();\" aria-label=\"" + ceStr('dismiss', 'Dismiss') + "\" style=\"background:none;border:none;color:rgba(242,238,255,0.3);cursor:pointer;font-size:1.2rem;line-height:1;padding:0;\">&times;</button>";
       document.body.appendChild(banner);
     }
   });
@@ -97,9 +113,10 @@ document.addEventListener('click',function(e){if(e.target.closest('.choice')){go
   if (!CE_JOURNEY.resonance) return;
   var PRIMARY = window.PATH;
   var ALL_RESONANCES = {"new-atheist": ["classical-atheist", "materialist", "scientist"], "agnostic": ["deist", "scientist", "spiritual-seeker"], "secular-humanist": ["apatheist", "ex-believer", "materialist"], "antitheist": ["new-atheist", "ex-believer", "classical-atheist"], "materialist": ["classical-atheist", "scientist", "new-atheist"], "muslim-doubts": ["ex-believer", "agnostic", "deist"], "apatheist": ["secular-humanist", "agnostic", "deist"], "deist": ["agnostic", "spiritual-seeker", "scientist"], "scientist": ["classical-atheist", "materialist", "agnostic"], "classical-atheist": ["scientist", "materialist", "new-atheist"], "ex-believer": ["muslim-doubts", "agnostic", "spiritual-seeker"], "spiritual-seeker": ["deist", "agnostic", "ex-believer"], "freethinker": ["scientist", "agnostic", "classical-atheist"], "true-muslim": ["muslim-doubts", "ex-believer", "freethinker"]};
-  var PATH_NAMES = {"new-atheist": "The New Atheist", "agnostic": "The Agnostic", "secular-humanist": "The Secular Humanist", "antitheist": "The Antitheist", "materialist": "The Materialist", "muslim-doubts": "The Questioning Muslim", "apatheist": "The Apatheist", "deist": "The Deist", "scientist": "The Scientist", "classical-atheist": "The Classical Atheist", "ex-believer": "The Ex-Believer", "spiritual-seeker": "The Spiritual Seeker", "freethinker": "The Freethinker", "true-muslim": "The Committed Muslim"};
+  var PATH_NAMES = ceT.pathNames || {"new-atheist": "The New Atheist", "agnostic": "The Agnostic", "secular-humanist": "The Secular Humanist", "antitheist": "The Antitheist", "materialist": "The Materialist", "muslim-doubts": "The Questioning Muslim", "apatheist": "The Apatheist", "deist": "The Deist", "scientist": "The Scientist", "classical-atheist": "The Classical Atheist", "ex-believer": "The Ex-Believer", "spiritual-seeker": "The Spiritual Seeker", "freethinker": "The Freethinker", "true-muslim": "The Committed Muslim"};
   var PATH_FILES = {};
   Object.keys(PATH_NAMES).forEach(function(k) { PATH_FILES[k] = (window.ceHomeUrl || "/") + "journey/" + k + "/"; });
+  var EXPLORE = ceStr('explore', 'Explore →');
 
   window.addEventListener("load", function() {
     // Get secondary paths from quiz result or fallback to defaults
@@ -128,7 +145,7 @@ document.addEventListener('click',function(e){if(e.target.closest('.choice')){go
       var item = document.createElement("a");
       item.href = file;
       item.style.cssText = "display:flex;align-items:center;justify-content:space-between;padding:0.6rem 0.8rem;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:8px;text-decoration:none;transition:border-color 0.15s;";
-      item.innerHTML = "<span style=\"font-size:0.8rem;color:rgba(242,238,255,0.6);\">" + name + "</span><span style=\"font-size:0.7rem;color:rgba(12,212,224,0.5);\">Explore →</span>";
+      item.innerHTML = "<span style=\"font-size:0.8rem;color:rgba(242,238,255,0.6);\">" + name + "</span><span style=\"font-size:0.7rem;color:rgba(12,212,224,0.5);\">" + EXPLORE + "</span>";
       item.onmouseover = function() { this.style.borderColor = "rgba(12,212,224,0.2)"; };
       item.onmouseout  = function() { this.style.borderColor = "rgba(255,255,255,0.05)"; };
       container.appendChild(item);
@@ -147,7 +164,7 @@ document.addEventListener('click',function(e){if(e.target.closest('.choice')){go
     if (!articles || !articles.length) return null;
     var w = document.createElement('div');
     w.className = 'sw go-deeper-widget';
-    w.innerHTML = '<span class="sw-title" style="color:rgba(12,212,224,0.6);">Go deeper</span>';
+    w.innerHTML = '<span class="sw-title" style="color:rgba(12,212,224,0.6);">' + ceStr('goDeeper', 'Go deeper') + '</span>';
     var list = document.createElement('div');
     list.className = 'rel-list';
     articles.slice(0,3).forEach(function(a){
@@ -196,8 +213,8 @@ document.addEventListener('click',function(e){if(e.target.closest('.choice')){go
 (function() {
   if (!CE_JOURNEY.shareName) return;
   var PATH_NAME  = CE_JOURNEY.shareName;
-  var SITE_NAME  = "Compelling Evidence";
-  var SHARE_TEXT = "I followed the evidence honestly on the " + PATH_NAME + " path | " + SITE_NAME;
+  var SITE_NAME  = ceStr('siteName', 'Compelling Evidence');
+  var SHARE_TEXT = ceStr('shareText', 'I followed the evidence honestly on the %s path | %s').replace('%s', PATH_NAME).replace('%s', SITE_NAME);
   var SHARE_URL  = window.location.href;
 
   function buildShareBlock() {
@@ -229,11 +246,16 @@ document.addEventListener('click',function(e){if(e.target.closest('.choice')){go
     badgeInner.style.cssText = 'position:relative;z-index:1;text-align:center;';
     badgeInner.innerHTML = [
       '<div style="font-size:2.2rem;margin-bottom:0.3rem;">✦</div>',
-      '<div style="font-family:\'Playfair Display\',serif;font-size:0.9rem;font-weight:700;color:rgba(245,197,24,0.9);letter-spacing:0.05em;">Journey Complete</div>',
+      '<div style="font-family:\'Playfair Display\',serif;font-size:0.9rem;font-weight:700;color:rgba(245,197,24,0.9);letter-spacing:0.05em;">' + ceStr('complete', 'Journey Complete') + '</div>',
       '<div style="font-family:\'DM Sans\',sans-serif;font-size:0.72rem;color:rgba(245,197,24,0.5);letter-spacing:0.12em;text-transform:uppercase;margin-top:0.15rem;">' + PATH_NAME + '</div>',
-      '<div style="font-family:\'DM Sans\',sans-serif;font-size:0.65rem;color:rgba(242,238,255,0.25);margin-top:0.6rem;">Tap to share</div>'
+      '<div style="font-family:\'DM Sans\',sans-serif;font-size:0.65rem;color:rgba(242,238,255,0.25);margin-top:0.6rem;">' + ceStr('tapToShare', 'Tap to share') + '</div>'
     ].join('');
     badge.appendChild(badgeInner);
+    badge.setAttribute('role', 'button');
+    badge.setAttribute('tabindex', '0');
+    badge.setAttribute('aria-label', ceStr('shareBadge', 'Journey complete. Show the share options'));
+    badge.setAttribute('aria-controls', 'ce-share-row');
+    badge.setAttribute('aria-expanded', 'false');
     badge.addEventListener('click', openShareMenu);
     wrap.appendChild(badge);
 
@@ -262,16 +284,16 @@ document.addEventListener('click',function(e){if(e.target.closest('.choice')){go
         }
       },
       {
-        name: 'Copy link',
+        name: ceStr('copyLink', 'Copy link'),
         color: 'rgba(12,212,224,0.06)',
         border: 'rgba(12,212,224,0.18)',
         icon: '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>',
         fn: function(btn) {
           navigator.clipboard.writeText(SHARE_URL).then(function() {
             var orig = btn.querySelector('.share-label');
-            if (orig) { orig.textContent = 'Copied!'; setTimeout(function(){ orig.textContent = 'Copy link'; }, 2000); }
+            if (orig) { orig.textContent = ceStr('copied', 'Copied!'); setTimeout(function(){ orig.textContent = ceStr('copyLink', 'Copy link'); }, 2000); }
           }).catch(function() {
-            prompt('Copy this link:', SHARE_URL);
+            prompt(ceStr('copyPrompt', 'Copy this link:'), SHARE_URL);
           });
         }
       }
@@ -298,7 +320,7 @@ document.addEventListener('click',function(e){if(e.target.closest('.choice')){go
       var nativeBtn = document.createElement('button');
       nativeBtn.style.cssText = platforms[0].style + ';background:rgba(107,47,160,0.08);border:1px solid rgba(107,47,160,0.2);';
       nativeBtn.style.cssText = 'display:inline-flex;align-items:center;gap:0.45rem;padding:0.55rem 1.1rem;border-radius:50px;cursor:pointer;background:rgba(107,47,160,0.08);border:1px solid rgba(107,47,160,0.2);color:rgba(242,238,255,0.7);font-family:\'DM Sans\',sans-serif;font-size:0.78rem;';
-      nativeBtn.innerHTML = '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg><span>Share</span>';
+      nativeBtn.innerHTML = '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg><span>' + ceStr('share', 'Share') + '</span>';
       nativeBtn.addEventListener('click', function() {
         navigator.share({ title: SITE_NAME, text: SHARE_TEXT, url: SHARE_URL }).catch(function(){});
       });
@@ -314,6 +336,8 @@ document.addEventListener('click',function(e){if(e.target.closest('.choice')){go
     if (row) {
       var isOpen = row.style.display === 'flex';
       row.style.display = isOpen ? 'none' : 'flex';
+      var badge = document.getElementById('ce-completion-badge');
+      if (badge) badge.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
     }
   }
 

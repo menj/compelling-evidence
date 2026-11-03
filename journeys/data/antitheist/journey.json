@@ -1,0 +1,339 @@
+{
+ "key": "antitheist",
+ "seo": {
+  "title": "Compelling Evidence: The Antitheist Path",
+  "description": "For those opposed to religion: A careful examination of whether the problem is God or just bad versions of God. Evidence, not evangelism.",
+  "og:title": "The Antitheist Path | Compelling Evidence",
+  "og:description": "Is the problem God, or just bad versions of God? A careful examination of the evidence for those opposed to religion.",
+  "og:type": "article",
+  "og:url": "https://compelling-evidence.com/journeys/antitheist/",
+  "og:site_name": "Compelling Evidence",
+  "twitter:card": "summary_large_image",
+  "twitter:title": "The Antitheist Path | Compelling Evidence",
+  "twitter:description": "Is the problem God, or just bad versions of God? Evidence, not evangelism.",
+  "canonical": "https://compelling-evidence.com/journeys/antitheist/"
+ },
+ "schema": [
+  {
+   "@context": "https://schema.org",
+   "@type": "Organization",
+   "name": "Compelling Evidence",
+   "url": "https://compelling-evidence.com",
+   "logo": "https://compelling-evidence.com/assets/logo.png"
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "Article",
+   "headline": "The Antitheist Path | Compelling Evidence",
+   "description": "For those opposed to religion: A careful examination of whether the problem is God or just bad versions of God. Evidence, not evangelism.",
+   "url": "https://compelling-evidence.com/journeys/antitheist/",
+   "author": {
+    "@type": "Organization",
+    "name": "Compelling Evidence"
+   },
+   "publisher": {
+    "@type": "Organization",
+    "name": "Compelling Evidence"
+   },
+   "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://compelling-evidence.com/journeys/antitheist/"
+   },
+   "keywords": "antitheism, religion criticism, arguments for God, philosophy of religion, secularism, Islam",
+   "inLanguage": "en",
+   "isAccessibleForFree": true
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "WebPage",
+   "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [
+     ".art-title",
+     ".art-body"
+    ]
+   }
+  }
+ ],
+ "shared_css": true,
+ "v2_preview": {
+  "icon": "🔭",
+  "title": "Volume II: <em>Which God?</em>",
+  "sub": "The God the evidence actually reveals, and not the God institutions corrupted.",
+  "intro": "While Volume II is being written, you can explore the articles that will form its foundation:",
+  "links": [
+   {
+    "href": "/articles/does-god-communicate-with-humanity/",
+    "text": "Does God communicate with humanity?"
+   },
+   {
+    "href": "/articles/what-would-authentic-revelation-look-like/",
+    "text": "What would authentic revelation look like?"
+   },
+   {
+    "href": "/articles/how-do-we-evaluate-competing-claims-to-revelation/",
+    "text": "How do we evaluate competing claims?"
+   }
+  ]
+ },
+ "nav": {
+  "path_label": "The Antitheist",
+  "dots": [
+   {
+    "id": "horizon",
+    "title": "Horizon"
+   },
+   {
+    "id": "singularity",
+    "title": "Singularity"
+   },
+   {
+    "id": "calibration",
+    "title": "Calibration"
+   },
+   {
+    "id": "emergence",
+    "title": "Emergence"
+   },
+   {
+    "id": "constant",
+    "title": "Constant"
+   },
+   {
+    "id": "entropy",
+    "title": "Entropy"
+   },
+   {
+    "id": "signal",
+    "title": "Signal"
+   },
+   {
+    "id": "resonance",
+    "title": "Resonance"
+   },
+   {
+    "id": "transmission",
+    "title": "Transmission"
+   },
+   {
+    "id": "conclusion",
+    "title": "Conclusion",
+    "style": "background:rgba(245,197,24,0.15);"
+   },
+   {
+    "sep": true
+   },
+   {
+    "id": "v2-preview",
+    "title": "Volume II",
+    "v2": true
+   }
+  ]
+ },
+ "screens": [
+  {
+   "id": "horizon",
+   "label": "Horizon"
+  },
+  {
+   "id": "singularity",
+   "label": "Singularity"
+  },
+  {
+   "id": "calibration",
+   "label": "Calibration"
+  },
+  {
+   "id": "emergence",
+   "label": "Emergence"
+  },
+  {
+   "id": "constant",
+   "label": "Constant"
+  },
+  {
+   "id": "entropy",
+   "label": "Entropy"
+  },
+  {
+   "id": "signal",
+   "label": "Signal"
+  },
+  {
+   "id": "resonance",
+   "label": "Resonance"
+  },
+  {
+   "id": "transmission",
+   "label": "Transmission"
+  },
+  {
+   "id": "conclusion",
+   "label": "Conclusion"
+  },
+  {
+   "id": "v2-preview",
+   "template": "v2-preview",
+   "label": "Volume II"
+  }
+ ],
+ "journey": {
+  "star": "✶",
+  "resonance": true,
+  "shareName": "The Antitheist",
+  "articles": {
+   "horizon": [
+    {
+     "href": "/articles/religion-cause-harm/",
+     "title": "Hasn't Religion Caused Enough Harm?",
+     "label": "The harm objection"
+    },
+    {
+     "href": "/articles/no-compulsion-in-religion/",
+     "title": "\"No Compulsion In Religion\": Who Does It Protect?",
+     "label": "The key verse examined"
+    },
+    {
+     "href": "/articles/the-anger-is-real/",
+     "title": "The Anger Is Real",
+     "label": "Engaging moral outrage"
+    },
+    {
+     "href": "/articles/does-god-answer-prayer/",
+     "label": "If God answers prayer, why can't you prove it?"
+    }
+   ],
+   "singularity": [
+    {
+     "href": "/articles/why-does-anything-exist/",
+     "title": "Why Does Anything Exist Rather Than Nothing?",
+     "label": "Cosmological argument"
+    },
+    {
+     "href": "/articles/big-bang-creation/",
+     "title": "The Universe Had a Beginning",
+     "label": "The scientific evidence"
+    },
+    {
+     "href": "/articles/existence-come-out-of-nothing/",
+     "title": "Can Existence Come Out Of Nothing?",
+     "label": "Hawking & Krauss addressed"
+    }
+   ],
+   "calibration": [
+    {
+     "href": "/articles/fine-tuning-universe/",
+     "title": "The Universe Is Absurdly Specific",
+     "label": "Fine-tuning argument"
+    },
+    {
+     "href": "/articles/multiverse-objection/",
+     "title": "Does the Multiverse Explain Fine-Tuning?",
+     "label": "The main objection"
+    }
+   ],
+   "emergence": [
+    {
+     "href": "/articles/consciousness-hard-problem/",
+     "title": "The One Thing Neuroscience Cannot Explain",
+     "label": "The Hard Problem"
+    },
+    {
+     "href": "/articles/near-death-experiences/",
+     "title": "Near-Death Experiences: Evidence for What?",
+     "label": "Consciousness beyond death"
+    },
+    {
+     "href": "/articles/religious-experience-neuroscience/",
+     "title": "Can Neuroscience Explain Religious Experience?",
+     "label": "Neurotheology"
+    }
+   ],
+   "entropy": [
+    {
+     "href": "/articles/problem-of-evil/",
+     "title": "If God Is Good, Why Suffering?",
+     "label": "The core objection"
+    },
+    {
+     "href": "/articles/apostasy-and-freedom/",
+     "title": "Why Can't People Leave Without Consequences?",
+     "label": "Apostasy and freedom"
+    },
+    {
+     "href": "/articles/religion-cause-harm/",
+     "title": "Hasn't Religion Caused Enough Harm?",
+     "label": "The harm argument"
+    }
+   ],
+   "constant": [
+    {
+     "href": "/articles/moral-argument-god/",
+     "title": "Where Do Moral Facts Live?",
+     "label": "The moral argument"
+    },
+    {
+     "href": "/articles/ethics-without-god/",
+     "title": "Can You Ground Ethics Without God?",
+     "label": "Secular ethics tested"
+    },
+    {
+     "href": "/articles/ethics-morality/",
+     "title": "What Ethics In Irreligion?",
+     "label": "The humanist case"
+    }
+   ],
+   "signal": [
+    {
+     "href": "/articles/argument-from-reason/",
+     "title": "If Your Brain Is Just Atoms, Can You Trust It?",
+     "label": "Argument from reason"
+    },
+    {
+     "href": "/articles/science-and-religion/",
+     "title": "What Science Cannot Tell You",
+     "label": "Limits of scientism"
+    },
+    {
+     "href": "/articles/god-as-psychological-projection/",
+     "title": "Is God Just a Projection?",
+     "label": "Freud & Feuerbach"
+    }
+   ],
+   "resonance": [
+    {
+     "href": "/articles/ontological-argument/",
+     "title": "The God Who Cannot Not Exist",
+     "label": "Ontological argument"
+    },
+    {
+     "href": "/articles/why-humans-believe-in-god/",
+     "title": "Why Do Human Beings Believe In God?",
+     "label": "The universality of belief"
+    },
+    {
+     "href": "/articles/purpose-of-life/",
+     "title": "What Is the Purpose of Life?",
+     "label": "Purpose and meaning"
+    }
+   ],
+   "transmission": [
+    {
+     "href": "/articles/does-god-communicate-with-humanity/",
+     "title": "Does God Communicate With Humanity?",
+     "label": "The communication question"
+    },
+    {
+     "href": "/articles/what-would-authentic-revelation-look-like/",
+     "title": "What Would Authentic Revelation Look Like?",
+     "label": "Criteria for revelation"
+    },
+    {
+     "href": "/articles/how-do-we-evaluate-competing-claims-to-revelation/",
+     "title": "Evaluating Competing Claims",
+     "label": "Which tradition?"
+    }
+   ]
+  }
+ }
+}

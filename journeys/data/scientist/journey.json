@@ -1,0 +1,395 @@
+{
+ "key": "scientist",
+ "seo": {
+  "title": "Compelling Evidence: The Scientist Path",
+  "description": "For scientists who value evidence: What physics, cosmology, and fine-tuning actually reveal about the universe. No appeals to authority, just data and inference.",
+  "og:title": "The Scientist Path | Compelling Evidence",
+  "og:description": "What physics, cosmology, and fine-tuning actually reveal. No appeals to authority, just data and inference for evidence-driven thinkers.",
+  "og:type": "article",
+  "og:url": "https://compelling-evidence.com/journeys/scientist/",
+  "og:site_name": "Compelling Evidence",
+  "twitter:card": "summary_large_image",
+  "twitter:title": "The Scientist Path | Compelling Evidence",
+  "twitter:description": "What physics and cosmology actually reveal. No appeals to authority, just data and inference.",
+  "canonical": "https://compelling-evidence.com/journeys/scientist/"
+ },
+ "schema": [
+  {
+   "@context": "https://schema.org",
+   "@type": "Organization",
+   "name": "Compelling Evidence",
+   "url": "https://compelling-evidence.com",
+   "logo": "https://compelling-evidence.com/assets/logo.png",
+   "sameAs": []
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "Article",
+   "headline": "The Scientist Path | Compelling Evidence",
+   "description": "For scientists who value evidence: What physics, cosmology, and fine-tuning actually reveal about the universe. No appeals to authority, just data and inference.",
+   "url": "https://compelling-evidence.com/journeys/scientist/",
+   "author": {
+    "@type": "Organization",
+    "name": "Compelling Evidence"
+   },
+   "publisher": {
+    "@type": "Organization",
+    "name": "Compelling Evidence"
+   },
+   "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://compelling-evidence.com/journeys/scientist/"
+   },
+   "keywords": "science and religion, cosmology, fine-tuning, physics, Big Bang, entropy, scientific evidence for God, Islam",
+   "inLanguage": "en",
+   "isAccessibleForFree": true
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "What does physics actually reveal about the origin of the universe?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Modern cosmology points to a definite beginning of space, time, and matter approximately 13.8 billion years ago. The Big Bang was not an explosion in space but of space itself, requiring a cause beyond the physical universe. The Borde-Guth-Vilenkin theorem demonstrates that any universe which has been expanding throughout its history must have a past boundary: a beginning."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What is cosmic fine-tuning and why does it matter?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Fine-tuning refers to the precise calibration of physical constants necessary for life. Change the strong nuclear force by 0.5% or the cosmological constant, which is about 120 orders of magnitude smaller than naive theoretical estimates, and the universe either collapses or expands too fast for galaxies to form. The odds of these constants falling within life-permitting ranges by chance are astronomically small, comparable to hitting a single atom with a dart thrown across the observable universe."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Can the universe exist without a cause?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The claim that the universe is self-existent or uncaused contradicts both empirical evidence and logical principle. Everything that begins to exist has a cause; the universe began to exist; therefore, the universe has a cause. This cause must be timeless (outside time), spaceless (outside space), immaterial (not composed of matter), and enormously powerful: characteristics consistent with the concept of God."
+     }
+    }
+   ]
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Compelling Evidence",
+     "item": "https://compelling-evidence.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Journeys",
+     "item": "https://compelling-evidence.com/journeys/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "The Scientist Path",
+     "item": "https://compelling-evidence.com/journeys/scientist/"
+    }
+   ]
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "WebPage",
+   "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [
+     ".art-title",
+     ".art-body"
+    ]
+   }
+  }
+ ],
+ "shared_css": true,
+ "v2_preview": {
+  "icon": "🔭",
+  "title": "Volume II: <em>Which God?</em>",
+  "sub": "Textual preservation, historical claims, internal consistency; all measurable.",
+  "intro": "While Volume II is being written, you can explore the articles that will form its foundation:",
+  "links": [
+   {
+    "href": "/articles/does-god-communicate-with-humanity/",
+    "text": "Does God communicate with humanity?"
+   },
+   {
+    "href": "/articles/what-would-authentic-revelation-look-like/",
+    "text": "What would authentic revelation look like?"
+   },
+   {
+    "href": "/articles/how-do-we-evaluate-competing-claims-to-revelation/",
+    "text": "How do we evaluate competing claims?"
+   }
+  ]
+ },
+ "nav": {
+  "path_label": "The Scientist",
+  "dots": [
+   {
+    "id": "horizon",
+    "title": "Horizon"
+   },
+   {
+    "id": "singularity",
+    "title": "Singularity"
+   },
+   {
+    "id": "calibration",
+    "title": "Calibration"
+   },
+   {
+    "id": "emergence",
+    "title": "Emergence"
+   },
+   {
+    "id": "constant",
+    "title": "Constant"
+   },
+   {
+    "id": "entropy",
+    "title": "Entropy"
+   },
+   {
+    "id": "signal",
+    "title": "Signal"
+   },
+   {
+    "id": "resonance",
+    "title": "Resonance"
+   },
+   {
+    "id": "transmission",
+    "title": "Transmission"
+   },
+   {
+    "id": "conclusion",
+    "title": "Conclusion",
+    "style": "background:rgba(245,197,24,0.15);"
+   },
+   {
+    "sep": true
+   },
+   {
+    "id": "v2-preview",
+    "title": "Volume II",
+    "v2": true
+   }
+  ]
+ },
+ "screens": [
+  {
+   "id": "horizon",
+   "label": "Horizon"
+  },
+  {
+   "id": "singularity",
+   "label": "Singularity"
+  },
+  {
+   "id": "calibration",
+   "label": "Calibration"
+  },
+  {
+   "id": "emergence",
+   "label": "Emergence"
+  },
+  {
+   "id": "constant",
+   "label": "Constant"
+  },
+  {
+   "id": "entropy",
+   "label": "Entropy"
+  },
+  {
+   "id": "signal",
+   "label": "Signal"
+  },
+  {
+   "id": "resonance",
+   "label": "Resonance"
+  },
+  {
+   "id": "transmission",
+   "label": "Transmission"
+  },
+  {
+   "id": "conclusion",
+   "label": "Conclusion"
+  },
+  {
+   "id": "v2-preview",
+   "template": "v2-preview",
+   "label": "Volume II"
+  }
+ ],
+ "journey": {
+  "star": "✶",
+  "resonance": true,
+  "shareName": "The Scientist",
+  "articles": {
+   "horizon": [
+    {
+     "href": "/articles/science-and-religion/",
+     "title": "What Science Cannot Tell You",
+     "label": "Limits of scientism"
+    },
+    {
+     "href": "/articles/evolution-explains-design/",
+     "title": "Doesn't Evolution Explain Design?",
+     "label": "Evolution objection"
+    },
+    {
+     "href": "/articles/islam-and-science/",
+     "title": "Islam and the Scientific Tradition",
+     "label": "History of Islamic science"
+    }
+   ],
+   "singularity": [
+    {
+     "href": "/articles/why-does-anything-exist/",
+     "title": "Why Does Anything Exist Rather Than Nothing?",
+     "label": "Cosmological argument"
+    },
+    {
+     "href": "/articles/big-bang-creation/",
+     "title": "The Universe Had a Beginning",
+     "label": "The scientific evidence"
+    },
+    {
+     "href": "/articles/existence-come-out-of-nothing/",
+     "title": "Can Existence Come Out Of Nothing?",
+     "label": "Hawking & Krauss addressed"
+    }
+   ],
+   "calibration": [
+    {
+     "href": "/articles/fine-tuning-universe/",
+     "title": "The Universe Is Absurdly Specific",
+     "label": "Fine-tuning data"
+    },
+    {
+     "href": "/articles/scientific-miracles-quran/",
+     "title": "Scientific Miracles In The Quran",
+     "label": "Claims evaluated"
+    },
+    {
+     "href": "/articles/multiverse-objection/",
+     "title": "Does the Multiverse Explain Fine-Tuning?",
+     "label": "The main escape route"
+    }
+   ],
+   "emergence": [
+    {
+     "href": "/articles/consciousness-hard-problem/",
+     "title": "The One Thing Neuroscience Cannot Explain",
+     "label": "The Hard Problem"
+    },
+    {
+     "href": "/articles/religious-experience-neuroscience/",
+     "title": "Can Neuroscience Explain Religion?",
+     "label": "Neurotheology"
+    },
+    {
+     "href": "/articles/evolution-and-islam/",
+     "title": "Evolution and Islamic Theology",
+     "label": "The compatibility question"
+    }
+   ],
+   "entropy": [
+    {
+     "href": "/articles/problem-of-evil/",
+     "title": "If God Is Good, Why Is There Suffering?",
+     "label": "Problem of evil"
+    },
+    {
+     "href": "/articles/problem-of-evil-response/",
+     "title": "Earthquakes, Cancer, and a Good God",
+     "label": "Natural evil"
+    },
+    {
+     "href": "/articles/why-create-knowing-suffering/",
+     "title": "Why Create Knowing We Would Suffer?",
+     "label": "The creation problem"
+    }
+   ],
+   "constant": [
+    {
+     "href": "/articles/moral-argument-god/",
+     "title": "Where Do Moral Facts Live?",
+     "label": "Moral argument"
+    },
+    {
+     "href": "/articles/objective-morality/",
+     "title": "Is Morality Just Opinion?",
+     "label": "Moral realism"
+    },
+    {
+     "href": "/articles/euthyphro-dilemma/",
+     "title": "Is Goodness What God Commands?",
+     "label": "Euthyphro answered"
+    }
+   ],
+   "signal": [
+    {
+     "href": "/articles/argument-from-reason/",
+     "title": "If Your Brain Is Just Atoms, Can You Trust It?",
+     "label": "Argument from reason"
+    },
+    {
+     "href": "/articles/science-and-religion/",
+     "title": "What Science Cannot Tell You",
+     "label": "Limits of scientism"
+    },
+    {
+     "href": "/articles/god-as-psychological-projection/",
+     "title": "Is God Just a Projection?",
+     "label": "Freud & Feuerbach"
+    }
+   ],
+   "resonance": [
+    {
+     "href": "/articles/ontological-argument/",
+     "title": "The God Who Cannot Not Exist",
+     "label": "Ontological argument"
+    },
+    {
+     "href": "/articles/why-humans-believe-in-god/",
+     "title": "Why Do Human Beings Believe In God?",
+     "label": "The universality of belief"
+    },
+    {
+     "href": "/articles/purpose-of-life/",
+     "title": "What Is the Purpose of Life?",
+     "label": "Purpose and meaning"
+    }
+   ],
+   "transmission": [
+    {
+     "href": "/articles/quran-historical-reliability/",
+     "title": "How the Quran Was Preserved",
+     "label": "The manuscript evidence"
+    },
+    {
+     "href": "/articles/quran-written-by-humans/",
+     "title": "Could Humans Have Written The Quran?",
+     "label": "Authorship tested"
+    },
+    {
+     "href": "/articles/scientific-miracles-quran/",
+     "title": "Scientific Miracles In The Quran",
+     "label": "Do the claims hold up?"
+    }
+   ]
+  }
+ }
+}

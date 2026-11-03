@@ -1,0 +1,394 @@
+{
+ "key": "muslim-doubts",
+ "seo": {
+  "title": "Compelling Evidence: The Questioning Muslim Path",
+  "description": "For Muslims with doubts: Understanding your questions with intellectual honesty. Evidence, empathy, and the path through uncertainty without losing yourself.",
+  "og:title": "The Questioning Muslim Path | Compelling Evidence",
+  "og:description": "Understanding your questions with intellectual honesty. Evidence, empathy, and the path through uncertainty.",
+  "og:type": "article",
+  "og:url": "https://compelling-evidence.com/journeys/muslim-doubts/",
+  "og:site_name": "Compelling Evidence",
+  "twitter:card": "summary_large_image",
+  "twitter:title": "The Questioning Muslim Path | Compelling Evidence",
+  "twitter:description": "Evidence, empathy, and the path through uncertainty for Muslims with doubts.",
+  "canonical": "https://compelling-evidence.com/journeys/muslim-doubts/"
+ },
+ "schema": [
+  {
+   "@context": "https://schema.org",
+   "@type": "Organization",
+   "name": "Compelling Evidence",
+   "url": "https://compelling-evidence.com",
+   "logo": "https://compelling-evidence.com/assets/logo.png",
+   "sameAs": []
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "Article",
+   "headline": "The Questioning Muslim Path | Compelling Evidence",
+   "description": "For Muslims with doubts: Understanding your questions with intellectual honesty. Evidence, empathy, and the path through uncertainty without losing yourself.",
+   "url": "https://compelling-evidence.com/journeys/muslim-doubts/",
+   "author": {
+    "@type": "Organization",
+    "name": "Compelling Evidence"
+   },
+   "publisher": {
+    "@type": "Organization",
+    "name": "Compelling Evidence"
+   },
+   "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://compelling-evidence.com/journeys/muslim-doubts/"
+   },
+   "keywords": "Islam, Muslim doubts, religious doubt, Islamic faith, evidence for Islam, leaving Islam, apostasy, Quran",
+   "inLanguage": "en",
+   "isAccessibleForFree": true
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "Is it okay to have doubts about Islam?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Doubt is not the enemy of faith: complacency is. The Quran itself instructs believers to reflect, examine, and think. The Prophet's companions asked questions, including deeply uncomfortable ones. Islam has a long scholarly tradition engaging with doubt and skepticism. What matters is how you respond to doubt: with honest inquiry or with suppression."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Why do people leave Islam?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Research reveals that leaving Islam is rarely casual. Common factors include: traumatic religious experiences, intellectual questions that went unanswered, moral objections to specific practices, and community pressure that backfired. Understanding these patterns matters, both for those experiencing doubt and for communities that want to retain members through understanding rather than coercion."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Does science contradict Islam?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "No, and historically, Islamic civilization preserved and advanced scientific knowledge when Europe was in its Dark Ages. The Quran contains no scientific errors; it makes claims consistent with modern discoveries about the expanding universe, embryonic development, and the water cycle. The question is not whether Islam and science conflict, but whether you have been exposed to the strongest version of both."
+     }
+    }
+   ]
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Compelling Evidence",
+     "item": "https://compelling-evidence.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Journeys",
+     "item": "https://compelling-evidence.com/journeys/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "The Questioning Muslim Path",
+     "item": "https://compelling-evidence.com/journeys/muslim-doubts/"
+    }
+   ]
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "WebPage",
+   "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [
+     ".art-title",
+     ".art-body"
+    ]
+   }
+  }
+ ],
+ "shared_css": true,
+ "v2_preview": {
+  "icon": "🔭",
+  "title": "Volume II: <em>Which God?</em>",
+  "sub": "Honest examination, and no defensive apologetics, with the same standard you demanded of yourself.",
+  "intro": "While Volume II is being written, you can explore the articles that will form its foundation:",
+  "links": [
+   {
+    "href": "/articles/does-god-communicate-with-humanity/",
+    "text": "Does God communicate with humanity?"
+   },
+   {
+    "href": "/articles/what-would-authentic-revelation-look-like/",
+    "text": "What would authentic revelation look like?"
+   },
+   {
+    "href": "/articles/how-do-we-evaluate-competing-claims-to-revelation/",
+    "text": "How do we evaluate competing claims?"
+   }
+  ]
+ },
+ "nav": {
+  "path_label": "The Questioning Muslim",
+  "dots": [
+   {
+    "id": "horizon",
+    "title": "Horizon"
+   },
+   {
+    "id": "singularity",
+    "title": "Singularity"
+   },
+   {
+    "id": "calibration",
+    "title": "Calibration"
+   },
+   {
+    "id": "emergence",
+    "title": "Emergence"
+   },
+   {
+    "id": "constant",
+    "title": "Constant"
+   },
+   {
+    "id": "entropy",
+    "title": "Entropy"
+   },
+   {
+    "id": "signal",
+    "title": "Signal"
+   },
+   {
+    "id": "resonance",
+    "title": "Resonance"
+   },
+   {
+    "id": "transmission",
+    "title": "Transmission"
+   },
+   {
+    "id": "conclusion",
+    "title": "Conclusion",
+    "style": "background:rgba(245,197,24,0.15);"
+   },
+   {
+    "sep": true
+   },
+   {
+    "id": "v2-preview",
+    "title": "Volume II",
+    "v2": true
+   }
+  ]
+ },
+ "screens": [
+  {
+   "id": "horizon",
+   "label": "Horizon"
+  },
+  {
+   "id": "singularity",
+   "label": "Singularity"
+  },
+  {
+   "id": "calibration",
+   "label": "Calibration"
+  },
+  {
+   "id": "emergence",
+   "label": "Emergence"
+  },
+  {
+   "id": "constant",
+   "label": "Constant"
+  },
+  {
+   "id": "entropy",
+   "label": "Entropy"
+  },
+  {
+   "id": "signal",
+   "label": "Signal"
+  },
+  {
+   "id": "resonance",
+   "label": "Resonance"
+  },
+  {
+   "id": "transmission",
+   "label": "Transmission"
+  },
+  {
+   "id": "conclusion",
+   "label": "Conclusion"
+  },
+  {
+   "id": "v2-preview",
+   "template": "v2-preview",
+   "label": "Volume II"
+  }
+ ],
+ "journey": {
+  "star": "✶",
+  "resonance": true,
+  "shareName": "The Questioning Muslim",
+  "articles": {
+   "horizon": [
+    {
+     "href": "/articles/your-doubts-are-not-a-disease/",
+     "title": "Your Doubts Are Not a Disease",
+     "label": "Doubt is not a disease"
+    },
+    {
+     "href": "/articles/the-good-muslim-paradox/",
+     "title": "The Good Muslim Paradox",
+     "label": "Why deeper study triggers doubt"
+    },
+    {
+     "href": "/articles/doubt-permitted-in-islam/",
+     "title": "Is Doubt Permitted in Islam?",
+     "label": "What the tradition says"
+    },
+    {
+     "href": "/articles/does-god-answer-prayer/",
+     "label": "If God answers prayer, why can't you prove it?"
+    }
+   ],
+   "singularity": [
+    {
+     "href": "/articles/why-does-anything-exist/",
+     "title": "Why Does Anything Exist Rather Than Nothing?",
+     "label": "Cosmological argument"
+    },
+    {
+     "href": "/articles/big-bang-creation/",
+     "title": "The Universe Had a Beginning",
+     "label": "The scientific evidence"
+    },
+    {
+     "href": "/articles/existence-come-out-of-nothing/",
+     "title": "Can Existence Come Out Of Nothing?",
+     "label": "Hawking & Krauss addressed"
+    }
+   ],
+   "calibration": [
+    {
+     "href": "/articles/fine-tuning-universe/",
+     "title": "The Universe Is Absurdly Specific",
+     "label": "Fine-tuning argument"
+    },
+    {
+     "href": "/articles/multiverse-objection/",
+     "title": "Does the Multiverse Explain Fine-Tuning?",
+     "label": "The main objection"
+    }
+   ],
+   "emergence": [
+    {
+     "href": "/articles/consciousness-hard-problem/",
+     "title": "The One Thing Neuroscience Cannot Explain",
+     "label": "The Hard Problem"
+    },
+    {
+     "href": "/articles/near-death-experiences/",
+     "title": "Near-Death Experiences: Evidence for What?",
+     "label": "Consciousness beyond death"
+    },
+    {
+     "href": "/articles/religious-experience-neuroscience/",
+     "title": "Can Neuroscience Explain Religious Experience?",
+     "label": "Neurotheology"
+    }
+   ],
+   "entropy": [
+    {
+     "href": "/articles/problem-of-evil/",
+     "title": "If God Is Good, Why Suffering?",
+     "label": "The core objection"
+    },
+    {
+     "href": "/articles/mercy-harsh-passages/",
+     "title": "Why Are Some Passages So Harsh?",
+     "label": "Harsh verses addressed"
+    },
+    {
+     "href": "/articles/finite-sins-infinite-punishment/",
+     "title": "Is Hell Proportionate?",
+     "label": "Infinite punishment"
+    }
+   ],
+   "constant": [
+    {
+     "href": "/articles/moral-argument-god/",
+     "title": "Where Do Moral Facts Live?",
+     "label": "Moral argument"
+    },
+    {
+     "href": "/articles/objective-morality/",
+     "title": "Is Morality Just Opinion?",
+     "label": "Moral realism"
+    },
+    {
+     "href": "/articles/euthyphro-dilemma/",
+     "title": "Is Goodness What God Commands?",
+     "label": "Euthyphro answered"
+    }
+   ],
+   "signal": [
+    {
+     "href": "/articles/free-will-predestination/",
+     "title": "How Is My Choice Free If God Knew?",
+     "label": "The qadar problem"
+    },
+    {
+     "href": "/articles/scientific-miracles-quran/",
+     "title": "Scientific Miracles In The Quran",
+     "label": "Claims examined"
+    },
+    {
+     "href": "/articles/shirk-unforgivable/",
+     "title": "Why Is Shirk Unforgivable?",
+     "label": "The hardest doctrine"
+    }
+   ],
+   "resonance": [
+    {
+     "href": "/articles/purpose-of-life/",
+     "title": "What Is the Purpose of Life?",
+     "label": "Purpose in Islam"
+    },
+    {
+     "href": "/articles/when-the-presence-fades/",
+     "title": "When the Presence Fades",
+     "label": "Spiritual dryness"
+    },
+    {
+     "href": "/articles/faith-was-just-conditioning/",
+     "title": "Was My Faith Just Conditioning?",
+     "label": "Nature vs nurture"
+    }
+   ],
+   "transmission": [
+    {
+     "href": "/articles/quran-historical-reliability/",
+     "title": "How the Quran Was Preserved",
+     "label": "Textual reliability"
+    },
+    {
+     "href": "/articles/quran-written-by-humans/",
+     "title": "Could Humans Have Written The Quran?",
+     "label": "Authorship question"
+    },
+    {
+     "href": "/articles/hadith-reliability/",
+     "title": "How Reliable Is Hadith Science?",
+     "label": "Hadith methodology"
+    }
+   ]
+  }
+ }
+}

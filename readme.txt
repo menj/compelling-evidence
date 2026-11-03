@@ -6,7 +6,7 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.8.7
+Version: 2.9.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Template: twentytwentyfive
@@ -104,6 +104,15 @@ Appearance > CE Theme Options — 8 tabs:
                   spam scan and trash; reports and security log
 
 == Changelog ==
+
+= 2.9.0 - November 2026 =
+* The 14 journeys are built from one template. Each persona is a data folder in journeys/data/ (journey.json, its own style.css and one HTML file per chapter, the chapter text unchanged), and template-parts/journey/ prints the head, header, chapter wrappers, Volume II preview and scripts. The old journeys/*-journey.html files are gone. A hand-made HTML file in a locale folder still works.
+* Interface text the template and journey.js print sits in journeys/i18n/en.php, so a Malay version needs text only.
+* The journeys now load DM Sans, Cormorant Garamond and the Playfair Display weights they use. Before, only Playfair 400 loaded and the rest of the text used system fallbacks, so the pages now look as designed.
+* Choice cards, reading-path steps, header dots, the logo and the completion badge work from the keyboard: Tab reaches them, Enter or Space presses them, and focus moves to the new chapter.
+* The Volume II preview on the New Atheist and Freethinker journeys showed a blank page. A missing closing tag put it inside the conclusion.
+* On phones the meta row under each chapter title wraps, so the Scientist path badge no longer runs past the right edge.
+* The quiz sends quiz_abandon with a keepalive fetch when the browser refuses the beacon.
 
 = 2.8.7 - November 2026 =
 * Each persona journey now shows one chapter at a time. The stylesheets never hid the inactive chapters, so every journey rendered all of them as one long page, and Next or a sidebar step only jumped back to the top. `journey-base.css`, which every journey loads, now hides every `.screen` except the one `goTo()` marks active.

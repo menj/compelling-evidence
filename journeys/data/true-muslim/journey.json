@@ -1,0 +1,258 @@
+{
+ "key": "true-muslim",
+ "seo": {
+  "title": "Compelling Evidence: The Committed Muslim Path",
+  "description": "For committed Muslims: Strengthening your faith with rational foundations. Evidence from physics, philosophy, and moral reasoning that supports Islamic theism.",
+  "og:title": "The Committed Muslim Path | Compelling Evidence",
+  "og:description": "Strengthening your faith with rational foundations. Evidence from physics, philosophy, and moral reasoning.",
+  "og:type": "article",
+  "og:url": "https://compelling-evidence.com/journeys/true-muslim/",
+  "og:site_name": "Compelling Evidence",
+  "twitter:card": "summary_large_image",
+  "twitter:title": "The Committed Muslim Path | Compelling Evidence",
+  "twitter:description": "Evidence from physics, philosophy, and moral reasoning that supports Islamic theism.",
+  "canonical": "https://compelling-evidence.com/journeys/true-muslim/"
+ },
+ "schema": [
+  {
+   "@context": "https://schema.org",
+   "@type": "Organization",
+   "name": "Compelling Evidence",
+   "url": "https://compelling-evidence.com",
+   "logo": "https://compelling-evidence.com/assets/logo.png"
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "Article",
+   "headline": "The Committed Muslim Path | Compelling Evidence",
+   "description": "For committed Muslims: Strengthening your faith with rational foundations. Evidence from physics, philosophy, and moral reasoning that supports Islamic theism.",
+   "url": "https://compelling-evidence.com/journeys/true-muslim/",
+   "author": {
+    "@type": "Organization",
+    "name": "Compelling Evidence"
+   },
+   "publisher": {
+    "@type": "Organization",
+    "name": "Compelling Evidence"
+   },
+   "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://compelling-evidence.com/journeys/true-muslim/"
+   },
+   "keywords": "Islam, Muslim faith, rational foundations of Islam, Islamic apologetics, dawah, evidence for Islam, Quran, Tawhid",
+   "inLanguage": "en",
+   "isAccessibleForFree": true
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "WebPage",
+   "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [
+     ".art-title",
+     ".art-body"
+    ]
+   }
+  }
+ ],
+ "shared_css": true,
+ "nav": {
+  "path_label": "The Committed Muslim",
+  "logo_ce_style": "font-style:italic;",
+  "dots": [
+   {
+    "id": "foundation",
+    "title": "Foundation"
+   },
+   {
+    "id": "understanding",
+    "title": "Understanding"
+   },
+   {
+    "id": "honesty",
+    "title": "Honesty"
+   },
+   {
+    "id": "equipping",
+    "title": "Equipping"
+   },
+   {
+    "id": "compassion",
+    "title": "Compassion"
+   },
+   {
+    "id": "knowledge",
+    "title": "Knowledge"
+   },
+   {
+    "id": "mission",
+    "title": "Mission"
+   },
+   {
+    "id": "conclusion",
+    "title": "Conclusion",
+    "style": "background:rgba(245,197,24,0.15);"
+   }
+  ]
+ },
+ "screens": [
+  {
+   "id": "foundation",
+   "label": "Foundation"
+  },
+  {
+   "id": "understanding",
+   "label": "Understanding"
+  },
+  {
+   "id": "honesty",
+   "label": "Honesty"
+  },
+  {
+   "id": "equipping",
+   "label": "Equipping"
+  },
+  {
+   "id": "compassion",
+   "label": "Compassion"
+  },
+  {
+   "id": "knowledge",
+   "label": "Knowledge"
+  },
+  {
+   "id": "mission",
+   "label": "Mission"
+  },
+  {
+   "id": "conclusion",
+   "label": "Conclusion"
+  }
+ ],
+ "journey": {
+  "star": "✦",
+  "resonance": false,
+  "shareName": "",
+  "articles": {
+   "foundation": [
+    {
+     "href": "/articles/does-god-exist/",
+     "title": "Does A Higher Power Exist?",
+     "label": "The rational case"
+    },
+    {
+     "href": "/articles/purpose-of-life/",
+     "title": "What Is the Purpose of Life?",
+     "label": "Islamic answer"
+    },
+    {
+     "href": "/articles/why-islam-not-christianity/",
+     "title": "Why Islam and Not Another Religion?",
+     "label": "Comparative argument"
+    }
+   ],
+   "understanding": [
+    {
+     "href": "/articles/your-doubts-are-not-a-disease/",
+     "title": "Your Doubts Are Not a Disease",
+     "label": "What doubters experience"
+    },
+    {
+     "href": "/articles/the-good-muslim-paradox/",
+     "title": "The Good Muslim Paradox",
+     "label": "Why study triggers doubt"
+    },
+    {
+     "href": "/articles/how-muslims-leave-the-sociology/",
+     "title": "How Muslims Actually Leave",
+     "label": "The sociology"
+    }
+   ],
+   "honesty": [
+    {
+     "href": "/articles/doubt-permitted-in-islam/",
+     "title": "Is Doubt Permitted in Islam?",
+     "label": "What the tradition says"
+    },
+    {
+     "href": "/articles/when-the-presence-fades/",
+     "title": "When the Presence Fades",
+     "label": "Spiritual dryness"
+    },
+    {
+     "href": "/articles/faith-was-just-conditioning/",
+     "title": "Was My Faith Just Conditioning?",
+     "label": "The fitrah question"
+    }
+   ],
+   "equipping": [
+    {
+     "href": "/articles/problem-of-evil/",
+     "title": "If God Is Good, Why Suffering?",
+     "label": "The strongest objection"
+    },
+    {
+     "href": "/articles/kill-him-who-changes-religion/",
+     "title": "The Apostasy Hadith: A Direct Response",
+     "label": "The hardest question"
+    },
+    {
+     "href": "/articles/women-in-islam/",
+     "title": "Women, God, and Islamic Law",
+     "label": "The gender objection"
+    }
+   ],
+   "compassion": [
+    {
+     "href": "/articles/religious-trauma/",
+     "title": "When Religion Hurts",
+     "label": "Religious trauma"
+    },
+    {
+     "href": "/articles/the-anger-is-real/",
+     "title": "The Anger Is Real",
+     "label": "Understanding the anger"
+    },
+    {
+     "href": "/articles/when-religion-was-imposed-not-discovered/",
+     "title": "When Religion Was Imposed",
+     "label": "Coercion vs faith"
+    }
+   ],
+   "knowledge": [
+    {
+     "href": "/articles/aisha-age-marriage/",
+     "title": "The Age of Aisha",
+     "label": "The hardest question"
+    },
+    {
+     "href": "/articles/slavery-in-islamic-sources/",
+     "title": "Slavery in Islamic Sources",
+     "label": "Honest engagement"
+    },
+    {
+     "href": "/articles/banu-qurayza-early-violence/",
+     "title": "The Violence of Early Islam",
+     "label": "Historical record"
+    }
+   ],
+   "mission": [
+    {
+     "href": "/articles/the-freethinkers-islam-produced/",
+     "title": "The Freethinkers Islam Produced",
+     "label": "Islam's rationalist tradition"
+    },
+    {
+     "href": "/articles/reading-the-quran-for-the-first-time/",
+     "title": "Reading the Quran for the First Time",
+     "label": "Share this"
+    },
+    {
+     "href": "/articles/quran-literary-argument/",
+     "title": "The Quran as Literary Argument",
+     "label": "The inimitability claim"
+    }
+   ]
+  }
+ }
+}

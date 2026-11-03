@@ -96,10 +96,26 @@ foreach ( array( 'seo.json', 'media.json' ) as $file ) {
 	}
 }
 
-// Journeys (HTML, every locale).
+// Journeys (HTML, every locale): stand-alone files (the quiz, any hand-made
+// translation) and, since 2.9.0, the data folders the journey template reads.
+// A data folder is checked as one page: journey.json, style.css and every
+// chapter body together, as the template prints them.
 $journeys = array_merge( glob( $root . '/journeys/*.html' ), glob( $root . '/journeys/*/*.html' ) );
 foreach ( $journeys as $file ) {
 	$check( 'journey ' . basename( dirname( $file ) ) . '/' . basename( $file ), '', '', file_get_contents( $file ) );
+}
+$journey_data = array_merge( glob( $root . '/journeys/data/*', GLOB_ONLYDIR ), glob( $root . '/journeys/*/data/*', GLOB_ONLYDIR ) );
+if ( ! $journey_data ) {
+	echo "MISSING: no journey data folders in journeys/data/\n";
+	exit( 1 );
+}
+foreach ( $journey_data as $dir ) {
+	$load( $dir . '/journey.json' );
+	$text = file_get_contents( $dir . '/journey.json' ) . ' ' . ( is_readable( $dir . '/style.css' ) ? file_get_contents( $dir . '/style.css' ) : '' );
+	foreach ( glob( $dir . '/screens/*.html' ) as $screen ) {
+		$text .= ' ' . file_get_contents( $screen );
+	}
+	$check( 'journey data ' . substr( $dir, strlen( $root ) + 1 ), '', '', $text );
 }
 
 // Seeded pages and front-end text held in PHP: every string literal and every
