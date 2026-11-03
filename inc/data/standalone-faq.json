@@ -4,7 +4,7 @@
   "quiz_heading": "Questions about the quiz",
   "pages": {
     "quiz": [
-      { "q": "How long does the quiz take?", "a": "You choose. Quick asks 5 questions, Standard asks 10 and Full asks 15. Each one takes a few seconds." },
+      { "q": "How long does the quiz take?", "a": "You choose. Quick asks 5 questions, Standard asks 10 and Full asks 15. If your answers point to the Questioning Muslim or Ex-Believer path, Standard and Full add 1 follow-up question. Each one takes a few seconds." },
       { "q": "Do I have to answer every question?", "a": "No. Every question has a skip. Pick what is closest to you and leave out anything you would rather not say." },
       { "q": "Where do my answers go?", "a": "Your answers stay in your browser, which also keeps your place until you finish or restart. The site records when a quiz starts, the path and mode when it finishes, and how many questions were answered if you leave early. It never asks for your name or email." },
       { "q": "What does the result mean?", "a": "It is a starting point. Your answers are matched on your device against 14 paths, and the closest one is shown with the next closest beside it. You can open any other path from the paths page whenever you like." },

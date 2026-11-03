@@ -338,6 +338,28 @@ foreach ( glob( $ROOT . '/journeys/data/*/journey.json' ) as $f ) {
 	if ( empty( find( $data['@graph'], 'WebPage' )['speakable'] ) ) bad( "journey $key", 'speakable lost' );
 }
 
+// A journey served from a stand-alone HTML file (no data folder) gets the
+// FAQ section and its FAQPage from the same data, and loses the file's own.
+$GLOBALS['ctx'] = $page( 'journey/agnostic', 'agnostic', 'page-journey.php' );
+$surl = home_url( '/journeys/agnostic/' );
+$src  = '<html><head><title>x</title><script type="application/ld+json">' . json_encode( [ '@context' => 'https://schema.org', '@graph' => [
+	[ '@type' => 'WebSite', '@id' => 'https://ce.test/#website', 'name' => 'Compelling Evidence', 'url' => 'https://ce.test/' ],
+	[ '@type' => 'WebPage', '@id' => $surl . '#webpage', 'url' => $surl, 'name' => 'x', 'isPartOf' => [ '@id' => 'https://ce.test/#website' ] ],
+	[ '@type' => 'FAQPage', '@id' => $surl . '#old', 'mainEntity' => [ [ '@type' => 'Question', 'name' => 'Hidden old question?', 'acceptedAnswer' => [ '@type' => 'Answer', 'text' => 'x' ] ] ] ],
+] ] ) . '</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[]}</script></head><body><h1>x</h1></body></html>';
+$out = ce_standalone_html_seo( ce_standalone_faq_html_source( $src, 'agnostic', $surl ), $surl, 'agnostic' );
+if ( 1 !== substr_count( $out, 'application/ld+json' ) ) bad( 'journey html', 'not one block' );
+if ( false !== strpos( $out, 'Hidden old question' ) ) bad( 'journey html', 'file FAQPage kept' );
+preg_match( '#<script type="application/ld\+json">(.*?)</script>#s', $out, $m );
+$sg = json_decode( $m[1], true )['@graph'];
+check_graph( $sg, 'journey html' );
+faq_visible( $sg, $out, 'journey html' );
+$plain = ce_standalone_faq_html_source( '<html><head></head><body></body></html>', 'agnostic', $surl );
+preg_match( '#<script type="application/ld\+json">(.*?)</script>#s', $plain, $m );
+faq_visible( [ json_decode( $m[1], true ) ], $plain, 'journey html, no graph' );
+$none = ce_standalone_faq_html_source( $src, 'no-such-path', $surl );
+if ( false !== strpos( $none, 'FAQPage' ) || false !== strpos( $none, 'ce-sfaq' ) ) bad( 'journey html', 'FAQ without data' );
+
 // Rank Math: merge into its graph, no second block, one node per family.
 function rm_graph( string $url ): array {
 	$h = 'https://ce.test/';

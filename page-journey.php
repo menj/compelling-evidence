@@ -17,6 +17,10 @@ if ( $journey_src ) {
     $html = 'data' === $journey_src['type']
         ? ce_journey_render( $journey_src['path'] )
         : (string) file_get_contents( $journey_src['path'] );
+    if ( 'html' === $journey_src['type'] && '' !== $html ) {
+        // The data template prints the FAQ itself; a stand-alone file gets it here.
+        $html = ce_standalone_faq_html_source( $html, $journey_key, get_permalink() );
+    }
 }
 if ( '' === $html ) {
     // If no valid slug at all (bare /journey/ URL), redirect to journeys overview

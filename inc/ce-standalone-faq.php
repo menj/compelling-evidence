@@ -100,3 +100,50 @@ function ce_standalone_faq_insert( string $html, string $key ): string {
     $faq = ce_standalone_faq_html( $key );
     return '' === $faq ? $html : (string) preg_replace( '#</main>#', addcslashes( $faq, '\\$' ) . '</main>', $html, 1 );
 }
+
+/**
+ * FAQ for a journey served from a stand-alone HTML file (a locale with no
+ * data folder yet), which skips template-parts/journey/document.php.
+ *
+ * Any FAQPage the file carries is dropped, since its questions are not on
+ * the page. When the data file has questions for $key, the visible section
+ * goes in before </body> and its FAQPage joins the file's first @graph (or
+ * a block of its own when the file has none), so markup and page match.
+ *
+ * @param string $html Journey document.
+ * @param string $key  Journey key.
+ * @param string $url  URL the page is served from.
+ */
+function ce_standalone_faq_html_source( string $html, string $key, string $url ): string {
+    $node   = ce_standalone_faq_node( $url, $key );
+    $placed = false;
+    $html   = (string) preg_replace_callback( '#<script type="application/ld\+json">(.*?)</script>#su', static function ( $m ) use ( $node, &$placed ) {
+        $data = json_decode( $m[1], true );
+        if ( ! is_array( $data ) ) {
+            return $m[0];
+        }
+        $is_faq = static function ( $n ) {
+            return is_array( $n ) && in_array( 'FAQPage', (array) ( $n['@type'] ?? [] ), true );
+        };
+        if ( $is_faq( $data ) ) {
+            return '';
+        }
+        if ( isset( $data['@graph'] ) && is_array( $data['@graph'] ) ) {
+            $data['@graph'] = array_values( array_filter( $data['@graph'], static function ( $n ) use ( $is_faq ) { return ! $is_faq( $n ); } ) );
+            if ( $node && ! $placed ) {
+                $data['@graph'][] = $node;
+                $placed           = true;
+            }
+        }
+        return '<script type="application/ld+json">' . wp_json_encode( $data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG ) . '</script>';
+    }, $html );
+
+    if ( ! $node ) {
+        return $html;
+    }
+    if ( ! $placed ) {
+        $block = '<script type="application/ld+json">' . wp_json_encode( [ '@context' => 'https://schema.org' ] + $node, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG ) . '</script>';
+        $html  = (string) preg_replace( '#</head>#', addcslashes( $block, '\\$' ) . '</head>', $html, 1 );
+    }
+    return (string) preg_replace( '#</body>#', addcslashes( ce_standalone_faq_html( $key ), '\\$' ) . '</body>', $html, 1 );
+}
