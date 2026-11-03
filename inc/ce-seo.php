@@ -36,6 +36,7 @@ function ce_get_author_person_schema(): ?array {
 
     $person = [
         '@type' => 'Person',
+        '@id'   => trailingslashit( home_url( '/' ) ) . '#author',
         'name'  => $name,
     ];
 
@@ -65,9 +66,7 @@ function ce_get_author_person_schema(): ?array {
     // engines use this to attach the author's contributions to the site
     // entity in their knowledge graph.
     $person['worksFor'] = [
-        '@type' => 'Organization',
-        'name'  => 'Compelling Evidence',
-        'url'   => home_url( '/' ),
+        '@id' => trailingslashit( home_url( '/' ) ) . '#organization',
     ];
 
     return $person;
@@ -139,6 +138,7 @@ function ce_get_share_image_url( $post_id = null ): string {
 function ce_get_organization_schema(): array {
     $org = [
         '@type' => 'Organization',
+        '@id'   => trailingslashit( home_url( '/' ) ) . '#organization',
         'name'  => 'Compelling Evidence',
         'url'   => home_url( '/' ),
     ];
@@ -158,6 +158,7 @@ function ce_get_organization_schema(): array {
 
     $org['logo'] = [
         '@type'  => 'ImageObject',
+        '@id'    => trailingslashit( home_url( '/' ) ) . '#logo',
         'url'    => esc_url_raw( $logo_url ),
         'width'  => $logo_width,
         'height' => $logo_height,
@@ -198,6 +199,7 @@ function ce_get_organization_schema(): array {
     if ( '' !== $author_name ) {
         $org['founder'] = [
             '@type' => 'Person',
+            '@id'   => trailingslashit( home_url( '/' ) ) . '#author',
             'name'  => $author_name,
         ];
     }
@@ -520,18 +522,33 @@ function ce_schema_nodes(): array {
     // ── WebSite schema (every page) ──
     $schemas[] = [
         '@type'           => 'WebSite',
+        '@id'             => ce_schema_website_id(),
         'name'            => 'Compelling Evidence',
         'url'             => home_url( '/' ),
         'description'     => 'Honest, evidence-based inquiry into the questions that matter most.',
         'inLanguage'      => get_locale(),
-        // SearchAction removed in 2.6.31: Google retired the sitelinks search
-        // box on 21 November 2024. WebSite itself stays (site names use it).
+        'publisher'       => ce_schema_ref( ce_schema_org_id() ),
+        // SearchAction came back in 2.12.0. Google retired the sitelinks
+        // search box in 2024, but the site search (search.php) works and the
+        // owner keeps all schema.org markup.
+        'potentialAction' => [
+            '@type'       => 'SearchAction',
+            'target'      => [
+                '@type'       => 'EntryPoint',
+                'urlTemplate' => home_url( '/' ) . '?s={search_term_string}',
+            ],
+            'query-input' => 'required name=search_term_string',
+        ],
     ];
 
     // ── Organization schema (sitewide) ──
     // Single source: ce_get_organization_schema() builds the full Organization
     // object with logo ImageObject, sameAs profiles, contactPoint, and founder.
     $schemas[] = ce_get_organization_schema();
+    $author_node = ce_get_author_person_schema();
+    if ( $author_node ) {
+        $schemas[] = $author_node;
+    }
 
     // ── Article schema (single articles) ──
     // Skipped when Rank Math is active — Rank Math's class-jsonld.php emits
@@ -555,14 +572,12 @@ function ce_schema_nodes(): array {
         // to Organization-as-author for backwards compatibility with sites
         // that haven't yet populated the new Author & Identity tab.
         $author_person = ce_get_author_person_schema();
-        $article_author = $author_person ?: [
-            '@type' => 'Organization',
-            'name'  => 'Compelling Evidence',
-            'url'   => home_url( '/' ),
-        ];
+        $article_author = ce_schema_ref( $author_person ? ce_schema_author_id() : ce_schema_org_id() );
+        $url            = get_permalink();
 
         $article = [
             '@type'            => 'Article',
+            '@id'              => ce_schema_id( $url, 'article' ),
             'headline'         => get_the_title(),
             'description'      => get_the_excerpt() ?: wp_trim_words( strip_tags( get_the_content() ), 30 ),
             'url'              => get_permalink(),
@@ -572,13 +587,13 @@ function ce_schema_nodes(): array {
             'articleSection'   => $topic_name,
             'inLanguage'       => get_locale(),
             'author'           => $article_author,
-            'publisher'        => ce_get_organization_schema(),
-            'mainEntityOfPage' => [
-                '@type'      => 'WebPage',
-                '@id'        => get_permalink(),
-                'url'        => get_permalink(),
-                'inLanguage' => get_locale(),
-            ],
+            'publisher'        => ce_schema_ref( ce_schema_org_id() ),
+            // The WebPage node (inc/ce-schema.php) carries inLanguage,
+            // breadcrumb and primaryImageOfPage since 2.12.0.
+            'mainEntityOfPage' => ce_schema_ref( ce_schema_id( $url, 'webpage' ) ),
+            'isPartOf'         => ce_schema_ref( ce_schema_id( $url, 'webpage' ) ),
+            'copyrightYear'    => (int) get_the_date( 'Y' ),
+            'copyrightHolder'  => ce_schema_ref( ce_schema_org_id() ),
             // Item 8 — accessibility & access semantics. These help search
             // engines and answer engines understand the article is freely
             // readable text content, supports structural navigation, and
@@ -629,11 +644,9 @@ function ce_schema_nodes(): array {
             // article's hero image as a proper ImageObject. The WebPage
             // schema is referenced by mainEntityOfPage, so search engines
             // resolve the chain: Article → WebPage → primaryImageOfPage.
-            $article['image'] = $share_url;
-            $article['mainEntityOfPage']['primaryImageOfPage'] = [
-                '@type' => 'ImageObject',
-                'url'   => $share_url,
-            ];
+            $hero             = ce_schema_hero_image( get_post(), $url, $share_url );
+            $article['image'] = ce_schema_ref( $hero['@id'] );
+            $schemas[]        = $hero;
         }
 
         // ── about / mentions entities (Item 12) ──
@@ -659,7 +672,10 @@ function ce_schema_nodes(): array {
             $article['image'] = [ ce_get_share_image_url( get_the_ID() ) ?: get_stylesheet_directory_uri() . '/screenshot.png' ];
         }
 
+        $post = get_post();
+        $more = $post instanceof WP_Post ? ce_schema_article_details( $article, $post ) : [];
         $schemas[] = $article;
+        $schemas   = array_merge( $schemas, $more );
 
         // Per-article FAQPage removed in 2.6.31: the _ce_faq_items answers are
         // stored in meta but never shown on the page, and structured data must
@@ -689,17 +705,20 @@ function ce_schema_nodes(): array {
         }
         $schemas[] = [
             '@type'           => 'BreadcrumbList',
+            '@id'             => ce_schema_id( $url, 'breadcrumb' ),
             'itemListElement' => $items,
         ];
     }
 
     // ── CollectionPage schema (article archive) ──
     if ( is_post_type_archive( 'ce_article' ) || is_tax( 'ce_topic' ) ) {
+        $coll_url  = is_tax() ? get_term_link( get_queried_object() ) : get_post_type_archive_link( 'ce_article' );
         $schemas[] = [
             '@type'       => 'CollectionPage',
+            '@id'         => ce_schema_id( (string) $coll_url, 'webpage' ),
             'name'        => is_tax() ? get_queried_object()->name . ' — Articles' : 'The Evidence, Examined',
             'description' => 'Every serious objection. Every core argument. Written for the honest inquirer.',
-            'url'         => is_tax() ? get_term_link( get_queried_object() ) : get_post_type_archive_link( 'ce_article' ),
+            'url'         => $coll_url,
         ];
     }
 
@@ -716,7 +735,11 @@ function ce_schema_nodes(): array {
     // Q&A on the page; Google requires marked-up content to be visible, and
     // FAQ rich results are limited to government and health sites.
 
-    return $schemas;
+    // Page frame, page subtype and the page-template nodes (FAQPage,
+    // DefinedTermSet, Quiz, journeys, QAPage, ItemList): inc/ce-schema.php.
+    $schemas = array_merge( $schemas, ce_schema_page_nodes( $schemas ) );
+
+    return ce_schema_finalize( $schemas );
 }
 
 /**
@@ -748,30 +771,22 @@ function ce_question_article_node(): ?array {
         $answer = wp_strip_all_tags( apply_filters( 'the_content', $post->post_content ) );
         $answer = trim( (string) preg_replace( '/\s+/u', ' ', $answer ) );
     }
-    $author = function_exists( 'ce_get_author_person_schema' ) ? ce_get_author_person_schema() : null;
-    if ( ! $author ) {
-        $author = [
-            '@type' => 'Organization',
-            'name'  => 'Compelling Evidence',
-            'url'   => home_url( '/' ),
-        ];
-    }
+    $author = ce_schema_ref( ce_get_author_person_schema() ? ce_schema_author_id() : ce_schema_org_id() );
     $url   = get_permalink( $post );
     $image = function_exists( 'ce_get_share_image_url' ) ? ce_get_share_image_url( $post->ID ) : '';
     return [
         '@type'            => 'Article',
-        '@id'              => trailingslashit( $url ) . '#article',
+        '@id'              => ce_schema_id( $url, 'article' ),
         'headline'         => wp_strip_all_tags( get_the_title( $post ) ),
         'description'      => wp_trim_words( $answer, 30, '…' ),
         'datePublished'    => get_the_date( 'c', $post ),
         'dateModified'     => get_the_modified_date( 'c', $post ),
         'author'           => $author,
-        'publisher'        => [
-            '@type' => 'Organization',
-            'name'  => 'Compelling Evidence',
-            'url'   => home_url( '/' ),
-        ],
-        'mainEntityOfPage' => $url,
+        'publisher'        => ce_schema_ref( ce_schema_org_id() ),
+        'url'              => $url,
+        'mainEntityOfPage' => ce_schema_ref( ce_schema_id( $url, 'webpage' ) ),
+        'isPartOf'         => ce_schema_ref( ce_schema_id( $url, 'webpage' ) ),
+        'about'            => ce_schema_ref( ce_schema_id( $url, 'question' ) ),
         'image'            => $image ?: get_stylesheet_directory_uri() . '/screenshot.png',
     ];
 }
@@ -782,16 +797,7 @@ function ce_schema_jsonld() {
     if ( function_exists( 'ce_is_rankmath_active' ) && ce_is_rankmath_active() ) {
         return;
     }
-    $schemas = ce_schema_nodes();
-    if ( ! empty( $schemas ) ) {
-        $output = [
-            '@context' => 'https://schema.org',
-            '@graph'   => $schemas,
-        ];
-        echo '<script type="application/ld+json">' . "\n";
-        echo wp_json_encode( $output, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT );
-        echo "\n</script>\n";
-    }
+    echo ce_schema_script(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON with JSON_HEX_TAG.
 }
 add_action( 'wp_head', 'ce_schema_jsonld', 3 );
 

@@ -6,6 +6,31 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.12.0] - November 2026
+
+The owner keeps all schema.org markup (rule of 3 November 2026). This release adds markup for what the pages already show and gives every page one graph. No type was removed.
+
+### Changed
+- One graph per page. `page-faq.php`, `page-glossary.php` and `template-parts/journey/document.php` printed JSON-LD blocks of their own, outside `ce_schema_nodes()`, so with Rank Math active those pages carried a second block. The FAQPage, the DefinedTermSet and the journey nodes are now built in `inc/ce-schema.php` and go into the theme graph. The FAQ questions moved from the template to `ce_faq_sections()`.
+- Every node has a stable `@id`: the page URL plus a fragment (`#webpage`, `#article`, `#breadcrumb`, `#faq`, `#quiz`, `#learning`), and the home URL for site-wide nodes (`#website`, `#organization`, `#author`, `#header`, `#quran`). `ce_schema_finalize()` merges nodes that share an `@id`. The Article refers to the author, publisher and page by `@id` in place of nested copies.
+- Rank Math merge (`ce_rankmath_json_ld()`): a theme node whose `@id` is in Rank Math's graph fills its empty properties. For Article, Organization, WebSite, BreadcrumbList and WebPage, Rank Math's node stays the only one and takes the theme's missing properties (citations, figures, mentions; a plain WebPage becomes QAPage, CollectionPage or ContactPage as the page is). References to theme `@id`s are pointed at Rank Math's. Before, the theme added one node per missing type, keyed by type, so two nodes of one type overwrote each other.
+- Journey pages print one block. Their `journey.json` nodes keep every type (Article, BreadcrumbList, WebPage with speakable, FAQPage); the Organization is the site's own node. `ce_standalone_html_seo()` still removes the FAQPage at serve time.
+- WebSite carries a SearchAction again, for the site search at `/?s=`.
+- `doc/ssot.md` section 23 records the owner rule and lists what each page carries. Its old list of types never to emit (QAPage, ItemList, Speakable, SearchAction) is gone.
+
+### Added
+- Page frame: a WebPage node on every page (CollectionPage, QAPage, ContactPage, AboutPage or SearchResultsPage where the page is one) with language, publisher, breadcrumb, main entity and hero image. Theme pages add WPHeader, WPFooter, a SiteNavigationElement for the main menu and one for the footer menu, and WPSideBar on articles. Articles get speakable on the title and the first paragraph.
+- Reader questions in the "published" status: QAPage with a Question. The Answer is marked only when the page shows one; a question still waiting has `answerCount` 0. The Article node stays.
+- Quiz: a Quiz node with all 16 questions and their options as `suggestedAnswer`, multiple choice or checkbox as the quiz asks. The quiz says it has no right answers and shows none, so there is no `acceptedAnswer`.
+- Journeys: a LearningResource with an ItemList of its chapters in reading order, each with the articles it points to. The Volume II preview is not a step.
+- Topic pages: an ItemList of their articles in the order shown.
+- Figures: the hero image and every `[ce_figure]` as ImageObject with credit, creator, licence and source page from `inc/articles/media.json`; every `[ce_diagram]` as an SVG ImageObject by the site. 430 figures across the 143 articles.
+- Qur'an and hadith: each `quran-citation` and `hadith-citation` block gives two Quotation nodes, the Arabic and the English (`translationOfWork`). Qur'an passages sit in their surah (Chapter) of the Book "The Qur'an" (Wikidata Q428). Hadith sit in the collections the reference names, with the hadith number as `identifier`, and a grading only where the reference states one. The article cites them. 423 blocks across the 143 articles.
+- Glossary links in an article (the `[glossary]` shortcode and the tooltip links) are `mentions` of the DefinedTerm on /glossary/, by `@id`. Each DefinedTerm carries its anchor URL and its set.
+- `tests/schema-graph-test.php`: renders the graph for the home page, all 143 articles, the FAQ, glossary, quiz, all 14 journeys (before and after the standalone pass), reader questions with and without an answer, a topic page, Ask a Question, About, search and 404, and the Rank Math merge for an article, a question and the FAQ. It checks that the JSON parses, that top-level `@id`s are unique, that every reference resolves and that each type has its properties. With `CE_SCHEMA_VOCAB` set to the schema.org vocabulary file it also checks every type and property name.
+
+---
+
 ## [2.11.0] - November 2026
 
 - Journey and quiz pages keep their speakable markup, following the owner's rule to keep all schema.org markup. FAQPage blocks there are still left out, because their questions do not appear on the page as questions and answers.

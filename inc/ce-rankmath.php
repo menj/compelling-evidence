@@ -139,28 +139,98 @@ function ce_rankmath_graph_types( array $data ): array {
 }
 
 /**
- * Add theme schema nodes that Rank Math's graph lacks.
+ * Merge the theme graph into Rank Math's, so the page keeps one graph.
+ *
+ * - A theme node whose @id is already in Rank Math's graph fills that node's
+ *   empty properties (and turns a plain WebPage into the page's subtype).
+ * - For the families Rank Math builds itself (Article, Organization,
+ *   WebSite, BreadcrumbList, WebPage and its subtypes), a theme node is not
+ *   added when Rank Math has one: it fills that node's empty properties
+ *   instead (citations, figures, mentions), and references to the theme @id
+ *   are pointed at Rank Math's.
+ * - Every other theme node is added under its own @id.
+ *
+ * @since 2.12.0 (merge by @id; before, one node per missing type).
  */
 function ce_rankmath_json_ld( $data, $jsonld = null ) {
 	if ( ! is_array( $data ) || ! function_exists( 'ce_schema_nodes' ) ) {
 		return $data;
 	}
-	$present = ce_rankmath_graph_types( $data );
-	$family  = [
+	$family = [
 		'Article'        => [ 'Article', 'BlogPosting', 'NewsArticle', 'ScholarlyArticle', 'TechArticle', 'Report' ],
-		'Organization'   => [ 'Organization', 'Person', 'NGO', 'EducationalOrganization' ],
+		'Organization'   => [ 'Organization', 'NGO', 'EducationalOrganization' ],
 		'BreadcrumbList' => [ 'BreadcrumbList' ],
-		'CollectionPage' => [ 'CollectionPage' ],
 		'WebSite'        => [ 'WebSite' ],
+		'WebPage'        => [ 'WebPage', 'CollectionPage', 'QAPage', 'ContactPage', 'AboutPage', 'SearchResultsPage', 'ItemPage', 'ProfilePage', 'FAQPage' ],
 	];
-	foreach ( ce_schema_nodes() as $node ) {
-		$type = is_array( $node['@type'] ?? null ) ? reset( $node['@type'] ) : (string) ( $node['@type'] ?? '' );
-		$fam  = $family[ $type ] ?? [ $type ];
-		if ( '' === $type || array_intersect( $fam, $present ) ) {
+	$fam_of = static function ( $node ) use ( $family ) {
+		$types = (array) ( $node['@type'] ?? [] );
+		foreach ( $family as $name => $members ) {
+			if ( array_intersect( $types, $members ) ) {
+				return $name;
+			}
+		}
+		return '';
+	};
+
+	// Rank Math's top-level nodes by @id and by family.
+	$by_id  = [];
+	$by_fam = [];
+	foreach ( $data as $key => $node ) {
+		if ( ! is_array( $node ) || empty( $node['@type'] ) ) {
 			continue;
 		}
-		unset( $node['@context'] );
-		$data[ 'ce_' . strtolower( $type ) ] = $node;
+		if ( ! empty( $node['@id'] ) ) {
+			$by_id[ (string) $node['@id'] ] = $key;
+		}
+		$f = $fam_of( $node );
+		// A page's FAQPage is not its WebPage node.
+		if ( '' !== $f && ! isset( $by_fam[ $f ] ) && ! ( 'WebPage' === $f && in_array( 'FAQPage', (array) $node['@type'], true ) ) ) {
+			$by_fam[ $f ] = $key;
+		}
+	}
+
+	$theme = ce_schema_nodes();
+	$remap = [];
+	$fills = [];
+	$add   = [];
+	foreach ( $theme as $node ) {
+		$id   = (string) ( $node['@id'] ?? '' );
+		$f    = $fam_of( $node );
+		$is_faq = in_array( 'FAQPage', (array) $node['@type'], true );
+		if ( '' !== $id && isset( $by_id[ $id ] ) ) {
+			$fills[] = [ $by_id[ $id ], $node ];
+		} elseif ( '' !== $f && ! $is_faq && isset( $by_fam[ $f ] ) ) {
+			$target = $by_fam[ $f ];
+			if ( '' !== $id && ! empty( $data[ $target ]['@id'] ) ) {
+				$remap[ $id ] = (string) $data[ $target ]['@id'];
+			}
+			$fills[] = [ $target, $node ];
+		} else {
+			$add[] = $node;
+		}
+	}
+
+	$relink = static function ( $v ) use ( &$relink, $remap ) {
+		if ( ! is_array( $v ) ) {
+			return $v;
+		}
+		if ( 1 === count( $v ) && isset( $v['@id'] ) && isset( $remap[ $v['@id'] ] ) ) {
+			return [ '@id' => $remap[ $v['@id'] ] ];
+		}
+		foreach ( $v as $k => $x ) {
+			$v[ $k ] = $relink( $x );
+		}
+		return $v;
+	};
+
+	foreach ( $fills as [ $key, $node ] ) {
+		$data[ $key ] = ce_schema_fill( $data[ $key ], $relink( $node ) );
+	}
+	foreach ( $add as $node ) {
+		$node = $relink( $node );
+		$key  = 'ce_' . substr( md5( (string) ( $node['@id'] ?? wp_json_encode( $node ) ) ), 0, 12 );
+		$data[ $key ] = $node;
 	}
 	return $data;
 }

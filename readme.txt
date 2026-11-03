@@ -6,7 +6,7 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.11.0
+Version: 2.12.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Template: twentytwentyfive
@@ -104,6 +104,12 @@ Appearance > CE Theme Options — 8 tabs:
                   spam scan and trash; reports and security log
 
 == Changelog ==
+
+= 2.12.0 - November 2026 =
+* Every page prints one JSON-LD graph. The FAQ, glossary and journey templates no longer print blocks of their own, and with Rank Math active the theme nodes go into Rank Math's graph.
+* New markup for what the pages show: QAPage on answered reader questions, Quiz on the quiz, LearningResource with ordered chapters on the 14 journeys, ItemList on topic pages, ContactPage, AboutPage and SearchResultsPage, header, footer, menus and the article sidebar.
+* Article figures and diagrams are ImageObject nodes with their credit and licence. The 423 Qur'an and hadith blocks are Quotation nodes, Arabic and English, tied to their surah or hadith collection.
+* No schema type was removed (owner rule of 3 November 2026). tests/schema-graph-test.php checks the graph.
 
 = 2.11.0 - November 2026 =
 * Every title tag reads "<page title> | Compelling Evidence" and stays under 60 characters, with Rank Math active or not. The site name is never dropped.

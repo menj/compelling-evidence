@@ -1,7 +1,7 @@
 # SSOT — Single Source of Truth
 ## Compelling Evidence Theme — System Design, Naming Conventions, Configuration Rules
 
-**Version:** 2.6.39  
+**Version:** 2.12.0  
 **Location:** `/doc/SSOT.md`
 
 This document is authoritative. When any other file conflicts with a rule stated here, this document is correct and the other file should be updated.
@@ -525,9 +525,21 @@ CE Theme stays a child of Twenty Twenty-Five and is built to coexist with it.
 
 Reference documents: Google's SEO Starter Guide and Google's list of structured data features it supports.
 
-**Structured data the theme emits.** WebSite (name and URL only; site names still use it), Organization, Article and BreadcrumbList on articles, Article on answered reader questions, CollectionPage on archives, DefinedTermSet on the glossary, FAQPage on /faq/ only (its questions and answers are visible there). Article carries headline, image (featured image or `screenshot.png`), datePublished, dateModified, author with name and URL, and publisher.
+**Owner rule (3 November 2026).** The owner keeps all schema.org markup, for GEO, AEO and AIO as well as for Google. No type is ever removed, including types Google does not support. Every type and property must describe something visible on the page, or a plain fact about it (language, date, licence). Where the content is absent, the markup is absent.
 
-**Never emit.** FAQPage for content not shown as Q&A on the page; QAPage anywhere (Google reserves it for pages where users submit answers, and lists a site-written single answer as invalid); ItemList outside a carousel; Speakable (news publishers only); SearchAction (sitelinks search box retired 21 November 2024). Journey and quiz HTML is cleaned at serve time by `ce_standalone_html_seo()`.
+**One graph per page.** `ce_schema_nodes()` (`inc/ce-seo.php`, with the page parts in `inc/ce-schema.php`) builds every node, each with a stable `@id` (page URL plus `#fragment`), and `ce_schema_finalize()` merges nodes that share one. Without Rank Math, `ce_schema_jsonld()` prints that graph as the page's only JSON-LD block. With Rank Math, `ce_rankmath_json_ld()` merges it into Rank Math's graph (section 27). No template prints its own block. Journey pages print the same graph from `template-parts/journey/document.php`, and the quiz takes it from `wp_head()`. `tests/schema-graph-test.php` checks it.
+
+**What each page carries.**
+
+- Every page: WebSite (with SearchAction for the site search), Organization, and a WebPage node with language, publisher, breadcrumb and main entity where the page has them. Theme pages add WPHeader, WPFooter and a SiteNavigationElement for the main menu and the footer menu.
+- Articles: Article (headline, dates, author, publisher, word count, reading time, keywords, accessibility, copyright), BreadcrumbList, the hero image and every `[ce_figure]` and `[ce_diagram]` as ImageObject with the credit and licence from `inc/articles/media.json`, WPSideBar for the contents rail, and speakable on the title and first paragraph.
+- Qur'an and hadith blocks (`quran-citation`, `hadith-citation`): two Quotation nodes each, the Arabic and the English shown under it (`translationOfWork`). Qur'an passages sit in a Chapter (the surah) of the Book "The Qur'an". Hadith sit in the collection Books the reference names, with the hadith number as `identifier`. A grading is marked (`additionalProperty` "grading") only where the reference states one. The article cites the English quotations.
+- Glossary terms the article links to are `mentions`, by `@id`, of the DefinedTerm on /glossary/.
+- /faq/: FAQPage. /glossary/: DefinedTermSet with every DefinedTerm. Reader questions in the "published" status: QAPage with a Question, and an Answer only when the page shows one, plus the Article node. Topic pages: CollectionPage with an ItemList of their articles in page order. Ask a Question and Contact: ContactPage. About: AboutPage. Search: SearchResultsPage.
+- Quiz: Quiz with every Question and its options as suggestedAnswer. The quiz has no right answers and the page reveals none, so no question has an acceptedAnswer.
+- Journeys: the nodes in each `journey.json` (Article, BreadcrumbList, WebPage with speakable, FAQPage) and a LearningResource whose steps are the chapters in reading order, each with the articles it points to.
+
+**Left out.** FAQPage blocks on journey pages, because those questions are not shown on the page; `ce_standalone_html_seo()` removes them at serve time. Course, ClaimReview and anything on the progress page, which holds only one reader's own state.
 
 **Meta descriptions.** Every indexable page type has one, at most 130 characters including a call to action (`ce_meta_description_with_cta()`), unique per page. Topic pages use the term description or a count-based sentence; the old placeholder "Compelling Evidence article topic" is ignored. Search results and 404s carry none.
 
@@ -598,7 +610,7 @@ Reference documents: Google's SEO Starter Guide and Google's list of structured 
 
 **Precedence.** Where Rank Math and the theme overlap, Rank Math wins; the theme supplies a value only where Rank Math's is empty (`inc/ce-rankmath.php`).
 - Title, meta description, canonical: printed by Rank Math. Empty values are filled through `rank_math/frontend/title`, `rank_math/frontend/description` and `rank_math/frontend/canonical` from `ce_get_meta_description()` and `ce_get_canonical_url()`.
-- JSON-LD: Rank Math's graph is the only block. `ce_rankmath_json_ld()` (`rank_math/json_ld`) adds theme nodes (Article, BreadcrumbList, CollectionPage, WebSite, Organization) only when no node of that family is present. `ce_schema_nodes()` builds the nodes; `ce_schema_jsonld()` prints them only without Rank Math.
+- JSON-LD: Rank Math's graph is the only block. `ce_rankmath_json_ld()` (`rank_math/json_ld`) merges the theme graph into it. A theme node whose `@id` Rank Math already has fills that node's empty properties. For the families Rank Math builds (Article, Organization, WebSite, BreadcrumbList, WebPage and its subtypes) the theme adds no second node: it fills the empty properties of Rank Math's (citations, figures, mentions; a plain WebPage takes the page's subtype, such as QAPage), and theme references are pointed at Rank Math's `@id`. Every other theme node is added under its own `@id`. `ce_schema_jsonld()` prints the theme graph only without Rank Math.
 - robots.txt, sitemaps, Open Graph: Rank Math only.
 
 **Article SEO data.** `inc/articles/seo.json` holds, per article slug, `focus_keyword` (primary keyword first, then related terms already present in the text), `title` and `description` (130 characters including a call to action). `ce_rankmath_fill_empty_fields()` writes them to `rank_math_focus_keyword`, `rank_math_title`, `rank_math_description` only where empty, after every content sync and once whenever seo.json changes. Editor changes in Rank Math are never overwritten.
