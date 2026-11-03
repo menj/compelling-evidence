@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [2.9.0] - November 2026
 
+- Body text in the journeys is regular weight (400) instead of light (300), so Cormorant Garamond and DM Sans read more clearly on the dark background.
+
 - In the New Atheist journey, three sentences pointed to a chapter whose name had dropped out ("examined in .", "We saw this in .", "touched on in ."). They now read "in the Constant chapter" and "earlier".
 
 ### Changed
