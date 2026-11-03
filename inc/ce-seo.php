@@ -703,12 +703,77 @@ function ce_schema_nodes(): array {
         ];
     }
 
+    // ── Article schema (published reader questions) ──
+    if ( is_singular( 'ce_question' ) ) {
+        $qa_node = ce_question_article_node();
+        if ( $qa_node ) {
+            $schemas[] = $qa_node;
+        }
+    }
+
     // Front-page FAQPage removed in 2.6.31. It marked up article titles as
     // questions and article excerpts as answers, none of which is visible as
     // Q&A on the page; Google requires marked-up content to be visible, and
     // FAQ rich results are limited to government and health sites.
 
     return $schemas;
+}
+
+/**
+ * Article node for a published reader question (ce_question).
+ *
+ * Moved here from single-ce_question.php in 2.11.0, so the page prints one
+ * graph and the Rank Math rule in ce_rankmath_json_ld() applies: with Rank
+ * Math active, this node is added only when Rank Math's graph has no Article.
+ * Only questions in the "published" ce_qstatus term get markup.
+ *
+ * Article since 2.6.31; QAPage is for pages where users submit answers.
+ */
+function ce_question_article_node(): ?array {
+    $post = get_queried_object();
+    if ( ! ( $post instanceof WP_Post ) || 'ce_question' !== $post->post_type ) {
+        return null;
+    }
+    $statuses = wp_get_object_terms( $post->ID, 'ce_qstatus', [ 'fields' => 'slugs' ] );
+    if ( is_wp_error( $statuses ) || ! in_array( 'published', $statuses, true ) ) {
+        return null;
+    }
+    // Same test as single-ce_question.php: empty content, or content that only
+    // repeats the title, shows the pending-answer message, so that is the
+    // description too.
+    $raw = trim( (string) $post->post_content );
+    if ( '' === $raw || $raw === trim( get_the_title( $post ) ) ) {
+        $answer = 'An answer is being prepared for this question.';
+    } else {
+        $answer = wp_strip_all_tags( apply_filters( 'the_content', $post->post_content ) );
+        $answer = trim( (string) preg_replace( '/\s+/u', ' ', $answer ) );
+    }
+    $author = function_exists( 'ce_get_author_person_schema' ) ? ce_get_author_person_schema() : null;
+    if ( ! $author ) {
+        $author = [
+            '@type' => 'Organization',
+            'name'  => 'Compelling Evidence',
+            'url'   => home_url( '/' ),
+        ];
+    }
+    $url   = get_permalink( $post );
+    $image = function_exists( 'ce_get_share_image_url' ) ? ce_get_share_image_url( $post->ID ) : '';
+    return [
+        '@type'            => 'Article',
+        '@id'              => trailingslashit( $url ) . '#article',
+        'headline'         => wp_strip_all_tags( get_the_title( $post ) ),
+        'description'      => wp_trim_words( $answer, 30, '…' ),
+        'datePublished'    => get_the_date( 'c', $post ),
+        'dateModified'     => get_the_modified_date( 'c', $post ),
+        'author'           => $author,
+        'publisher'        => [
+            '@type' => 'Organization',
+            'name'  => 'Compelling Evidence',
+            'url'   => home_url( '/' ),
+        ],
+        'mainEntityOfPage' => $url,
+        'image'            => $image ?: get_stylesheet_directory_uri() . '/screenshot.png',
+    ];
 }
 
 function ce_schema_jsonld() {
@@ -747,55 +812,194 @@ add_action( 'wp_enqueue_scripts', 'ce_print_styles' );
    ADDITIONAL SEO HOOKS
    ═══════════════════════════════════════════════════════════════════════ */
 
-/**
- * Add hreflang for potential Malay translation.
- */
-function ce_hreflang() {
-    echo '<link rel="alternate" hreflang="en" href="' . esc_url( home_url( '/' ) ) . '">' . "\n";
-    echo '<link rel="alternate" hreflang="x-default" href="' . esc_url( home_url( '/' ) ) . '">' . "\n";
+// hreflang removed in 2.11.0. ce_hreflang() printed "en" and "x-default"
+// alternates on every page, both pointing at the home page, which told
+// search engines the home page was the English version of every URL. The
+// site is served in one language at one set of URLs, so it has no
+// alternates to declare.
+
+/* ═══════════════════════════════════════════════════════════════════════
+   TITLE TAG (since 2.11.0)
+
+   Every title reads "<page part> | Compelling Evidence" and stays under 60
+   characters (CE_TITLE_MAX, 59). The site name is never dropped. With
+   " | Compelling Evidence" at 22 characters the page part has 37.
+
+   Page part, in order:
+     1. articles: the short title in inc/articles/seo.json ("title");
+     2. pages: the short title in inc/data/seo-titles.json, by slug;
+     3. the title WordPress or Rank Math worked out for the view.
+   A page part that is still too long is cut at a word boundary, never
+   inside a word. The same builder runs with Rank Math active, through the
+   rank_math/frontend/title filter in inc/ce-rankmath.php.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+if ( ! defined( 'CE_TITLE_SITE' ) ) {
+    define( 'CE_TITLE_SITE', 'Compelling Evidence' );
 }
-add_action( 'wp_head', 'ce_hreflang', 1 );
+if ( ! defined( 'CE_TITLE_SEP' ) ) {
+    define( 'CE_TITLE_SEP', '|' );
+}
+if ( ! defined( 'CE_TITLE_MAX' ) ) {
+    define( 'CE_TITLE_MAX', 59 );
+}
 
 /**
- * Optimise document title.
+ * Characters left for the page part once " | Compelling Evidence" is added.
  */
+function ce_title_part_max(): int {
+    return CE_TITLE_MAX - mb_strlen( ' ' . CE_TITLE_SEP . ' ' . CE_TITLE_SITE, 'UTF-8' );
+}
+
 /**
- * Optimise document title for ce_article posts.
+ * Short titles: articles from seo.json, pages from seo-titles.json.
  *
- * Appends the article's primary topic to the title (e.g. "Title | Topic")
- * for clearer SERP listings on long-tail queries that match topic terms.
- *
- * Yields entirely to Rank Math when it's active. Rank Math owns the title
- * chain via its own `document_title_parts` filter and has its own
- * configurable post-title-with-taxonomy formatting; running both filters
- * on the same hook produces non-deterministic output (whichever filter
- * runs last wins) and causes silent override conflicts.
+ * @return array{articles: array<string,string>, pages: array<string,string>}
  */
-function ce_custom_title( $title ) {
-    // Defer to Rank Math when active. It registers as the class
-    // `RankMath\Helper` (the namespace prefix matters), so a class_exists
-    // check on either the namespace root or the helper covers both
-    // installation modes.
-    if ( class_exists( 'RankMath' ) || class_exists( 'RankMath\\Helper' ) ) {
-        return $title;
+function ce_title_short_titles(): array {
+    static $data = null;
+    if ( null !== $data ) {
+        return $data;
     }
-    if ( is_singular( 'ce_article' ) ) {
-        $topics = wp_get_post_terms( get_the_ID(), 'ce_topic' );
-        $topic  = ( $topics && ! is_wp_error( $topics ) ) ? $topics[0]->name : '';
-        // Add the topic only while the full title stays brief (Google shows
-        // roughly 60 characters). Long article titles stand alone.
-        $with_topic = get_the_title() . ' | ' . $topic;
-        if ( $topic && mb_strlen( $with_topic . ' – Compelling Evidence', 'UTF-8' ) <= 65 ) {
-            $title['title'] = $with_topic;
-        } elseif ( mb_strlen( get_the_title() . ' – Compelling Evidence', 'UTF-8' ) > 70 ) {
-            // A long article title already fills the result line; the site
-            // name would only be cut off, so leave it out.
-            unset( $title['site'] );
+    $data = [ 'articles' => [], 'pages' => [] ];
+    $dir  = get_stylesheet_directory();
+    $seo  = $dir . '/inc/articles/seo.json';
+    if ( is_readable( $seo ) ) {
+        $json = json_decode( (string) file_get_contents( $seo ), true ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- local theme file.
+        foreach ( (array) ( $json['articles'] ?? [] ) as $slug => $row ) {
+            if ( is_array( $row ) && '' !== trim( (string) ( $row['title'] ?? '' ) ) ) {
+                $data['articles'][ (string) $slug ] = trim( (string) $row['title'] );
+            }
         }
     }
-    return $title;
+    $pages = $dir . '/inc/data/seo-titles.json';
+    if ( is_readable( $pages ) ) {
+        $json = json_decode( (string) file_get_contents( $pages ), true ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- local theme file.
+        foreach ( (array) ( $json['pages'] ?? [] ) as $slug => $title ) {
+            if ( is_string( $title ) && '' !== trim( $title ) ) {
+                $data['pages'][ (string) $slug ] = trim( $title );
+            }
+        }
+    }
+    return $data;
 }
-add_filter( 'document_title_parts', 'ce_custom_title' );
+
+/**
+ * Remove the site name from either end of a title, with any separator.
+ */
+function ce_title_strip_site( string $title ): string {
+    $title = trim( html_entity_decode( wp_strip_all_tags( $title ), ENT_QUOTES, 'UTF-8' ) );
+    $site  = preg_quote( CE_TITLE_SITE, '/' );
+    $seps  = '[\|\-–—:·•»~\/]';
+    $title = (string) preg_replace( '/\s*' . $seps . '\s*' . $site . '\s*$/u', '', $title );
+    $title = (string) preg_replace( '/^\s*' . $site . '\s*' . $seps . '\s*/u', '', $title );
+    $title = trim( $title );
+    return 0 === strcasecmp( $title, CE_TITLE_SITE ) ? '' : $title;
+}
+
+/**
+ * Fit a page part into the budget, cutting at a word boundary.
+ */
+function ce_title_fit( string $part ): string {
+    $part = trim( (string) preg_replace( '/\s+/u', ' ', $part ) );
+    $max  = ce_title_part_max();
+    if ( mb_strlen( $part, 'UTF-8' ) <= $max ) {
+        return $part;
+    }
+    $cut = mb_substr( $part, 0, $max + 1, 'UTF-8' );
+    $sp  = mb_strrpos( $cut, ' ', 0, 'UTF-8' );
+    $cut = false !== $sp ? mb_substr( $cut, 0, $sp, 'UTF-8' ) : mb_substr( $part, 0, $max, 'UTF-8' );
+    // Do not end on a separator or a small joining word.
+    $tail = '/(?:\s+(?:a|an|and|as|at|by|for|from|in|into|is|of|on|or|the|to|with|its|it|that|what|why|how|does|do|can))+$/iu';
+    for ( $i = 0; $i < 4; $i++ ) {
+        $prev = $cut;
+        $cut  = rtrim( $cut, " \t:;,.-–—|&(/" );
+        $cut  = (string) preg_replace( $tail, '', $cut );
+        if ( $prev === $cut ) {
+            break;
+        }
+    }
+    return '' !== $cut ? $cut : mb_substr( $part, 0, $max, 'UTF-8' );
+}
+
+/**
+ * Build the whole title from a page part.
+ */
+function ce_title_build( string $part ): string {
+    $part = ce_title_fit( ce_title_strip_site( $part ) );
+    return '' === $part ? CE_TITLE_SITE : $part . ' ' . CE_TITLE_SEP . ' ' . CE_TITLE_SITE;
+}
+
+/**
+ * Short title for a post, or '' when none is set.
+ */
+function ce_title_short_for_post( $post ): string {
+    $post = get_post( $post );
+    if ( ! $post ) {
+        return '';
+    }
+    $short = ce_title_short_titles();
+    if ( 'ce_article' === $post->post_type ) {
+        return $short['articles'][ $post->post_name ] ?? '';
+    }
+    if ( 'page' === $post->post_type ) {
+        $path = trim( (string) get_page_uri( $post ), '/' );
+        return $short['pages'][ $path ] ?? ( $short['pages'][ $post->post_name ] ?? '' );
+    }
+    return '';
+}
+
+/**
+ * Page part for the current view, given the title worked out for it.
+ */
+function ce_title_page_part( string $fallback ): string {
+    if ( is_front_page() ) {
+        $short = ce_title_short_titles();
+        return $short['pages']['__front'] ?? $fallback;
+    }
+    if ( is_singular() ) {
+        $short = ce_title_short_for_post( get_queried_object_id() );
+        if ( '' !== $short ) {
+            // Paginated posts (<!--nextpage-->) keep "(Page N)", as archives do.
+            $page = (int) get_query_var( 'page' );
+            if ( $page > 1 ) {
+                $suffix = ' (Page ' . $page . ')';
+                $room   = ce_title_part_max() - mb_strlen( $suffix, 'UTF-8' );
+                $short  = ce_title_fit( mb_substr( $short, 0, $room + 1, 'UTF-8' ) );
+                if ( mb_strlen( $short, 'UTF-8' ) > $room ) {
+                    $short = rtrim( mb_substr( $short, 0, $room, 'UTF-8' ) );
+                }
+                return $short . $suffix;
+            }
+            return $short;
+        }
+    }
+    return $fallback;
+}
+
+/**
+ * Theme title when no SEO plugin owns it.
+ */
+function ce_custom_title( $parts ) {
+    if ( function_exists( 'ce_is_rankmath_active' ) && ce_is_rankmath_active() ) {
+        return $parts; // Rank Math output runs through ce_rankmath_title().
+    }
+    $part = (string) ( $parts['title'] ?? '' );
+    if ( is_front_page() ) {
+        $part = (string) ( $parts['tagline'] ?? '' );
+    }
+    if ( ! empty( $parts['page'] ) ) {
+        $part .= ' (' . $parts['page'] . ')';
+    }
+    $part = ce_title_fit( ce_title_strip_site( ce_title_page_part( $part ) ) );
+    return '' === $part ? [ 'title' => CE_TITLE_SITE ] : [ 'title' => $part, 'site' => CE_TITLE_SITE ];
+}
+add_filter( 'document_title_parts', 'ce_custom_title', 99 );
+
+function ce_title_separator( $sep ) {
+    return ( function_exists( 'ce_is_rankmath_active' ) && ce_is_rankmath_active() ) ? $sep : CE_TITLE_SEP;
+}
+add_filter( 'document_title_separator', 'ce_title_separator', 99 );
 
 /**
  * Remove WordPress version from head for security.
@@ -878,8 +1082,10 @@ add_filter( 'abstract_box_schema_payload', function ( $schema, $post, $attrs, $s
  *  - Titles read "Compelling Evidence — X"; lead with the page's topic.
  *  - Each journey marks every screen title as <h1> (8 to 10 per page); keep
  *    the first, demote the rest to <h2> with the same classes.
- *  - JSON-LD FAQPage blocks (questions not shown as Q&A on the page) and
- *    Speakable (news publishers only) are removed; everything else stays.
+ *  - JSON-LD FAQPage blocks are removed, because their questions are not
+ *    shown as questions and answers on the page. Everything else stays,
+ *    speakable included (owner rule of 2026-11-03: keep all schema.org
+ *    markup for GEO, AEO and AIO).
  *
  * @param string $html      Page HTML.
  * @param string $permalink URL the page is served from.
@@ -893,9 +1099,9 @@ function ce_standalone_html_seo( string $html, string $permalink, string $key = 
     }
     $html = str_replace( 'https://compelling-evidence.com', $home, $html );
 
-    // Title: topic first, brand last.
-    $html = preg_replace_callback( '#<title>\s*Compelling Evidence\s*[—–:|-]\s*(.*?)</title>#su', static function ( $m ) {
-        return '<title>' . trim( $m[1] ) . ' | Compelling Evidence</title>';
+    // Title: topic first, brand last, through the theme's title builder.
+    $html = preg_replace_callback( '#<title>(.*?)</title>#su', static function ( $m ) {
+        return '<title>' . esc_html( ce_title_build( $m[1] ) ) . '</title>';
     }, $html, 1 );
 
     // Meta description: house limit of 130 characters, call to action included.
@@ -914,7 +1120,7 @@ function ce_standalone_html_seo( string $html, string $permalink, string $key = 
         return '<h2' . $m[1] . '>' . $m[2] . '</h2>';
     }, $html );
 
-    // JSON-LD: drop FAQPage nodes and speakable properties.
+    // JSON-LD: drop FAQPage nodes, whose questions are not visible on the page.
     $html = preg_replace_callback( '#<script type="application/ld\+json">(.*?)</script>#su', static function ( $m ) {
         $data = json_decode( $m[1], true );
         if ( ! is_array( $data ) ) {
@@ -924,10 +1130,9 @@ function ce_standalone_html_seo( string $html, string $permalink, string $key = 
             if ( ! is_array( $node ) ) {
                 return $node;
             }
-            unset( $node['speakable'] );
             $out = [];
             foreach ( $node as $k => $v ) {
-                if ( is_array( $v ) && isset( $v['@type'] ) && in_array( $v['@type'], [ 'FAQPage', 'SpeakableSpecification' ], true ) ) {
+                if ( is_array( $v ) && isset( $v['@type'] ) && in_array( $v['@type'], [ 'FAQPage' ], true ) ) {
                     continue;
                 }
                 $out[ $k ] = $clean( $v );
@@ -939,9 +1144,6 @@ function ce_standalone_html_seo( string $html, string $permalink, string $key = 
             return '';
         }
         $data = $clean( $data );
-        if ( isset( $data['@type'] ) && 'WebPage' === $data['@type'] && count( array_diff( array_keys( $data ), [ '@context', '@type' ] ) ) === 0 ) {
-            return ''; // A WebPage block that only carried speakable.
-        }
         return '<script type="application/ld+json">' . wp_json_encode( $data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG ) . '</script>';
     }, $html );
 

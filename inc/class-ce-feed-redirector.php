@@ -39,7 +39,7 @@ class CE_Feed_Redirector {
         add_action( 'parse_query', [ $this, 'redirect_feed_requests' ] );
         add_action( 'send_headers', [ $this, 'feed_noindex_header'   ] );
 
-        if ( ! $this->seo_plugin_active() ) {
+        if ( ! self::seo_plugin_active() ) {
             add_filter( 'wp_sitemaps_add_provider', [ $this, 'remove_feed_from_sitemap' ], 10, 2 );
         }
 
@@ -77,8 +77,9 @@ class CE_Feed_Redirector {
 
     /**
      * Detect whether a known SEO plugin is active and managing sitemaps.
+     * Also read by ce_seo_plugin_active() for the image sitemap.
      */
-    private function seo_plugin_active(): bool {
+    public static function seo_plugin_active(): bool {
         $seo_plugins = [
             'wordpress-seo/wp-seo.php',
             'wordpress-seo-premium/wp-seo-premium.php',

@@ -6,9 +6,13 @@
  * The theme steps in only where Rank Math has no data for a field.
  *
  *  Front end
- *  - Title, meta description and canonical: Rank Math prints them. If its
- *    value comes back empty, the theme's own value is supplied through Rank
- *    Math's filters, so there is still exactly one tag.
+ *  - Meta description and canonical: Rank Math prints them. If its value
+ *    comes back empty, the theme's own value is supplied through Rank Math's
+ *    filters, so there is still exactly one tag.
+ *  - Title (since 2.11.0): Rank Math prints the tag, and its text runs
+ *    through the theme's builder (ce_title_build() in inc/ce-seo.php), so it
+ *    reads "<page part> | Compelling Evidence" under 60 characters. Wording
+ *    an editor typed into Rank Math's title field is kept as the page part.
  *  - JSON-LD: Rank Math's graph is the only block. Theme nodes (Article,
  *    BreadcrumbList, CollectionPage, WebSite, Organization) are added to it
  *    only when Rank Math's graph has no node of that type, for instance when
@@ -25,9 +29,12 @@
  *
  *  Content sync
  *  - inc/articles/seo.json holds a focus keyword (with related keywords),
- *    SEO title and meta description for every article. They are written to
- *    Rank Math's fields only when those fields are empty, so anything an
- *    editor sets in Rank Math is never overwritten.
+ *    short title and meta description for every article. Focus keyword and
+ *    description are written to Rank Math's fields only when those fields
+ *    are empty, so anything an editor sets in Rank Math is never
+ *    overwritten. The short title is not written (since 2.11.0); the title
+ *    filter supplies it. Bare titles that earlier versions wrote into
+ *    rank_math_title are removed once (ce_rankmath_clear_legacy_titles()).
  *
  * @package CE_Theme
  * @since   2.6.36
@@ -59,11 +66,62 @@ function ce_rankmath_canonical( $canonical ) {
 }
 add_filter( 'rank_math/frontend/canonical', 'ce_rankmath_canonical', 20 );
 
+/**
+ * Titles that themes up to 2.10.1 wrote into rank_math_title, by slug.
+ */
+function ce_rankmath_legacy_titles(): array {
+	static $titles = null;
+	if ( null === $titles ) {
+		$file   = get_stylesheet_directory() . '/inc/data/rankmath-legacy-titles.json';
+		$data   = is_readable( $file ) ? json_decode( (string) file_get_contents( $file ), true ) : []; // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- local theme file.
+		$titles = is_array( $data['titles'] ?? null ) ? $data['titles'] : [];
+	}
+	return $titles;
+}
+
+/**
+ * Wording an editor typed into Rank Math's title field, with Rank Math's
+ * variables resolved, or '' when the field is empty or holds a title the
+ * theme wrote there itself.
+ */
+function ce_rankmath_custom_title_part( int $post_id ): string {
+	$raw = trim( (string) get_post_meta( $post_id, 'rank_math_title', true ) );
+	if ( '' === $raw ) {
+		return '';
+	}
+	$legacy = ce_rankmath_legacy_titles();
+	$slug   = (string) get_post_field( 'post_name', $post_id );
+	if ( isset( $legacy[ $slug ] ) && sanitize_text_field( $legacy[ $slug ] ) === $raw ) {
+		return '';
+	}
+	if ( false !== strpos( $raw, '%' ) && class_exists( 'RankMath\\Helper' ) && method_exists( 'RankMath\\Helper', 'replace_vars' ) ) {
+		$raw = (string) \RankMath\Helper::replace_vars( $raw, get_post( $post_id ) );
+	}
+	return $raw;
+}
+
+/**
+ * Run Rank Math's title through the theme's title builder.
+ *
+ * Page part: an editor's own Rank Math wording first, then the theme's
+ * short title, then whatever Rank Math worked out. The site name and
+ * separator always come from the builder.
+ */
 function ce_rankmath_title( $title ) {
-	if ( '' !== trim( (string) $title ) || ! is_singular() ) {
+	if ( ! function_exists( 'ce_title_build' ) ) {
 		return $title;
 	}
-	return wp_strip_all_tags( get_the_title() ) . ' – ' . get_bloginfo( 'name' );
+	$part = (string) $title;
+	if ( '' === trim( $part ) && is_singular() ) {
+		$part = wp_strip_all_tags( get_the_title() );
+	}
+	if ( is_singular() ) {
+		$custom = ce_rankmath_custom_title_part( (int) get_queried_object_id() );
+		$part   = '' !== $custom ? $custom : ce_title_page_part( $part );
+	} else {
+		$part = ce_title_page_part( $part );
+	}
+	return ce_title_build( $part );
 }
 add_filter( 'rank_math/frontend/title', 'ce_rankmath_title', 20 );
 
@@ -157,7 +215,26 @@ function ce_rankmath_seo_data(): array {
 }
 
 /**
- * Write focus keyword, SEO title and description into Rank Math's fields
+ * Remove the bare titles that themes up to 2.10.1 wrote into
+ * rank_math_title. A field is cleared only when it still holds exactly the
+ * text the theme wrote; an editor's own title is left alone.
+ *
+ * @return int Number of fields cleared.
+ */
+function ce_rankmath_clear_legacy_titles(): int {
+	$cleared = 0;
+	foreach ( ce_rankmath_legacy_titles() as $slug => $legacy ) {
+		$posts = get_posts( [ 'post_type' => 'ce_article', 'name' => sanitize_title( $slug ), 'post_status' => 'any', 'numberposts' => 1, 'fields' => 'ids' ] );
+		if ( $posts && sanitize_text_field( (string) $legacy ) === trim( (string) get_post_meta( $posts[0], 'rank_math_title', true ) ) ) {
+			delete_post_meta( $posts[0], 'rank_math_title' );
+			$cleared++;
+		}
+	}
+	return $cleared;
+}
+
+/**
+ * Write focus keyword and description into Rank Math's fields
  * where those fields are empty. Never overwrites a value already there.
  *
  * @return int Number of fields written.
@@ -165,7 +242,6 @@ function ce_rankmath_seo_data(): array {
 function ce_rankmath_fill_empty_fields(): int {
 	$map     = [
 		'focus_keyword' => 'rank_math_focus_keyword',
-		'title'         => 'rank_math_title',
 		'description'   => 'rank_math_description',
 	];
 	$written = 0;
@@ -201,6 +277,10 @@ function ce_rankmath_maybe_fill(): void {
 	}
 	ce_rankmath_fill_empty_fields();
 	update_option( 'ce_rankmath_seo_hash', $hash, false );
+	if ( '1' !== get_option( 'ce_rankmath_legacy_titles_cleared' ) ) {
+		ce_rankmath_clear_legacy_titles();
+		update_option( 'ce_rankmath_legacy_titles_cleared', '1', false );
+	}
 }
 add_action( 'admin_init', 'ce_rankmath_maybe_fill', 50 );
 add_action( 'ce_content_synced', 'ce_rankmath_fill_empty_fields' );
