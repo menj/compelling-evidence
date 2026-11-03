@@ -10,7 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 - Links to the sister sites follow their new addresses. The owner ruled on 3 November 2026 that no address carries a verse number, a count or a year, and each site now answers its old addresses with a 301.
-- `inc/data/network-links.json` is the same file in all seven themes again. It takes `/articles/sword-verse-jizya/` for this site (renamed in 2.x, the old path still listed), `/journal/prophet-like-moses/` on Abrahamic Religions, the Best of Islam articles without counts, `/rebuttals/quran-wife-beating-verse-in-context/` on murtadd.org and the injil.help paths from its 3.11.0.
+- `inc/data/network-links.json` is the same file in all seven themes again. It takes `/articles/sword-verse-jizya/` for this site; the article moved there in an earlier release, but the shared file still listed the old path, `/journal/prophet-like-moses/` on Abrahamic Religions, the Best of Islam articles without counts, `/rebuttals/quran-wife-beating-verse-in-context/` on murtadd.org and the injil.help paths from its 3.11.0.
 - `inc/data/murtadd-counterparts.json`, rebuilt with `bin/build-murtadd-counterparts.py`, links `/doubts/quran-wife-beating-verse/` and `/rebuttals/quran-wife-beating-verse-in-context/`. `bin/build-quiz-murtadd-links.py` was run too and changed nothing.
 
 No content on this site changed, and none of its addresses moved.
