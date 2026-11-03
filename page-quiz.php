@@ -22,12 +22,34 @@ if ( ! file_exists( $quiz_file ) ) {
     exit;
 }
 $html = file_get_contents( $quiz_file );
-// Make /journey/ and /articles/ paths absolute with the site domain
+// Make /journey/, /journeys/ and /articles/ paths absolute with the site domain
+$html = str_replace( '"/journeys/', '"' . home_url('/journeys/'), $html );
 $html = str_replace( '"/journey/',  '"' . home_url('/journey/'),  $html );
 $html = str_replace( "'/journey/",  "'" . home_url('/journey/'),  $html );
 $html = str_replace( '"/articles/', '"' . home_url('/articles/'), $html );
 $html = str_replace( "'/articles/", "'" . home_url('/articles/'), $html );
 $html = str_replace( 'href="/"',    'href="' . home_url('/') . '"', $html );
+
+// ── murtadd.org links for the "You are not alone" list ──
+// Data: inc/data/quiz-murtadd-links.json, rebuilt with
+// bin/build-quiz-murtadd-links.py. The base URL can be changed with the
+// ce_murtadd_base_url filter.
+$murtadd_base = 'https://murtadd.org';
+if ( function_exists( 'apply_filters' ) ) {
+    $murtadd_base = (string) apply_filters( 'ce_murtadd_base_url', $murtadd_base );
+}
+$murtadd_data = [];
+$murtadd_file = get_stylesheet_directory() . '/inc/data/quiz-murtadd-links.json';
+if ( is_readable( $murtadd_file ) ) {
+    $murtadd_data = json_decode( (string) file_get_contents( $murtadd_file ), true );
+}
+if ( ! empty( $murtadd_data['items'] ) ) {
+    $murtadd_data['base'] = untrailingslashit( esc_url_raw( $murtadd_base ) );
+    $murtadd_js = '<script>var CE_MURTADD=' . wp_json_encode( $murtadd_data, JSON_HEX_TAG | JSON_UNESCAPED_SLASHES ) . ';</script>';
+} else {
+    $murtadd_js = '';
+}
+$html = str_replace( '<!-- ce:quiz-murtadd -->', $murtadd_js, $html );
 
 // ── Quiz CSS and JS (inc/ce-journey-assets.php) ──
 $html = ce_standalone_assets( $html, 'quiz' );

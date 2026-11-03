@@ -6,7 +6,7 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.9.0
+Version: 2.10.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Template: twentytwentyfive
@@ -104,6 +104,18 @@ Appearance > CE Theme Options — 8 tabs:
                   spam scan and trash; reports and security log
 
 == Changelog ==
+
+= 2.10.0 - November 2026 =
+* The quiz has three depths. Quick asks 5 questions, Standard 10 and Full 15. You choose on the start screen, and a Quick result can carry on into Standard with your answers kept.
+* Every question has a "Not sure, or rather not say" option. A skipped question counts for nothing, and scores are divided by the questions you answered, so the 3 modes sit on one scale.
+* The questions are rewritten in a gentler voice and asked easiest first. Each one shows a short topic label. Q4 gains "Nothing really; my questions lie elsewhere" for a believer with no complaint.
+* "How does faith sit in your life right now?" takes one answer only. A visitor who said they are a practising or doubting Muslim no longer lands on the Ex-Believer path, which now rises only on "It used to matter a great deal, and now it does not".
+* When the answers point to the Questioning Muslim or the Ex-Believer, Standard and Full ask one more question: what weighs on you most. It leaves the path alone and picks 2 or 3 murtadd.org pages for a "You are not alone" list. bin/build-quiz-murtadd-links.py builds the list from murtadd's seed data and fails on any slug that does not exist.
+* /quiz/?from=murtadd opens on Quick with a short welcome.
+* The result shows the closest path, 2 near paths as links, a note on how the match works, and share, retake and "Try another path". The percentage bars are gone.
+* Analytics get quiz_start with the mode and quiz_complete with the path and mode. The quiz no longer sends an event per answer.
+* Options are native radio buttons and checkboxes in a fieldset. Focus moves to each new question, the question count is announced, Next is a real disabled button until you answer, and the grey text passes 4.5:1. Ties go to a fixed order written in the quiz data.
+* bin/quiz-sim.js runs random visitors through each mode and checks that all 14 paths can be reached.
 
 = 2.9.0 - November 2026 =
 * Body text in the journeys is regular weight (400) instead of light (300), so Cormorant Garamond and DM Sans read more clearly on the dark background.
