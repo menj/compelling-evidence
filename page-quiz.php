@@ -51,6 +51,9 @@ if ( ! empty( $murtadd_data['items'] ) ) {
 }
 $html = str_replace( '<!-- ce:quiz-murtadd -->', $murtadd_js, $html );
 
+// ── Visible FAQ, from the same data as the FAQPage node (inc/ce-standalone-faq.php) ──
+$html = ce_standalone_faq_insert( $html, 'quiz' );
+
 // ── Quiz CSS and JS (inc/ce-journey-assets.php) ──
 $html = ce_standalone_assets( $html, 'quiz' );
 

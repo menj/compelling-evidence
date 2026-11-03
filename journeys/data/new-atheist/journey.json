@@ -51,36 +51,6 @@
   },
   {
    "@context": "https://schema.org",
-   "@type": "FAQPage",
-   "mainEntity": [
-    {
-     "@type": "Question",
-     "name": "Is belief in God just wishful thinking?",
-     "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "The claim that theism arises from psychological need is itself a psychological claim, not an argument. Many find the idea of an omniscient moral judge deeply unwelcome. The question should be evaluated on evidence, not on speculative theories about why people believe. The cosmological and fine-tuning arguments stand or fall on their logical and empirical merits, not on their psychological origins."
-     }
-    },
-    {
-     "@type": "Question",
-     "name": "Does not science explain everything without God?",
-     "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "Science explains how physical things behave within the universe, not why the universe exists, why it is law-governed, or why it permits life. The laws of physics themselves require explanation; they are not nothing. Science describes; it does not create or ultimately explain existence itself."
-     }
-    },
-    {
-     "@type": "Question",
-     "name": "What is the best argument for God's existence?",
-     "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "There is no single 'best' argument: the cumulative case is strongest. The cosmological argument establishes a first cause; fine-tuning shows purposeful calibration; the moral argument demonstrates objective values require a foundation; consciousness reveals the non-physical. Each argument addresses different aspects of reality; together they converge on a rational, conscious, good Creator."
-     }
-    }
-   ]
-  },
-  {
-   "@context": "https://schema.org",
    "@type": "BreadcrumbList",
    "itemListElement": [
     {

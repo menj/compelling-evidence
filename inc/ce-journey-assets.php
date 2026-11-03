@@ -12,7 +12,7 @@
  *   <!-- ce:journey-js -->   journey.js              (end of body, after window.CE_JOURNEY)
  *   <!-- ce:quiz-css -->     quiz.css
  *   <!-- ce:quiz-js -->      quiz.js                 (after the quiz data)
- *   </head>                  journey-base.css        (journeys only, last in the head)
+ *   </head>                  standalone-faq.css, then journey-base.css (journeys only, last in the head)
  *
  * Each file's version is its modification time, so a changed file reaches
  * visitors on the next load without a theme version bump.
@@ -47,6 +47,7 @@ function ce_register_standalone_assets(): void {
         'ce-journey'      => 'assets/css/journey.css',
         'ce-journey-base' => 'assets/css/journey-base.css',
         'ce-quiz'         => 'assets/css/quiz.css',
+        'ce-standalone-faq' => 'assets/css/standalone-faq.css',
     ];
     foreach ( $styles as $handle => $rel ) {
         wp_register_style( $handle, $uri . '/' . $rel, [], ce_standalone_asset_version( $rel ) );
@@ -103,6 +104,8 @@ function ce_standalone_assets( string $html, string $kind ): string {
             $html = str_replace( $marker, rtrim( ce_standalone_asset_tags( $asset[0], [ $asset[1] ] ) ), $html );
         }
     }
+    // The FAQ section's styles (inc/ce-standalone-faq.php), on both kinds.
+    $html = str_replace( '</head>', ce_standalone_asset_tags( 'style', [ 'ce-standalone-faq' ] ) . '</head>', $html );
     if ( 'journey' === $kind ) {
         // The responsive layer goes last in the head so it wins over the page's own <style>.
         $html = str_replace( '</head>', ce_standalone_asset_tags( 'style', [ 'ce-journey-base' ] ) . '</head>', $html );

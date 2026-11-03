@@ -6,7 +6,7 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.12.0
+Version: 2.13.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Template: twentytwentyfive
@@ -104,6 +104,12 @@ Appearance > CE Theme Options — 8 tabs:
                   spam scan and trash; reports and security log
 
 == Changelog ==
+
+= 2.13.0 - November 2026 =
+* The 14 journey pages and the quiz end with a short FAQ section, 4 or 5 questions each, in native details and summary elements. Styles are in assets/css/standalone-faq.css and use each page's own colours.
+* Each of those pages carries a FAQPage built from the same file as the visible section, inc/data/standalone-faq.json. It joins the page's one graph by @id. The standalone pass no longer strips FAQPage, and the old FAQPage nodes in four journey.json files are gone.
+* The site FAQ now says what the quiz records: a start, the suggested path and mode on completion, and how far you got if you leave early. Your answers stay in your browser.
+* tests/schema-graph-test.php requires one FAQPage on every journey and on the quiz, and checks that each question and answer appears in the page's visible HTML.
 
 = 2.12.0 - November 2026 =
 * Every page prints one JSON-LD graph. The FAQ, glossary and journey templates no longer print blocks of their own, and with Rank Math active the theme nodes go into Rank Math's graph.
