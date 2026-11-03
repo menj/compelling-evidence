@@ -14,6 +14,7 @@ require_once get_stylesheet_directory() . '/inc/ce-engagement.php';
 
 // ── SEO & SCHEMA MARKUP (JSON-LD, OG tags, print CSS) ───────────────────────
 require_once get_stylesheet_directory() . '/inc/ce-seo.php';
+require_once get_stylesheet_directory() . '/inc/ce-schema.php';
 
 // Shared CSS and JS for the standalone journey and quiz pages
 require_once get_stylesheet_directory() . '/inc/ce-journey-assets.php';

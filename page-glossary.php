@@ -68,37 +68,7 @@ ksort( $grouped );
 
   </div>
 
-<?php
-// DefinedTermSet schema markup. Empty properties are left out, and the
-// publisher URL follows the site address (2.11.0).
-$term_schema = [];
-foreach ( $terms as $t ) {
-    $node = [
-        '@type'       => 'DefinedTerm',
-        'name'        => $t['term'],
-        'description' => wp_strip_all_tags( $t['def_long'] ?? $t['def'] ),
-    ];
-    if ( ! empty( $t['arabic'] ) ) {
-        $node['termCode'] = $t['arabic'];
-    }
-    $term_schema[] = $node;
-}
-$glossary_schema = [
-    '@context'       => 'https://schema.org',
-    '@type'          => 'DefinedTermSet',
-    'name'           => 'Compelling Evidence Glossary of Islamic Terms',
-    'description'    => 'Key concepts from the Islamic intellectual tradition used throughout this site — defined clearly and without jargon.',
-    'inLanguage'     => 'en',
-    'url'            => get_permalink(),
-    'publisher'      => [
-        '@type' => 'Organization',
-        'name'  => 'Compelling Evidence',
-        'url'   => home_url( '/' ),
-    ],
-    'hasDefinedTerm' => $term_schema,
-];
-?>
-<script type="application/ld+json"><?php echo wp_json_encode( $glossary_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON encoded with JSON_HEX_TAG. ?></script>
+<?php // DefinedTermSet: ce_schema_glossary_node() in inc/ce-schema.php, printed in the theme graph (2.12.0). ?>
 
 
 </main>

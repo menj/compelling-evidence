@@ -28,12 +28,13 @@ $seo = $j['seo'];
 <meta name="<?php echo esc_attr( $p ); ?>" content="<?php echo esc_attr( $seo[ $p ] ); ?>">
 <?php endforeach; ?>
 <link rel="canonical" href="<?php echo esc_url( $seo['canonical'] ); ?>">
-<?php foreach ( (array) ( $j['schema'] ?? [] ) as $node ) : ?>
-<script type="application/ld+json">
-<?php echo ce_journey_json( $node ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON with JSON_HEX_TAG. ?>
-
-</script>
-<?php endforeach; ?>
+<?php
+// One graph for the page: the journey's own nodes from journey.json and its
+// LearningResource, built by ce_schema_nodes() (inc/ce-schema.php, 2.12.0).
+ce_schema_journey( $j );
+echo ce_schema_script(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON with JSON_HEX_TAG.
+ce_schema_journey( null, true );
+?>
 <!-- ce:journey-css -->
 <style>
 <?php echo $j['css']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- theme file. ?>
