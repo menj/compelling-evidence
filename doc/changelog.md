@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [2.9.0] - November 2026
 
+- In the New Atheist journey, three sentences pointed to a chapter whose name had dropped out ("examined in .", "We saw this in .", "touched on in ."). They now read "in the Constant chapter" and "earlier".
+
 ### Changed
 - The 14 hand-copied journey pages are now 1 template and 14 data folders. `template-parts/journey/` prints the document: head (title, meta and JSON-LD from data, still passed through `ce_standalone_html_seo()`), header with the progress dots, one wrapper per chapter, the Volume II preview, and the scripts. `inc/ce-journey-template.php` loads the data and renders it.
 - Each persona lives in `journeys/data/<key>/`: `journey.json` holds the SEO fields, JSON-LD, header label and dots, chapter ids and names, "Go deeper" links, badge name, the resonance switch and the Volume II preview text and links; `style.css` holds the rules only that persona uses; `screens/<id>.html` holds each chapter body exactly as it was written. The hero, reading text, sidebar and closing sections stay in those bodies, since their markup differs from persona to persona.

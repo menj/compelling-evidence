@@ -106,6 +106,7 @@ Appearance > CE Theme Options — 8 tabs:
 == Changelog ==
 
 = 2.9.0 - November 2026 =
+* In the New Atheist journey, three sentences pointed to a chapter whose name had dropped out. They now read "in the Constant chapter" and "earlier".
 * The 14 journeys are built from one template. Each persona is a data folder in journeys/data/ (journey.json, its own style.css and one HTML file per chapter, the chapter text unchanged), and template-parts/journey/ prints the head, header, chapter wrappers, Volume II preview and scripts. The old journeys/*-journey.html files are gone. A hand-made HTML file in a locale folder still works.
 * Interface text the template and journey.js print sits in journeys/i18n/en.php, so a Malay version needs text only.
 * The journeys now load DM Sans, Cormorant Garamond and the Playfair Display weights they use. Before, only Playfair 400 loaded and the rest of the text used system fallbacks, so the pages now look as designed.
