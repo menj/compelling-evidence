@@ -193,6 +193,10 @@ function ce_schema_page_nodes( array $base ): array {
             $nodes[]            = $quiz;
             $page['mainEntity'] = ce_schema_ref( $quiz['@id'] );
         }
+        $faq = ce_standalone_faq_node( $url, 'quiz' );
+        if ( $faq ) {
+            $nodes[] = $faq;
+        }
     } elseif ( 'page-ask-a-question.php' === $tpl ) {
         $page['@type'] = 'ContactPage';
     } elseif ( is_page( 'contact-compelling-evidence' ) ) {
@@ -385,7 +389,7 @@ function ce_faq_sections(): array {
             'What is the quiz?' =>
                 'A 10-question assessment that identifies your starting point — atheist, agnostic, spiritual seeker, questioning Muslim, etc. — and routes you to a personalised reading journey designed for where you actually are, not where someone wishes you were.',
             'Is my quiz data stored on a server?' =>
-                'Partly. Your quiz result and journey progress are saved in your browser (localStorage); if you clear your browser data, that progress is lost. Separately, the site records anonymous usage events on its own server, with no cookies and no third-party services: each answer you choose in the quiz, the persona the quiz assigns you, the journey screens you view, page and article views, scroll depth, and search terms. Each event is stored with a one-way hash of your IP address (the address itself is never stored), a random session ID, the page address, and whether you use a phone, tablet or desktop. The quiz never collects your name or email.',
+                'Partly. Your quiz answers, result and journey progress are saved in your browser (localStorage); if you clear your browser data, that progress is lost. Separately, the site records anonymous usage events on its own server, with no cookies and no third-party services: when you start the quiz, the path it suggests and the mode you chose when you finish, and, if you leave early, how far you got and how many questions you answered; the journey screens you view, page and article views, scroll depth, and search terms. Each event is stored with a one-way hash of your IP address (the address itself is never stored), a random session ID, the page address, and whether you use a phone, tablet or desktop. The quiz never collects your name or email.',
             'What are journeys?' =>
                 'Each journey is a curated sequence of articles ordered for a specific persona. A classical atheist starts with cosmological arguments. A questioning Muslim starts with doubt and inner struggle. The content is the same 100 articles — the sequencing is different.',
             'Can I read articles without taking the quiz?' =>
@@ -578,8 +582,8 @@ function ce_schema_quiz_node( string $url ): ?array {
  * reading order.
  *
  * The page has no theme header or footer, so it has no frame nodes. Its
- * FAQPage is removed later by ce_standalone_html_seo(), because those
- * questions are not shown on the page.
+ * FAQPage comes from inc/data/standalone-faq.json, the same data as the
+ * visible FAQ section at the end of the page (2.13.0).
  *
  * @param array $j    Journey data (ce_journey_load()).
  * @param array $page The WebPage node so far.
@@ -610,8 +614,7 @@ function ce_schema_journey_nodes( array $j, array $page ): array {
                 $nodes[]                  = $node;
                 break;
             case 'FAQPage':
-                $node['@id'] = ce_schema_id( $url, 'faq' );
-                $nodes[]     = $node;
+                // Replaced by the FAQ in inc/data/standalone-faq.json below.
                 break;
             case 'BreadcrumbList':
                 $node['@id']        = ce_schema_id( $url, 'breadcrumb' );
@@ -692,6 +695,11 @@ function ce_schema_journey_nodes( array $j, array $page ): array {
         ] : null,
     ] );
     $nodes[] = $learning;
+
+    $faq = ce_standalone_faq_node( $url, (string) ( $j['key'] ?? '' ) );
+    if ( $faq ) {
+        $nodes[] = $faq;
+    }
 
     $page['name']       = $title;
     $page['mainEntity'] = ce_schema_ref( $learn_id );

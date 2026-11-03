@@ -4,4 +4,4 @@ Read `FARUQI.md` first. It sets out the Faruqian core, al-tawḥīd as Ismāʿī
 
 ## Owner decisions
 
-- The journey and quiz pages carry no FAQPage markup, and they get no visible FAQ section to carry it. The owner decided this on 2026-11-03. Structured data describes only what a page shows, and those questions do not appear there. Do not add either, and do not raise the question again unless the owner does.
+- The journey and quiz pages carry FAQPage markup, with a visible FAQ section built from the same data. The owner decided this on 2026-11-03, reversing an earlier note the same day. Structured data still describes only what a page shows, so the questions must appear on the page.

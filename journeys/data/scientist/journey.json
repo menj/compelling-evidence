@@ -46,36 +46,6 @@
   },
   {
    "@context": "https://schema.org",
-   "@type": "FAQPage",
-   "mainEntity": [
-    {
-     "@type": "Question",
-     "name": "What does physics actually reveal about the origin of the universe?",
-     "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "Modern cosmology points to a definite beginning of space, time, and matter approximately 13.8 billion years ago. The Big Bang was not an explosion in space but of space itself, requiring a cause beyond the physical universe. The Borde-Guth-Vilenkin theorem demonstrates that any universe which has been expanding throughout its history must have a past boundary: a beginning."
-     }
-    },
-    {
-     "@type": "Question",
-     "name": "What is cosmic fine-tuning and why does it matter?",
-     "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "Fine-tuning refers to the precise calibration of physical constants necessary for life. Change the strong nuclear force by 0.5% or the cosmological constant, which is about 120 orders of magnitude smaller than naive theoretical estimates, and the universe either collapses or expands too fast for galaxies to form. The odds of these constants falling within life-permitting ranges by chance are astronomically small, comparable to hitting a single atom with a dart thrown across the observable universe."
-     }
-    },
-    {
-     "@type": "Question",
-     "name": "Can the universe exist without a cause?",
-     "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "The claim that the universe is self-existent or uncaused contradicts both empirical evidence and logical principle. Everything that begins to exist has a cause; the universe began to exist; therefore, the universe has a cause. This cause must be timeless (outside time), spaceless (outside space), immaterial (not composed of matter), and enormously powerful: characteristics consistent with the concept of God."
-     }
-    }
-   ]
-  },
-  {
-   "@context": "https://schema.org",
    "@type": "BreadcrumbList",
    "itemListElement": [
     {

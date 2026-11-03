@@ -1088,10 +1088,9 @@ add_filter( 'abstract_box_schema_payload', function ( $schema, $post, $attrs, $s
  *  - Titles read "Compelling Evidence — X"; lead with the page's topic.
  *  - Each journey marks every screen title as <h1> (8 to 10 per page); keep
  *    the first, demote the rest to <h2> with the same classes.
- *  - JSON-LD FAQPage blocks are removed, because their questions are not
- *    shown as questions and answers on the page. Everything else stays,
- *    speakable included (owner rule of 2026-11-03: keep all schema.org
- *    markup for GEO, AEO and AIO).
+ *  - JSON-LD is left whole, FAQPage and speakable included. Since 2.13.0
+ *    the FAQPage comes from inc/data/standalone-faq.json, the same data as
+ *    the visible FAQ section on the page (owner, 2026-11-03).
  *
  * @param string $html      Page HTML.
  * @param string $permalink URL the page is served from.
@@ -1124,33 +1123,6 @@ function ce_standalone_html_seo( string $html, string $permalink, string $key = 
             return $m[0];
         }
         return '<h2' . $m[1] . '>' . $m[2] . '</h2>';
-    }, $html );
-
-    // JSON-LD: drop FAQPage nodes, whose questions are not visible on the page.
-    $html = preg_replace_callback( '#<script type="application/ld\+json">(.*?)</script>#su', static function ( $m ) {
-        $data = json_decode( $m[1], true );
-        if ( ! is_array( $data ) ) {
-            return $m[0];
-        }
-        $clean = static function ( $node ) use ( &$clean ) {
-            if ( ! is_array( $node ) ) {
-                return $node;
-            }
-            $out = [];
-            foreach ( $node as $k => $v ) {
-                if ( is_array( $v ) && isset( $v['@type'] ) && in_array( $v['@type'], [ 'FAQPage' ], true ) ) {
-                    continue;
-                }
-                $out[ $k ] = $clean( $v );
-            }
-            $is_list = array_keys( $node ) === range( 0, count( $node ) - 1 );
-            return $is_list ? array_values( $out ) : $out;
-        };
-        if ( isset( $data['@type'] ) && in_array( $data['@type'], [ 'FAQPage' ], true ) ) {
-            return '';
-        }
-        $data = $clean( $data );
-        return '<script type="application/ld+json">' . wp_json_encode( $data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG ) . '</script>';
     }, $html );
 
     return $html;

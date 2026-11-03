@@ -46,36 +46,6 @@
   },
   {
    "@context": "https://schema.org",
-   "@type": "FAQPage",
-   "mainEntity": [
-    {
-     "@type": "Question",
-     "name": "Is it okay to have doubts about Islam?",
-     "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "Doubt is not the enemy of faith: complacency is. The Quran itself instructs believers to reflect, examine, and think. The Prophet's companions asked questions, including deeply uncomfortable ones. Islam has a long scholarly tradition engaging with doubt and skepticism. What matters is how you respond to doubt: with honest inquiry or with suppression."
-     }
-    },
-    {
-     "@type": "Question",
-     "name": "Why do people leave Islam?",
-     "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "Research reveals that leaving Islam is rarely casual. Common factors include: traumatic religious experiences, intellectual questions that went unanswered, moral objections to specific practices, and community pressure that backfired. Understanding these patterns matters, both for those experiencing doubt and for communities that want to retain members through understanding rather than coercion."
-     }
-    },
-    {
-     "@type": "Question",
-     "name": "Does science contradict Islam?",
-     "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "No, and historically, Islamic civilization preserved and advanced scientific knowledge when Europe was in its Dark Ages. The Quran contains no scientific errors; it makes claims consistent with modern discoveries about the expanding universe, embryonic development, and the water cycle. The question is not whether Islam and science conflict, but whether you have been exposed to the strongest version of both."
-     }
-    }
-   ]
-  },
-  {
-   "@context": "https://schema.org",
    "@type": "BreadcrumbList",
    "itemListElement": [
     {

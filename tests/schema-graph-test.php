@@ -48,6 +48,7 @@ function sanitize_file_name( $s ) { return preg_replace( '/[^A-Za-z0-9_.\-]/', '
 function sanitize_html_class( $s ) { return preg_replace( '/[^A-Za-z0-9_\-]/', '', (string) $s ); }
 function sanitize_title( $s ) { return trim( preg_replace( '/[^a-z0-9]+/', '-', strtolower( iconv( 'UTF-8', 'ASCII//TRANSLIT//IGNORE', (string) $s ) ) ), '-' ); }
 function wp_kses_post( $s ) { return (string) $s; }
+function wp_kses( $s, $allowed ) { return (string) $s; }
 function absint( $n ) { return abs( (int) $n ); }
 function is_email( $e ) { return false !== strpos( $e, '@' ); }
 function is_wp_error( $x ) { return false; }
@@ -103,6 +104,7 @@ require $ROOT . '/inc/ce-rankmath.php';
 require $ROOT . '/inc/ce-glossary.php';
 require $ROOT . '/inc/ce-media.php';
 require $ROOT . '/inc/ce-journey-template.php';
+require $ROOT . '/inc/ce-standalone-faq.php';
 
 // ── Checks ──────────────────────────────────────────────────────────────
 $fail = 0;
@@ -258,9 +260,11 @@ if ( count( find( $g, 'DefinedTermSet' )['hasDefinedTerm'] ?? [] ) !== count( ce
 if ( false !== strpos( file_get_contents( $ROOT . '/page-glossary.php' ), 'ld+json' ) ) bad( 'glossary', 'template still prints its own block' );
 
 $GLOBALS['ctx'] = $page( 'quiz', 'Quiz', 'page-quiz.php' );
-$g = ce_schema_nodes(); $t = check_graph( $g, 'quiz' ); expect_types( $t, [ 'Quiz', 'Question', 'Answer' ], 'quiz' );
+$g = ce_schema_nodes(); $t = check_graph( $g, 'quiz' ); expect_types( $t, [ 'Quiz', 'Question', 'Answer', 'FAQPage' ], 'quiz' );
 if ( in_array( 'WPHeader', $t, true ) ) bad( 'quiz', 'frame nodes on a standalone page' );
 foreach ( find( $g, 'Quiz' )['hasPart'] as $qq ) if ( isset( $qq['acceptedAnswer'] ) ) bad( 'quiz', 'acceptedAnswer on a quiz with no right answers' );
+$qhtml = ce_standalone_faq_insert( file_get_contents( ce_get_quiz_file() ), 'quiz' );
+faq_visible( $g, $qhtml, 'quiz' );
 echo 'quiz questions: ' . count( find( $g, 'Quiz' )['hasPart'] ) . "\n";
 
 $GLOBALS['ctx'] = $page( 'ask-a-question', 'Ask', 'page-ask-a-question.php' );
@@ -291,7 +295,19 @@ if ( ! $qn || isset( $qn['acceptedAnswer'] ) || 0 !== $qn['answerCount'] ) bad( 
 $GLOBALS['ctx'] = [ 'view' => 'single', 'post' => $qpost( 'x' ), 'qstatus' => [ 'new' ] ];
 if ( find( ce_schema_nodes(), 'QAPage' ) ) bad( 'question-new', 'QAPage on an unpublished question' );
 
-// Journeys: one graph per page, FAQPage stripped by the standalone pass.
+// Each FAQPage question must be on the page itself, outside the JSON-LD.
+function faq_visible( array $graph, string $html, string $label ): void {
+	$faq = find( $graph, 'FAQPage' );
+	if ( ! $faq || count( $faq['mainEntity'] ) < 4 ) { bad( $label, 'no FAQPage with 4+ questions' ); return; }
+	$visible = html_entity_decode( strip_tags( preg_replace( '#<(script|style)[^>]*>.*?</\1>#s', '', $html ) ), ENT_QUOTES | ENT_HTML5 );
+	foreach ( $faq['mainEntity'] as $q ) {
+		if ( 'Question' !== $q['@type'] || empty( $q['acceptedAnswer']['text'] ) ) bad( $label, 'Question without an acceptedAnswer' );
+		if ( false === strpos( $visible, $q['name'] ) ) bad( $label, 'question not on the page: ' . $q['name'] );
+		if ( false === strpos( $visible, html_entity_decode( strip_tags( $q['acceptedAnswer']['text'] ), ENT_QUOTES | ENT_HTML5 ) ) ) bad( $label, 'answer not on the page: ' . $q['name'] );
+	}
+}
+
+// Journeys: one graph per page, FAQPage from the same data as the visible FAQ.
 if ( false !== strpos( file_get_contents( $ROOT . '/template-parts/journey/document.php' ), "\$j['schema']" ) ) bad( 'journey', 'document.php still prints journey.json blocks' );
 foreach ( glob( $ROOT . '/journeys/data/*/journey.json' ) as $f ) {
 	$key = basename( dirname( $f ) );
@@ -314,10 +330,35 @@ foreach ( glob( $ROOT . '/journeys/data/*/journey.json' ) as $f ) {
 	preg_match( '#<script type="application/ld\+json">(.*?)</script>#s', $out, $m );
 	$data = json_decode( $m[1], true );
 	$t2   = check_graph( $data['@graph'], "journey $key standalone" );
-	if ( in_array( 'FAQPage', $t2, true ) ) bad( "journey $key", 'FAQPage left on the page' );
-	expect_types( $t2, [ 'LearningResource', 'Article', 'WebPage', 'Organization' ], "journey $key standalone" );
+	if ( 1 !== count( array_keys( $t2, 'FAQPage', true ) ) ) bad( "journey $key", 'expected one FAQPage' );
+	$full = ce_standalone_html_seo( ce_journey_render( dirname( $f ) . '/' ), home_url( '/journeys/' . $key . '/' ), $key );
+	preg_match( '#<script type="application/ld\+json">(.*?)</script>#s', $full, $m );
+	faq_visible( json_decode( $m[1], true )['@graph'], $full, "journey $key page" );
+	expect_types( $t2, [ 'LearningResource', 'Article', 'WebPage', 'Organization', 'FAQPage', 'Question', 'Answer' ], "journey $key standalone" );
 	if ( empty( find( $data['@graph'], 'WebPage' )['speakable'] ) ) bad( "journey $key", 'speakable lost' );
 }
+
+// A journey served from a stand-alone HTML file (no data folder) gets the
+// FAQ section and its FAQPage from the same data, and loses the file's own.
+$GLOBALS['ctx'] = $page( 'journey/agnostic', 'agnostic', 'page-journey.php' );
+$surl = home_url( '/journeys/agnostic/' );
+$src  = '<html><head><title>x</title><script type="application/ld+json">' . json_encode( [ '@context' => 'https://schema.org', '@graph' => [
+	[ '@type' => 'WebSite', '@id' => 'https://ce.test/#website', 'name' => 'Compelling Evidence', 'url' => 'https://ce.test/' ],
+	[ '@type' => 'WebPage', '@id' => $surl . '#webpage', 'url' => $surl, 'name' => 'x', 'isPartOf' => [ '@id' => 'https://ce.test/#website' ] ],
+	[ '@type' => 'FAQPage', '@id' => $surl . '#old', 'mainEntity' => [ [ '@type' => 'Question', 'name' => 'Hidden old question?', 'acceptedAnswer' => [ '@type' => 'Answer', 'text' => 'x' ] ] ] ],
+] ] ) . '</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[]}</script></head><body><h1>x</h1></body></html>';
+$out = ce_standalone_html_seo( ce_standalone_faq_html_source( $src, 'agnostic', $surl ), $surl, 'agnostic' );
+if ( 1 !== substr_count( $out, 'application/ld+json' ) ) bad( 'journey html', 'not one block' );
+if ( false !== strpos( $out, 'Hidden old question' ) ) bad( 'journey html', 'file FAQPage kept' );
+preg_match( '#<script type="application/ld\+json">(.*?)</script>#s', $out, $m );
+$sg = json_decode( $m[1], true )['@graph'];
+check_graph( $sg, 'journey html' );
+faq_visible( $sg, $out, 'journey html' );
+$plain = ce_standalone_faq_html_source( '<html><head></head><body></body></html>', 'agnostic', $surl );
+preg_match( '#<script type="application/ld\+json">(.*?)</script>#s', $plain, $m );
+faq_visible( [ json_decode( $m[1], true ) ], $plain, 'journey html, no graph' );
+$none = ce_standalone_faq_html_source( $src, 'no-such-path', $surl );
+if ( false !== strpos( $none, 'FAQPage' ) || false !== strpos( $none, 'ce-sfaq' ) ) bad( 'journey html', 'FAQ without data' );
 
 // Rank Math: merge into its graph, no second block, one node per family.
 function rm_graph( string $url ): array {

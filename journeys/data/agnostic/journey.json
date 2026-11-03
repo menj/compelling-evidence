@@ -56,36 +56,6 @@
   },
   {
    "@context": "https://schema.org",
-   "@type": "FAQPage",
-   "mainEntity": [
-    {
-     "@type": "Question",
-     "name": "What would count as evidence for God's existence?",
-     "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "Evidence would need to meet the same standard as other scientific or philosophical truths: explanatory power, predictive capacity, and convergence from multiple independent sources. For God specifically, relevant evidence includes cosmological origins, fine-tuning of physical constants, consciousness as non-physical, objective moral facts, and the reliability of reason itself."
-     }
-    },
-    {
-     "@type": "Question",
-     "name": "Is agnosticism the same as atheism?",
-     "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "No. Atheism asserts that God does not exist; agnosticism holds that the evidence is insufficient to form a definite conclusion. Properly held agnosticism is intellectual honesty: refusal to claim knowledge beyond what the evidence warrants. It is a position about what can be known, and no middle ground between belief and unbelief."
-     }
-    },
-    {
-     "@type": "Question",
-     "name": "Can you prove God exists?",
-     "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "Proof in the mathematical sense is not possible for any existential claim, including atheism. What is possible is a cumulative case: multiple independent lines of evidence converging on the same conclusion. The cosmological, fine-tuning, moral, and consciousness arguments each have independent force; together they form a compelling picture."
-     }
-    }
-   ]
-  },
-  {
-   "@context": "https://schema.org",
    "@type": "BreadcrumbList",
    "itemListElement": [
     {

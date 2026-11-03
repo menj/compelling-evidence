@@ -1,0 +1,98 @@
+{
+  "_comment": "Questions and answers for the journey pages and the quiz, one list per page key. inc/ce-standalone-faq.php prints each list as the page's visible FAQ section and as its FAQPage node, so the two always match. Answers may carry <a href> links and nothing else.",
+  "heading": "Questions about this path",
+  "quiz_heading": "Questions about the quiz",
+  "pages": {
+    "quiz": [
+      { "q": "How long does the quiz take?", "a": "You choose. Quick asks 5 questions, Standard asks 10 and Full asks 15. If your answers point to the Questioning Muslim or Ex-Believer path, Standard and Full add 1 follow-up question. Each one takes a few seconds." },
+      { "q": "Do I have to answer every question?", "a": "No. Every question has a skip. Pick what is closest to you and leave out anything you would rather not say." },
+      { "q": "Where do my answers go?", "a": "Your answers stay in your browser, which also keeps your place until you finish or restart. The site records when a quiz starts, the path and mode when it finishes, and how many questions were answered if you leave early. It never asks for your name or email." },
+      { "q": "What does the result mean?", "a": "It is a starting point. Your answers are matched on your device against 14 paths, and the closest one is shown with the next closest beside it. You can open any other path from the paths page whenever you like." },
+      { "q": "I am thinking about leaving Islam, or I already have. Is there a place for me?", "a": "Yes. The Questioning Muslim and Ex-Believer paths start where you are. People who have stood in the same place write about family, law, prayer and hurt on <a href=\"https://murtadd.org\">murtadd.org</a>, and the result page links to the pieces closest to your answers." }
+    ],
+    "agnostic": [
+      { "q": "Is agnosticism the same as atheism?", "a": "No. Atheism says God does not exist. Agnosticism says the evidence so far is too thin to decide, and this path treats that as an honest place to start." },
+      { "q": "What would count as evidence for God?", "a": "The first chapter asks you to name your own standard before anything else. The chapters after it test the beginning of the universe, fine-tuning, consciousness, moral facts, suffering and the reliability of reason against that standard." },
+      { "q": "Can anyone prove that God exists?", "a": "Not in the way a theorem is proved, and the same holds for atheism. The path builds a cumulative case, where separate arguments point the same way. You weigh it and decide." },
+      { "q": "Does the path deal with suffering?", "a": "Yes. The Entropy chapter is given to it. It offers no easy answer, and it asks what outrage at suffering assumes about right and wrong." }
+    ],
+    "antitheist": [
+      { "q": "Does this path deny that religion has caused harm?", "a": "No. It opens by granting that religion has caused real, documented harm. Then it asks whether that harm settles whether God exists." },
+      { "q": "Does the evidence here rest on religious authority?", "a": "No. It comes from physics, philosophy of mind and ethics. None of it needs a church, a mosque or a priest to vouch for it." },
+      { "q": "If moral outrage is my case against religion, what does that case need?", "a": "It needs harm to be wrong in fact, whatever anyone prefers. The Constant chapter asks where a fact like that can come from, and argues that a good Creator grounds it best." },
+      { "q": "Does the path ask me to give up my criticism of religious harm?", "a": "No. Keep it. Al-tawḥīd measures every human institution against the will of God, and it condemns cruelty done in His name." }
+    ],
+    "apatheist": [
+      { "q": "Why should the God question matter if my life works fine without it?", "a": "The path grants that your life works. It asks one quiet question: what makes the things you care about worth caring about? If the answer points beyond physics, the God question is open again." },
+      { "q": "How long is this path?", "a": "It has 10 short chapters. Read one, stop, and come back later. Your place is kept in your browser." },
+      { "q": "Will this path pressure me?", "a": "No. The Qur'an says there is no compulsion in religion (2:256). The path sets out the evidence and leaves the decision with you." },
+      { "q": "Where does the path start?", "a": "With a fact physics gives you whether you are interested or not: the universe began. From there it looks at fine-tuning, consciousness, moral facts, suffering and the reliability of reason." }
+    ],
+    "classical-atheist": [
+      { "q": "Is the concept of God incoherent?", "a": "The first chapter asks which concept your objection targets. Many paradoxes aim at a God with a body or a limited mind. The God of Islam is one, necessary and unlike His creation: \"Nothing is like unto Him\" (Qur'an 42:11)." },
+      { "q": "Is necessary existence a coherent idea?", "a": "The Singularity chapter argues that it is. A universe that began, and could have failed to exist, needs an explanation, and something that exists by necessity ends the chain without a paradox." },
+      { "q": "Can the problem of evil be stated without objective moral facts?", "a": "The Entropy chapter argues that it cannot. The argument needs evil to be really evil, and a world of matter alone has no room for that kind of fact." },
+      { "q": "Why would logic itself point to God?", "a": "The Signal chapter asks why valid inference tracks truth. That fits a world made by a rational Creator. It fits poorly with a mind shaped by survival alone." }
+    ],
+    "deist": [
+      { "q": "If I already believe in a Creator, what does this path add?", "a": "It asks what kind of Creator the evidence points to. Physics, consciousness and moral facts point to one who is conscious, good and purposeful, which is closer to a personal God than many deists expect." },
+      { "q": "Why would a Creator care about human beings?", "a": "A Creator who chose these physical constants and produced conscious minds made a world with a purpose. The Qur'an says the heavens and the earth were made \"not in vain\" (38:27)." },
+      { "q": "Does suffering show that God is distant?", "a": "The Entropy chapter takes the objection head on. It argues that the complaint assumes a real standard of good, and that standard points back to a good Creator." },
+      { "q": "Has the Creator spoken?", "a": "The Transmission chapter asks what a real message from the Creator would look like, and sets out the case for the Qur'an. You weigh that case yourself." }
+    ],
+    "ex-believer": [
+      { "q": "Is this path trying to bring me back to the institution I left?", "a": "No. It opens by saying you were right to leave the manipulation and the harm. Its questions are about what you carried out with you: wonder, an inner life and the values you rebuilt with." },
+      { "q": "What does the harm done in God's name prove?", "a": "It proves that people did harm. The Entropy chapter asks whether it also proves there is no God, and argues that it does not. Al-tawḥīd condemns anyone who claims God's authority for cruelty." },
+      { "q": "Can I trust the reasoning that led me to leave?", "a": "Yes. The Signal chapter argues that the same honest reasoning, followed all the way, points to a rational Creator who made minds able to know the truth." },
+      { "q": "Where can I read about other people who have left?", "a": "People who have left Islam, or are thinking about it, write about family, law and faith on <a href=\"https://murtadd.org\">murtadd.org</a>, a sister site of this one." }
+    ],
+    "freethinker": [
+      { "q": "Does this path ask me to accept anything on authority?", "a": "No. It asks you to apply your independence consistently, to your own assumptions as well. Each chapter names its sources so you can check them." },
+      { "q": "Is the beginning of the universe a religious claim?", "a": "No. It is the standard view of modern cosmology. The path asks what follows from it." },
+      { "q": "Why does consciousness count as evidence?", "a": "Neuroscience maps which brain activity goes with which experience. It has no account of why any of it is felt at all. The Emergence chapter argues that this points beyond matter." },
+      { "q": "What does Islam say about belief without evidence?", "a": "The Qur'an forbids following conjecture (53:28) and tells its readers to reflect on creation. Islam asks for conviction reached through evidence, and this path puts its claims up for testing." }
+    ],
+    "materialist": [
+      { "q": "Is materialism a serious position?", "a": "Yes. The path treats it as coherent and simple, with the success of science behind it, and asks what the view commits you to." },
+      { "q": "What caused the physical universe to begin?", "a": "Physics says the universe had a beginning. Before it there was no matter, energy, space or time, so its cause cannot be one more physical thing. The Singularity chapter follows that point." },
+      { "q": "Can consciousness be explained in physical terms?", "a": "The Emergence chapter argues that the hard problem resists physical explanation in principle. Physics describes structure and function, and felt experience is a further fact." },
+      { "q": "If my mind is purely physical, can I trust it?", "a": "The Signal chapter asks exactly this. If survival alone shaped your beliefs, their truth is a lucky extra. A mind made by a rational Creator has grounds to trust its reasoning." }
+    ],
+    "muslim-doubts": [
+      { "q": "Is it a sin to have doubts?", "a": "The path opens by saying your doubt is no sin. The Qur'an tells believers again and again to reflect and to think, and the Companions brought hard questions to the Prophet." },
+      { "q": "Why do people leave Islam?", "a": "The reasons people give include questions that went unanswered, moral objections to particular practices and harm done by people with religious authority. Each deserves an honest hearing." },
+      { "q": "If some of what I was taught is wrong, does that mean God does not exist?", "a": "No. The Singularity chapter separates the two questions. Beneath every specific doubt sits an older one, why there is a universe at all, and the path follows that one first." },
+      { "q": "Who can I talk to?", "a": "People who have doubted, stayed or left write about it on <a href=\"https://murtadd.org\">murtadd.org</a>, a sister site, with pieces on family, law, prayer and hurt. You can read without giving your name." }
+    ],
+    "new-atheist": [
+      { "q": "Has science made God unnecessary?", "a": "Science explains how things inside the universe behave. The path asks what explains the universe existing at all, and why its laws allow life. Physics measures the first and leaves the second open." },
+      { "q": "Is belief in God wishful thinking?", "a": "That is a claim about why people believe. It says nothing about whether God exists, so the path judges the arguments on their merits." },
+      { "q": "What is the strongest argument for God?", "a": "The path puts its weight on the cumulative case. The beginning of the universe, fine-tuning, consciousness, moral facts and the reliability of reason each point the same way." },
+      { "q": "Does the path deal with suffering?", "a": "Yes. The Entropy chapter calls it the oldest and hardest question, and it answers without deflecting." }
+    ],
+    "scientist": [
+      { "q": "What does physics say about the origin of the universe?", "a": "Standard cosmology dates the expansion of the universe to about 13.8 billion years ago. The Borde-Guth-Vilenkin theorem holds that a universe which has expanded on average throughout its history has a past boundary." },
+      { "q": "What is fine-tuning?", "a": "Several physical constants sit in narrow ranges that allow stars, chemistry and life. The observed cosmological constant is about 120 orders of magnitude smaller than naive estimates of vacuum energy. The Calibration chapter asks what explains values like these." },
+      { "q": "Is inferring a Creator scientific?", "a": "Science infers things it cannot observe directly, such as electrons or a common ancestor, as the best explanation of the evidence. The path applies that method to the origin of the universe and lets you judge the result." },
+      { "q": "Why is consciousness treated as a limit of science?", "a": "Most gaps close with more data. The hard problem asks why physical processes are felt at all, and more measurement of those processes does not reach it. The Emergence chapter sets this out." }
+    ],
+    "secular-humanist": [
+      { "q": "Can people be good without God?", "a": "Yes, and the path says so plainly. Its question is what makes kindness and honesty binding on everyone, beyond taste or agreement." },
+      { "q": "Where do moral facts come from?", "a": "The Constant chapter argues that objective moral facts fit best with a good Creator who made a world with a purpose. In a world of matter alone they have no clear home." },
+      { "q": "Does the path dismiss my experience of faith failing people?", "a": "No. The Entropy chapter starts from it, and asks what your outrage at that failure assumes about right and wrong." },
+      { "q": "What does Islam say about human dignity?", "a": "The Qur'an says God has honoured the children of Adam (17:70). Every person stands before God as an equal creature, and no race or nation is favoured." }
+    ],
+    "spiritual-seeker": [
+      { "q": "I have found truth in many traditions. Does this path ask me to throw that away?", "a": "No. It treats what you found as real and asks where it points. The Qur'an says every people received a messenger (16:36)." },
+      { "q": "What does physics add to what the traditions sensed?", "a": "The traditions sensed that the cosmos has a source and an order. Physics now measures a beginning and finely set constants. The path asks whether the two agree." },
+      { "q": "How does Islam understand God?", "a": "God is one and wholly other: \"Nothing is like unto Him\" (Qur'an 42:11). He is the Creator, and no creature shares in His nature." },
+      { "q": "Why would one revelation fit the fragments together?", "a": "The Transmission chapter asks what a real message from the Creator would look like, and sets out the Qur'an's claim to be that message. You test the claim." }
+    ],
+    "true-muslim": [
+      { "q": "Why does a believer need rational foundations?", "a": "The Qur'an asks people to reflect and to reason. Faith reached through evidence holds up under questioning better than faith that was only inherited." },
+      { "q": "Why do people leave Islam?", "a": "The Understanding chapter draws on research and testimony. Leaving is rarely casual. Common reasons include unanswered questions, painful experiences in the community and pressure that pushed people away." },
+      { "q": "How should I respond when someone I love has doubts?", "a": "Listen first, and stay calm. The Equipping and Compassion chapters show how to answer with knowledge and kindness, \"with wisdom and comely exhortation\" (16:125)." },
+      { "q": "Is it wrong to look at the strongest objections to Islam?", "a": "No. Islam has nothing to fear from counterevidence. The Knowledge chapter sets out the objections you are most likely to hear and how to engage each one honestly." }
+    ]
+  }
+}

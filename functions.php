@@ -19,6 +19,7 @@ require_once get_stylesheet_directory() . '/inc/ce-schema.php';
 // Shared CSS and JS for the standalone journey and quiz pages
 require_once get_stylesheet_directory() . '/inc/ce-journey-assets.php';
 require_once get_stylesheet_directory() . '/inc/ce-journey-template.php';
+require_once get_stylesheet_directory() . '/inc/ce-standalone-faq.php';
 
 // ── AEO META BOXES & SCHEMA (FAQ items, about/mentions entities) ─────────────
 require_once get_stylesheet_directory() . '/inc/ce-aeo.php';

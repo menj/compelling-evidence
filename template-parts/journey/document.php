@@ -47,6 +47,8 @@ ce_schema_journey( null, true );
 foreach ( $j['screens'] as $i => $screen ) {
     ce_journey_part( 'screen', compact( 'j', 't', 'screen', 'i' ) );
 }
+// Visible FAQ; the FAQPage node is built from the same data (inc/ce-standalone-faq.php).
+echo ce_standalone_faq_html( (string) ( $j['key'] ?? '' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the builder.
 ?>
 
 <?php ce_journey_part( 'scripts', compact( 'j', 't' ) ); ?>
