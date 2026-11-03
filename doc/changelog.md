@@ -6,6 +6,33 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.9.0] - November 2026
+
+- Body text in the journeys is regular weight (400) instead of light (300), so Cormorant Garamond and DM Sans read more clearly on the dark background.
+
+- In the New Atheist journey, three sentences pointed to a chapter whose name had dropped out ("examined in .", "We saw this in .", "touched on in ."). They now read "in the Constant chapter" and "earlier".
+
+### Changed
+- The 14 hand-copied journey pages are now 1 template and 14 data folders. `template-parts/journey/` prints the document: head (title, meta and JSON-LD from data, still passed through `ce_standalone_html_seo()`), header with the progress dots, one wrapper per chapter, the Volume II preview, and the scripts. `inc/ce-journey-template.php` loads the data and renders it.
+- Each persona lives in `journeys/data/<key>/`: `journey.json` holds the SEO fields, JSON-LD, header label and dots, chapter ids and names, "Go deeper" links, badge name, the resonance switch and the Volume II preview text and links; `style.css` holds the rules only that persona uses; `screens/<id>.html` holds each chapter body exactly as it was written. The hero, reading text, sidebar and closing sections stay in those bodies, since their markup differs from persona to persona.
+- The Committed Muslim journey (8 chapters, no Volume II, no resonance widget, no badge) uses the same template. Its `journey.json` simply lists fewer chapters and dots and leaves out `shareName` and `v2_preview`.
+- The New Atheist journey now loads `journey.css` like the others. 65 of its rules matched the shared file and are gone from its `style.css`. 16 shared selectors keep the New Atheist version as an override, because they are its own design: `.nav-logo`, `.nav-logo::after`, `.art-hero`, `.choice-body`, `.qb-label`, `.qb-body`, `.npn-btn`, `.npn-btn:hover`, `.evidence-block`, `.eb-label`, `.eb-body`, `.two-col`, `.tc-col`, `.tc-header`, `.tc-title`, `.tc-body`. Where the shared rule sets a property the New Atheist rule did not, the override resets it with `unset`. Its two `.nav-prev-next` rules, its `:root` block and its own rules stay as they were. Its `@font-face` copy is dropped, and 2 short rules undo the shared `sup` and `.tc-col` header colours it never had. Every element has the same computed style as before.
+- `page-journey.php` asks `ce_journey_source()` for the journey. The order is data for the locale, an HTML file for the locale (`ms-MY`, then `ms`), English data, English HTML. `ce_get_journey_file()` stays for code that wants the HTML file.
+- Interface text is in `journeys/i18n/en.php`: the logo words, the Volume II status, chapter cards and back link, and the strings `journey.js` prints (resume banner, "Go deeper", badge, share buttons, persona names). The theme prints the script strings as `window.CE_JOURNEY_STRINGS`. A locale file such as `journeys/i18n/ms-MY.php` overrides any of them.
+- `tests/security-detector-test.php` checks each data folder as one page.
+
+### Fixed
+- `journey.css` declares every face the journeys use: DM Sans 300 to 600, Cormorant Garamond 300, 400 and 600 with the 300 and 400 italics, and Playfair Display 400, 700, 900 and 400 italic. Before, only Playfair 400 was declared, so body text, labels and the reading text fell back to system fonts. This changes how every journey looks, as intended. The reading text in Cormorant Garamond 300 is lighter and narrower than the fallback serif.
+- The choice cards, the reading-path steps that lead somewhere, the header dots, the logo, the persona name in the header and the completion badge are keyboard-operable. `journey.js` gives them `role="button"` and `tabindex="0"`, Enter and Space press them, and `journey-base.css` draws a focus outline. The badge reports `aria-expanded` for the share row, and the resume banner's close button has a label.
+- The New Atheist and Freethinker conclusions were missing one closing `</div>`. The Volume II preview chapter ended up inside the conclusion and showed blank since 2.8.7. Both are closed now.
+- 13 transmission chapters had a broken `<p` tag with no content. It is removed; the page looks the same.
+- On screens up to 700 px the meta row under each chapter title wraps, and two-column cards may shrink below their text width. The Scientist path badge ran past the right edge, and one Classical Atheist card ran 6 px over.
+- The quiz sends `quiz_abandon` with `navigator.sendBeacon()` and, when the browser returns `false`, with `fetch()` and `keepalive`. Before, a refused beacon lost the event.
+- The resume banner names the chapter with its label from `CE_JOURNEY`.
+- `Version` is 2.9.0 in `style.css`, `readme.txt` and `doc/readme.md`.
+
+---
+
 ## [2.8.7] - November 2026
 
 ### Fixed

@@ -61,9 +61,11 @@ if ( $seo_tags ) {
 }
 
 // ── Inject analytics tracker into standalone quiz HTML ──
+// quiz_abandon fires on pagehide: sendBeacon first, and when the browser
+// refuses the beacon (it returns false), a keepalive fetch instead.
 $analytics_js = '<script>'
     . 'window.CE={ajaxUrl:"' . admin_url('admin-ajax.php') . '",nonce:"' . wp_create_nonce('ce_nonce') . '"};'
-    . '(function(){var s=null;try{s=sessionStorage.getItem("ce_analytics_sid");}catch(e){}if(!s){s=Math.random().toString(36).substr(2,12)+Date.now().toString(36);try{sessionStorage.setItem("ce_analytics_sid",s);}catch(e){}}window.ceTrack=function(t,d){var b=new FormData();b.append("action","ce_analytics");b.append("nonce",CE.nonce);b.append("event_type",t);b.append("event_data",JSON.stringify(d||{}));b.append("session_id",s);if(navigator.sendBeacon&&(t==="quiz_abandon")){var p=new URLSearchParams();p.append("action","ce_analytics");p.append("nonce",CE.nonce);p.append("event_type",t);p.append("event_data",JSON.stringify(d||{}));p.append("session_id",s);navigator.sendBeacon(CE.ajaxUrl,p);}else{fetch(CE.ajaxUrl,{method:"POST",body:b,credentials:"same-origin"}).catch(function(){});}};'
+    . '(function(){var s=null;try{s=sessionStorage.getItem("ce_analytics_sid");}catch(e){}if(!s){s=Math.random().toString(36).substr(2,12)+Date.now().toString(36);try{sessionStorage.setItem("ce_analytics_sid",s);}catch(e){}}window.ceTrack=function(t,d){var b=new FormData();b.append("action","ce_analytics");b.append("nonce",CE.nonce);b.append("event_type",t);b.append("event_data",JSON.stringify(d||{}));b.append("session_id",s);var q=t==="quiz_abandon";if(q&&navigator.sendBeacon){var p=new URLSearchParams();p.append("action","ce_analytics");p.append("nonce",CE.nonce);p.append("event_type",t);p.append("event_data",JSON.stringify(d||{}));p.append("session_id",s);try{if(navigator.sendBeacon(CE.ajaxUrl,p))return;}catch(e){}}fetch(CE.ajaxUrl,{method:"POST",body:b,credentials:"same-origin",keepalive:q}).catch(function(){});};'
     . 'ceTrack("pageview",{page:"quiz",path:"/quiz/"});'
     . '})();'
     . '</script>';

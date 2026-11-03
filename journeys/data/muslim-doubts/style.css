@@ -1,0 +1,68 @@
+/* Quranic verses only: KFGQPC HAFS Uthmanic Script, served as woff2 */
+@font-face { font-family: 'KFGQPC HAFS Uthmanic Script'; src: url('/wp-content/themes/compelling-evidence/assets/fonts/kfgqpc-hafs-uthmanic-script.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+.arabic-large { font-family: 'KFGQPC HAFS Uthmanic Script', serif; direction: rtl; line-height: 2.1; }
+.art-meta { display: flex; align-items: center; gap: 1.2rem; font-size: 0.75rem; color: var(--dimmed); position: relative; flex-wrap: wrap; }
+.author-byline { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.75rem; color: var(--muted); }
+.author-byline::before { content: ''; width: 1px; height: 12px; background: rgba(242,238,255,0.2); margin-right: 0.4rem; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(107,47,160,0.15); border-radius: 14px; overflow: hidden; margin: 2.5rem 0; }
+.tc-col { background: var(--bg-deep); padding: 1.6rem; }
+.tc-header { font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 500; margin-bottom: 0.8rem; padding-bottom: 0.6rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.tc-col:first-child .tc-header { color: var(--teal); }
+.tc-col:last-child .tc-header { color: #c4b5fd; }
+.tc-body { font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+.qb-label { position: absolute; top: -1px; left: 1.8rem; background: var(--bg-deepest); padding: 0 0.5rem; font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--dimmed); }
+.qb-body { font-family: var(--reading); font-style: italic; font-size: 1.1rem; color: rgba(242,238,255,0.85); line-height: 1.85; }
+.evidence-block { background: rgba(12,212,224,0.04); border: 1px solid rgba(12,212,224,0.18); border-radius: 14px; padding: 1.8rem 2rem; margin: 2.5rem 0; }
+.eb-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal); margin-bottom: 0.8rem; display: block; }
+.eb-body { font-family: var(--reading); font-size: 1.1rem; color: rgba(242,238,255,0.88); line-height: 1.85; }
+.reversal { background: rgba(12,212,224,0.04); border: 1px solid rgba(12,212,224,0.2); border-radius: 14px; padding: 1.8rem 2rem; margin: 2.5rem 0; }
+.rev-label { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); font-weight: 500; margin-bottom: 0.8rem; display: block; }
+.rev-body { font-family: var(--reading); font-size: 1.1rem; color: rgba(242,238,255,0.88); line-height: 1.85; }
+.concession-block { background: rgba(107,47,160,0.08); border: 1px solid rgba(107,47,160,0.2); border-radius: 14px; padding: 1.8rem 2rem; margin: 2.5rem 0; }
+.cb-label { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: #c4b5fd; font-weight: 500; margin-bottom: 0.8rem; display: block; }
+.cb-body { font-family: var(--reading); font-size: 1.1rem; color: rgba(242,238,255,0.85); line-height: 1.85; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(107,47,160,0.15); border-radius: 14px; overflow: hidden; margin: 2.5rem 0; }
+.tc-col { background: var(--bg-deep); padding: 1.6rem; }
+.tc-header { font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 500; margin-bottom: 0.8rem; padding-bottom: 0.6rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.tc-col:first-child .tc-header { color: var(--teal); }
+.tc-col:last-child .tc-header { color: #c4b5fd; }
+.tc-body { font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+.qb-label { position: absolute; top: -1px; left: 1.8rem; background: var(--bg-deepest); padding: 0 0.5rem; font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--dimmed); }
+.qb-body { font-family: var(--reading); font-style: italic; font-size: 1.1rem; color: rgba(242,238,255,0.85); line-height: 1.85; }
+.evidence-block { background: rgba(12,212,224,0.04); border: 1px solid rgba(12,212,224,0.18); border-radius: 14px; padding: 1.8rem 2rem; margin: 2.5rem 0; }
+.eb-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal); margin-bottom: 0.8rem; display: block; }
+.eb-body { font-family: var(--reading); font-size: 1.1rem; color: rgba(242,238,255,0.88); line-height: 1.85; }
+.reversal { background: rgba(12,212,224,0.04); border: 1px solid rgba(12,212,224,0.2); border-radius: 14px; padding: 1.8rem 2rem; margin: 2.5rem 0; }
+.rev-label { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); font-weight: 500; margin-bottom: 0.8rem; display: block; }
+.rev-body { font-family: var(--reading); font-size: 1.1rem; color: rgba(242,238,255,0.88); line-height: 1.85; }
+.concession-block { background: rgba(107,47,160,0.08); border: 1px solid rgba(107,47,160,0.2); border-radius: 14px; padding: 1.8rem 2rem; margin: 2.5rem 0; }
+.cb-label { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: #c4b5fd; font-weight: 500; margin-bottom: 0.8rem; display: block; }
+.cb-body { font-family: var(--reading); font-size: 1.1rem; color: rgba(242,238,255,0.85); line-height: 1.85; }
+.thought-experiment { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 2rem 2.2rem; margin: 2.5rem 0; position: relative; }
+.te-label { position: absolute; top: -1px; left: 1.8rem; background: var(--bg-deepest); padding: 0 0.5rem; font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--dimmed); }
+.te-body { font-family: var(--reading); font-style: italic; font-size: 1.1rem; color: rgba(242,238,255,0.85); line-height: 1.85; }
+.warm-note { border-left: 2px solid rgba(245,197,24,0.3); padding: 1.3rem 1.8rem; margin: 2.5rem 0; background: rgba(245,197,24,0.04); border-radius: 0 12px 12px 0; }
+.wn-text { font-family: var(--reading); font-style: italic; font-size: clamp(1.05rem, 1.7vw, 1.18rem); color: rgba(242,238,255,0.78); line-height: 1.85; }
+.doubt-list { display: flex; flex-direction: column; gap: 0.9rem; margin: 2rem 0; }
+.doubt-item { display: flex; gap: 1rem; align-items: flex-start; padding: 1.2rem 1.4rem; background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; }
+.di-num { font-family: var(--reading); font-size: 1.1rem; color: var(--dimmed); flex-shrink: 0; width: 22px; margin-top: 0.05rem; }
+.di-body { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+.di-body strong { color: var(--white); }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(107,47,160,0.15); border-radius: 14px; overflow: hidden; margin: 2.5rem 0; }
+.tc-col { background: var(--bg-deep); padding: 1.6rem; }
+.tc-header { font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 500; margin-bottom: 0.8rem; padding-bottom: 0.6rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.tc-col:first-child .tc-header { color: var(--teal); }
+.tc-col:last-child .tc-header { color: #c4b5fd; }
+.tc-body { font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+.arabic-verse { font-family: 'KFGQPC HAFS Uthmanic Script', serif; font-size: 1.6rem; color: rgba(242,238,255,0.6); direction: rtl; text-align: right; line-height: 2.1; margin-bottom: 0.5rem; display: block; }
+@font-face { font-family: 'CE Hadith'; src: url('/wp-content/themes/compelling-evidence/assets/fonts/ce-hadith-400.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'CE Hadith'; src: url('/wp-content/themes/compelling-evidence/assets/fonts/ce-hadith-700.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
+.verse-ref { font-size: 0.75rem; color: var(--dimmed); letter-spacing: 0.08em; }
+.qb-label { position: absolute; top: -1px; left: 1.8rem; background: var(--bg-deepest); padding: 0 0.5rem; font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--dimmed); }
+.qb-body { font-family: var(--reading); font-style: italic; font-size: 1.1rem; color: rgba(242,238,255,0.85); line-height: 1.85; }
+.evidence-block { background: rgba(12,212,224,0.04); border: 1px solid rgba(12,212,224,0.18); border-radius: 14px; padding: 1.8rem 2rem; margin: 2.5rem 0; }
+.eb-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal); margin-bottom: 0.8rem; display: block; }
+.eb-body { font-family: var(--reading); font-size: 1.1rem; color: rgba(242,238,255,0.88); line-height: 1.85; }
+/* ── VOLUME BRIDGE ─────────────────────────────────────────── */
+/* Volume II preview screen */
+/* Nav volume separator */

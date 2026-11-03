@@ -9,11 +9,16 @@ if ( empty($journey_key) ) {
 $valid = array('new-atheist','agnostic','secular-humanist','antitheist','materialist',
                'muslim-doubts','apatheist','deist','scientist','classical-atheist',
                'ex-believer','spiritual-seeker','freethinker','true-muslim');
-$journey_file = '';
-if ( in_array($journey_key, $valid, true) ) {
-    $journey_file = ce_get_journey_file( $journey_key );
+// Data folder rendered through the journey template (inc/ce-journey-template.php),
+// or a stand-alone HTML file where a locale has one and no data yet.
+$journey_src = in_array( $journey_key, $valid, true ) ? ce_journey_source( $journey_key ) : null;
+$html        = '';
+if ( $journey_src ) {
+    $html = 'data' === $journey_src['type']
+        ? ce_journey_render( $journey_src['path'] )
+        : (string) file_get_contents( $journey_src['path'] );
 }
-if ( ! $journey_file || ! file_exists($journey_file) ) {
+if ( '' === $html ) {
     // If no valid slug at all (bare /journey/ URL), redirect to journeys overview
     if ( empty($journey_key) || $journey_key === 'journey' ) {
         wp_redirect( home_url('/journeys/'), 301 );
@@ -41,7 +46,6 @@ if ( ! $journey_file || ! file_exists($journey_file) ) {
     get_footer();
     exit;
 }
-$html = file_get_contents( $journey_file );
 // Make /journey/ and /articles/ paths absolute with the site domain
 $html = str_replace( '"/journey/',  '"' . home_url('/journey/'),  $html );
 $html = str_replace( "'/journey/",  "'" . home_url('/journey/'),  $html );

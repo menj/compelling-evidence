@@ -63,6 +63,11 @@ function ce_register_standalone_assets(): void {
     // Links to other journeys are built from the site root, as page-journey.php
     // used to do by rewriting "/journey/" inside the inline scripts.
     wp_add_inline_script( 'ce-journey', 'window.ceHomeUrl = ' . wp_json_encode( home_url( '/' ) ) . ';', 'before' );
+    // Interface text for journey.js, from journeys/i18n/ (inc/ce-journey-template.php).
+    if ( function_exists( 'ce_journey_strings' ) ) {
+        $strings = ce_journey_strings();
+        wp_add_inline_script( 'ce-journey', 'window.CE_JOURNEY_STRINGS = ' . wp_json_encode( $strings['js'] ?? [], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG ) . ';', 'before' );
+    }
 }
 
 /**

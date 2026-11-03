@@ -1,44 +1,52 @@
 JOURNEY FILES
 =============
 
-This folder contains the 14 persona journey HTML files and the intake quiz.
-These are single-page applications that run outside WordPress templating (they bypass
-wp_head/wp_footer). Their shared CSS and JS live in assets/css and assets/js.
+This folder holds the data for the 14 persona journeys and the intake quiz.
+The journeys run outside WordPress templating (no wp_head or wp_footer).
+Since 2.9.0 one template builds all 14 from their data; the quiz is still
+one HTML file. Shared CSS and JS live in assets/css and assets/js.
 
 FILES
 -----
-quiz.html                    - 10-question weighted intake quiz
-new-atheist-journey.html     - Journey for convinced atheists
-agnostic-journey.html        - Journey for agnostics
-secular-humanist-journey.html - Journey for secular humanists
-antitheist-journey.html      - Journey for antitheists
-materialist-journey.html     - Journey for materialists/physicalists
-muslim-doubts-journey.html   - Journey for Muslims carrying doubts
-apatheist-journey.html       - Journey for apatheists
-scientist-journey.html       - Journey for empiricists
-deist-journey.html           - Journey for deists
-classical-atheist-journey.html - Journey for classical atheists
-ex-believer-journey.html     - Journey for ex-believers
-spiritual-seeker-journey.html - Journey for spiritual but not religious
-freethinker-journey.html     - Journey for freethinkers
-true-muslim-journey.html     - Journey for committed Muslims (8-screen variant)
+quiz.html                     10-question weighted intake quiz
+data/<key>/journey.json       SEO fields, JSON-LD, header label and dots,
+                              chapter ids and names, Go deeper links, badge
+                              name, resonance switch, Volume II preview
+data/<key>/style.css          The rules only that persona uses
+data/<key>/screens/<id>.html  One chapter body each, as written
+i18n/en.php                   Interface text for the template and journey.js
+ms-MY/                        Malay translations (none yet)
+
+The 14 keys: new-atheist, agnostic, secular-humanist, antitheist,
+materialist, muslim-doubts, apatheist, scientist, deist, classical-atheist,
+ex-believer, spiritual-seeker, freethinker, true-muslim (8 chapters, no
+Volume II, no resonance widget, no badge).
 
 ARCHITECTURE
 ------------
-Each journey file is a complete HTML document with:
-- The styles only that persona uses, in one <style> block
-- A window.CE_JOURNEY object: chapter ids and names, the sidebar symbol for the
-  conclusion, the "Go deeper" links, and whether the page shows the resonance
-  widget and the completion badge
-- Markers that page-journey.php swaps for the shared files:
-  <!-- ce:journey-css --> for assets/css/journey.css, <!-- ce:journey-js --> for
-  assets/js/journey.js (navigation, progress, resonance, go deeper, share).
-  The quiz has <!-- ce:quiz-css --> and <!-- ce:quiz-js --> for quiz.css and quiz.js.
-- new-atheist-journey.html keeps all its styles inline. Its nav, hero, sidebar and
-  cards use other declarations for 22 of the shared selectors.
-- 9-15 screens per journey, each with unique content
-- Arabic verses with Uthmani script rendering
-- Conclusion screen with CTA to explore articles
+page-journey.php asks ce_journey_source() (inc/ce-journey-template.php) for
+the journey and renders it with ce_journey_render(). The parts are in
+template-parts/journey/:
+- document.php    head (title, meta, JSON-LD from journey.json), the
+                  persona style.css, body
+- nav.php         fixed header, persona name, one dot per "nav.dots" entry
+- screen.php      chapter wrapper; prints screens/<id>.html, or a shared
+                  part when the chapter has "template" (v2-preview)
+- v2-preview.php  Volume II preview: icon, title, text and links from
+                  journey.json, chapter cards from i18n/en.php
+- scripts.php     window.PATH and window.CE_JOURNEY, then the journey.js marker
+
+The document carries the markers <!-- ce:journey-css --> and
+<!-- ce:journey-js -->, which page-journey.php swaps for assets/css/journey.css
+and assets/js/journey.js. journey-base.css goes last in the head.
+
+The New Atheist style.css overrides 16 shared selectors with its own design
+(nav logo, hero, quote box, evidence block, two-column cards and others).
+See doc/changelog.md, 2.9.0.
+
+To change a chapter, edit its file in screens/. To add a chapter, add the
+file, add it to "screens" and "nav.dots" in journey.json, and add the
+sidebar steps by hand to the other chapters.
 
 CONTENT STRUCTURE
 -----------------
@@ -56,9 +64,11 @@ openResonance()             - Open resonance widget modal
 
 LOCALISATION
 ------------
-There are no Malay translations yet. The English files in this folder are the
-only copies; /journeys/ms-MY/ holds a README only. When a reviewed Malay file
-is added there, functions.php serves it to ms-MY visitors.
+There are no Malay translations yet. To add one, copy data/<key>/ to
+ms-MY/data/<key>/ and translate journey.json and screens/, and copy
+i18n/en.php to i18n/ms-MY.php and translate its values. ms-MY visitors then
+get the Malay journey; any key missing from ms-MY.php falls back to English.
+A hand-made ms-MY/<key>-journey.html still works where no data folder exists.
 
 QUIZ OPTIONS
 ------------
@@ -70,7 +80,7 @@ inc/articles/batch-*.json or a murtadd.org page linked from those articles.
 
 DO NOT MODIFY
 -------------
-- JavaScript logic blocks (navigation, progress, resonance)
+- assets/js/journey.js (navigation, progress, resonance), from a data file
 - CSS variable names (used by theme injection)
 - Arabic verse text (class="arabic-large")
 - Persona routing in quiz.html PERSONAS object keys
@@ -91,4 +101,4 @@ UPDATES
 These files are not synced by ce-content-sync.php.
 Manual edits here persist across theme updates.
 
-Last updated: v2.3.0
+Last updated: v2.9.0

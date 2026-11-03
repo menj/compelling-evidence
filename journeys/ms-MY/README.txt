@@ -1,7 +1,14 @@
 MALAY (ms-MY) JOURNEY FILES
 ============================
 
-This folder holds Malay translations of the 14 journey HTML files and quiz.
+This folder holds Malay translations of the 14 journeys and the quiz.
+
+Since 2.9.0 a journey is a data folder. Copy journeys/data/<key>/ to
+journeys/ms-MY/data/<key>/, translate the text in journey.json and
+screens/*.html, and copy journeys/i18n/en.php to journeys/i18n/ms-MY.php
+with the values translated. A hand-made <key>-journey.html in this folder
+still works where no data folder exists. The file list below dates from
+the HTML journeys; the quiz is still quiz.html.
 
 STATUS (2.6.43): no translations yet. The English copies that sat here, labelled
 as Malay, were removed, so every Malay-locale visitor is served the English
@@ -31,11 +38,10 @@ true-muslim-journey.html
 
 TRANSLATION NOTES
 -----------------
-- Each file is a self-contained HTML application. Copy the English source file
-  and translate all visible text within the HTML.
-- The JavaScript logic (goTo, progress saving, resonance widgets) requires no
-  translation. Do not modify any <script> blocks.
-- The CSS embedded in <style> blocks requires no translation.
+- Translate the text in journey.json and screens/*.html. Keep the keys,
+  chapter ids, class names and links as they are.
+- The JavaScript (assets/js/journey.js) takes its text from i18n/ms-MY.php
+  and needs no change. style.css needs no translation.
 - Physics chapter labels (Horizon, Singularity, Calibration, Emergence,
   Constant, Entropy, Signal) should be translated consistently across all 14 files.
 - Quranic verses: the Arabic text (class="arabic-large") should be kept as-is.

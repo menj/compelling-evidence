@@ -17,6 +17,7 @@ require_once get_stylesheet_directory() . '/inc/ce-seo.php';
 
 // Shared CSS and JS for the standalone journey and quiz pages
 require_once get_stylesheet_directory() . '/inc/ce-journey-assets.php';
+require_once get_stylesheet_directory() . '/inc/ce-journey-template.php';
 
 // ── AEO META BOXES & SCHEMA (FAQ items, about/mentions entities) ─────────────
 require_once get_stylesheet_directory() . '/inc/ce-aeo.php';
@@ -445,8 +446,13 @@ add_action('admin_post_ce_ask_question',        'ce_handle_ask_question');
 // ── JOURNEY FILE HELPER: locale-aware ─────────────────────────────────────────
 
 /**
- * Returns the filesystem path to the correct journey HTML file for the
+ * Returns the filesystem path to a stand-alone journey HTML file for the
  * current locale. Falls back to English (en) if no translation exists.
+ *
+ * Since 2.9.0 the English journeys are data folders rendered by
+ * ce_journey_render() (inc/ce-journey-template.php), and page-journey.php
+ * asks ce_journey_source(), which tries data first and these HTML files
+ * second. This helper stays for code that wants the HTML file only.
  *
  * File naming convention:
  *   /journeys/[slug]-journey.html          English (default)

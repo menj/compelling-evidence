@@ -1,0 +1,327 @@
+{
+ "key": "freethinker",
+ "seo": {
+  "title": "Compelling Evidence: The Freethinker Path",
+  "description": "For freethinkers who value autonomy above all: An exploration of intellectual independence, evidence evaluation, and where honest inquiry actually leads.",
+  "og:title": "The Freethinker Path | Compelling Evidence",
+  "og:description": "Intellectual independence, evidence evaluation, and where honest inquiry actually leads. For those who value autonomy above all.",
+  "og:type": "article",
+  "og:url": "https://compelling-evidence.com/journeys/freethinker/",
+  "og:site_name": "Compelling Evidence",
+  "twitter:card": "summary_large_image",
+  "twitter:title": "The Freethinker Path | Compelling Evidence",
+  "twitter:description": "Intellectual independence and where honest inquiry actually leads.",
+  "canonical": "https://compelling-evidence.com/journeys/freethinker/"
+ },
+ "schema": [
+  {
+   "@context": "https://schema.org",
+   "@type": "Organization",
+   "name": "Compelling Evidence",
+   "url": "https://compelling-evidence.com",
+   "logo": "https://compelling-evidence.com/assets/logo.png"
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "Article",
+   "headline": "The Freethinker Path | Compelling Evidence",
+   "description": "For freethinkers who value autonomy above all: An exploration of intellectual independence, evidence evaluation, and where honest inquiry actually leads.",
+   "url": "https://compelling-evidence.com/journeys/freethinker/",
+   "author": {
+    "@type": "Organization",
+    "name": "Compelling Evidence"
+   },
+   "publisher": {
+    "@type": "Organization",
+    "name": "Compelling Evidence"
+   },
+   "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://compelling-evidence.com/journeys/freethinker/"
+   },
+   "keywords": "freethought, intellectual independence, evidence evaluation, critical thinking, philosophy, religion, Islam",
+   "inLanguage": "en",
+   "isAccessibleForFree": true
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "WebPage",
+   "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [
+     ".art-title",
+     ".art-body"
+    ]
+   }
+  }
+ ],
+ "shared_css": true,
+ "v2_preview": {
+  "icon": "🔭",
+  "title": "Volume II: <em>Which God?</em>",
+  "sub": "The same intellectual independence that brought you here. Applied to what comes next.",
+  "intro": "While Volume II is being written, explore the articles that will form its foundation:",
+  "links": [
+   {
+    "href": "/articles/does-god-communicate-with-humanity/",
+    "text": "Does God communicate with humanity?"
+   },
+   {
+    "href": "/articles/what-would-authentic-revelation-look-like/",
+    "text": "What would authentic revelation look like?"
+   },
+   {
+    "href": "/articles/how-do-we-evaluate-competing-claims-to-revelation/",
+    "text": "How do we evaluate competing claims?"
+   }
+  ]
+ },
+ "nav": {
+  "path_label": "The Freethinker",
+  "dots": [
+   {
+    "id": "horizon",
+    "title": "Horizon"
+   },
+   {
+    "id": "singularity",
+    "title": "Singularity"
+   },
+   {
+    "id": "calibration",
+    "title": "Calibration"
+   },
+   {
+    "id": "emergence",
+    "title": "Emergence"
+   },
+   {
+    "id": "constant",
+    "title": "Constant"
+   },
+   {
+    "id": "entropy",
+    "title": "Entropy"
+   },
+   {
+    "id": "signal",
+    "title": "Signal"
+   },
+   {
+    "id": "resonance",
+    "title": "Resonance"
+   },
+   {
+    "id": "transmission",
+    "title": "Transmission"
+   },
+   {
+    "id": "conclusion",
+    "title": "Conclusion",
+    "style": "background:rgba(245,197,24,0.15);"
+   }
+  ]
+ },
+ "screens": [
+  {
+   "id": "horizon",
+   "label": "Horizon"
+  },
+  {
+   "id": "singularity",
+   "label": "Singularity"
+  },
+  {
+   "id": "calibration",
+   "label": "Calibration"
+  },
+  {
+   "id": "emergence",
+   "label": "Emergence"
+  },
+  {
+   "id": "constant",
+   "label": "Constant"
+  },
+  {
+   "id": "entropy",
+   "label": "Entropy"
+  },
+  {
+   "id": "signal",
+   "label": "Signal"
+  },
+  {
+   "id": "resonance",
+   "label": "Resonance"
+  },
+  {
+   "id": "transmission",
+   "label": "Transmission"
+  },
+  {
+   "id": "conclusion",
+   "label": "Conclusion"
+  },
+  {
+   "id": "v2-preview",
+   "template": "v2-preview",
+   "label": "Volume II"
+  }
+ ],
+ "journey": {
+  "star": "✶",
+  "resonance": true,
+  "shareName": "The Freethinker",
+  "articles": {
+   "horizon": [
+    {
+     "href": "/articles/the-freethinkers-islam-produced/",
+     "title": "The Freethinkers Islam Produced",
+     "label": "Al-Razi, al-Ma'arri, Khayyam"
+    },
+    {
+     "href": "/articles/burden-of-proof/",
+     "title": "Who Bears The Burden of Proof?",
+     "label": "Epistemology"
+    },
+    {
+     "href": "/articles/islam-and-enlightenment/",
+     "title": "Why Hasn't Islam Had Its Enlightenment?",
+     "label": "Islam and modernity"
+    }
+   ],
+   "singularity": [
+    {
+     "href": "/articles/why-does-anything-exist/",
+     "title": "Why Does Anything Exist Rather Than Nothing?",
+     "label": "Cosmological argument"
+    },
+    {
+     "href": "/articles/big-bang-creation/",
+     "title": "The Universe Had a Beginning",
+     "label": "The scientific evidence"
+    },
+    {
+     "href": "/articles/existence-come-out-of-nothing/",
+     "title": "Can Existence Come Out Of Nothing?",
+     "label": "Hawking & Krauss addressed"
+    }
+   ],
+   "calibration": [
+    {
+     "href": "/articles/fine-tuning-universe/",
+     "title": "The Universe Is Absurdly Specific",
+     "label": "Fine-tuning argument"
+    },
+    {
+     "href": "/articles/multiverse-objection/",
+     "title": "Does the Multiverse Explain Fine-Tuning?",
+     "label": "The main objection"
+    }
+   ],
+   "emergence": [
+    {
+     "href": "/articles/consciousness-hard-problem/",
+     "title": "The One Thing Neuroscience Cannot Explain",
+     "label": "The Hard Problem"
+    },
+    {
+     "href": "/articles/near-death-experiences/",
+     "title": "Near-Death Experiences: Evidence for What?",
+     "label": "Consciousness beyond death"
+    },
+    {
+     "href": "/articles/religious-experience-neuroscience/",
+     "title": "Can Neuroscience Explain Religious Experience?",
+     "label": "Neurotheology"
+    }
+   ],
+   "entropy": [
+    {
+     "href": "/articles/problem-of-evil/",
+     "title": "If God Is Good, Why Is There Suffering?",
+     "label": "Problem of evil"
+    },
+    {
+     "href": "/articles/problem-of-evil-response/",
+     "title": "Earthquakes, Cancer, and a Good God",
+     "label": "Natural evil"
+    },
+    {
+     "href": "/articles/why-create-knowing-suffering/",
+     "title": "Why Create Knowing We Would Suffer?",
+     "label": "The creation problem"
+    }
+   ],
+   "constant": [
+    {
+     "href": "/articles/moral-argument-god/",
+     "title": "Where Do Moral Facts Live?",
+     "label": "Moral argument"
+    },
+    {
+     "href": "/articles/objective-morality/",
+     "title": "Is Morality Just Opinion?",
+     "label": "Moral realism"
+    },
+    {
+     "href": "/articles/euthyphro-dilemma/",
+     "title": "Is Goodness What God Commands?",
+     "label": "Euthyphro answered"
+    }
+   ],
+   "signal": [
+    {
+     "href": "/articles/argument-from-reason/",
+     "title": "If Your Brain Is Just Atoms, Can You Trust It?",
+     "label": "Argument from reason"
+    },
+    {
+     "href": "/articles/science-and-religion/",
+     "title": "What Science Cannot Tell You",
+     "label": "Limits of scientism"
+    },
+    {
+     "href": "/articles/god-as-psychological-projection/",
+     "title": "Is God Just a Projection?",
+     "label": "Freud & Feuerbach"
+    }
+   ],
+   "resonance": [
+    {
+     "href": "/articles/ontological-argument/",
+     "title": "The God Who Cannot Not Exist",
+     "label": "Ontological argument"
+    },
+    {
+     "href": "/articles/why-humans-believe-in-god/",
+     "title": "Why Do Human Beings Believe In God?",
+     "label": "The universality of belief"
+    },
+    {
+     "href": "/articles/purpose-of-life/",
+     "title": "What Is the Purpose of Life?",
+     "label": "Purpose and meaning"
+    }
+   ],
+   "transmission": [
+    {
+     "href": "/articles/does-god-communicate-with-humanity/",
+     "title": "Does God Communicate With Humanity?",
+     "label": "The communication question"
+    },
+    {
+     "href": "/articles/what-would-authentic-revelation-look-like/",
+     "title": "What Would Authentic Revelation Look Like?",
+     "label": "Criteria for revelation"
+    },
+    {
+     "href": "/articles/how-do-we-evaluate-competing-claims-to-revelation/",
+     "title": "Evaluating Competing Claims",
+     "label": "Which tradition?"
+    }
+   ]
+  }
+ }
+}

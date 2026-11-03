@@ -9,7 +9,21 @@
  *
  * @since 2.8.6
  */
+/* Every face the journeys use (2.9.0). Before, only Playfair 400 was
+   declared and the rest fell back to system fonts. */
 @font-face { font-family: 'Playfair Display'; src: url('../fonts/playfair-display-400.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Playfair Display'; src: url('../fonts/playfair-display-700.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Playfair Display'; src: url('../fonts/playfair-display-900.woff2') format('woff2'); font-weight: 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Playfair Display'; src: url('../fonts/playfair-display-400-italic.woff2') format('woff2'); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: 'DM Sans'; src: url('../fonts/dm-sans-300.woff2') format('woff2'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'DM Sans'; src: url('../fonts/dm-sans-400.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'DM Sans'; src: url('../fonts/dm-sans-500.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'DM Sans'; src: url('../fonts/dm-sans-600.woff2') format('woff2'); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Cormorant Garamond'; src: url('../fonts/cormorant-garamond-300.woff2') format('woff2'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Cormorant Garamond'; src: url('../fonts/cormorant-garamond-400.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Cormorant Garamond'; src: url('../fonts/cormorant-garamond-600.woff2') format('woff2'); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Cormorant Garamond'; src: url('../fonts/cormorant-garamond-300-italic.woff2') format('woff2'); font-weight: 300; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Cormorant Garamond'; src: url('../fonts/cormorant-garamond-400-italic.woff2') format('woff2'); font-weight: 400; font-style: italic; font-display: swap; }
 :root {
   --bg-deepest: #0d0820; --bg-deep: #110b28; --bg-dark: #1a0f38; --bg-mid: #241650;
   --white: #f2eeff; --muted: rgba(242,238,255,0.58); --dimmed: rgba(242,238,255,0.28);
@@ -17,7 +31,7 @@
   --gold-dim: rgba(245,197,24,0.08); --gold-border: rgba(245,197,24,0.18);
   --serif: 'Playfair Display', serif; --body: 'DM Sans', sans-serif; --reading: 'Cormorant Garamond', serif;
 }
-body { background: var(--bg-deepest); color: var(--white); font-family: var(--body); font-weight: 300; font-size: 16px; line-height: 1.65; overflow-x: hidden; }
+body { background: var(--bg-deepest); color: var(--white); font-family: var(--body); font-weight: 400; font-size: 16px; line-height: 1.65; overflow-x: hidden; }
 sup { font-size: 0.68em; vertical-align: super; line-height: 0; color: inherit; letter-spacing: 0; }
 .ce-nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 300; height: 68px;
