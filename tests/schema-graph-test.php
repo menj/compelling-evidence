@@ -1,4 +1,9 @@
 <?php
+if ( ! function_exists( 'array_is_list' ) ) {
+	function array_is_list( array $a ): bool {
+		return [] === $a || array_keys( $a ) === range( 0, count( $a ) - 1 );
+	}
+}
 /**
  * Stub test of the single JSON-LD graph (inc/ce-seo.php, inc/ce-schema.php,
  * inc/ce-rankmath.php).

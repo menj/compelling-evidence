@@ -110,6 +110,10 @@ Appearance > CE Theme Options — 8 tabs:
 * New markup for what the pages show: QAPage on answered reader questions, Quiz on the quiz, LearningResource with ordered chapters on the 14 journeys, ItemList on topic pages, ContactPage, AboutPage and SearchResultsPage, header, footer, menus and the article sidebar.
 * Article figures and diagrams are ImageObject nodes with their credit and licence. The 423 Qur'an and hadith blocks are Quotation nodes, Arabic and English, tied to their surah or hadith collection.
 * No schema type was removed (owner rule of 3 November 2026). tests/schema-graph-test.php checks the graph.
+* A search URL keeps its query intact in every @id. The theme no longer adds a slash after the query.
+* The main menu markup lists the submenu links the header prints, in menu order.
+* A reader question whose answer renders to nothing gets no acceptedAnswer.
+* The schema test runs on PHP 8.0 and older. It brings its own array_is_list() when PHP lacks one.
 
 = 2.11.0 - November 2026 =
 * Every title tag reads "<page title> | Compelling Evidence" and stays under 60 characters, with Rank Math active or not. The site name is never dropped.

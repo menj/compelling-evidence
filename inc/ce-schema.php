@@ -36,7 +36,10 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  */
 function ce_schema_id( string $url, string $fragment ): string {
     $url = preg_replace( '/#.*$/', '', $url );
-    return trailingslashit( $url ) . '#' . $fragment;
+    if ( false === strpos( $url, '?' ) ) {
+        $url = trailingslashit( $url );
+    }
+    return $url . '#' . $fragment;
 }
 
 /** @id of the WebSite node. */
@@ -248,7 +251,8 @@ function ce_schema_primary_menu(): array {
     $locations = function_exists( 'get_nav_menu_locations' ) ? get_nav_menu_locations() : [];
     if ( ! empty( $locations['primary'] ) && function_exists( 'wp_get_nav_menu_items' ) ) {
         foreach ( (array) wp_get_nav_menu_items( $locations['primary'] ) as $item ) {
-            if ( is_object( $item ) && empty( $item->menu_item_parent ) ) {
+            // header.php sets no depth, so wp_nav_menu() prints every level.
+            if ( is_object( $item ) ) {
                 $items[] = [ 'name' => ce_schema_text( (string) $item->title ), 'url' => (string) $item->url ];
             }
         }
@@ -731,12 +735,13 @@ function ce_schema_question_node( string $url ): ?array {
     if ( '' !== $topic ) {
         $node['about'] = [ '@type' => 'Thing', 'name' => $topic ];
     }
-    if ( '' !== $raw && $raw !== trim( get_the_title( $post ) ) ) {
+    $answer = '' !== $raw ? ce_schema_text( apply_filters( 'the_content', $post->post_content ) ) : '';
+    if ( '' !== $answer && $raw !== trim( get_the_title( $post ) ) ) {
         $node['answerCount']    = 1;
         $node['acceptedAnswer'] = [
             '@type'       => 'Answer',
             '@id'         => ce_schema_id( $url, 'answer' ),
-            'text'        => ce_schema_text( apply_filters( 'the_content', $post->post_content ) ),
+            'text'        => $answer,
             'url'         => $url,
             'dateCreated' => get_the_modified_date( 'c', $post ),
             'author'      => ce_schema_ref( ce_schema_org_id() ),
