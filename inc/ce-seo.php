@@ -738,8 +738,16 @@ function ce_question_article_node(): ?array {
     if ( is_wp_error( $statuses ) || ! in_array( 'published', $statuses, true ) ) {
         return null;
     }
-    $answer = wp_strip_all_tags( apply_filters( 'the_content', $post->post_content ) );
-    $answer = trim( (string) preg_replace( '/\s+/u', ' ', $answer ) );
+    // Same test as single-ce_question.php: empty content, or content that only
+    // repeats the title, shows the pending-answer message, so that is the
+    // description too.
+    $raw = trim( (string) $post->post_content );
+    if ( '' === $raw || $raw === trim( get_the_title( $post ) ) ) {
+        $answer = 'An answer is being prepared for this question.';
+    } else {
+        $answer = wp_strip_all_tags( apply_filters( 'the_content', $post->post_content ) );
+        $answer = trim( (string) preg_replace( '/\s+/u', ' ', $answer ) );
+    }
     $author = function_exists( 'ce_get_author_person_schema' ) ? ce_get_author_person_schema() : null;
     if ( ! $author ) {
         $author = [
@@ -952,6 +960,17 @@ function ce_title_page_part( string $fallback ): string {
     if ( is_singular() ) {
         $short = ce_title_short_for_post( get_queried_object_id() );
         if ( '' !== $short ) {
+            // Paginated posts (<!--nextpage-->) keep "(Page N)", as archives do.
+            $page = (int) get_query_var( 'page' );
+            if ( $page > 1 ) {
+                $suffix = ' (Page ' . $page . ')';
+                $room   = ce_title_part_max() - mb_strlen( $suffix, 'UTF-8' );
+                $short  = ce_title_fit( mb_substr( $short, 0, $room + 1, 'UTF-8' ) );
+                if ( mb_strlen( $short, 'UTF-8' ) > $room ) {
+                    $short = rtrim( mb_substr( $short, 0, $room, 'UTF-8' ) );
+                }
+                return $short . $suffix;
+            }
             return $short;
         }
     }

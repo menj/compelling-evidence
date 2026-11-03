@@ -21,7 +21,9 @@ function ce_seo_plugin_active(): bool {
 		|| defined( 'WPSEO_VERSION' )
 		|| defined( 'AIOSEO_VERSION' )
 		|| defined( 'SEOPRESS_VERSION' )
-		|| defined( 'THE_SEO_FRAMEWORK_VERSION' );
+		|| defined( 'THE_SEO_FRAMEWORK_VERSION' )
+		// The feed redirector's plugin list, which adds SEO by 10Web and Squirrly.
+		|| ( class_exists( 'CE_Feed_Redirector' ) && CE_Feed_Redirector::seo_plugin_active() );
 }
 
 /**
@@ -90,7 +92,11 @@ function ce_image_sitemap_entries(): array {
 			'suppress_filters'       => false,
 		] );
 		if ( $posts ) {
-			update_post_thumbnail_cache( new WP_Query( [ 'posts' => $posts ] ) );
+			// update_post_thumbnail_cache() reads $query->posts, so hand it
+			// this batch rather than a fresh query.
+			$batch        = new WP_Query();
+			$batch->posts = $posts;
+			update_post_thumbnail_cache( $batch );
 		}
 		foreach ( $posts as $post ) {
 			// Pages that only redirect elsewhere are left out.

@@ -13,6 +13,7 @@ $GLOBALS['ctx'] = [];
 function is_front_page() { return ! empty( $GLOBALS['ctx']['front'] ); }
 function is_singular( $t = '' ) { return ! empty( $GLOBALS['ctx']['post'] ); }
 function get_queried_object_id() { return 1; }
+function get_query_var( $k, $d = '' ) { return 'page' === $k ? ( $GLOBALS['ctx']['page'] ?? 0 ) : $d; }
 function get_post( $p = null ) { return $GLOBALS['ctx']['post'] ?? null; }
 function get_page_uri( $p ) { return $p->post_name; }
 function ce_is_rankmath_active() { return ! empty( $GLOBALS['ctx']['rm'] ); }
@@ -49,6 +50,11 @@ foreach ( glob( $ROOT . '/inc/articles/batch-*.json' ) as $f ) {
 }
 $GLOBALS['ctx'] = [ 'post' => (object) [ 'post_type' => 'ce_article', 'post_name' => 'x', 'post_title' => 'X' ], 'rm' => 1, 'meta' => [ 'rank_math_title' => 'My Own Wording - Compelling Evidence' ] ];
 $r = ce_rankmath_title( 'My Own Wording - Compelling Evidence' ); echo "owner custom: $r\n"; check( $r, 'owner' );
+// Page 3 of a split article keeps its suffix within the limit.
+$GLOBALS['ctx'] = [ 'post' => (object) [ 'post_type' => 'ce_article', 'post_name' => $a['slug'], 'post_title' => $a['title'] ], 'page' => 3 ];
+$r3 = implode( ' | ', ce_custom_title( [ 'title' => $a['title'], 'site' => 'Compelling Evidence' ] ) ); echo "paged: $r3\n"; check( $r3, 'paged' );
+if ( false === strpos( $r3, '(Page 3)' ) ) { $fail++; echo "PAGE SUFFIX LOST $r3\n"; }
+if ( false === strpos( $r, 'My Own Wording' ) ) { $fail++; echo "OWNER WORDING LOST $r\n"; }
 // Pages, journeys, quiz, topics, archives.
 $seed = json_decode( file_get_contents( $ROOT . '/inc/data/seed-pages.json' ), true );
 $pages = array_merge( $seed['pages'], $seed['pages_v2'], $seed['journey_pages'], $seed['placeholder_pages'] );
