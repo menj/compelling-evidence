@@ -21,8 +21,14 @@ globalThis.CE_MURTADD = JSON.parse(fs.readFileSync(path.join(root, 'inc/data/qui
 const Q = globalThis.CEQuiz, G = globalThis;
 const N = parseInt(process.argv[2], 10) || 500000;
 const P = Object.keys(G.PERSONAS);
+// mulberry32: 32-bit integer maths throughout, so every step stays exact.
 let seed = 20261103;
-const rnd = () => { seed = (seed * 1103515245 + 12345) % 2147483648; return seed / 2147483648; };
+const rnd = () => {
+  seed = (seed + 0x6D2B79F5) | 0;
+  let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+  t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+};
 const ids = G.ORDER.full.map(String);
 
 function visitor() {
@@ -45,7 +51,8 @@ for (let i = 0; i < N; i++) visitors.push(visitor());
 
 if (process.argv.includes('--pick-quick')) {
   const gentle = [8, 10, 3, 5, 9, 7, 6];
-  const std = visitors.slice(0, 100000).map(a => result(subset(a, G.ORDER.standard)));
+  const pickN = Math.min(N, 100000);
+  const std = visitors.slice(0, pickN).map(a => result(subset(a, G.ORDER.standard)));
   const combos = [];
   (function walk(start, pick) {
     if (pick.length === 5) { combos.push(pick.slice()); return; }
@@ -53,8 +60,8 @@ if (process.argv.includes('--pick-quick')) {
   })(0, []);
   const scored = combos.map(c => {
     let agree = 0; const seen = new Set();
-    visitors.slice(0, 100000).forEach((a, i) => { const r = result(subset(a, c)); seen.add(r); if (r === std[i]) agree++; });
-    return { c, agree: agree / 1000, reach: seen.size };
+    visitors.slice(0, pickN).forEach((a, i) => { const r = result(subset(a, c)); seen.add(r); if (r === std[i]) agree++; });
+    return { c, agree: 100 * agree / pickN, reach: seen.size };
   }).sort((x, y) => y.agree - x.agree);
   console.log('Quick candidates (agreement with Standard, personas reached):');
   scored.slice(0, 6).forEach(s => console.log('  ' + JSON.stringify(s.c) + ' ' + s.agree.toFixed(1) + '% ' + s.reach + '/14'));

@@ -87,6 +87,7 @@ input[type=radio],input[type=checkbox]{accent-color:var(--accent);width:18px;hei
 .q-topic{color:var(--accent);}
 .q-text{font-family:var(--serif);font-size:clamp(1.35rem,2.6vw,1.75rem);font-weight:700;line-height:1.3;margin-bottom:0.5rem;}
 .q-text:focus{outline:none;}
+.q-text:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:2px;}
 .q-hint{font-size:0.95rem;color:var(--muted);margin-bottom:1.5rem;}
 .q-options{display:grid;gap:0.6rem;}
 .q-option{display:flex;align-items:flex-start;gap:0.85rem;padding:0.95rem 1.1rem;border:1px solid var(--line);border-radius:var(--radius);cursor:pointer;}

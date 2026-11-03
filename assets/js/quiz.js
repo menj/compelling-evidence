@@ -161,30 +161,54 @@
     return keys.slice(0, 3).map(function (k) { return { url: M.base + M.items[k].path, title: M.items[k].title }; });
   }
 
-  root.CEQuiz = { calcScores: calcScores, rank: rank, murtaddPicks: murtaddPicks, SKIP: SKIP };
+  /** True when at least one main question has an answer other than skip. */
+  function hasUsable(answers) {
+    return Object.keys(answers).some(function (id) {
+      return id !== 'w' && (answers[id] || []).some(function (v) { return v !== SKIP; });
+    });
+  }
+
+  root.CEQuiz = { calcScores: calcScores, rank: rank, murtaddPicks: murtaddPicks, hasUsable: hasUsable, SKIP: SKIP };
   if (typeof document === 'undefined') return;
 
   /* ---------- page ---------- */
 
   var $ = function (id) { return document.getElementById(id); };
-  var state = { mode: 'standard', answers: {}, pos: 0, seq: [], done: false };
+  // cont: a Quick result carried on into Standard. The Quick questions come
+  // first, in their Quick order, and the rest of Standard follows, so no
+  // question is asked twice.
+  var state = { mode: 'standard', answers: {}, pos: 0, seq: [], done: false, cont: false };
   var fromMurtadd = /(?:^|[?&])from=murtadd(?:&|$)/.test(location.search);
   var COUNT_WORD = { 5: 'Five', 10: 'Ten', 15: 'Fifteen' };
 
   function track(t, d) { if (root.ceTrack) { try { root.ceTrack(t, d); } catch (e) {} } }
-  function save() { try { localStorage.setItem(STORE, JSON.stringify({ mode: state.mode, answers: state.answers, pos: state.pos })); } catch (e) {} }
+  function save() { try { localStorage.setItem(STORE, JSON.stringify({ mode: state.mode, answers: state.answers, pos: state.pos, cont: state.cont })); } catch (e) {} }
   function clearSaved() { try { localStorage.removeItem(STORE); } catch (e) {} }
 
   function leader() { return rank(calcScores(state.answers))[0]; }
 
-  /** The question ids for the current mode, with the follow-up when it applies. */
+  /** The main question ids for the current mode, in the order they are asked. */
+  function mainSequence() {
+    if (state.mode === 'standard' && state.cont) {
+      var quick = root.ORDER.quick;
+      return quick.concat(root.ORDER.standard.filter(function (id) { return quick.indexOf(id) < 0; }));
+    }
+    return root.ORDER[state.mode].slice();
+  }
+
+  function leaderWantsFollowUp() { var l = leader(); return l === 'muslim-doubts' || l === 'ex-believer'; }
+
+  /**
+   * The question ids for the current mode, with the follow-up when it applies.
+   * Eligibility is worked out again on every call: when a revised answer moves
+   * the leader away from the two paths, the follow-up and its answer go.
+   */
   function sequence() {
-    var base = root.ORDER[state.mode].slice();
+    var base = mainSequence();
     if (state.mode !== 'quick') {
-      var lastMain = base[base.length - 1];
-      var a = state.answers[lastMain];
-      var l = leader();
-      if ((a && a.length && (l === 'muslim-doubts' || l === 'ex-believer')) || state.answers.w) base.push('w');
+      var a = state.answers[base[base.length - 1]];
+      if (((a && a.length) || state.answers.w) && leaderWantsFollowUp()) base.push('w');
+      else delete state.answers.w;
     }
     return base;
   }
@@ -201,6 +225,7 @@
 
   function render(focus) {
     state.seq = sequence();
+    if (state.pos > state.seq.length - 1) state.pos = state.seq.length - 1;
     var id = String(state.seq[state.pos]);
     var q = root.QUESTIONS[id];
     var total = state.seq.length;
@@ -296,7 +321,7 @@
 
   function begin(mode, keep) {
     state.mode = mode;
-    if (!keep) { state.answers = {}; state.pos = 0; }
+    if (!keep) { state.answers = {}; state.pos = 0; state.cont = false; }
     state.done = false;
     $('intro-screen').hidden = true;
     $('result-screen').hidden = true;
@@ -319,7 +344,29 @@
     $(blockId).hidden = !items.length;
   }
 
+  /** Every question was skipped: no path to suggest, so point to the overview. */
+  function showEmpty() {
+    state.done = true;
+    clearSaved();
+    track('quiz_complete', { persona: 'none', mode: state.mode });
+    $('quiz-run').hidden = true;
+    $('result-screen').hidden = false;
+    $('res-eyebrow').textContent = 'No path yet';
+    $('res-path').textContent = 'Nothing to match yet';
+    $('res-desc').textContent = 'You skipped every question, and that is fine. Browse all 14 paths and start from the one that reads closest, or answer a few questions and we will suggest one.';
+    var open = $('res-open');
+    open.textContent = 'Browse all paths';
+    open.href = $('res-journeys').href;
+    ['res-also', 'res-read', 'res-murtadd'].forEach(function (b) { $(b).hidden = true; });
+    var more = $('res-more');
+    more.hidden = false;
+    more.textContent = 'Answer a few questions';
+    more.dataset.action = 'answer';
+    $('res-path').focus();
+  }
+
   function showResult() {
+    if (!hasUsable(state.answers)) { showEmpty(); return; }
     var scores = calcScores(state.answers);
     var order = rank(scores);
     var primary = order[0], P = root.PERSONAS;
@@ -336,6 +383,8 @@
 
     $('quiz-run').hidden = true;
     $('result-screen').hidden = false;
+    $('res-eyebrow').textContent = 'Closest path';
+    $('res-open').textContent = 'Open this path';
     $('res-path').textContent = P[primary].name;
     $('res-desc').textContent = P[primary].desc;
     $('res-open').href = P[primary].file;
@@ -344,25 +393,34 @@
     fill('res-murtadd', 'res-murtadd-items', murtaddPicks(primary, state.answers).map(function (m) { return li(m.url, m.title, true); }));
     var more = $('res-more');
     more.hidden = state.mode !== 'quick';
-    if (state.mode === 'quick') more.textContent = 'Answer ' + (modeCount('standard') - modeCount('quick')) + ' more questions to sharpen this';
+    more.dataset.action = 'continue';
+    if (state.mode === 'quick') {
+      var left = root.ORDER.standard.filter(function (id) { return !state.answers[id]; }).length;
+      if (leaderWantsFollowUp()) left++;
+      more.textContent = 'Answer ' + left + ' more question' + (left === 1 ? '' : 's') + ' to sharpen this';
+    }
     $('res-path').focus();
   }
 
   function continueStandard() {
-    var keep = state.answers;
     state.mode = 'standard';
-    state.answers = keep;
-    var seq = root.ORDER.standard;
-    var first = 0;
-    while (first < seq.length && keep[seq[first]]) first++;
-    state.pos = Math.min(first, seq.length - 1);
+    state.cont = true;
+    var seq = mainSequence(), first = 0;
+    while (first < seq.length - 1 && state.answers[seq[first]]) first++;
+    state.pos = first;
     track('quiz_start', { mode: 'standard' });
     begin('standard', true);
   }
 
+  /** "Answer a few questions" after an all-skipped result: the same mode from the start. */
+  function answerAgain() {
+    track('quiz_start', { mode: state.mode });
+    begin(state.mode, false);
+  }
+
   function retake() {
     clearSaved();
-    state.answers = {}; state.pos = 0; state.done = false;
+    state.answers = {}; state.pos = 0; state.done = false; state.cont = false;
     try { ['ce_quiz_taken', 'ce_primary_path', 'ce_secondary_paths', 'ce_quiz_scores'].forEach(function (k) { localStorage.removeItem(k); }); } catch (e) {}
     $('result-screen').hidden = true;
     $('quiz-run').hidden = true;
@@ -393,6 +451,7 @@
       r.textContent = 'Resume where you left off';
       r.addEventListener('click', function () {
         state.answers = saved.answers;
+        state.cont = saved.mode === 'standard' && saved.cont === true;
         state.pos = Math.max(0, Math.min(parseInt(saved.pos, 10) || 0, root.ORDER[saved.mode].length));
         begin(saved.mode, true);
       });
@@ -422,7 +481,9 @@
     });
     $('q-form').addEventListener('change', onChange);
     $('q-form').addEventListener('submit', onSubmit);
-    $('res-more').addEventListener('click', continueStandard);
+    $('res-more').addEventListener('click', function () {
+      if ($('res-more').dataset.action === 'answer') answerAgain(); else continueStandard();
+    });
     $('res-retake').addEventListener('click', retake);
     $('res-share').addEventListener('click', share);
 

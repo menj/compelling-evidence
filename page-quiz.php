@@ -22,7 +22,8 @@ if ( ! file_exists( $quiz_file ) ) {
     exit;
 }
 $html = file_get_contents( $quiz_file );
-// Make /journey/ and /articles/ paths absolute with the site domain
+// Make /journey/, /journeys/ and /articles/ paths absolute with the site domain
+$html = str_replace( '"/journeys/', '"' . home_url('/journeys/'), $html );
 $html = str_replace( '"/journey/',  '"' . home_url('/journey/'),  $html );
 $html = str_replace( "'/journey/",  "'" . home_url('/journey/'),  $html );
 $html = str_replace( '"/articles/', '"' . home_url('/articles/'), $html );
