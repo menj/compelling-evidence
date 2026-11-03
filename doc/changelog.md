@@ -6,6 +6,34 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.10.0] - November 2026
+
+### Added
+- Quiz modes: Quick (5 questions), Standard (10) and Full (15), chosen on a two-column start screen. The order of each is `ORDER` in `journeys/quiz.html`. Quick is questions 8, 10, 3, 5 and 6, the 5-question set from the gentle questions whose result agreed most often with Standard in `bin/quiz-sim.js --pick-quick`. A Quick result offers 5 more questions and carries on into Standard with the answers kept.
+- Full mode adds 5 questions (ids 11 to 15): what would settle a big question, how the Quran struck you, what makes something wrong, how much community matters, and what you feel about death. They help separate the Agnostic from the Freethinker, the Scientist from the Materialist, the Secular Humanist from the Apatheist, and the Questioning Muslim from the Ex-Believer.
+- "Not sure, or rather not say" on every question. A skipped question is left out of the scores, and the total is scaled by the weight of the questions answered against the weight of the Standard set.
+- A follow-up in Standard and Full, asked only when the leading path is the Questioning Muslim or the Ex-Believer: "Is there one thing that weighs on you most?" It leaves the path as it is and picks the murtadd.org pages in the new "You are not alone" list, shown for the Questioning Muslim, the Ex-Believer and the Committed Muslim.
+- `bin/build-quiz-murtadd-links.py` writes `inc/data/quiz-murtadd-links.json` from murtadd's `doubts.json`, `guides.json` and `rebuttals.json`, using the `/doubts/`, `/guides/` and `/rebuttals/` rewrite slugs from its CPT files. It stops on any slug the seed data lacks. `page-quiz.php` prints the data as `CE_MURTADD` with the base URL from the `ce_murtadd_base_url` filter (default `https://murtadd.org`). The two murtadd links that were written into `READ_NEXT` are gone.
+- `?from=murtadd` selects Quick and shows "Welcome from murtadd.org. Take your time." Nothing about the answers goes anywhere.
+- `bin/quiz-sim.js`: random visitors through each mode, the spread of paths, the Ex-Believer share among Muslim answers, agreement between modes, and a check that each path wins on its own best answers.
+
+### Changed
+- All 10 questions are reworded to make disclosure easier, carry a topic label, and run easiest first: 8, 10, 3, 5, 9, 7, 1, 4, 2, 6. Question ids stay the same, so `SCORING` keeps its keys.
+- Q4 has a seventh option, "Nothing really; my questions lie elsewhere", scored to the Committed Muslim (3) and the Questioning Muslim (1).
+- Q6 ("How does faith sit in your life right now?") is single choice with 6 options. "It has never really been part of my life" merges the old D and F, scored at 0.6 of their sum, and still counts as both for the signal rules.
+- The Ex-Believer is dampened with the other paths when Q6 is a Muslim answer, and its boosts all need "It used to matter a great deal" (6C). With random answers, the share of Muslim answers that ended on the Ex-Believer path falls from 44.5% (multi-select) and 1.5% (single) to 0%.
+- The result shows "Closest path", the name and description, "Also close to:" with the next 2 paths as links, "Read next", "How this works", share, retake and "Try another path". The percentage bars and the overlap note are gone.
+- Analytics: `quiz_start` carries `mode`, `quiz_complete` carries `persona` and `mode`, `quiz_abandon` carries `mode`. `quiz_answer` is no longer sent.
+- Progress is stored under `ce_quiz_v2`. Progress saved by 2.9 and earlier is cleared once, since its question numbers no longer match.
+- Five path descriptions are reworded for the house style.
+- `assets/css/quiz.css` is rewritten: plain surfaces, thin rules, one accent colour, all colours as custom properties.
+
+### Fixed
+- Options are native radio buttons and checkboxes inside a `fieldset`, so state, focus and announcements come from the browser. The question heading takes focus after Next, the progress label is an `aria-live` region, and Next is a real `disabled` button until there is an answer.
+- `--dimmed` and the hint text pass 4.5:1 on the background.
+- Ties on the top score go to the first path in `TIE_ORDER`, a fixed list in the quiz data.
+- The quiz `<title>` reads "Find Your Path | Compelling Evidence".
+
 ## [2.9.0] - November 2026
 
 - Body text in the journeys is regular weight (400) instead of light (300), so Cormorant Garamond and DM Sans read more clearly on the dark background.

@@ -1,0 +1,103 @@
+{
+  "personas": [
+    "muslim-doubts",
+    "ex-believer",
+    "true-muslim"
+  ],
+  "picks": {
+    "family": [
+      "doubts/leaving-would-cost-me-my-family",
+      "doubts/my-spouse-does-not-know"
+    ],
+    "text": [
+      "doubts/the-hadith-about-leaving",
+      "doubts/verses-that-were-cancelled"
+    ],
+    "law": [
+      "doubts/what-the-law-says-in-malaysia",
+      "guides/leaving-and-the-law"
+    ],
+    "hurt": [
+      "doubts/i-was-hurt-and-nobody-helped",
+      "doubts/hurt-by-a-religious-teacher"
+    ],
+    "prayer": [
+      "doubts/i-stopped-praying-and-feel-guilty",
+      "doubts/doubting-through-ramadan"
+    ],
+    "online": [
+      "doubts/websites-confirmed-my-doubts",
+      "guides/is-islam-false"
+    ],
+    "default-muslim-doubts": [
+      "guides/is-islam-false",
+      "doubts/websites-confirmed-my-doubts"
+    ],
+    "default-ex-believer": [
+      "doubts/i-studied-islam-and-still-left",
+      "guides/leaving-and-the-law"
+    ],
+    "true-muslim": [
+      "guides/supporting-someone-who-doubts",
+      "guides/is-islam-false"
+    ]
+  },
+  "items": {
+    "doubts/doubting-through-ramadan": {
+      "title": "Doubting through Ramadan",
+      "path": "/doubts/doubting-through-ramadan/"
+    },
+    "doubts/hurt-by-a-religious-teacher": {
+      "title": "Hurt by a religious teacher",
+      "path": "/doubts/hurt-by-a-religious-teacher/"
+    },
+    "doubts/i-stopped-praying-and-feel-guilty": {
+      "title": "The guilt of not praying",
+      "path": "/doubts/i-stopped-praying-and-feel-guilty/"
+    },
+    "doubts/i-studied-islam-and-still-left": {
+      "title": "I studied it, and I still left",
+      "path": "/doubts/i-studied-islam-and-still-left/"
+    },
+    "doubts/i-was-hurt-and-nobody-helped": {
+      "title": "I was hurt and nobody helped",
+      "path": "/doubts/i-was-hurt-and-nobody-helped/"
+    },
+    "doubts/leaving-would-cost-me-my-family": {
+      "title": "The cost to my family",
+      "path": "/doubts/leaving-would-cost-me-my-family/"
+    },
+    "doubts/my-spouse-does-not-know": {
+      "title": "My spouse does not know",
+      "path": "/doubts/my-spouse-does-not-know/"
+    },
+    "doubts/the-hadith-about-leaving": {
+      "title": "The hadith about leaving",
+      "path": "/doubts/the-hadith-about-leaving/"
+    },
+    "doubts/verses-that-were-cancelled": {
+      "title": "Verses that were cancelled",
+      "path": "/doubts/verses-that-were-cancelled/"
+    },
+    "doubts/websites-confirmed-my-doubts": {
+      "title": "The websites",
+      "path": "/doubts/websites-confirmed-my-doubts/"
+    },
+    "doubts/what-the-law-says-in-malaysia": {
+      "title": "What the law says in Malaysia",
+      "path": "/doubts/what-the-law-says-in-malaysia/"
+    },
+    "guides/is-islam-false": {
+      "title": "Is Islam False? A Fair Guide for Doubters",
+      "path": "/guides/is-islam-false/"
+    },
+    "guides/leaving-and-the-law": {
+      "title": "Leaving Islam and the Law, Region by Region",
+      "path": "/guides/leaving-and-the-law/"
+    },
+    "guides/supporting-someone-who-doubts": {
+      "title": "Supporting Someone Who Doubts: For Families",
+      "path": "/guides/supporting-someone-who-doubts/"
+    }
+  }
+}
