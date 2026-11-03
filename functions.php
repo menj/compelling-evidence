@@ -38,6 +38,7 @@ require_once get_stylesheet_directory() . '/inc/ce-fonts.php';
 require_once get_stylesheet_directory() . '/inc/ce-icons.php';
 require_once get_stylesheet_directory() . '/inc/ce-404.php';
 require_once get_stylesheet_directory() . '/inc/ce-media.php';
+require_once get_stylesheet_directory() . '/inc/ce-image-sitemap.php';
 require_once get_stylesheet_directory() . '/inc/ce-media-auto.php';
 require_once get_stylesheet_directory() . '/inc/ce-search-permalinks.php';
 require_once get_stylesheet_directory() . '/inc/ce-plugin-compat.php';
@@ -927,6 +928,14 @@ add_action( 'wp_head', 'ce_critical_font_inline', 0 );
 if ( ! ce_is_rankmath_active() ) {
 
     add_filter( 'wp_sitemaps_enabled', '__return_true' );
+
+    // No users sitemap (2.11.0). It listed /author/<nicename>/ for every
+    // account with posts, which names login accounts and adds archive pages
+    // that repeat the article list. Author archives stay reachable for the
+    // article byline.
+    add_filter( 'wp_sitemaps_add_provider', function( $provider, $name ) {
+        return 'users' === $name ? false : $provider;
+    }, 10, 2 );
 
     // Include ce_article CPT in the sitemap
     add_filter( 'wp_sitemaps_post_types', function( $post_types ) {

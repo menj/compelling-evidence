@@ -128,7 +128,7 @@ function ce_figure_shortcode( $atts, $content = '' ): string {
 		$w    = (int) ( $m['width'] ?? 0 );
 		$h    = (int) ( $m['height'] ?? 0 );
 		$img  = '<img class="ce-figure-img" src="' . esc_url( $src ) . '" alt="' . esc_attr( $alt ) . '" loading="lazy" decoding="async"'
-			. ( $w && $h && empty( $m['crop'] ) ? ' width="' . $w . '" height="' . $h . '"' : '' ) . '>';
+			. ( $w && $h ? ' width="' . $w . '" height="' . $h . '"' : '' ) . '>';
 		$full = (string) ( $m['url'] ?? $src );
 	}
 

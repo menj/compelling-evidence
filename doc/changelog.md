@@ -6,6 +6,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.11.0] - November 2026
+
+### Changed
+- One title builder (`ce_title_build()` in `inc/ce-seo.php`). Every title tag reads `<page part> | Compelling Evidence` and is 59 characters or fewer. With " | Compelling Evidence" at 22 characters, the page part has 37. The site name is never dropped, and the separator is `|` instead of WordPress's en dash.
+- The page part comes from the short title in `inc/articles/seo.json` for articles and from `inc/data/seo-titles.json` for pages (`__front` is the home page). Anything else uses its own title, cut at a word boundary if it runs past 37 characters. Paged archives add "(Page 2)".
+- `seo.json` "title" is now the short title for all 143 articles, 37 characters at most. 105 were rewritten as keyword-led short titles, 20 take the article title as it is and 18 kept their old value. Before this release 106 of the 143 article titles went past 59 characters with the site name, and the old builder allowed up to 70 or dropped the name. Now none does.
+- Journey and quiz pages run their `<title>` through the same builder.
+- Rank Math: the theme stops writing `rank_math_title`. Its title runs through the builder in the `rank_math/frontend/title` filter. Wording an editor typed into the Rank Math title field is kept as the page part, with Rank Math's variables resolved. The bare titles that earlier versions wrote into that field are listed in `inc/data/rankmath-legacy-titles.json`. The admin clears a field once if it still holds exactly that text, and the front end ignores it.
+- The users sitemap is off (`wp_sitemaps_add_provider`). Author archives still answer, since the article byline can link to one.
+- The Article node of a published reader question moved from `single-ce_question.php` into `ce_schema_nodes()` (`ce_question_article_node()`). Without Rank Math it sits in the theme graph. With Rank Math it is added only when Rank Math's graph has no Article, so a page carries one.
+- Glossary DefinedTermSet: terms with no Arabic leave out `termCode` instead of printing `null`, the publisher URL follows `home_url()`, and the set carries its page `url`.
+- Registry figures shown from the remote file print width and height also when the registry entry has a crop. The remote file is the uncropped original, so its own size is the right one.
+
+### Added
+- `/image-sitemap.xml` (`inc/ce-image-sitemap.php`): every published article, post and page with its featured image and each `[ce_figure]` image. Posts are read in batches of 200 with meta and thumbnails primed per batch. robots.txt names it. It stands down while Rank Math, Yoast, All in One SEO, SEOPress or The SEO Framework is active.
+- `tests/title-builder-test.php`: a plain PHP check of every seeded title (articles, pages, journeys, quiz, topics, home) through the builder, with and without Rank Math.
+
+### Removed
+- `ce_hreflang()`. It printed `en` and `x-default` alternates on every page, both pointing at the home page. The site has one language at one set of addresses, so it has no alternates.
+
+All schema types stay, by the owner's rule of 3 November 2026. No article content changed, so the content manifest keeps its version.
+
+---
+
 ## [2.10.1] - November 2026
 
 ### Changed

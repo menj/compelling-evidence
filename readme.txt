@@ -6,7 +6,7 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.10.1
+Version: 2.11.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Template: twentytwentyfive
@@ -104,6 +104,14 @@ Appearance > CE Theme Options — 8 tabs:
                   spam scan and trash; reports and security log
 
 == Changelog ==
+
+= 2.11.0 - November 2026 =
+* Every title tag reads "<page title> | Compelling Evidence" and stays under 60 characters, with Rank Math active or not. The site name is never dropped.
+* All 143 articles have a short title of 37 characters or fewer in inc/articles/seo.json. 106 of them were too long before.
+* The theme no longer writes titles into Rank Math's title field. A title an editor typed there is kept as the first part of the title.
+* The hreflang tags are gone. They pointed every page at the home page.
+* New image sitemap at /image-sitemap.xml when no SEO plugin is active. The users sitemap is off.
+* Reader-question pages print their Article markup in the theme graph, so Rank Math pages carry one Article. No schema type was removed.
 
 = 2.10.1 - November 2026 =
 * Links to the sister sites follow their new addresses, which carry no verse numbers, counts or years.

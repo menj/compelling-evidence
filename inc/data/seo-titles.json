@@ -1,0 +1,6 @@
+{
+ "_about": "Short titles for pages, keyed by page path (or slug). Each is the page part of the title tag, at most 37 characters, so that '<title> | Compelling Evidence' stays under 60. '__front' is the home page. A page not listed here uses its own title, cut at a word boundary if it is longer than 37 characters. Article short titles live in inc/articles/seo.json. Read by ce_title_short_titles() in inc/ce-seo.php.",
+ "pages": {
+  "__front": "Evidence for God and Islam, Examined"
+ }
+}

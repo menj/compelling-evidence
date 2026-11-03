@@ -1,6 +1,6 @@
 # CE Theme (Compelling Evidence) — WordPress Theme
 
-**Version:** 2.10.1 | **Parent theme:** Twenty Twenty-Five (tested with 1.5) | **Requires:** WordPress 6.7+ (tested to 7.1), PHP 8.0 to 8.4  
+**Version:** 2.11.0 | **Parent theme:** Twenty Twenty-Five (tested with 1.5) | **Requires:** WordPress 6.7+ (tested to 7.1), PHP 8.0 to 8.4  
 **Site:** https://compelling-evidence.com | **Repository:** https://github.com/menj/compelling-evidence | **Author:** [MENJ](https://menj.blog) | **Text domain:** `compelling-evidence`
 
 An Islamic apologetics child theme delivering personalised argumentation journeys across 14 persona paths, 131 articles across 11 investigative categories, a weighted intake quiz, a gamified progress system, a privacy-first analytics layer, and a full engagement suite. Built for a single deployment — not a general-purpose theme.
@@ -84,7 +84,8 @@ compelling-evidence/
 │   ├── ce-migration-2-2-74.php       v2.2.74 data migration
 │   ├── ce-secondary-pages.php        Auto-creates About, Editorial, Privacy, Contact, FAQ,
 │   │                                 Glossary, Ask a Question pages on activation
-│   ├── ce-seo.php                    Meta, canonical, OG/Twitter, JSON-LD (14 schema types)
+│   ├── ce-seo.php                    Meta, canonical, OG/Twitter, JSON-LD (14 schema types), title builder
+│   ├── ce-image-sitemap.php          /image-sitemap.xml when no SEO plugin is active
 │   ├── ce-journey-assets.php         Registers and prints the shared journey and quiz CSS/JS
 │   ├── ce-journey-template.php       Finds, loads and renders a journey's data folder
 │   └── class-ce-feed-redirector.php  Feed suppression (301 redirects, noindex, robots.txt, sitemap)
