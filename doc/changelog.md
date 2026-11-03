@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [2.11.0] - November 2026
 
+- Journey and quiz pages keep their speakable markup, following the owner's rule to keep all schema.org markup. FAQPage blocks there are still left out, because their questions do not appear on the page as questions and answers.
+
 ### Changed
 - One title builder (`ce_title_build()` in `inc/ce-seo.php`). Every title tag reads `<page part> | Compelling Evidence` and is 59 characters or fewer. With " | Compelling Evidence" at 22 characters, the page part has 37. The site name is never dropped, and the separator is `|` instead of WordPress's en dash.
 - The page part comes from the short title in `inc/articles/seo.json` for articles and from `inc/data/seo-titles.json` for pages (`__front` is the home page). Anything else uses its own title, cut at a word boundary if it runs past 37 characters. Paged archives add "(Page 2)".

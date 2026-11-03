@@ -1063,8 +1063,10 @@ add_filter( 'abstract_box_schema_payload', function ( $schema, $post, $attrs, $s
  *  - Titles read "Compelling Evidence — X"; lead with the page's topic.
  *  - Each journey marks every screen title as <h1> (8 to 10 per page); keep
  *    the first, demote the rest to <h2> with the same classes.
- *  - JSON-LD FAQPage blocks (questions not shown as Q&A on the page) and
- *    Speakable (news publishers only) are removed; everything else stays.
+ *  - JSON-LD FAQPage blocks are removed, because their questions are not
+ *    shown as questions and answers on the page. Everything else stays,
+ *    speakable included (owner rule of 2026-11-03: keep all schema.org
+ *    markup for GEO, AEO and AIO).
  *
  * @param string $html      Page HTML.
  * @param string $permalink URL the page is served from.
@@ -1099,7 +1101,7 @@ function ce_standalone_html_seo( string $html, string $permalink, string $key = 
         return '<h2' . $m[1] . '>' . $m[2] . '</h2>';
     }, $html );
 
-    // JSON-LD: drop FAQPage nodes and speakable properties.
+    // JSON-LD: drop FAQPage nodes, whose questions are not visible on the page.
     $html = preg_replace_callback( '#<script type="application/ld\+json">(.*?)</script>#su', static function ( $m ) {
         $data = json_decode( $m[1], true );
         if ( ! is_array( $data ) ) {
@@ -1109,10 +1111,9 @@ function ce_standalone_html_seo( string $html, string $permalink, string $key = 
             if ( ! is_array( $node ) ) {
                 return $node;
             }
-            unset( $node['speakable'] );
             $out = [];
             foreach ( $node as $k => $v ) {
-                if ( is_array( $v ) && isset( $v['@type'] ) && in_array( $v['@type'], [ 'FAQPage', 'SpeakableSpecification' ], true ) ) {
+                if ( is_array( $v ) && isset( $v['@type'] ) && in_array( $v['@type'], [ 'FAQPage' ], true ) ) {
                     continue;
                 }
                 $out[ $k ] = $clean( $v );
@@ -1124,9 +1125,6 @@ function ce_standalone_html_seo( string $html, string $permalink, string $key = 
             return '';
         }
         $data = $clean( $data );
-        if ( isset( $data['@type'] ) && 'WebPage' === $data['@type'] && count( array_diff( array_keys( $data ), [ '@context', '@type' ] ) ) === 0 ) {
-            return ''; // A WebPage block that only carried speakable.
-        }
         return '<script type="application/ld+json">' . wp_json_encode( $data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG ) . '</script>';
     }, $html );
 
