@@ -137,6 +137,15 @@ function ce_unlist_sitemaps_on(): bool {
 }
 
 /**
+ * IDs to leave out of every sitemap, the theme's or the plugin's.
+ *
+ * @return int[]
+ */
+function ce_unlist_sitemap_ids(): array {
+	return ce_unlist_sitemaps_on() ? ce_unlisted_ids() : [];
+}
+
+/**
  * Whether an admin-originated request should still see unlisted posts. The
  * plugin's rule: the admin screens, and AJAX sent from an admin page by a
  * user who can edit posts. The theme adds REST requests from such a user,

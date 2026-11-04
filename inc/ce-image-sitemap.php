@@ -90,6 +90,8 @@ function ce_image_sitemap_entries(): array {
 			'update_post_meta_cache' => true,
 			'update_post_term_cache' => false,
 			'suppress_filters'       => false,
+			// Unlisted posts (inc/ce-unlist.php), also while the plugin is active.
+			'post__not_in'           => function_exists( 'ce_unlist_sitemap_ids' ) ? ce_unlist_sitemap_ids() : [],
 		] );
 		if ( $posts ) {
 			// update_post_thumbnail_cache() reads $query->posts, so hand it
