@@ -234,7 +234,9 @@ function ce_rankmath_json_ld( $data, $jsonld = null ) {
 	}
 	// An Article Rank Math prints where the theme has none (the quiz) gains
 	// an image and the post's dates (2.15.1).
-	return ce_schema_article_backfill( $data, ce_schema_article_image(), ce_schema_article_dates() );
+	$data = ce_schema_article_backfill( $data, ce_schema_article_image(), ce_schema_article_dates() );
+	// One author Person, whatever Rank Math named (owner rule, 4 November 2026).
+	return ce_schema_one_author( $data );
 }
 add_filter( 'rank_math/json_ld', 'ce_rankmath_json_ld', 99, 2 );
 

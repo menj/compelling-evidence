@@ -6,7 +6,7 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.18.0
+Version: 2.18.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Template: twentytwentyfive
@@ -121,6 +121,10 @@ CE Theme, Copyright 2026 MENJ. Licensed GPLv2 or later.
 * Article figures are not bundled. inc/articles/media.json lists each with its source page, creator and licence, and the credit prints under the figure.
 
 == Changelog ==
+
+= 2.18.1 - November 2026 =
+* The Islamic dilemma article and two journey FAQ answers no longer call other websites related to this one. Every link stays.
+* The structured data names the author as Mohd Elfie Nieshaem Juferi, at https://menj.bio. The visible byline is unchanged.
 
 = 2.18.0 - November 2026 =
 * Error pages in the site's design for an update (503), a PHP fault (500) and a lost database (503). Install them from CE Theme Options > Tools & Sync, which shows each as installed, outdated or someone else's file.

@@ -6,6 +6,12 @@ Only paths explicitly identified in development are documented here.
 
 ---
 
+## Upgrading to v2.18.1 from v2.18.0
+
+Replace the theme files and open any admin page: the version change runs the article sync, which carries the new heading of the Islamic dilemma box. Nothing else to run.
+
+---
+
 ## Upgrading to v2.18.0 from v2.17.0
 
 Replace the theme files. Nothing is written to `wp-content` until an administrator presses Install error pages on CE Theme Options > Tools & Sync. To use the static pages for server errors, add the `ErrorDocument` lines from that tab to `.htaccess`.
