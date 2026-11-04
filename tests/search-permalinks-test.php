@@ -16,6 +16,8 @@ function add_action( ...$a ) {} function add_filter( ...$a ) {}
 function get_option( $k, $d = false ) { return array_key_exists( $k, $GLOBALS['opt'] ) ? $GLOBALS['opt'][ $k ] : $d; }
 function update_option( $k, $v ) { $GLOBALS['opt'][ $k ] = $v; return true; }
 function delete_option( $k ) { unset( $GLOBALS['opt'][ $k ] ); }
+function sanitize_key( $s ) { return preg_replace( '/[^a-z0-9_\-]/', '', strtolower( (string) $s ) ); }
+function apply_filters( $h, $v ) { return $v; }
 function sanitize_title( $s ) { return trim( preg_replace( '/[^a-z0-9]+/', '-', strtolower( (string) $s ) ), '-' ); }
 function get_query_var( $k ) { return $GLOBALS['qv'][ $k ] ?? ''; }
 function is_search() { return isset( $GLOBALS['qv']['s'] ); }
@@ -35,8 +37,10 @@ require dirname( __DIR__ ) . '/inc/ce-search-permalinks.php';
 
 $fail = 0;
 function check( $label, $ok ) { global $fail; echo ( $ok ? 'ok   ' : 'FAIL ' ) . $label . "\n"; if ( ! $ok ) $fail++; }
-function run( $uri, $qv ) {
+function run( $uri, $qv, $get = null ) {
 	$_SERVER['REQUEST_URI'] = $uri; $GLOBALS['qv'] = $qv; $GLOBALS['redirect'] = null;
+	if ( null === $get ) { parse_str( (string) parse_url( $uri, PHP_URL_QUERY ), $get ); }
+	$_GET = $get;
 	try { ce_pretty_search_redirect(); } catch ( Redirected $e ) {}
 	return $GLOBALS['redirect'];
 }
@@ -48,21 +52,30 @@ check( 'pretty URL is not redirected', null === run( '/search/evil/', [ 's' => '
 check( 'paged search keeps its page', [ 'https://ce.test/search/evil/page/2/', 301 ] === run( '/?s=evil&paged=2', [ 's' => 'evil', 'paged' => 2 ] ) );
 check( 'pretty paged URL is not redirected', null === run( '/search/evil/page/2/', [ 's' => 'evil', 'paged' => 2 ] ) );
 
+check( 'array args such as post_type[] are kept', [ 'https://ce.test/search/evil/?post_type%5B0%5D=ce_article&post_type%5B1%5D=page', 301 ] === run( '/?s=evil&post_type[]=ce_article&post_type[]=page', [ 's' => 'evil' ] ) );
+$GLOBALS['opt']['ce_search_base'] = 'articles';
+check( 'a base that collides with a theme slug falls back', 'search' === ce_search_base() );
+$GLOBALS['opt']['ce_search_base'] = 'find_it';
+check( 'base follows sanitize_key (underscore kept)', 'find_it' === ce_search_base() );
+unset( $GLOBALS['opt']['ce_search_base'] );
 check( 'plugin base is the fallback', ( $GLOBALS['opt']['wpseosearch_base'] = 'find' ) && 'find' === ce_search_base() );
 $GLOBALS['opt']['ce_search_base'] = 'Look Up';
-check( 'theme base wins and is sanitised', 'look-up' === ce_search_base() );
+check( 'theme base wins and is sanitised', 'lookup' === ce_search_base() );
 unset( $GLOBALS['opt']['ce_search_base'], $GLOBALS['opt']['wpseosearch_base'] );
 
 ce_set_search_base();
 check( 'search base set on WP_Rewrite', 'search' === $GLOBALS['wp_rewrite']->search_base );
 
 ce_search_flush_on_version();
+check( 'marker not written while the rules lack the search rule', false === get_option( 'ce_rewrite_version' ) );
+$GLOBALS['opt']['rewrite_rules'] = [ 'search/(.+)/page/?([0-9]{1,})/?$' => 'x' ];
 ce_search_flush_on_version();
-check( 'one flush for a new version', 1 === $GLOBALS['flushes'] );
+ce_search_flush_on_version();
+check( 'flush retried, then marker written once the rule exists', 2 === $GLOBALS['flushes'] && '2.16.0' === get_option( 'ce_rewrite_version' ) );
 $GLOBALS['version'] = '2.16.1';
 ce_search_flush_on_version();
 ce_search_flush_on_version();
-check( 'one more flush after the next version change', 2 === $GLOBALS['flushes'] );
+check( 'one more flush after the next version change', 3 === $GLOBALS['flushes'] );
 
 echo $fail ? "\n$fail failed\n" : "\nAll passed\n";
 exit( $fail ? 1 : 0 );

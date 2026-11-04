@@ -207,6 +207,8 @@ function ce_theme_opts_sanitize( array $field, $raw ): string {
         case 'choice':
             $value = sanitize_text_field( $value );
             return array_key_exists( $value, (array) ( $field['options'] ?? [] ) ) ? $value : $default;
+        case 'search_base':
+            return function_exists( 'ce_search_clean_base' ) && '' !== ce_search_clean_base( $value ) ? ce_search_clean_base( $value ) : 'search';
         case 'url':
             return (string) esc_url_raw( trim( $value ), [ 'http', 'https' ] );
         case 'textarea':
@@ -767,8 +769,8 @@ function ce_get_tab_fields( $tab ) {
               'desc' => __( 'When set to hover, tooltip appears on mouseover. On mobile, first tap shows tooltip, second tap follows link.', 'compelling-evidence' ) ],
             [ 'id' => 'ce_pretty_search',  'label' => __( 'Pretty search URLs', 'compelling-evidence' ), 'type' => 'checkbox', 'default' => '1', 'section' => __( 'Search URLs', 'compelling-evidence' ),
               'desc' => __( 'Redirects /?s=term to /search/term/. Built in; replaces the Pretty Search Permalinks plugin. Search results stay noindexed and disallowed in robots.txt.', 'compelling-evidence' ) ],
-            [ 'id' => 'ce_search_base',    'label' => __( 'Search base', 'compelling-evidence' ), 'type' => 'text', 'default' => 'search',
-              'desc' => __( 'The path segment before the search term. Letters, numbers and hyphens only. Save Settings → Permalinks after changing it.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_search_base',    'label' => __( 'Search base', 'compelling-evidence' ), 'type' => 'search_base', 'default' => 'search',
+              'desc' => __( 'The path segment before the search term. Lowercase letters, digits, hyphens and underscores; a slug the theme already uses, such as articles or topic, falls back to search. Save Settings → Permalinks after changing it.', 'compelling-evidence' ) ],
         ],
 
         'media' => [
