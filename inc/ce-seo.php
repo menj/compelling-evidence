@@ -785,17 +785,24 @@ function ce_schema_article_image(): ?array {
         $url = ce_get_share_image_url();
         if ( '' !== $url ) {
             $node = [ '@type' => 'ImageObject', 'url' => $url, 'contentUrl' => $url ];
-            $src  = wp_get_attachment_image_src( (int) get_post_thumbnail_id(), 'og-share' );
-            if ( $src && $src[0] === $url && ! empty( $src[1] ) && ! empty( $src[2] ) ) {
+            $src  = null;
+            foreach ( [ 'og-share', 'large', 'full' ] as $size ) {
+                $try = wp_get_attachment_image_src( (int) get_post_thumbnail_id(), $size );
+                if ( $try && $try[0] === $url ) {
+                    $src = $try;
+                    break;
+                }
+            }
+            if ( $src && ! empty( $src[1] ) && ! empty( $src[2] ) ) {
                 $node['width']  = (int) $src[1];
                 $node['height'] = (int) $src[2];
             }
             return $node;
         }
     }
-    $logo = trim( (string) get_option( 'ce_org_logo_url', '' ) );
+    $logo = esc_url_raw( trim( (string) get_option( 'ce_org_logo_url', '' ) ) );
     if ( '' !== $logo && absint( get_option( 'ce_org_logo_width', 0 ) ) >= 1200 ) {
-        return [ esc_url_raw( $logo ) ];
+        return [ $logo ];
     }
     return [ get_stylesheet_directory_uri() . '/screenshot.png' ];
 }
