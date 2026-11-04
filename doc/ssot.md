@@ -1,7 +1,7 @@
 # SSOT — Single Source of Truth
 ## Compelling Evidence Theme — System Design, Naming Conventions, Configuration Rules
 
-**Version:** 2.12.0  
+**Version:** 2.15.1  
 **Location:** `/doc/SSOT.md`
 
 This document is authoritative. When any other file conflicts with a rule stated here, this document is correct and the other file should be updated.

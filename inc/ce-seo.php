@@ -739,7 +739,89 @@ function ce_schema_nodes(): array {
     // DefinedTermSet, Quiz, journeys, QAPage, ItemList): inc/ce-schema.php.
     $schemas = array_merge( $schemas, ce_schema_page_nodes( $schemas ) );
 
-    return ce_schema_finalize( $schemas );
+    return ce_schema_finalize( ce_schema_article_backfill( $schemas, ce_schema_article_image(), ce_schema_article_dates() ) );
+}
+
+/**
+ * Give every top-level Article-family node an image and, on a single post,
+ * its dates, where it has none. A journey's Article comes from journey.json
+ * without either, and Rank Math's Article on a page the theme has no Article
+ * for (the quiz) has nothing to fill it from. Set fields are kept.
+ *
+ * @since 2.15.1
+ * @param array      $nodes Graph nodes, a list or Rank Math's keyed entities.
+ * @param array|null $image An ImageObject, or a list of URLs.
+ * @param array      $dates datePublished and dateModified, or empty.
+ * @return array
+ */
+function ce_schema_article_backfill( array $nodes, ?array $image, array $dates ): array {
+    $family = [ 'Article', 'BlogPosting', 'NewsArticle', 'ScholarlyArticle', 'TechArticle', 'Report' ];
+    foreach ( $nodes as $key => $node ) {
+        if ( ! is_array( $node ) || ! array_intersect( (array) ( $node['@type'] ?? [] ), $family ) ) {
+            continue;
+        }
+        if ( empty( $node['image'] ) && $image ) {
+            $nodes[ $key ]['image'] = $image;
+        }
+        foreach ( $dates as $field => $value ) {
+            if ( empty( $node[ $field ] ) && '' !== (string) $value ) {
+                $nodes[ $key ][ $field ] = $value;
+            }
+        }
+    }
+    return $nodes;
+}
+
+/**
+ * The image for an Article that lacks one: the featured image as an
+ * ImageObject, else the Organization logo when it is at least 1200 pixels
+ * wide, else the theme's screenshot.png, the fallback Articles already use.
+ *
+ * @since 2.15.1
+ * @return array|null
+ */
+function ce_schema_article_image(): ?array {
+    if ( is_singular() && has_post_thumbnail() ) {
+        $url = ce_get_share_image_url();
+        if ( '' !== $url ) {
+            $node = [ '@type' => 'ImageObject', 'url' => $url, 'contentUrl' => $url ];
+            $src  = null;
+            foreach ( [ 'og-share', 'large', 'full' ] as $size ) {
+                $try = wp_get_attachment_image_src( (int) get_post_thumbnail_id(), $size );
+                if ( $try && $try[0] === $url ) {
+                    $src = $try;
+                    break;
+                }
+            }
+            if ( $src && ! empty( $src[1] ) && ! empty( $src[2] ) ) {
+                $node['width']  = (int) $src[1];
+                $node['height'] = (int) $src[2];
+            }
+            return $node;
+        }
+    }
+    $logo = esc_url_raw( trim( (string) get_option( 'ce_org_logo_url', '' ) ) );
+    if ( '' !== $logo && absint( get_option( 'ce_org_logo_width', 0 ) ) >= 1200 ) {
+        return [ $logo ];
+    }
+    return [ get_stylesheet_directory_uri() . '/screenshot.png' ];
+}
+
+/**
+ * The post's own dates on a single view. Other views get none: the theme
+ * invents no date.
+ *
+ * @since 2.15.1
+ * @return array
+ */
+function ce_schema_article_dates(): array {
+    if ( ! is_singular() ) {
+        return [];
+    }
+    return [
+        'datePublished' => (string) get_the_date( 'c' ),
+        'dateModified'  => (string) get_the_modified_date( 'c' ),
+    ];
 }
 
 /**

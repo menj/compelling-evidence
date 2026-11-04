@@ -232,7 +232,9 @@ function ce_rankmath_json_ld( $data, $jsonld = null ) {
 		$key  = 'ce_' . substr( md5( (string) ( $node['@id'] ?? wp_json_encode( $node ) ) ), 0, 12 );
 		$data[ $key ] = $node;
 	}
-	return $data;
+	// An Article Rank Math prints where the theme has none (the quiz) gains
+	// an image and the post's dates (2.15.1).
+	return ce_schema_article_backfill( $data, ce_schema_article_image(), ce_schema_article_dates() );
 }
 add_filter( 'rank_math/json_ld', 'ce_rankmath_json_ld', 99, 2 );
 
