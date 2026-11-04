@@ -13,6 +13,7 @@
           Find my path
           <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
+        <?php if ( function_exists( 'ce_social_footer' ) ) { ce_social_footer(); } ?>
       </div>
 
       <!-- Column 2: Topics -->

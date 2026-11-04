@@ -6,7 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
-## [2.15.1] - November 2026
+## [2.16.0] - November 2026
+
+Four plugins built into the theme: Minimalist Social Icons Pack 2.8, Reading Progress Bar, Unlist Posts & Pages and Pretty Search Permalinks. Each theme feature turns itself off while its plugin is active. No feature removed and no public identifier renamed. Analytics stays opt-in.
+
+### Added
+- Social icons (`inc/ce-social-icons.php`, `assets/css/ce-social-icons.css`, `assets/images/social/`). Ten inline SVG icons from the pack, stripped to one path each and marked `aria-hidden`. Each link has an `aria-label`, a visible focus ring and a 40px target. Colours come from `--ce-social-color` and `--ce-social-hover`, which default to the palette. The row prints in the footer, from the `[ce_social_icons]` shortcode and from the "Social icons" block pattern. X, Facebook and YouTube reuse the existing site fields; Instagram, TikTok, Threads, Bluesky, Mastodon, Telegram and WhatsApp are new URL fields under Author & Identity > Social icons, with a footer switch. The stylesheet loads only when a profile is set.
+- Unlisted posts (`inc/ce-unlist.php`, `assets/js/ce-unlist-admin.js`). Every behaviour of the plugin: an "Unlisted" box in the editor sidebar, Quick Edit, Bulk Edit, the Unlisted column, post state and "Unlisted (n)" view, exclusion from listings and adjacent links and `wp_list_pages()`, noindex through `wp_robots` (Yoast's robots array emptied) and through `rank_math/frontend/robots`, and the admin-referer AJAX rule. The theme also drops unlisted posts from the core sitemap, the Rank Math sitemap (`rank_math/sitemap/entry`), the image sitemap, related articles and REST collections for visitors. It works on `pre_get_posts`, so `get_posts()` calls are covered. IDs live in `ce_unlisted_posts`; the plugin's `unlist_posts` list is copied in once.
+- `tests/unlist-test.php` and `tests/search-permalinks-test.php`.
+
+### Changed
+- The reading progress bar under the header, on articles and posts since 2.6, is now printed by `ce_rpb_render()` on `wp_body_open` (`inc/ce-reading-progress.php`) and driven by `assets/js/ce-reading-progress.js`, one passive scroll listener painting once per animation frame. Engagement > Reading progress bar sets it on or off, its colour, height (2 to 8px), top or bottom, and the post types: articles, posts, pages on the default template and reader questions. It stays `aria-hidden`: it repeats the scroll position, and a live progressbar would talk on every scroll. Articles keep the labelled `role="progressbar"` card in the sidebar. Transitions stop under `prefers-reduced-motion`. At the top it sits under the fixed header, clear of the admin bar.
+- Pretty search URLs (since 2.6.33) gain the Search base field in Settings > Permalinks, as the plugin had, writing the same `ce_search_base`. A base saved by the plugin is the fallback. `?s=term&paged=2` redirects to `/search/term/page/2/`. Rewrite rules flush once when the theme version changes (`ce_rewrite_version`), and never on an ordinary load.
+- Theme Options fields accept a `url` type, saved through `esc_url_raw()`.
+ - November 2026
 
 A schema check on the live site found Articles with no `image` on /articles/is-islam-false/, /journey/agnostic/ and /quiz/, and no `datePublished` on the journey. The live site runs an older theme. On this code, articles already carry an image; the journey's Article (from `journey.json`) still had no image and no dates, and Rank Math's Article on the quiz page had no theme Article to fill it from.
 

@@ -1,0 +1,22 @@
+/* Reading progress bar options (inc/ce-reading-progress.php). The base
+   look stays in templates.css; this file adds height, colour, position and
+   reduced motion. Mobile first: the bar sits under the fixed header, so it
+   never covers the admin bar, which sits above the header. */
+#ce-reading-progress.ce-rpb {
+  height: var(--ce-rpb-height, 3px);
+  pointer-events: none;
+}
+#ce-reading-progress.ce-rpb[style*="--ce-rpb-color"] #ce-reading-progress-fill {
+  background: var(--ce-rpb-color);
+}
+#ce-reading-progress.ce-rpb--bottom {
+  top: auto;
+  bottom: 0;
+  bottom: env(safe-area-inset-bottom, 0);
+}
+@media (prefers-reduced-motion: reduce) {
+  #ce-reading-progress-fill { transition: none; }
+}
+@media (forced-colors: active) {
+  #ce-reading-progress-fill { background: Highlight; }
+}

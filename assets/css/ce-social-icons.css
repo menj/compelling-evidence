@@ -1,0 +1,38 @@
+/* Social profile icons (inc/ce-social-icons.php). Colours come from the
+   theme palette through custom properties; override them on .ce-social. */
+.ce-social {
+  --ce-social-color: var(--muted, rgba(245,240,255,0.68));
+  --ce-social-hover: var(--teal, #0cd4e0);
+  --ce-social-focus: var(--teal, #0cd4e0);
+  --ce-social-size: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.ce-social li { margin: 0; padding: 0; }
+.ce-social__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--ce-social-size);
+  min-height: var(--ce-social-size);
+  border-radius: 50%;
+  color: var(--ce-social-color);
+  transition: color 0.15s ease;
+}
+.ce-social__link:hover { color: var(--ce-social-hover); }
+.ce-social__link:focus-visible {
+  outline: 2px solid var(--ce-social-focus);
+  outline-offset: 2px;
+  color: var(--ce-social-hover);
+}
+.ce-social__icon { width: 20px; height: 20px; display: block; }
+@media (prefers-reduced-motion: reduce) {
+  .ce-social__link { transition: none; }
+}
+@media (forced-colors: active) {
+  .ce-social__link { color: LinkText; }
+}
