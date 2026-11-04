@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.17.0] - November 2026
+
+A login screen in the site's design. No feature removed and no public identifier renamed.
+
+### Added
+- `inc/ce-login.php` and `assets/css/ce-login.css`. Every screen wp-login.php serves takes the night palette: the CE mark (or the custom logo, or a URL set in Theme Options) above the nav wordmark, which links home; a card in the deep tone with a red top edge; a pill button with deep text on the accent (4.9:1); teal focus rings on every field, button and link; 24px or larger targets; a full-width button on phones; and a plain column in the session-expired box. The stylesheet loads only through `login_enqueue_scripts` and every rule is scoped to `body.ce-login` (`ce-login--interim` in that box).
+- Colours follow the Colors tab and fonts the Typography tab, printed as custom properties beside the stylesheet. The site is dark only, so the screen declares `color-scheme: dark`.
+- The title tag goes through `ce_title_build()`: "Log In | Compelling Evidence", "Lost Password | Compelling Evidence" and so on, under 60 characters.
+- Theme Options › Security › Login screen: `ce_login_design` (on by default), `ce_login_logo_url` and `ce_login_message`, a line shown above the log-in form only.
+- While a plugin that styles the login screen is active (LoginPress, Custom Login, Login Logo, Branda, Admin Custom Login, Login Designer, Erident), the theme leaves the screen alone; the `ce_login_plugin_active` filter adds others. The module never builds or reads the login address, so WPS Hide Login keeps moving it and the design follows.
+- `tests/login-test.php`.
+
+---
+
 ## [2.16.0] - November 2026
 
 Four plugins built into the theme: Minimalist Social Icons Pack 2.8, Reading Progress Bar, Unlist Posts & Pages and Pretty Search Permalinks. The progress bar, unlisted posts and search URLs turn themselves off while their plugin is active; the icon pack has no code to clash with. No feature removed and no public identifier renamed. Analytics stays opt-in.

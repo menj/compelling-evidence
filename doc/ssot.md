@@ -1,7 +1,7 @@
 # SSOT — Single Source of Truth
 ## Compelling Evidence Theme — System Design, Naming Conventions, Configuration Rules
 
-**Version:** 2.16.0  
+**Version:** 2.17.0  
 **Location:** `/doc/SSOT.md`
 
 This document is authoritative. When any other file conflicts with a rule stated here, this document is correct and the other file should be updated.
@@ -606,6 +606,7 @@ Reference documents: Google's SEO Starter Guide and Google's list of structured 
 - **Minimalist Social Icons Pack 2.8** → ten of its SVGs ship in `assets/images/social/`, printed by `inc/ce-social-icons.php` (since 2.16.0). Bundle a further icon only when a profile field needs it, and never the two CC BY icons (LinkedIn, Scribd) without adding their credit.
 - **Contact Form 7** and **Contact Form CFDB7** → stay plugins (forms and stored messages must survive a theme change). The theme styles CF7 forms (`assets/css/ce-cf7.css`) and loads CF7 scripts only on pages containing a form (`inc/ce-plugin-compat.php`).
 - **WPS Hide Login** → stays a plugin: the login URL is a security control and must not depend on the active theme.
+- **Login screen plugins** (LoginPress, Custom Login, Login Logo, Branda and the like) → the theme's own login design (`inc/ce-login.php`, `assets/css/ce-login.css`, Theme Options → Security → Login screen: `ce_login_design` default on, `ce_login_logo_url`, `ce_login_message`) steps aside while one is active (`ce_login_plugin_active()`, filterable). It never builds the login URL, so WPS Hide Login keeps working. Body classes `ce-login` and `ce-login--interim`; title through `ce_title_build()` (since 2.17.0).
 
 ---
 

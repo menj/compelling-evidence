@@ -47,6 +47,7 @@ require_once get_stylesheet_directory() . '/inc/ce-social-icons.php';
 require_once get_stylesheet_directory() . '/inc/ce-reading-progress.php';
 require_once get_stylesheet_directory() . '/inc/ce-unlist.php';
 require_once get_stylesheet_directory() . '/inc/ce-plugin-compat.php';
+require_once get_stylesheet_directory() . '/inc/ce-login.php';
 require_once get_stylesheet_directory() . '/inc/ce-rankmath.php';
 require_once get_stylesheet_directory() . '/inc/ce-theme-options.php';
 
