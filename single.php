@@ -10,11 +10,9 @@ $reading_secs = $word_count * 0.3; // approx seconds for progress tracking
 ?>
 
 <!-- ── READING PROGRESS BAR ───────────────────────────────────────────────── -->
-<div id="ce-reading-progress" aria-hidden="true">
-  <div id="ce-reading-progress-fill"></div>
-</div>
+<?php /* Printed on wp_body_open by ce_rpb_render() (inc/ce-reading-progress.php). */ ?>
 
-<?php /* Reading progress bar CSS is in assets/css/templates.css */ ?>
+<?php /* Reading progress bar: assets/css/templates.css and assets/css/ce-reading-progress.css; driven by assets/js/ce-reading-progress.js. */ ?>
 
 <main class="ce-single" id="main" tabindex="-1" data-reading-article="1">
   <?php while (have_posts()) : the_post(); ?>
@@ -179,12 +177,12 @@ $reading_secs = $word_count * 0.3; // approx seconds for progress tracking
 
 <script>
 (function() {
-  var topBar    = document.getElementById('ce-reading-progress-fill');
   var srpFill   = document.getElementById('srp-fill');
   var srpPct    = document.getElementById('srp-pct');
   var body      = document.getElementById('article-body');
 
-  if (!topBar || !body) return;
+  // The top bar is driven by assets/js/ce-reading-progress.js; this updates the sidebar card.
+  if (!body || !document.getElementById('srp')) return;
 
   function getScrollPct() {
     var rect   = body.getBoundingClientRect();
@@ -199,7 +197,6 @@ $reading_secs = $word_count * 0.3; // approx seconds for progress tracking
   function update() {
     var pct = getScrollPct();
     var pctStr = pct + '%';
-    topBar.style.width = pctStr;
     if (srpFill)  srpFill.style.width   = pctStr;
     if (srpPct)   srpPct.textContent    = pctStr;
     var srp = document.getElementById('srp');

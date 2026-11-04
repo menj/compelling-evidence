@@ -6,7 +6,7 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.15.1
+Version: 2.16.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Template: twentytwentyfive
@@ -35,6 +35,7 @@ All fonts are self-hosted. With default settings the theme makes no request to a
 * A built-in lightbox, figure credits and import of registered images into the Media Library.
 * Security switches: XML-RPC off, application passwords off, REST changes only from a logged-in browser, and a gambling-spam gate.
 * Optional first-party analytics, off until you switch it on.
+* Social profile icons, unlisted posts and a configurable reading progress bar.
 * RTL Arabic with the KFGQPC HAFS Uthmanic Script for Quran text. Malay (ms_MY) translation included.
 * A Theme Options page with 12 tabs.
 
@@ -116,9 +117,17 @@ CE Theme, Copyright 2026 MENJ. Licensed GPLv2 or later.
 * KFGQPC HAFS Uthmanic Script, King Fahd Glorious Quran Printing Complex, under its own free-distribution licence (assets/fonts/licenses/kfgqpc-hafs-uthmanic-script-LICENSE.txt). It is not GPL-compatible and forbids modification; the owner chose to ship a WOFF2 conversion. Used for Quran text only.
 * Sabon Next LT (sabon-next-lt-*.woff2), Monotype, a commercial licence held by the site owner. It is not GPL-compatible and may not be redistributed with the theme outside this site. It is an optional face in Typography; the default faces do not use it.
 * Images in assets/images and assets/diagrams (icons, favicons, the Al-Rahman calligraphy, diagrams) and screenshot.png: made for this site, GPLv2 or later.
+* Social icons in assets/images/social (X, Facebook, YouTube, Instagram, TikTok, Threads, Bluesky, Mastodon, Telegram, WhatsApp): Minimalist Social Icons Pack 2.8, GPL. These ten come from CC0 sources; the pack's two CC BY 4.0 icons are not bundled. The brand marks belong to their owners.
 * Article figures are not bundled. inc/articles/media.json lists each with its source page, creator and licence, and the credit prints under the figure.
 
 == Changelog ==
+
+= 2.16.0 - November 2026 =
+
+* Social icons for the site profiles, in the footer, the [ce_social_icons] shortcode and the Social icons block pattern. Set the URLs under Author & Identity > Social icons.
+* Unlist a post, page, article or question from its editor sidebar, Quick Edit or Bulk Edit. It keeps its URL and drops out of the home page, archives, feeds, search, sitemaps, related links and REST lists, with noindex. A list saved by the Unlist Posts plugin carries over.
+* The reading progress bar has settings under Engagement: on or off, colour, height, top or bottom, and the post types. It can now show on pages.
+* The search base can also be set in Settings > Permalinks. Paged searches redirect to /search/term/page/2/, and rewrite rules flush once per theme version.
 
 = 2.15.1 - November 2026 =
 
@@ -490,6 +499,9 @@ Uthmani Quran font replaced with KFGQPC HAFS version (608 glyphs). CE Hadith add
 For full version history see CHANGELOG.md.
 
 == Upgrade Notice ==
+
+= 2.16.0 =
+Four plugin features are built in. Deactivate Reading Progress Bar, Unlist Posts & Pages and Pretty Search Permalinks once you have checked the theme settings; until then the theme leaves those jobs to the plugins.
 
 = 2.15.1 =
 Structured data fix. Nothing needs doing.

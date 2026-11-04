@@ -73,6 +73,21 @@ function ce_options_register() {
     register_setting( 'ce_options_links', 'ce_contextual_links_extra', [ 'default' => '' ] );
     register_setting( 'ce_options_links', 'ce_contextual_links_excluded', [ 'default' => '' ] );
 
+    // ── Reading progress bar (inc/ce-reading-progress.php) ──
+    register_setting( 'ce_options_engagement', 'ce_rpb_enabled', [ 'default' => '1' ] );
+    register_setting( 'ce_options_engagement', 'ce_rpb_color', [ 'default' => '#0cd4e0' ] );
+    register_setting( 'ce_options_engagement', 'ce_rpb_height', [ 'default' => '3' ] );
+    register_setting( 'ce_options_engagement', 'ce_rpb_position', [ 'default' => 'top' ] );
+    foreach ( ce_rpb_post_types() as $ce_rpb_type => $ce_rpb_default ) {
+        register_setting( 'ce_options_engagement', 'ce_rpb_on_' . $ce_rpb_type, [ 'default' => $ce_rpb_default ] );
+    }
+
+    // ── Social icons (inc/ce-social-icons.php) ──
+    register_setting( 'ce_options_identity', 'ce_social_footer', [ 'default' => '1' ] );
+    foreach ( [ 'instagram', 'tiktok', 'threads', 'bluesky', 'mastodon', 'telegram', 'whatsapp' ] as $ce_social_key ) {
+        register_setting( 'ce_options_identity', 'ce_social_' . $ce_social_key, [ 'default' => '', 'sanitize_callback' => 'esc_url_raw' ] );
+    }
+
     // ── Analytics ──
     register_setting( 'ce_options_analytics', 'ce_analytics_enabled', [ 'default' => '0' ] );
     register_setting( 'ce_options_analytics', 'ce_analytics_retention_days', [ 'default' => '90' ] );
@@ -134,7 +149,7 @@ function ce_theme_opts_tabs(): array {
         'general'     => [ 'label' => __( 'General', 'compelling-evidence' ),           'icon' => 'dashicons-admin-home',
             'usage' => __( 'The words on the home page hero and the footer line. The Arabic verse, its ayah number, translation and reference print together above the search box; change all four when you change the verse. Save, then reload the home page.', 'compelling-evidence' ) ],
         'identity'    => [ 'label' => __( 'Author & Identity', 'compelling-evidence' ), 'icon' => 'dashicons-businessperson',
-            'usage' => __( 'Who wrote the site, for the byline and for the Person and Organization schema. Fill the author name first: with it empty, articles carry Organization authorship only. Profile and social fields take full URLs; the site Twitter field takes the handle with its @.', 'compelling-evidence' ) ],
+            'usage' => __( 'Who wrote the site, for the byline and for the Person and Organization schema. Fill the author name first: with it empty, articles carry Organization authorship only. Profile and social fields take full URLs; the site Twitter field takes the handle with its @. Every site profile filled in, X, Facebook and YouTube included, shows as an icon in the footer; paste [ce_social_icons] or the Social icons pattern to show the same row elsewhere.', 'compelling-evidence' ) ],
         'colors'      => [ 'label' => __( 'Colors', 'compelling-evidence' ),            'icon' => 'dashicons-art',
             'usage' => __( 'Seven brand colours, printed as CSS custom properties in the page head. A colour left at its default prints nothing. Pick a colour or type a hex value; Default inside each picker puts the shipped colour back. Check text contrast on the dark background after any change.', 'compelling-evidence' ) ],
         'typography'  => [ 'label' => __( 'Typography', 'compelling-evidence' ),        'icon' => 'dashicons-editor-textcolor',
@@ -146,7 +161,7 @@ function ce_theme_opts_tabs(): array {
         'quiz'        => [ 'label' => __( 'Quiz & Journeys', 'compelling-evidence' ),   'icon' => 'dashicons-forms',
             'usage' => __( 'Turn the persona quiz on or off, set how many answers a reader may pick per question, and lay out the journeys overview. With the quiz off, /quiz/ redirects to /journeys/. The scoring and the 14 journeys themselves are not changed here.', 'compelling-evidence' ) ],
         'engagement'  => [ 'label' => __( 'Engagement', 'compelling-evidence' ),        'icon' => 'dashicons-thumbs-up',
-            'usage' => __( 'Reader feedback under each article (votes and resonance buttons), the home page search and the archive page size. Votes and resonance are stored per article with a hashed address; no account is needed.', 'compelling-evidence' ) ],
+            'usage' => __( 'Reader feedback under each article (votes and resonance buttons), the home page search, the archive page size and the reading progress bar. Votes and resonance are stored per article with a hashed address; no account is needed.', 'compelling-evidence' ) ],
         'analytics'   => [ 'label' => __( 'Analytics', 'compelling-evidence' ),         'icon' => 'dashicons-chart-area',
             'usage' => __( 'First-party analytics is off by default. Switch it on to record page views, quiz and journey progress, article reads and searches in this database; the report is under CE Analytics. Rows older than the retention period are deleted every day, whether tracking is on or off.', 'compelling-evidence' ) ],
         'performance' => [ 'label' => __( 'Performance', 'compelling-evidence' ),       'icon' => 'dashicons-performance',
@@ -192,6 +207,10 @@ function ce_theme_opts_sanitize( array $field, $raw ): string {
         case 'choice':
             $value = sanitize_text_field( $value );
             return array_key_exists( $value, (array) ( $field['options'] ?? [] ) ) ? $value : $default;
+        case 'search_base':
+            return function_exists( 'ce_search_clean_base' ) && '' !== ce_search_clean_base( $value ) ? ce_search_clean_base( $value ) : 'search';
+        case 'url':
+            return (string) esc_url_raw( trim( $value ), [ 'http', 'https' ] );
         case 'textarea':
             return 'ce_contextual_links_extra' === $field['id'] && function_exists( 'ce_ctx_sanitize_extra_lines' )
                 ? ce_ctx_sanitize_extra_lines( $value )
@@ -331,8 +350,8 @@ function ce_theme_opts_render_field( string $tab, array $field ): void {
             echo '<textarea id="' . esc_attr( $id ) . '" name="' . esc_attr( $key ) . '" rows="5"' . $aria . '>' . esc_textarea( $value ) . '</textarea>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $aria is built from esc_attr().
             break;
 
-        default: // text, password, number
-            $input_type = in_array( $type, [ 'password', 'number' ], true ) ? $type : 'text';
+        default: // text, password, number, url
+            $input_type = in_array( $type, [ 'password', 'number', 'url' ], true ) ? $type : 'text';
             $extra = '';
             if ( 'password' === $type ) $extra .= ' autocomplete="off" spellcheck="false"';
             foreach ( [ 'min', 'max', 'step' ] as $attr ) {
@@ -636,6 +655,14 @@ function ce_get_tab_fields( $tab ) {
             [ 'id' => 'ce_site_twitter_handle', 'label' => __( 'Site Twitter Handle', 'compelling-evidence' ), 'type' => 'text', 'default' => '', 'section' => __( 'Site Social & Contact', 'compelling-evidence' ), 'desc' => __( 'Handle only, including the @, e.g. @CompellingEv. Used for twitter:site meta tag.', 'compelling-evidence' ) ],
             [ 'id' => 'ce_site_youtube_url',    'label' => __( 'Site YouTube Channel', 'compelling-evidence' ), 'type' => 'text', 'default' => '', 'desc' => __( 'Full URL.', 'compelling-evidence' ) ],
             [ 'id' => 'ce_site_facebook_url',   'label' => __( 'Site Facebook Page', 'compelling-evidence' ), 'type' => 'text', 'default' => '' ],
+            [ 'id' => 'ce_social_footer',    'label' => __( 'Show social icons in the footer', 'compelling-evidence' ), 'type' => 'checkbox', 'default' => '1', 'section' => __( 'Social icons', 'compelling-evidence' ), 'desc' => __( 'One icon for each profile with a URL: the X handle, Facebook and YouTube above and the fields below. With none filled in, nothing prints.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_social_instagram', 'label' => __( 'Instagram', 'compelling-evidence' ), 'type' => 'url', 'default' => '', 'desc' => __( 'Full URL, e.g. https://www.instagram.com/name/', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_social_tiktok',    'label' => __( 'TikTok', 'compelling-evidence' ),    'type' => 'url', 'default' => '' ],
+            [ 'id' => 'ce_social_threads',   'label' => __( 'Threads', 'compelling-evidence' ),   'type' => 'url', 'default' => '' ],
+            [ 'id' => 'ce_social_bluesky',   'label' => __( 'Bluesky', 'compelling-evidence' ),   'type' => 'url', 'default' => '' ],
+            [ 'id' => 'ce_social_mastodon',  'label' => __( 'Mastodon', 'compelling-evidence' ),  'type' => 'url', 'default' => '', 'desc' => __( 'The link carries rel="me", so Mastodon can verify the site.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_social_telegram',  'label' => __( 'Telegram', 'compelling-evidence' ),  'type' => 'url', 'default' => '' ],
+            [ 'id' => 'ce_social_whatsapp',  'label' => __( 'WhatsApp channel', 'compelling-evidence' ), 'type' => 'url', 'default' => '' ],
             [ 'id' => 'ce_site_contact_email',  'label' => __( 'Site Contact Email', 'compelling-evidence' ), 'type' => 'text', 'default' => '', 'desc' => __( 'Used in Organization schema contactPoint.', 'compelling-evidence' ) ],
 
             // ── Logo (Organization schema, ImageObject) ────────────────────
@@ -684,6 +711,16 @@ function ce_get_tab_fields( $tab ) {
             [ 'id' => 'ce_crosslinks_enabled', 'label' => __( 'Enable automatic cross-linking', 'compelling-evidence' ),      'type' => 'checkbox', 'default' => '1', 'desc' => __( 'Auto-links key phrases in articles to related articles (161 phrase mappings).', 'compelling-evidence' ) ],
             [ 'id' => 'ce_search_enabled',     'label' => __( 'Enable homepage search', 'compelling-evidence' ),              'type' => 'checkbox', 'default' => '1' ],
             [ 'id' => 'ce_articles_per_page',  'label' => __( 'Articles per page (archive)', 'compelling-evidence' ),          'type' => 'range',   'default' => '12', 'min' => 4, 'max' => 48, 'section' => __( 'Content', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_rpb_enabled',  'label' => __( 'Show the reading progress bar', 'compelling-evidence' ), 'type' => 'checkbox', 'default' => '1', 'section' => __( 'Reading progress bar', 'compelling-evidence' ),
+              'desc' => __( 'A thin bar that fills as the reader scrolls through the text. Screen readers skip it; articles keep the labelled progress card in the sidebar. It turns itself off while the Reading Progress Bar plugin is active.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_rpb_color',    'label' => __( 'Bar colour', 'compelling-evidence' ), 'type' => 'color', 'default' => '#0cd4e0', 'desc' => __( 'Left at the default, the bar keeps its teal gradient.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_rpb_height',   'label' => __( 'Bar height (px)', 'compelling-evidence' ), 'type' => 'range', 'default' => '3', 'min' => 2, 'max' => 8 ],
+            [ 'id' => 'ce_rpb_position', 'label' => __( 'Position', 'compelling-evidence' ), 'type' => 'select', 'default' => 'top',
+              'options' => [ 'top' => __( 'Top, under the header', 'compelling-evidence' ), 'bottom' => __( 'Bottom of the window', 'compelling-evidence' ) ] ],
+            [ 'id' => 'ce_rpb_on_ce_article',  'label' => __( 'On articles', 'compelling-evidence' ), 'type' => 'checkbox', 'default' => '1' ],
+            [ 'id' => 'ce_rpb_on_post',        'label' => __( 'On posts', 'compelling-evidence' ), 'type' => 'checkbox', 'default' => '1' ],
+            [ 'id' => 'ce_rpb_on_page',        'label' => __( 'On pages', 'compelling-evidence' ), 'type' => 'checkbox', 'default' => '1', 'desc' => __( 'Pages on the default template only. The quiz, the journeys and other full-screen pages show their own progress.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_rpb_on_ce_question', 'label' => __( 'On reader questions', 'compelling-evidence' ), 'type' => 'checkbox', 'default' => '0' ],
         ],
 
         'analytics' => [
@@ -732,8 +769,8 @@ function ce_get_tab_fields( $tab ) {
               'desc' => __( 'When set to hover, tooltip appears on mouseover. On mobile, first tap shows tooltip, second tap follows link.', 'compelling-evidence' ) ],
             [ 'id' => 'ce_pretty_search',  'label' => __( 'Pretty search URLs', 'compelling-evidence' ), 'type' => 'checkbox', 'default' => '1', 'section' => __( 'Search URLs', 'compelling-evidence' ),
               'desc' => __( 'Redirects /?s=term to /search/term/. Built in; replaces the Pretty Search Permalinks plugin. Search results stay noindexed and disallowed in robots.txt.', 'compelling-evidence' ) ],
-            [ 'id' => 'ce_search_base',    'label' => __( 'Search base', 'compelling-evidence' ), 'type' => 'text', 'default' => 'search',
-              'desc' => __( 'The path segment before the search term. Letters, numbers and hyphens only. Save Settings → Permalinks after changing it.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_search_base',    'label' => __( 'Search base', 'compelling-evidence' ), 'type' => 'search_base', 'default' => 'search',
+              'desc' => __( 'The path segment before the search term. Lowercase letters, digits, hyphens and underscores; a slug the theme already uses, such as articles or topic, falls back to search. Save Settings → Permalinks after changing it.', 'compelling-evidence' ) ],
         ],
 
         'media' => [

@@ -1,7 +1,7 @@
 # SSOT — Single Source of Truth
 ## Compelling Evidence Theme — System Design, Naming Conventions, Configuration Rules
 
-**Version:** 2.15.1  
+**Version:** 2.16.0  
 **Location:** `/doc/SSOT.md`
 
 This document is authoritative. When any other file conflicts with a rule stated here, this document is correct and the other file should be updated.
@@ -601,6 +601,9 @@ Reference documents: Google's SEO Starter Guide and Google's list of structured 
 
 - **Lightbox2** → replaced by the theme's own lightbox.
 - **Pretty Search Permalinks (wp-seo-search)** → replaced by `inc/ce-search-permalinks.php` (Theme Options → Links & Tooltips → Search URLs); the theme steps aside if the plugin is still active.
+- **Reading Progress Bar** → replaced by `inc/ce-reading-progress.php` (Theme Options → Engagement → Reading progress bar); the theme bar steps aside while the plugin is active (since 2.16.0).
+- **Unlist Posts & Pages** → replaced by `inc/ce-unlist.php` (editor sidebar box, Quick Edit, Bulk Edit); off while the plugin is active. The IDs live in `ce_unlisted_posts`, copied once from the plugin's `unlist_posts` (since 2.16.0).
+- **Minimalist Social Icons Pack 2.8** → ten of its SVGs ship in `assets/images/social/`, printed by `inc/ce-social-icons.php` (since 2.16.0). Bundle a further icon only when a profile field needs it, and never the two CC BY icons (LinkedIn, Scribd) without adding their credit.
 - **Contact Form 7** and **Contact Form CFDB7** → stay plugins (forms and stored messages must survive a theme change). The theme styles CF7 forms (`assets/css/ce-cf7.css`) and loads CF7 scripts only on pages containing a form (`inc/ce-plugin-compat.php`).
 - **WPS Hide Login** → stays a plugin: the login URL is a security control and must not depend on the active theme.
 

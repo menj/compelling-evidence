@@ -1,7 +1,7 @@
 # Copyright (C) 2026 MENJ
 msgid ""
 msgstr ""
-"Project-Id-Version: CE Theme 2.15.0\n"
+"Project-Id-Version: CE Theme 2.16.0\n"
 "POT-Creation-Date: 2026-11-04\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2333,4 +2333,176 @@ msgstr ""
 
 #: single-ce_question.php:57
 msgid "Have a follow-up question?"
+msgstr ""
+
+#: inc/ce-unlist.php:237
+msgid "Unlisted"
+msgstr ""
+
+#: inc/ce-unlist.php:244
+msgid "Unlist this post"
+msgstr ""
+
+#: inc/ce-unlist.php:246
+msgid "Hidden from the home page, archives, feeds, search, sitemaps and related links, and marked noindex. Anyone with the URL can still open it."
+msgstr ""
+
+#: inc/ce-unlist.php:326
+msgid "No change"
+msgstr ""
+
+#: inc/ce-unlist.php:327
+msgid "Unlist"
+msgstr ""
+
+#: inc/ce-unlist.php:328
+msgid "List"
+msgstr ""
+
+#: inc/ce-social-icons.php:99
+msgid "Our profiles"
+msgstr ""
+
+#: inc/ce-social-icons.php:103
+msgid "%s profile"
+msgstr ""
+
+#: inc/ce-social-icons.php:154
+msgid "Social icons"
+msgstr ""
+
+#: inc/ce-social-icons.php:155
+msgid "Links to the site profiles set in CE Theme Options."
+msgstr ""
+
+#: inc/ce-search-permalinks.php:127
+msgid "Search results open at /search-base/term/. Also set in CE Theme Options, Links & Tooltips."
+msgstr ""
+
+#: inc/ce-theme-options.php:152
+msgid "Who wrote the site, for the byline and for the Person and Organization schema. Fill the author name first: with it empty, articles carry Organization authorship only. Profile and social fields take full URLs; the site Twitter field takes the handle with its @. Every site profile filled in, X, Facebook and YouTube included, shows as an icon in the footer; paste [ce_social_icons] or the Social icons pattern to show the same row elsewhere."
+msgstr ""
+
+#: inc/ce-theme-options.php:164
+msgid "Reader feedback under each article (votes and resonance buttons), the home page search, the archive page size and the reading progress bar. Votes and resonance are stored per article with a hashed address; no account is needed."
+msgstr ""
+
+#: inc/ce-theme-options.php:400
+msgid "Load image status and tools"
+msgstr ""
+
+#: inc/ce-theme-options.php:401
+msgid "Load the security tools and reports"
+msgstr ""
+
+#: inc/ce-theme-options.php:402
+msgid "Load content sync and diagnostics"
+msgstr ""
+
+#: inc/ce-theme-options.php:405
+msgid "This part reads the database, so it loads only when this tab is opened on its own."
+msgstr ""
+
+#: inc/ce-theme-options.php:406
+msgid "Load this tab"
+msgstr ""
+
+#: inc/ce-theme-options.php:656
+msgid "Show social icons in the footer"
+msgstr ""
+
+#: inc/ce-theme-options.php:656
+msgid "One icon for each profile with a URL: the X handle, Facebook and YouTube above and the fields below. With none filled in, nothing prints."
+msgstr ""
+
+#: inc/ce-theme-options.php:657
+msgid "Instagram"
+msgstr ""
+
+#: inc/ce-theme-options.php:657
+msgid "Full URL, e.g. https://www.instagram.com/name/"
+msgstr ""
+
+#: inc/ce-theme-options.php:658
+msgid "TikTok"
+msgstr ""
+
+#: inc/ce-theme-options.php:659
+msgid "Threads"
+msgstr ""
+
+#: inc/ce-theme-options.php:660
+msgid "Bluesky"
+msgstr ""
+
+#: inc/ce-theme-options.php:661
+msgid "Mastodon"
+msgstr ""
+
+#: inc/ce-theme-options.php:661
+msgid "The link carries rel=\"me\", so Mastodon can verify the site."
+msgstr ""
+
+#: inc/ce-theme-options.php:662
+msgid "Telegram"
+msgstr ""
+
+#: inc/ce-theme-options.php:663
+msgid "WhatsApp channel"
+msgstr ""
+
+#: inc/ce-theme-options.php:712
+msgid "Show the reading progress bar"
+msgstr ""
+
+#: inc/ce-theme-options.php:712
+msgid "Reading progress bar"
+msgstr ""
+
+#: inc/ce-theme-options.php:713
+msgid "A thin bar that fills as the reader scrolls through the text. Screen readers skip it; articles keep the labelled progress card in the sidebar. It turns itself off while the Reading Progress Bar plugin is active."
+msgstr ""
+
+#: inc/ce-theme-options.php:714
+msgid "Bar colour"
+msgstr ""
+
+#: inc/ce-theme-options.php:714
+msgid "Left at the default, the bar keeps its teal gradient."
+msgstr ""
+
+#: inc/ce-theme-options.php:715
+msgid "Bar height (px)"
+msgstr ""
+
+#: inc/ce-theme-options.php:716
+msgid "Position"
+msgstr ""
+
+#: inc/ce-theme-options.php:717
+msgid "Top, under the header"
+msgstr ""
+
+#: inc/ce-theme-options.php:717
+msgid "Bottom of the window"
+msgstr ""
+
+#: inc/ce-theme-options.php:718
+msgid "On articles"
+msgstr ""
+
+#: inc/ce-theme-options.php:719
+msgid "On posts"
+msgstr ""
+
+#: inc/ce-theme-options.php:720
+msgid "On pages"
+msgstr ""
+
+#: inc/ce-theme-options.php:720
+msgid "Pages on the default template only. The quiz, the journeys and other full-screen pages show their own progress."
+msgstr ""
+
+#: inc/ce-theme-options.php:721
+msgid "On reader questions"
 msgstr ""
