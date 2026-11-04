@@ -163,7 +163,7 @@ get_header(); ?>
     askGo.addEventListener('click', (e) => {
       e.preventDefault();
       const q = askInput.value.trim();
-      if (q) window.location.href = '/?s=' + encodeURIComponent(q);
+      if (q) window.location.href = <?php echo wp_json_encode( esc_url_raw( home_url( '/' ) ) ); ?> + '?s=' + encodeURIComponent(q);
     });
     askInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') { e.preventDefault(); askGo.click(); }

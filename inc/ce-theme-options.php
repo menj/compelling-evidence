@@ -371,6 +371,24 @@ function ce_theme_opts_render_cards( string $tab ): void {
    ADMIN PAGE
    ═══════════════════════════════════════════════════════════════════════ */
 
+/**
+ * Placeholder for the heavy part of a tab that is not the one opened: the
+ * scan tools, image status and article diagnostics run their queries only
+ * when their own tab loads (…&tab=<key>).
+ *
+ * @since 2.15.0
+ */
+function ce_theme_opts_load_note( string $key ): void {
+    $labels = [
+        'media'    => __( 'Load image status and tools', 'compelling-evidence' ),
+        'security' => __( 'Load the security tools and reports', 'compelling-evidence' ),
+        'tools'    => __( 'Load content sync and diagnostics', 'compelling-evidence' ),
+    ];
+    echo '<div class="ce-theme-opts-card"><div class="ce-theme-opts-card__body ce-theme-opts-card__body--prose"><p>';
+    esc_html_e( 'This part reads the database, so it loads only when this tab is opened on its own.', 'compelling-evidence' );
+    echo '</p><p><a class="button" href="' . esc_url( admin_url( 'themes.php?page=ce-theme-options&tab=' . $key ) ) . '">' . esc_html( $labels[ $key ] ?? __( 'Load this tab', 'compelling-evidence' ) ) . '</a></p></div></div>';
+}
+
 function ce_options_page() {
     if ( ! current_user_can( 'manage_options' ) ) return;
 
@@ -491,7 +509,7 @@ function ce_options_page() {
                     <input type="hidden" name="ce_options_tab" value="<?php echo esc_attr( $key ); ?>">
                     <?php if ( 'tools' !== $key ) ce_theme_opts_render_cards( $key ); ?>
 
-                    <?php if ( 'media' === $key && function_exists( 'ce_media_status_html' ) ) : ?>
+                    <?php if ( 'media' === $key && $key !== $active ) : ce_theme_opts_load_note( $key ); elseif ( 'media' === $key && function_exists( 'ce_media_status_html' ) ) : ?>
                         <div class="ce-theme-opts-card">
                             <h2 class="ce-theme-opts-card__title"><?php esc_html_e( 'Article images', 'compelling-evidence' ); ?></h2>
                             <div class="ce-theme-opts-card__body ce-theme-opts-card__body--prose">
@@ -507,7 +525,9 @@ function ce_options_page() {
                         <?php if ( function_exists( 'ce_media_auto_panel_html' ) ) { echo ce_media_auto_panel_html(); } // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- every value is escaped inside the function. ?>
                     <?php endif; ?>
 
-                    <?php if ( 'tools' === $key ) : ?>
+                    <?php if ( 'tools' === $key && $key !== $active ) : ?>
+                        <?php ce_theme_opts_load_note( $key ); ?>
+                    <?php elseif ( 'tools' === $key ) : ?>
                         <?php
                         $last_sync  = get_option( 'ce_content_sync_last_run', __( 'Never', 'compelling-evidence' ) );
                         $theme_ver  = $theme->get( 'Version' );
@@ -558,7 +578,9 @@ function ce_options_page() {
                     <?php endif; ?>
                 </form>
 
-                <?php if ( 'security' === $key && function_exists( 'ce_sec_render_tools' ) ) : ?>
+                <?php if ( 'security' === $key && $key !== $active ) : ?>
+                    <?php ce_theme_opts_load_note( $key ); ?>
+                <?php elseif ( 'security' === $key && function_exists( 'ce_sec_render_tools' ) ) : ?>
                     <div class="ce-theme-opts-card">
                         <div class="ce-theme-opts-card__body ce-theme-opts-card__body--prose">
                             <?php ce_sec_render_tools(); ?>

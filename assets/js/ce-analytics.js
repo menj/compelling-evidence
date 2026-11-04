@@ -14,10 +14,13 @@
 
   // Session ID — unique per browser tab session, no persistence
   var SESSION_KEY = 'ce_analytics_sid';
-  var session = sessionStorage.getItem(SESSION_KEY);
+  // Storage can be blocked (private mode, site data off): fall back to an
+  // in-memory id for this page so the tracker still initialises.
+  var session = null;
+  try { session = window.sessionStorage.getItem(SESSION_KEY); } catch (e) {}
   if (!session) {
     session = Math.random().toString(36).substr(2, 12) + Date.now().toString(36);
-    sessionStorage.setItem(SESSION_KEY, session);
+    try { window.sessionStorage.setItem(SESSION_KEY, session); } catch (e) {}
   }
 
   // Throttle: don't fire same event type more than once per N seconds

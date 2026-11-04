@@ -30,7 +30,7 @@ All fonts are self-hosted. With default settings the theme makes no request to a
 * Reader questions (ce_question) with an Ask a Question form, spam honeypot and nonce.
 * A progress page driven by localStorage.
 * Votes and resonance buttons under each article.
-* An 85-term glossary with tooltips, and automatic crosslinks to this site and the 6 sister sites.
+* A glossary of Islamic and Arabic terms with tooltips, and automatic crosslinks to this site and the 6 sister sites.
 * One schema.org graph per page (Article, FAQPage, Quiz, LearningResource, QAPage, ImageObject, Quotation and more).
 * A built-in lightbox, figure credits and import of registered images into the Media Library.
 * Security switches: XML-RPC off, application passwords off, REST changes only from a logged-in browser, and a gambling-spam gate.
