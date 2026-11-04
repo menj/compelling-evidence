@@ -247,7 +247,7 @@ body.ce-login.wp-core-ui .button-primary {
   box-shadow: none;
 }
 body.ce-login .button-primary:hover,
-body.ce-login.wp-core-ui .button-primary:hover { color: var(--deep); background: #ff7a8a; border-color: #ff7a8a; }
+body.ce-login.wp-core-ui .button-primary:hover { color: var(--deep); background: var(--accent); border-color: var(--accent); filter: brightness(1.12); }
 body.ce-login .button-primary:focus,
 body.ce-login.wp-core-ui .button-primary:focus { color: var(--deep); outline: 3px solid var(--ce-login-ring); outline-offset: 3px; box-shadow: none; }
 body.ce-login .button-primary[disabled] { opacity: 0.6; }
@@ -312,9 +312,11 @@ body.ce-login .language-switcher select {
   border-color: var(--ce-login-line);
   border-radius: 10px;
 }
+body.ce-login .language-switcher select:focus,
+body.ce-login .language-switcher .button:focus { outline: 2px solid var(--ce-login-ring); outline-offset: 2px; box-shadow: none; }
 
 /* Phones. */
-@media (max-width: 400px) {
+@media (max-width: 480px) {
   body.ce-login #login { padding-top: 32px; }
   body.ce-login form { padding: 22px 18px; }
   body.ce-login h1 a { font-size: 24px; }
