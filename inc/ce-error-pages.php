@@ -191,7 +191,7 @@ function ce_render_error_pages_section() {
 	<?php
 	$last = get_option( 'ce_error_pages_result' );
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- display of the last result only.
-	if ( isset( $_GET['ce_errors'] ) && is_array( $last ) ) {
+	if ( isset( $_GET['ce_errors'] ) && is_array( $last ) && $last ) {
 		$parts = array();
 		foreach ( $last as $file => $what ) {
 			$parts[] = $file . ': ' . ( $words[ $what ] ?? $what );
@@ -208,11 +208,15 @@ function ce_render_error_pages_section() {
 		<?php endforeach; ?>
 		</tbody>
 	</table>
+	<?php if ( is_multisite() && ! is_main_site() ) : ?>
+		<p><?php esc_html_e( 'The whole network shares wp-content, so the error pages are installed from the main site.', 'compelling-evidence' ); ?></p>
+	<?php else : ?>
 	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="margin:1em 0">
 		<input type="hidden" name="action" value="ce_install_error_pages">
 		<?php wp_nonce_field( 'ce_install_error_pages' ); ?>
 		<?php submit_button( __( 'Install error pages', 'compelling-evidence' ), 'secondary', 'submit', false ); ?>
 	</form>
+	<?php endif; ?>
 	<p><?php esc_html_e( 'For errors the web server answers before WordPress starts, static pages are in the errors folder of the theme. Add these lines to .htaccess to use them:', 'compelling-evidence' ); ?></p>
 	<textarea readonly rows="5" class="large-text code" aria-label="<?php esc_attr_e( '.htaccess lines', 'compelling-evidence' ); ?>"><?php echo esc_textarea( ce_error_htaccess_snippet() ); ?></textarea>
 	</div>
