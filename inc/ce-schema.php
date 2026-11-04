@@ -57,6 +57,128 @@ function ce_schema_author_id(): string {
     return ce_schema_id( home_url( '/' ), 'author' );
 }
 
+/**
+ * A sameAs list with https://menj.bio appended when it is missing. Existing
+ * entries keep their order (owner rule, 4 November 2026).
+ *
+ * @param string[] $same_as Existing entries.
+ * @return string[]
+ */
+function ce_schema_with_menj( array $same_as ): array {
+    $same_as = array_values( array_filter( $same_as, static function ( $u ) { return is_string( $u ) && '' !== trim( $u ); } ) );
+    if ( ! in_array( 'https://menj.bio', $same_as, true ) ) {
+        $same_as[] = 'https://menj.bio';
+    }
+    return $same_as;
+}
+
+/**
+ * Types that carry the author: articles and the pages of the site.
+ *
+ * @return string[]
+ */
+function ce_schema_authored_types(): array {
+    return [ 'Article', 'BlogPosting', 'NewsArticle', 'ScholarlyArticle', 'TechArticle', 'Report', 'WebPage', 'AboutPage', 'ProfilePage', 'FAQPage', 'CollectionPage', 'ContactPage', 'ItemPage', 'SearchResultsPage', 'QAPage' ];
+}
+
+/**
+ * One author across a graph, the theme's own or Rank Math's after the merge.
+ *
+ * Every author value, at any depth, points to the author Person; any other
+ * Person an author pointed to (the one Rank Math makes for the WordPress
+ * user) is dropped, every reference to it is repointed and its sameAs
+ * entries join the author's; top-level article and page nodes without an
+ * author get the reference; and the author Person is added where it is
+ * missing, with its name, url and sameAs set over anything merged into it.
+ * The publisher is left as it is.
+ *
+ * @param array $nodes Top-level nodes (a list, or Rank Math's keyed array).
+ * @return array
+ */
+function ce_schema_one_author( array $nodes ): array {
+    if ( ! $nodes ) {
+        return $nodes;
+    }
+    $id   = ce_schema_author_id();
+    $list = array_values( $nodes ) === $nodes;
+    $old  = [];
+    $find = static function ( $n ) use ( &$find, &$old, $id ) {
+        if ( ! is_array( $n ) ) {
+            return;
+        }
+        foreach ( $n as $k => $v ) {
+            if ( 'author' === $k && is_array( $v ) && ! empty( $v['@id'] ) && $id !== $v['@id'] ) {
+                $old[ (string) $v['@id'] ] = true;
+            }
+            if ( is_array( $v ) ) {
+                $find( $v );
+            }
+        }
+    };
+    $find( $nodes );
+    $walk = static function ( $n ) use ( &$walk, $old, $id ) {
+        if ( ! is_array( $n ) ) {
+            return $n;
+        }
+        if ( 1 === count( $n ) && isset( $n['@id'] ) && isset( $old[ (string) $n['@id'] ] ) ) {
+            return [ '@id' => $id ];
+        }
+        foreach ( $n as $k => $v ) {
+            if ( 'author' === $k && is_array( $v ) ) {
+                $n[ $k ] = [ '@id' => $id ];
+            } elseif ( is_array( $v ) ) {
+                $n[ $k ] = $walk( $v );
+            }
+        }
+        return $n;
+    };
+    $extra = [];
+    $out   = [];
+    $have  = null;
+    foreach ( $nodes as $key => $node ) {
+        if ( ! is_array( $node ) ) {
+            $out[ $key ] = $node;
+            continue;
+        }
+        $types = (array) ( $node['@type'] ?? [] );
+        if ( ! empty( $node['@id'] ) && isset( $old[ (string) $node['@id'] ] ) && in_array( 'Person', $types, true ) ) {
+            $extra = array_merge( $extra, array_filter( (array) ( $node['sameAs'] ?? [] ), 'is_string' ) );
+            continue;
+        }
+        if ( $id === ( $node['@id'] ?? '' ) ) {
+            $have = $key;
+        } else {
+            $node = $walk( $node );
+            if ( array_intersect( $types, ce_schema_authored_types() ) && empty( $node['author'] ) ) {
+                $node['author'] = [ '@id' => $id ];
+            }
+        }
+        $out[ $key ] = $node;
+    }
+    $person = ce_get_author_person_schema();
+    // worksFor names the Organization; a graph without it (a stand-alone
+    // journey file) gets the Person without the link.
+    $ids = array_column( array_filter( $out, 'is_array' ), '@id' );
+    if ( ! in_array( ce_schema_org_id(), $ids, true ) ) {
+        unset( $person['worksFor'] );
+    }
+    if ( null === $have ) {
+        if ( $list ) {
+            $out[] = $person;
+            $have  = count( $out ) - 1;
+        } else {
+            $have         = 'ce_author';
+            $out[ $have ] = $person;
+        }
+    } else {
+        $out[ $have ] = array_merge( $out[ $have ], $person );
+    }
+    $same = array_merge( (array) ( $person['sameAs'] ?? [] ), $extra );
+    $same = array_values( array_unique( array_diff( $same, [ 'https://menj.bio' ] ) ) );
+    $out[ $have ]['sameAs'] = ce_schema_with_menj( $same );
+    return $list ? array_values( $out ) : $out;
+}
+
 /** A reference to a node by @id. */
 function ce_schema_ref( string $id ): array {
     return [ '@id' => $id ];
@@ -607,7 +729,7 @@ function ce_schema_journey_nodes( array $j, array $page ): array {
             case 'Article':
                 $node['@id']              = $art_id;
                 $node['url']              = $url;
-                $node['author']           = ce_schema_ref( ce_schema_org_id() );
+                $node['author']           = ce_schema_ref( ce_schema_author_id() );
                 $node['publisher']        = ce_schema_ref( ce_schema_org_id() );
                 $node['mainEntityOfPage'] = ce_schema_ref( $page['@id'] );
                 $node['isPartOf']         = ce_schema_ref( $page['@id'] );
@@ -752,7 +874,7 @@ function ce_schema_question_node( string $url ): ?array {
             'text'        => $answer,
             'url'         => $url,
             'dateCreated' => get_the_modified_date( 'c', $post ),
-            'author'      => ce_schema_ref( ce_schema_org_id() ),
+            'author'      => ce_schema_ref( ce_schema_author_id() ),
         ];
     }
     return $node;

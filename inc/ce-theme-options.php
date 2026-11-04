@@ -647,10 +647,10 @@ function ce_get_tab_fields( $tab ) {
 
         'identity' => [
             // ── Author (Person schema) ─────────────────────────────────────
-            [ 'id' => 'ce_author_name',     'label' => __( 'Author Name', 'compelling-evidence' ),     'type' => 'text', 'default' => '', 'section' => __( 'Author', 'compelling-evidence' ), 'desc' => __( 'Used in Person schema and the visible byline on every article. Leave empty to fall back to Organization-only authorship.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_author_name',     'label' => __( 'Author Name', 'compelling-evidence' ),     'type' => 'text', 'default' => '', 'section' => __( 'Author', 'compelling-evidence' ), 'desc' => __( 'The visible byline on every article. The structured data names Mohd Elfie Nieshaem Juferi, at https://menj.bio, as the author whatever this field holds.', 'compelling-evidence' ) ],
             [ 'id' => 'ce_author_title',    'label' => __( 'Author Job Title', 'compelling-evidence' ), 'type' => 'text', 'default' => '', 'desc' => __( 'e.g. "Editor", "Writer", "Founder". Used in Person schema (jobTitle).', 'compelling-evidence' ) ],
             [ 'id' => 'ce_author_bio',      'label' => __( 'Author Bio', 'compelling-evidence' ),      'type' => 'textarea', 'default' => '', 'desc' => __( 'Up to 300 characters. Used in Person schema (description) and the author archive page.', 'compelling-evidence' ) ],
-            [ 'id' => 'ce_author_url',      'label' => __( 'Author Profile URL', 'compelling-evidence' ), 'type' => 'text', 'default' => '', 'desc' => __( 'Where the byline links to. Defaults to the WordPress author archive if empty.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_author_url',      'label' => __( 'Author Profile URL', 'compelling-evidence' ), 'type' => 'text', 'default' => '', 'desc' => __( 'Where the byline links to. Defaults to the WordPress author archive if empty. The structured data lists it in sameAs for the author, ahead of https://menj.bio.', 'compelling-evidence' ) ],
 
             // ── Author social profiles (sameAs schema) ─────────────────────
             [ 'id' => 'ce_author_twitter',  'label' => __( 'Author Twitter / X', 'compelling-evidence' ), 'type' => 'text', 'default' => '', 'section' => __( 'Author Social Profiles', 'compelling-evidence' ), 'desc' => __( 'Full URL, e.g. https://twitter.com/handle', 'compelling-evidence' ) ],

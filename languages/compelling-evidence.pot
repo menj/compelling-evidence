@@ -1240,7 +1240,7 @@ msgid "Author Name"
 msgstr ""
 
 #: inc/ce-theme-options.php:601
-msgid "Used in Person schema and the visible byline on every article. Leave empty to fall back to Organization-only authorship."
+msgid "The visible byline on every article. The structured data names Mohd Elfie Nieshaem Juferi, at https://menj.bio, as the author whatever this field holds."
 msgstr ""
 
 #: inc/ce-theme-options.php:602
@@ -1264,7 +1264,7 @@ msgid "Author Profile URL"
 msgstr ""
 
 #: inc/ce-theme-options.php:604
-msgid "Where the byline links to. Defaults to the WordPress author archive if empty."
+msgid "Where the byline links to. Defaults to the WordPress author archive if empty. The structured data lists it in sameAs for the author, ahead of https://menj.bio."
 msgstr ""
 
 #: inc/ce-theme-options.php:607

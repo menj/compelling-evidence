@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.18.1] - November 2026
+
+No feature removed and no public identifier renamed.
+
+### Changed
+- The front end no longer presents other sites as related to this one. Every link stays.
+  - `islamic-dilemma-quran-and-bible` (`inc/articles/batch-007.json`): the box at the end is headed "Further reading on the Islamic dilemma", with the same `aria-label`, in place of "The Islamic dilemma across the network". Its six links are unchanged. The batch checksum in `inc/articles/manifest.json` is updated; the version bump runs the article sync on the next admin page load.
+  - Journey FAQ (`inc/data/standalone-faq.json`): "on murtadd.org, a sister site of this one." reads "on murtadd.org."; "on murtadd.org, a sister site, with pieces on family, law, prayer and hurt." reads "on murtadd.org, in pieces on family, law, prayer and hurt."
+- The structured data names one author: the Person `#author` is "Mohd Elfie Nieshaem Juferi", with `url` `https://menj.bio`, whatever the Author & Identity tab holds (`ce_get_author_person_schema()`). The Author Profile URL and profile links stay in its `sameAs`, then `https://menj.bio`. Job title, bio and `worksFor` are kept. Every Article, Answer, journey Article and page node points to it by `@id`; before, journey Articles and question Answers named the Organization. The Organization's `founder` is a reference to it, and its `sameAs`, where it has one, ends with `https://menj.bio`.
+- `ce_schema_one_author()` (`inc/ce-schema.php`) runs on the theme's graph, the stand-alone journey graph and, through `rank_math/json_ld`, Rank Math's. It repoints every `author`, drops the Person Rank Math made for the WordPress user (its references repointed, its `sameAs` kept), and adds the author Person where missing. The publisher stays the site.
+- The visible byline still reads the Author Name field. Its help text, and the Author Profile URL's, say what the structured data now does.
+- TechArticle and Report nodes get the author reference like other articles, and an Author Profile URL that `esc_url_raw()` empties is left out of `sameAs`, as is any empty entry.
+- `tests/schema-graph-test.php` checks all 189 graphs: one author Person with that name, url and sameAs, every `author` pointing to it, and an author on every article and page node, with no other top-level Person.
+
+---
+
 ## [2.18.0] - November 2026
 
 Error pages for the moments WordPress cannot build a page. No feature removed and no public identifier renamed.

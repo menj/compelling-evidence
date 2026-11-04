@@ -134,6 +134,10 @@ function ce_standalone_faq_html_source( string $html, string $key, string $url )
                 $data['@graph'][] = $node;
                 $placed           = true;
             }
+            // One author Person, as on every other page (owner rule, 4 November 2026).
+            if ( function_exists( 'ce_schema_one_author' ) ) {
+                $data['@graph'] = ce_schema_one_author( $data['@graph'] );
+            }
         }
         return '<script type="application/ld+json">' . wp_json_encode( $data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG ) . '</script>';
     }, $html );

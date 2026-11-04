@@ -22,28 +22,25 @@ if ( ! defined( 'ABSPATH' ) ) exit;
    ═══════════════════════════════════════════════════════════════════════ */
 
 /**
- * Returns the configured author Person object for Article schema, or null
- * when no author name has been set. Reads from the Author & Identity tab
- * in CE Theme Options (ce_author_*).
+ * The author Person for the structured data.
  *
- * @return array|null Person schema array, or null if author identity is not configured.
+ * The owner ruled on 4 November 2026 that the structured data names him,
+ * Mohd Elfie Nieshaem Juferi, at https://menj.bio, as the author of every
+ * article, whatever the Author & Identity tab holds; the visible byline
+ * still reads from that tab. Job title, bio and profile URLs come from the
+ * tab as before. The Author URL from the tab stays in sameAs, and
+ * https://menj.bio ends the list.
+ *
+ * @return array|null Person schema array. Never null since 2.18.1; the
+ *                    nullable type is kept for callers that test it.
  */
 function ce_get_author_person_schema(): ?array {
-    $name = trim( (string) get_option( 'ce_author_name', '' ) );
-    if ( '' === $name ) {
-        return null;
-    }
-
     $person = [
         '@type' => 'Person',
         '@id'   => trailingslashit( home_url( '/' ) ) . '#author',
-        'name'  => $name,
+        'name'  => 'Mohd Elfie Nieshaem Juferi',
+        'url'   => 'https://menj.bio',
     ];
-
-    $url = trim( (string) get_option( 'ce_author_url', '' ) );
-    if ( '' !== $url ) {
-        $person['url'] = esc_url_raw( $url );
-    }
 
     $title = trim( (string) get_option( 'ce_author_title', '' ) );
     if ( '' !== $title ) {
@@ -58,9 +55,11 @@ function ce_get_author_person_schema(): ?array {
     }
 
     $same_as = ce_get_author_same_as_urls();
-    if ( ! empty( $same_as ) ) {
-        $person['sameAs'] = $same_as;
+    $url     = trim( (string) get_option( 'ce_author_url', '' ) );
+    if ( '' !== $url && '' !== esc_url_raw( $url ) ) {
+        array_unshift( $same_as, esc_url_raw( $url ) );
     }
+    $person['sameAs'] = ce_schema_with_menj( array_values( array_unique( $same_as ) ) );
 
     // worksFor links the Person to the publishing Organization. Search
     // engines use this to attach the author's contributions to the site
@@ -178,7 +177,7 @@ function ce_get_organization_schema(): array {
         }
     }
     if ( ! empty( $org_same_as ) ) {
-        $org['sameAs'] = array_values( array_unique( array_filter( $org_same_as ) ) );
+        $org['sameAs'] = ce_schema_with_menj( array_values( array_unique( array_filter( $org_same_as ) ) ) );
     }
 
     // contactPoint is the Google-recommended contact channel. Email-only
@@ -192,17 +191,8 @@ function ce_get_organization_schema(): array {
         ];
     }
 
-    // founder links the Organization to the Person. Only emit when an
-    // author has been configured — otherwise we'd be claiming unsourced
-    // identity data on the Organization.
-    $author_name = trim( (string) get_option( 'ce_author_name', '' ) );
-    if ( '' !== $author_name ) {
-        $org['founder'] = [
-            '@type' => 'Person',
-            '@id'   => trailingslashit( home_url( '/' ) ) . '#author',
-            'name'  => $author_name,
-        ];
-    }
+    // founder links the Organization to the author Person, by @id.
+    $org['founder'] = [ '@id' => trailingslashit( home_url( '/' ) ) . '#author' ];
 
     return $org;
 }
@@ -739,7 +729,7 @@ function ce_schema_nodes(): array {
     // DefinedTermSet, Quiz, journeys, QAPage, ItemList): inc/ce-schema.php.
     $schemas = array_merge( $schemas, ce_schema_page_nodes( $schemas ) );
 
-    return ce_schema_finalize( ce_schema_article_backfill( $schemas, ce_schema_article_image(), ce_schema_article_dates() ) );
+    return ce_schema_one_author( ce_schema_finalize( ce_schema_article_backfill( $schemas, ce_schema_article_image(), ce_schema_article_dates() ) ) );
 }
 
 /**
