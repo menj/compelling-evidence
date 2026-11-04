@@ -1,6 +1,6 @@
 <?php get_header(); ?>
 
-<main id="main" role="main" aria-label="Main content">
+<main id="main" tabindex="-1" role="main" aria-label="Main content">
 
 <!-- ── HERO ─────────────────────────────────────────────────────────────── -->
 <section class="hero">

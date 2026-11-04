@@ -111,8 +111,9 @@ Appearance > CE Theme Options — 8 tabs:
 * The journey Continue button had no styles and stood 23px high. It now matches the site's teal button at 44px. The closing links on each journey are no longer browser blue.
 * The menu button is 44px square and names the menu it opens (aria-controls). Mobile menu links, footer links, topic filters and the hero chips are 44px high below 1025px. The home search field uses 16px text, so iOS stops zooming into it.
 * The vote buttons under articles have names (Helpful, Not helpful). Collapsed FAQ answers and the hidden scroll hint on the home page no longer take keyboard focus. The current chapter dot carries aria-current.
-* Every page starts with a Skip to content link. The journeys had no main landmark; the chapters and the FAQ now sit inside one.
-* Anchor jumps stop below the fixed header, and a focused quiz option clears the sticky Back and Next bar on phones.
+* Every page starts with a Skip to content link, and it moves keyboard focus into the content (each main element takes tabindex -1). The journeys had no main landmark; the chapters and the FAQ now sit inside one.
+* Anchor jumps stop below the fixed header and the featured strip. main.js sets the offset from their real height, so it shrinks when the strip hides on scroll.
+* On phones, a focused quiz option clears the sticky Back and Next bar on phones.
 * The journeys and the quiz preload Playfair Display 900 and DM Sans 400. The heading reflowed when they arrived (layout shift up to 0.4 at 768px).
 
 = 2.13.0 - November 2026 =

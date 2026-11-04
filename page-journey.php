@@ -32,7 +32,7 @@ if ( '' === $html ) {
     status_header(404);
     get_header();
     ?>
-    <main id="main" role="main">
+    <main id="main" tabindex="-1" role="main">
 <section class="not-found-hero">
       <div class="not-found-code" aria-hidden="true">404</div>
       <h1 class="not-found-title">Journey not found</h1>

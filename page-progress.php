@@ -7,7 +7,7 @@
 get_header();
 ?>
 
-<main id="main" role="main">
+<main id="main" tabindex="-1" role="main">
 <div class="progress-page">
 
   <div class="progress-hero">

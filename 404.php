@@ -27,7 +27,7 @@ $ce_recent = new WP_Query( [
 ] );
 ?>
 
-<main id="main" role="main">
+<main id="main" tabindex="-1" role="main">
 <section class="not-found-hero">
 
   <p class="not-found-kicker">Exhibit 404 <span aria-hidden="true">·</span> Evidence not found</p>

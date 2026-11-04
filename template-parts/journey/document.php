@@ -44,7 +44,7 @@ ce_schema_journey( null, true );
 <a class="ce-skip-link" href="#main"><?php echo esc_html( $t['skip_link'] ?? 'Skip to content' ); ?></a>
 <?php ce_journey_part( 'nav', compact( 'j', 't' ) ); ?>
 
-<main id="main">
+<main id="main" tabindex="-1">
 <?php
 foreach ( $j['screens'] as $i => $screen ) {
     ce_journey_part( 'screen', compact( 'j', 't', 'screen', 'i' ) );

@@ -10,7 +10,7 @@ get_header();
 // when Rank Math has no Article of its own (since 2.11.0).
 ?>
 
-<main class="ce-page ce-qa-single" id="main">
+<main class="ce-page ce-qa-single" id="main" tabindex="-1">
 
   <article class="qa-single">
 

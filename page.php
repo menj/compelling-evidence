@@ -1,6 +1,6 @@
 <?php get_header(); ?>
 
-<main class="ce-page" id="main">
+<main class="ce-page" id="main" tabindex="-1">
   <?php while (have_posts()) : the_post(); ?>
   <article id="page-<?php the_ID(); ?>" <?php post_class('static-page'); ?>>
     <header class="page-hero">

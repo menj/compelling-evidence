@@ -115,3 +115,6 @@
 /* 2.4.1: skip link, off screen until it takes focus. */
 .ce-skip-link { position: absolute; left: 1rem; top: -100px; z-index: 1000; padding: 0.75rem 1.25rem; border-radius: 8px; background: #0cd4e0; color: #0d0820; font-weight: 600; text-decoration: none; }
 .ce-skip-link:focus { top: 0.75rem; outline: 2px solid #f2eeff; outline-offset: 2px; }
+main[tabindex="-1"]:focus { outline: none; }
+/* 2.4.11: anchor targets clear the fixed 68px journey header. */
+html { scroll-padding-top: 84px; }

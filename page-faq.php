@@ -11,7 +11,7 @@ get_header();
 $faq_sections = ce_faq_sections();
 ?>
 
-<main class="ce-page ce-faq" id="main">
+<main class="ce-page ce-faq" id="main" tabindex="-1">
 
   <header class="page-hero faq-hero">
     <div class="page-hero-inner">

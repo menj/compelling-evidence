@@ -2274,7 +2274,9 @@ a.ce-crosslink:hover {
    WCAG 1.4.3 does not stop at a breakpoint. */
 
 /* 2.4.11: anchor jumps and keyboard focus land below the fixed header. */
-html { scroll-padding-top: calc(var(--nav-h, 72px) + 1rem); }
+/* --ce-fixed-h is the height of the fixed nav plus the featured strip
+   while it shows; main.js keeps it current as the strip hides. */
+html { scroll-padding-top: calc(var(--ce-fixed-h, var(--total-offset, 116px)) + 1rem); }
 
 /* Menu button: 44px square on phones (it is hidden above 900px). */
 .nav-toggle { min-width: 44px; min-height: 44px; align-items: center; justify-content: center; }
@@ -2309,3 +2311,6 @@ html { scroll-padding-top: calc(var(--nav-h, 72px) + 1rem); }
 /* 2.4.1: skip link, off screen until it takes focus. */
 .ce-skip-link { position: absolute; left: 1rem; top: -100px; z-index: 1000; padding: 0.75rem 1.25rem; border-radius: 8px; background: #0cd4e0; color: #0d0820; font-weight: 600; text-decoration: none; }
 .ce-skip-link:focus { top: 0.75rem; outline: 2px solid #f2eeff; outline-offset: 2px; }
+/* The skip target (tabindex -1) is not a control: focus lands there so the
+   next Tab starts inside the content. A ring round the whole page helps no one. */
+main[tabindex="-1"]:focus { outline: none; }
