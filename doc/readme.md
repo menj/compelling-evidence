@@ -1,6 +1,6 @@
 # CE Theme (Compelling Evidence) — WordPress Theme
 
-**Version:** 2.16.0 | **Parent theme:** Twenty Twenty-Five (tested with 1.5) | **Requires:** WordPress 6.7+ (tested to 7.1), PHP 8.0 to 8.4  
+**Version:** 2.17.0 | **Parent theme:** Twenty Twenty-Five (tested with 1.5) | **Requires:** WordPress 6.7+ (tested to 7.1), PHP 8.0 to 8.4  
 **Site:** https://compelling-evidence.com | **Repository:** https://github.com/menj/compelling-evidence | **Author:** [MENJ](https://menj.blog) | **Text domain:** `compelling-evidence`
 
 An Islamic apologetics child theme delivering personalised argumentation journeys across 14 persona paths, 131 articles across 11 investigative categories, a weighted intake quiz, a gamified progress system, a privacy-first analytics layer, and a full engagement suite. Built for a single deployment — not a general-purpose theme.
@@ -76,6 +76,7 @@ compelling-evidence/
 │   ├── ce-reading-progress.php       Reading progress bar and its options
 │   ├── ce-unlist.php                 Unlisted posts (tests/unlist-test.php)
 │   ├── ce-search-permalinks.php      /search/term/ URLs (tests/search-permalinks-test.php)
+│   ├── ce-login.php                  Login screen design (tests/login-test.php)
 │   ├── ce-404.php                    404 excuses (data, link resolution, script enqueue)
 │   ├── ce-icons.php                  Topic line icons for article cards without a featured image
 │   ├── ce-parent-compat.php          Template priority over parent block templates; parent version notice

@@ -6,7 +6,7 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.16.0
+Version: 2.17.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Template: twentytwentyfive
@@ -121,6 +121,10 @@ CE Theme, Copyright 2026 MENJ. Licensed GPLv2 or later.
 * Article figures are not bundled. inc/articles/media.json lists each with its source page, creator and licence, and the credit prints under the figure.
 
 == Changelog ==
+
+= 2.17.0 - November 2026 =
+
+* The login screen wears the site design: the CE mark, the wordmark, the night palette and your Colors and Typography choices. Switch it off, or set a logo and a line above the form, under Security > Login screen. A login plugin such as LoginPress takes over while it is active.
 
 = 2.16.0 - November 2026 =
 
