@@ -6,7 +6,7 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.15.0
+Version: 2.15.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Template: twentytwentyfive
@@ -119,6 +119,11 @@ CE Theme, Copyright 2026 MENJ. Licensed GPLv2 or later.
 * Article figures are not bundled. inc/articles/media.json lists each with its source page, creator and licence, and the credit prints under the figure.
 
 == Changelog ==
+
+= 2.15.1 - November 2026 =
+
+* Every Article in the JSON-LD has an image. A journey's Article and the one Rank Math prints on the quiz page had none. The image is the featured image where the page has one, else the Organization logo when it is at least 1200px wide, else screenshot.png, as on articles already.
+* On a single page, an Article without datePublished or dateModified takes them from the page. Journeys had neither. Views with no post get no date.
 
 = 2.15.0 - November 2026 =
 
@@ -485,6 +490,9 @@ Uthmani Quran font replaced with KFGQPC HAFS version (608 glyphs). CE Hadith add
 For full version history see CHANGELOG.md.
 
 == Upgrade Notice ==
+
+= 2.15.1 =
+Structured data fix. Nothing needs doing.
 
 = 2.15.0 =
 Analytics is now off unless the Analytics tab was saved with tracking on. To keep collecting, open Appearance > CE Theme Options > Analytics and switch it on.

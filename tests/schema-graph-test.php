@@ -336,6 +336,9 @@ foreach ( glob( $ROOT . '/journeys/data/*/journey.json' ) as $f ) {
 	faq_visible( json_decode( $m[1], true )['@graph'], $full, "journey $key page" );
 	expect_types( $t2, [ 'LearningResource', 'Article', 'WebPage', 'Organization', 'FAQPage', 'Question', 'Answer' ], "journey $key standalone" );
 	if ( empty( find( $data['@graph'], 'WebPage' )['speakable'] ) ) bad( "journey $key", 'speakable lost' );
+	$ja = find( $g, 'Article' );
+	if ( empty( $ja['image'] ) ) bad( "journey $key", 'Article without image' );
+	if ( empty( $ja['datePublished'] ) || empty( $ja['dateModified'] ) ) bad( "journey $key", 'Article without its dates' );
 }
 
 // A journey served from a stand-alone HTML file (no data folder) gets the
@@ -402,6 +405,23 @@ foreach ( [ 'article', 'question', 'faq' ] as $which ) {
 	}
 	if ( 'faq' === $which ) expect_types( $t, [ 'FAQPage' ], 'rm faq' );
 }
+
+// Backfill (2.15.1): a Rank Math Article with no image or dates gains them;
+// set fields stay, and no date is invented off a single view.
+$bf = ce_schema_article_backfill(
+	[ 'richSnippet' => [ '@type' => 'Article', 'headline' => 'Quiz' ], 'WebPage' => [ '@type' => 'WebPage' ], 'kept' => [ '@type' => 'BlogPosting', 'image' => [ 'x' ], 'datePublished' => 'd' ] ],
+	[ '@type' => 'ImageObject', 'url' => 'u' ],
+	[ 'datePublished' => 'p', 'dateModified' => 'm' ]
+);
+if ( 'u' !== ( $bf['richSnippet']['image']['url'] ?? '' ) || 'p' !== ( $bf['richSnippet']['datePublished'] ?? '' ) ) bad( 'backfill', 'Article not filled' );
+if ( isset( $bf['WebPage']['image'] ) ) bad( 'backfill', 'non-Article touched' );
+if ( [ 'x' ] !== $bf['kept']['image'] || 'd' !== $bf['kept']['datePublished'] ) bad( 'backfill', 'a set field was overwritten' );
+$GLOBALS['ctx'] = [ 'view' => 'single', 'post' => $qpost( 'x' ), 'thumb' => true ];
+$bi = ce_schema_article_image();
+if ( 'ImageObject' !== ( $bi['@type'] ?? '' ) || 1200 !== ( $bi['width'] ?? 0 ) ) bad( 'backfill', 'featured image not an ImageObject' );
+$GLOBALS['ctx'] = [ 'view' => 'archive' ];
+if ( [] !== ce_schema_article_dates() ) bad( 'backfill', 'dates off a single view' );
+$runs++;
 
 echo "graphs checked: $runs, failures: $fail\n";
 exit( $fail ? 1 : 0 );

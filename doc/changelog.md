@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.15.1] - November 2026
+
+A schema check on the live site found Articles with no `image` on /articles/is-islam-false/, /journey/agnostic/ and /quiz/, and no `datePublished` on the journey. The live site runs an older theme. On this code, articles already carry an image; the journey's Article (from `journey.json`) still had no image and no dates, and Rank Math's Article on the quiz page had no theme Article to fill it from.
+
+### Fixed
+- `ce_schema_article_backfill()` runs at the end of `ce_schema_nodes()` and of `ce_rankmath_json_ld()`. Each top-level Article-family node without `image` gets `ce_schema_article_image()`: the featured image as an ImageObject (the 1200×630 `og-share` size, with width and height), else the Organization logo when `ce_org_logo_width` is 1200 or more, else `screenshot.png`, the fallback articles already use.
+- On a single view, a missing `datePublished` or `dateModified` comes from the post (`ce_schema_article_dates()`). Other views get no date. Fields already set stay.
+- `tests/schema-graph-test.php` checks every journey's Article for an image and both dates, and the backfill on its own.
+
+---
+
 ## [2.15.0] - November 2026
 
 Upgrade to the owner's theme rules of 4 November 2026. No feature removed and no public identifier renamed.
