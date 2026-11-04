@@ -16,6 +16,9 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 return [
 	'lang' => 'en',
 
+	// Skip link (WCAG 2.4.1).
+	'skip_link'   => 'Skip to content',
+
 	// Header.
 	'logo_first'  => 'Compelling',
 	'logo_second' => ' Evidence',

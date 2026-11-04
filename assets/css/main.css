@@ -2266,3 +2266,46 @@ a.ce-crosslink:hover {
 }
 @media (forced-colors: active) { .ce-lanah { forced-color-adjust: none; background-color: CanvasText; } }
 @media print { .ce-lanah { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+
+/* ── Mobile-first and WCAG 2.2 layer (2.14.0) ──────────────────────────
+   New rules are written for phones first; a min-width query hands the
+   desktop its old values back, so 1025px and up render as before.
+   Colour changes are the exception: they apply at every width because
+   WCAG 1.4.3 does not stop at a breakpoint. */
+
+/* 2.4.11: anchor jumps and keyboard focus land below the fixed header. */
+html { scroll-padding-top: calc(var(--nav-h, 72px) + 1rem); }
+
+/* Menu button: 44px square on phones (it is hidden above 900px). */
+.nav-toggle { min-width: 44px; min-height: 44px; align-items: center; justify-content: center; }
+
+/* Touch targets of 44px on phones and tablets. */
+.footer-cta,
+.je-browse,
+.card-link,
+.featured-link,
+.hero-prompt-chip { min-height: 44px; }
+.je-browse { display: inline-flex; align-items: center; }
+/* 16px stops iOS zooming into the search field. */
+.hero-search input[type="search"] { font-size: 1rem; }
+@media (max-width: 900px) {
+  .nav-links a { min-height: 44px; display: flex; align-items: center; }
+}
+@media (min-width: 1025px) {
+  .footer-cta,
+  .je-browse,
+  .card-link,
+  .featured-link,
+  .hero-prompt-chip { min-height: 0; }
+  .je-browse { display: inline; }
+}
+
+/* 1.4.3 contrast: small labels on the purple ground reach 4.5:1. */
+.section-label,
+.card-tag { color: #f0707f; }
+.quran-ref { color: #a78bfa; }
+.sidebar-cta p { color: rgba(245,240,255,0.72); }
+
+/* 2.4.1: skip link, off screen until it takes focus. */
+.ce-skip-link { position: absolute; left: 1rem; top: -100px; z-index: 1000; padding: 0.75rem 1.25rem; border-radius: 8px; background: #0cd4e0; color: #0d0820; font-weight: 600; text-decoration: none; }
+.ce-skip-link:focus { top: 0.75rem; outline: 2px solid #f2eeff; outline-offset: 2px; }

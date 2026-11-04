@@ -2201,3 +2201,52 @@
   .ce-murtadd-card-link { transition: none; }
   .ce-murtadd-card-link:hover, .ce-murtadd-card-link:focus-visible { transform: none; }
 }
+
+/* ── WCAG 2.2 contrast layer (2.14.0) ──────────────────────────────────
+   Labels, counts and excerpts that sat at 1.3:1 to 4.4:1 on the purple
+   ground now reach 4.5:1 (large headings 3:1). Same hues, higher alpha. */
+.archive-hero-eyebrow,
+.search-hero-eyebrow,
+.ts-toggle-btn,
+.ts-subcat-name,
+.ts-article-num,
+.ts-article-meta,
+.related-card-topic,
+.ce-murtadd-card-kicker,
+.jy-hero-eyebrow { color: rgba(12,212,224,0.75); }
+.srp-pct { color: rgba(12,212,224,0.8); }
+.archive-hero p,
+.archive-hero .ah-count,
+.archive-footer p,
+.tf-link,
+.ts-count,
+.ts-desc,
+.ts-subcat-desc,
+.ts-article-excerpt,
+.search-count,
+.src-excerpt,
+.src-reading,
+.srp-stats,
+.related-card-meta,
+.toc-list a,
+.sidebar-cta p,
+.jy-how-desc,
+.jy-bottom-cta p,
+.jy-divider-text { color: rgba(242,238,255,0.62); }
+.tf-count { opacity: 1; }
+.src-num,
+.src-topic { color: #a78bfa; }
+.search-hero h1 em,
+.jy-hero h1 em { color: #a78bfa; }
+#ce-journey-return-body p { color: rgba(242,238,255,0.62) !important; }
+
+/* 2.4.7 / 2.4.11: a collapsed FAQ answer holds no focusable links. */
+.faq-answer[aria-hidden="true"] { visibility: hidden; transition: grid-template-rows 0.35s ease, visibility 0s linear 0.35s; }
+
+/* Touch targets: topic filters and section toggles reach 44px on phones. */
+.tf-link,
+.ts-toggle-btn { min-height: 44px; display: inline-flex; align-items: center; }
+@media (min-width: 1025px) {
+  .tf-link,
+  .ts-toggle-btn { min-height: 0; display: inline-block; }
+}

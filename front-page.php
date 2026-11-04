@@ -124,10 +124,10 @@
       <a href="<?php echo esc_url(home_url('/topic/does-god-exist/')); ?>" class="scroll-hint-tile" tabindex="-1">
         <span class="sht-label">Does God Exist?</span>
       </a>
-      <a href="<?php echo esc_url(home_url('/topic/the-problem-of-evil/')); ?>" class="scroll-hint-tile">
+      <a href="<?php echo esc_url(home_url('/topic/the-problem-of-evil/')); ?>" class="scroll-hint-tile" tabindex="-1">
         <span class="sht-label">The Problem of Evil</span>
       </a>
-      <a href="<?php echo esc_url(home_url('/topic/the-inner-journey/')); ?>" class="scroll-hint-tile">
+      <a href="<?php echo esc_url(home_url('/topic/the-inner-journey/')); ?>" class="scroll-hint-tile" tabindex="-1">
         <span class="sht-label">The Inner Journey</span>
       </a>
     </div>

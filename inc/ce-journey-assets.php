@@ -104,6 +104,14 @@ function ce_standalone_assets( string $html, string $kind ): string {
             $html = str_replace( $marker, rtrim( ce_standalone_asset_tags( $asset[0], [ $asset[1] ] ) ), $html );
         }
     }
+    // Preload the two faces that set the first screen, so the heading does
+    // not reflow when they arrive (CLS measured up to 0.4 at 768px).
+    $font_dir = get_stylesheet_directory_uri() . '/assets/fonts/';
+    $preload  = '';
+    foreach ( [ 'playfair-display-900.woff2', 'dm-sans-400.woff2' ] as $font ) {
+        $preload .= '<link rel="preload" href="' . esc_url( $font_dir . $font ) . '" as="font" type="font/woff2" crossorigin>' . "\n";
+    }
+    $html = preg_replace( '/<head>/i', "<head>\n" . $preload, $html, 1 );
     // The FAQ section's styles (inc/ce-standalone-faq.php), on both kinds.
     $html = str_replace( '</head>', ce_standalone_asset_tags( 'style', [ 'ce-standalone-faq' ] ) . '</head>', $html );
     if ( 'journey' === $kind ) {

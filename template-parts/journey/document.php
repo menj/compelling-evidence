@@ -41,8 +41,10 @@ ce_schema_journey( null, true );
 </style>
 </head>
 <body>
+<a class="ce-skip-link" href="#main"><?php echo esc_html( $t['skip_link'] ?? 'Skip to content' ); ?></a>
 <?php ce_journey_part( 'nav', compact( 'j', 't' ) ); ?>
 
+<main id="main">
 <?php
 foreach ( $j['screens'] as $i => $screen ) {
     ce_journey_part( 'screen', compact( 'j', 't', 'screen', 'i' ) );
@@ -50,6 +52,7 @@ foreach ( $j['screens'] as $i => $screen ) {
 // Visible FAQ; the FAQPage node is built from the same data (inc/ce-standalone-faq.php).
 echo ce_standalone_faq_html( (string) ( $j['key'] ?? '' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in the builder.
 ?>
+</main>
 
 <?php ce_journey_part( 'scripts', compact( 'j', 't' ) ); ?>
 </body>
