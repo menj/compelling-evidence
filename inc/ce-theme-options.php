@@ -597,6 +597,14 @@ function ce_options_page() {
                     <?php endif; ?>
                 </form>
 
+                <?php if ( 'tools' === $key && $key === $active && function_exists( 'ce_render_error_pages_section' ) ) : ?>
+                    <div class="ce-theme-opts-card">
+                        <div class="ce-theme-opts-card__body ce-theme-opts-card__body--prose">
+                            <?php ce_render_error_pages_section(); ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
                 <?php if ( 'security' === $key && $key !== $active ) : ?>
                     <?php ce_theme_opts_load_note( $key ); ?>
                 <?php elseif ( 'security' === $key && function_exists( 'ce_sec_render_tools' ) ) : ?>

@@ -9,4 +9,7 @@
 
 // Redirect to the correct template
 // Note: get_header()/get_footer() intentionally omitted — this is a redirect-only shim.
+
+defined( 'ABSPATH' ) || exit;
+
 get_template_part('taxonomy-ce_topic');

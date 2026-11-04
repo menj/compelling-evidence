@@ -80,3 +80,18 @@ function ce_404_enqueue() {
     }
 }
 add_action( 'wp_enqueue_scripts', 'ce_404_enqueue' );
+
+/**
+ * The 404 page is not indexed; its links are still followed.
+ *
+ * @param array $robots Robots directives.
+ * @return array
+ */
+function ce_404_robots( $robots ) {
+	if ( is_404() ) {
+		$robots['noindex'] = true;
+		$robots['follow']  = true;
+	}
+	return $robots;
+}
+add_filter( 'wp_robots', 'ce_404_robots' );

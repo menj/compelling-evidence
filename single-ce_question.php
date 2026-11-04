@@ -3,6 +3,9 @@
  * Single Question Template
  * Shows a question with its answer
  */
+
+defined( 'ABSPATH' ) || exit;
+
 get_header();
 
 // Article markup for a published question is built in ce_question_article_node()

@@ -6,6 +6,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.18.0] - November 2026
+
+Error pages for the moments WordPress cannot build a page. No feature removed and no public identifier renamed.
+
+### Added
+- `inc/ce-error-pages.php` writes `wp-content/maintenance.php`, `php-error.php` and `db-error.php` when an administrator presses **Install error pages** on CE Theme Options > Tools & Sync (`admin_post_ce_install_error_pages`, nonce and `manage_options`). Each is written to a temporary name and renamed into place; on a network only the main site writes. The theme never writes them on its own.
+- Each file carries the marker `Compelling Evidence error page drop-in` and its kind. A missing file or one with the marker is written; any other file is left alone. The status table reads not installed, installed, outdated or another file left alone.
+- `maintenance.php` sends 503 with `Retry-After: 600`; `php-error.php` sends 500, "Something went wrong"; `db-error.php` sends 503 with `Retry-After: 600`, "We cannot reach our database". All three send `X-Robots-Tag: noindex`, the robots meta tag and `no-store`.
+- `inc/ce-error-page-html.php` builds the pages in the site's deep purple, coral and cyan, Playfair Display and DM Sans, the CE mark inline, with a light version. Inline style and no WordPress function, so the pages work with the theme half uploaded or the database down.
+- `errors/403.html`, `500.html`, `502.html`, `503.html` for `ErrorDocument`, built by `bin/build-error-pages.php`.
+- `tests/error-pages-test.php`.
+
+### Fixed
+- A direct request to a theme file such as `index.php` ran it outside WordPress and stopped with "Call to undefined function get_header()". Every template and include file without one now opens with `defined( 'ABSPATH' ) || exit;` (22 files). The drop-ins carry no such guard.
+- The 404 page sends `noindex, follow` (`ce_404_robots()` in `inc/ce-404.php`).
+
+---
+
 ## [2.17.0] - November 2026
 
 A login screen in the site's design. No feature removed and no public identifier renamed.

@@ -6,4 +6,7 @@
  *
  * @since 1.8.1
  */
+
+defined( 'ABSPATH' ) || exit;
+
 include get_stylesheet_directory() . '/archive-ce_article.php';

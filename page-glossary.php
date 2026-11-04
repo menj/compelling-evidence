@@ -3,6 +3,9 @@
  * Template Name: Glossary
  * Description: Alphabetical glossary of Islamic terms used throughout the site
  */
+
+defined( 'ABSPATH' ) || exit;
+
 get_header();
 
 $terms = function_exists( 'ce_get_glossary_terms' ) ? ce_get_glossary_terms() : [];

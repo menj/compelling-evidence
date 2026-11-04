@@ -6,7 +6,7 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.17.0
+Version: 2.18.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Template: twentytwentyfive
@@ -121,6 +121,12 @@ CE Theme, Copyright 2026 MENJ. Licensed GPLv2 or later.
 * Article figures are not bundled. inc/articles/media.json lists each with its source page, creator and licence, and the credit prints under the figure.
 
 == Changelog ==
+
+= 2.18.0 - November 2026 =
+* Error pages in the site's design for an update (503), a PHP fault (500) and a lost database (503). Install them from CE Theme Options > Tools & Sync, which shows each as installed, outdated or someone else's file.
+* Static 403, 500, 502 and 503 pages for the web server, with the .htaccess lines on the same tab.
+* The 404 page tells search engines not to index it.
+* Every template and include file stops when it is opened directly, so a request to a theme file can no longer cause a PHP error.
 
 = 2.17.0 - November 2026 =
 

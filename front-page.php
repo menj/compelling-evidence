@@ -1,3 +1,4 @@
+<?php defined( 'ABSPATH' ) || exit; ?>
 <?php get_header(); ?>
 
 <main id="main" tabindex="-1" role="main" aria-label="<?php esc_attr_e( 'Main content', 'compelling-evidence' ); ?>">

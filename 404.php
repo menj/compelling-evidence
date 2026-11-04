@@ -7,6 +7,9 @@
  * "Hear another excuse" cycles them (assets/js/ce-404.js); without
  * JavaScript the same link reloads the page with ?excuse=N.
  */
+
+defined( 'ABSPATH' ) || exit;
+
 get_header();
 
 $ce_excuses = ce_404_excuses_resolved();
