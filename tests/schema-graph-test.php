@@ -188,7 +188,9 @@ function check_graph( array $nodes, string $label ): array {
 	$aid    = 'https://ce.test/#author';
 	$people = array_values( array_filter( $back['@graph'], static function ( $n ) { return in_array( 'Person', (array) ( $n['@type'] ?? [] ), true ) && ( $n['name'] ?? '' ) === 'Mohd Elfie Nieshaem Juferi'; } ) );
 	$owner  = array_values( array_filter( $back['@graph'], static function ( $n ) use ( $aid ) { return ( $n['@id'] ?? '' ) === $aid; } ) );
-	if ( 1 !== count( $owner ) ) bad( $label, count( $owner ) . ' author Person nodes' );
+	$others = array_filter( $back['@graph'], static function ( $n ) use ( $aid ) { return in_array( 'Person', (array) ( $n['@type'] ?? [] ), true ) && ( $n['@id'] ?? '' ) !== $aid; } );
+	if ( $others ) bad( $label, count( $others ) . ' other top-level Person nodes' );
+	if ( 1 !== count( $owner ) || ! in_array( 'Person', (array) ( $owner[0]['@type'] ?? [] ), true ) ) bad( $label, count( $owner ) . ' author Person nodes' );
 	elseif ( 1 !== count( $people ) || 'https://menj.bio' !== ( $owner[0]['url'] ?? '' ) || ! in_array( 'https://menj.bio', (array) ( $owner[0]['sameAs'] ?? [] ), true ) ) bad( $label, 'author Person has the wrong name, url or sameAs' );
 	walk( $back['@graph'], static function ( $o ) use ( $aid, $label ) {
 		if ( isset( $o['author'] ) && ( ! is_array( $o['author'] ) || [ '@id' => $aid ] !== $o['author'] ) ) bad( $label, 'an author does not point to #author: ' . json_encode( $o['author'] ) );
@@ -255,6 +257,7 @@ $GLOBALS['ctx']['options'] = [ 'ce_author_name' => 'A. Writer', 'ce_author_url' 
 $g = ce_schema_nodes(); expect_types( check_graph( $g, 'author' ), [ 'Person' ], 'author' );
 if ( ( find( $g, 'Article' )['author']['@id'] ?? '' ) !== 'https://ce.test/#author' ) bad( 'author', 'Article author is not the Person' );
 if ( ( find( $g, 'Person' )['name'] ?? '' ) !== 'Mohd Elfie Nieshaem Juferi' ) bad( 'author', 'the Author name option reached the schema' );
+if ( [ 'https://a.test/', 'https://menj.bio' ] !== ce_schema_with_menj( [ 'https://a.test/', '', '  ' ] ) ) bad( 'author', 'empty sameAs entries kept' );
 if ( ( find( $g, 'Person' )['sameAs'] ?? [] ) !== [ 'https://ce.test/about/', 'https://menj.bio' ] ) bad( 'author', 'Author URL then https://menj.bio expected in sameAs' );
 
 // Hadith grading only where the reference states it.

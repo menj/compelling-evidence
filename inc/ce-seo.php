@@ -56,7 +56,7 @@ function ce_get_author_person_schema(): ?array {
 
     $same_as = ce_get_author_same_as_urls();
     $url     = trim( (string) get_option( 'ce_author_url', '' ) );
-    if ( '' !== $url ) {
+    if ( '' !== $url && '' !== esc_url_raw( $url ) ) {
         array_unshift( $same_as, esc_url_raw( $url ) );
     }
     $person['sameAs'] = ce_schema_with_menj( array_values( array_unique( $same_as ) ) );

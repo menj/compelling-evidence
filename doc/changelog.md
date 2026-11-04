@@ -17,7 +17,8 @@ No feature removed and no public identifier renamed.
 - The structured data names one author: the Person `#author` is "Mohd Elfie Nieshaem Juferi", with `url` `https://menj.bio`, whatever the Author & Identity tab holds (`ce_get_author_person_schema()`). The Author Profile URL and profile links stay in its `sameAs`, then `https://menj.bio`. Job title, bio and `worksFor` are kept. Every Article, Answer, journey Article and page node points to it by `@id`; before, journey Articles and question Answers named the Organization. The Organization's `founder` is a reference to it, and its `sameAs`, where it has one, ends with `https://menj.bio`.
 - `ce_schema_one_author()` (`inc/ce-schema.php`) runs on the theme's graph, the stand-alone journey graph and, through `rank_math/json_ld`, Rank Math's. It repoints every `author`, drops the Person Rank Math made for the WordPress user (its references repointed, its `sameAs` kept), and adds the author Person where missing. The publisher stays the site.
 - The visible byline still reads the Author Name field. Its help text, and the Author Profile URL's, say what the structured data now does.
-- `tests/schema-graph-test.php` checks all 189 graphs: one author Person with that name, url and sameAs, every `author` pointing to it, and an author on every article and page node.
+- TechArticle and Report nodes get the author reference like other articles, and an Author Profile URL that `esc_url_raw()` empties is left out of `sameAs`, as is any empty entry.
+- `tests/schema-graph-test.php` checks all 189 graphs: one author Person with that name, url and sameAs, every `author` pointing to it, and an author on every article and page node, with no other top-level Person.
 
 ---
 

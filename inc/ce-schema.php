@@ -65,7 +65,7 @@ function ce_schema_author_id(): string {
  * @return string[]
  */
 function ce_schema_with_menj( array $same_as ): array {
-    $same_as = array_values( array_filter( $same_as, 'is_string' ) );
+    $same_as = array_values( array_filter( $same_as, static function ( $u ) { return is_string( $u ) && '' !== trim( $u ); } ) );
     if ( ! in_array( 'https://menj.bio', $same_as, true ) ) {
         $same_as[] = 'https://menj.bio';
     }
@@ -78,7 +78,7 @@ function ce_schema_with_menj( array $same_as ): array {
  * @return string[]
  */
 function ce_schema_authored_types(): array {
-    return [ 'Article', 'BlogPosting', 'NewsArticle', 'ScholarlyArticle', 'WebPage', 'AboutPage', 'ProfilePage', 'FAQPage', 'CollectionPage', 'ContactPage', 'ItemPage', 'SearchResultsPage', 'QAPage' ];
+    return [ 'Article', 'BlogPosting', 'NewsArticle', 'ScholarlyArticle', 'TechArticle', 'Report', 'WebPage', 'AboutPage', 'ProfilePage', 'FAQPage', 'CollectionPage', 'ContactPage', 'ItemPage', 'SearchResultsPage', 'QAPage' ];
 }
 
 /**
