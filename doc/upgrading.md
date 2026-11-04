@@ -6,6 +6,12 @@ Only paths explicitly identified in development are documented here.
 
 ---
 
+## Upgrading to v2.18.2 from v2.18.1
+
+Replace the theme files and open any admin page: the version change runs the article sync, which carries the new sections of the article on salvation by works.
+
+---
+
 ## Upgrading to v2.18.1 from v2.18.0
 
 Replace the theme files and open any admin page: the version change runs the article sync, which carries the new heading of the Islamic dilemma box. Nothing else to run.

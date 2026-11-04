@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.18.2] - November 2026
+
+No feature removed and no public identifier renamed.
+
+### Added
+- `does-islam-teach-salvation-by-works` (`inc/articles/batch-007.json`) gains three sections before its closing summary.
+  - "Muhammad is in hell": ask for the source. Quran 19:71 to 72, with *wurūd* read as the crossing of the *ṣirāṭ* in al-Ṭabarī and Ibn Kathīr (the report of Ibn Masʿūd), and the texts that say the opposite: Muslim 2278, Muslim 196, Bukhārī 4712.
+  - Uthmān ibn Maẓʿūn and "how do you know?": Bukhārī 3929 (and 1243) read as a rebuke to swearing to another person's fate; 46:9 is Meccan and 48:1 to 2 came after al-Ḥudaybiyah; *al-maqām al-maḥmūd* (17:79).
+  - Assurance: hope with fear (*khawf* and *rajāʾ*), Quran 39:53, Muslim 26, Bukhārī 7510. It concedes that Sunni Islam gives no personal guarantee of the Protestant kind, and sets beside it Philippians 2:12, 1 Corinthians 9:27, Matthew 7:22 to 23 and the Council of Trent, session 6, canon 16.
+- The batch checksum in `inc/articles/manifest.json` is updated; the version bump runs the article sync on the next admin page load.
+
+---
+
 ## [2.18.1] - November 2026
 
 No feature removed and no public identifier renamed.
