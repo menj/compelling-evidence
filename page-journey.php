@@ -2,6 +2,9 @@
 /**
  * Template Name: Persona Journey
  */
+
+defined( 'ABSPATH' ) || exit;
+
 $journey_key = get_post_meta( get_the_ID(), '_ce_journey_key', true );
 if ( empty($journey_key) ) {
     $journey_key = sanitize_key( basename( get_permalink() ) );

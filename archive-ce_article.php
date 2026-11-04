@@ -5,6 +5,9 @@
  *
  * @since 1.8.1
  */
+
+defined( 'ABSPATH' ) || exit;
+
 get_header();
 
 // Canonical topic display order — mirrors the intellectual journey.

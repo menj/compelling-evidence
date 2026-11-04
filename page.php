@@ -1,3 +1,4 @@
+<?php defined( 'ABSPATH' ) || exit; ?>
 <?php get_header(); ?>
 
 <main class="ce-page" id="main" tabindex="-1">

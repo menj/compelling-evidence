@@ -3,6 +3,9 @@
  * Template Name: Q&A Archive
  * Description: Public display of answered/published questions
  */
+
+defined( 'ABSPATH' ) || exit;
+
 get_header(); ?>
 
 <main class="ce-page ce-qa-archive" id="main" tabindex="-1">

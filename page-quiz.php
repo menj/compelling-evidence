@@ -2,6 +2,9 @@
 /**
  * Template Name: Persona Quiz
  */
+
+defined( 'ABSPATH' ) || exit;
+
 $quiz_file = ce_get_quiz_file();
 if ( ! file_exists( $quiz_file ) ) {
     status_header(404);

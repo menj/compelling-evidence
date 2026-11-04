@@ -4,6 +4,9 @@
  * Description: Frequently Asked Questions with accordion UI. Its FAQPage node is
  * built in ce_schema_faq_node() (inc/ce-schema.php) and printed in the theme graph.
  */
+
+defined( 'ABSPATH' ) || exit;
+
 get_header();
 
 // The questions and answers live in ce_faq_sections() (inc/ce-schema.php),

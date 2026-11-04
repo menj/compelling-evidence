@@ -4,6 +4,9 @@
  * Description: 12 personalised paths — no persona labels shown publicly.
  *              The quiz reveals which path belongs to the reader.
  */
+
+defined( 'ABSPATH' ) || exit;
+
 get_header();
 ?>
 

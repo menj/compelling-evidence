@@ -4,6 +4,9 @@
  * Description: Personal journey progress dashboard — driven by localStorage
  *              and WP user meta (if logged in). No data sent without user action.
  */
+
+defined( 'ABSPATH' ) || exit;
+
 get_header();
 ?>
 

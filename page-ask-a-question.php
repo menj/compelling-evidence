@@ -3,6 +3,9 @@
  * Template Name: Ask a Question
  * Description: Dedicated page for question submissions
  */
+
+defined( 'ABSPATH' ) || exit;
+
 get_header(); ?>
 
 <main class="ce-page ce-ask" id="main" tabindex="-1">

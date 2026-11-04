@@ -1,6 +1,6 @@
 # CE Theme (Compelling Evidence) — WordPress Theme
 
-**Version:** 2.17.0 | **Parent theme:** Twenty Twenty-Five (tested with 1.5) | **Requires:** WordPress 6.7+ (tested to 7.1), PHP 8.0 to 8.4  
+**Version:** 2.18.0 | **Parent theme:** Twenty Twenty-Five (tested with 1.5) | **Requires:** WordPress 6.7+ (tested to 7.1), PHP 8.0 to 8.4  
 **Site:** https://compelling-evidence.com | **Repository:** https://github.com/menj/compelling-evidence | **Author:** [MENJ](https://menj.blog) | **Text domain:** `compelling-evidence`
 
 An Islamic apologetics child theme delivering personalised argumentation journeys across 14 persona paths, 131 articles across 11 investigative categories, a weighted intake quiz, a gamified progress system, a privacy-first analytics layer, and a full engagement suite. Built for a single deployment — not a general-purpose theme.
@@ -264,6 +264,27 @@ On front page only, two Arabic fonts are preloaded in `header.php`:
 All 7 are overridable via Theme Options > Colors (injected as inline CSS at `wp_head`).
 
 ---
+
+## Error pages
+
+WordPress reads three files from `wp-content` when it cannot build a page. CE Theme Options > Tools & Sync writes them with **Install error pages** and shows each as not installed, installed, outdated or another file left alone. A file without the marker `Compelling Evidence error page drop-in` is never overwritten.
+
+| File | Shown when | Status sent |
+|---|---|---|
+| `maintenance.php` | WordPress is updating | 503, `Retry-After: 600` |
+| `php-error.php` | a fatal PHP error | 500 |
+| `db-error.php` | the database cannot be reached | 503, `Retry-After: 600` |
+
+Static pages in `errors/` cover the errors the web server answers before WordPress starts. Add to `.htaccess`, with the folder name of the theme:
+
+```
+ErrorDocument 403 /wp-content/themes/compelling-evidence/errors/403.html
+ErrorDocument 500 /wp-content/themes/compelling-evidence/errors/500.html
+ErrorDocument 502 /wp-content/themes/compelling-evidence/errors/502.html
+ErrorDocument 503 /wp-content/themes/compelling-evidence/errors/503.html
+```
+
+Rebuild them with `php bin/build-error-pages.php` after changing `inc/ce-error-page-html.php`.
 
 ## Theme Options Reference
 

@@ -4,6 +4,9 @@
  */
 
 // ── ENGAGEMENT SYSTEM (voting, resonance, share, widget) ─────────────────────
+
+defined( 'ABSPATH' ) || exit;
+
 require_once get_stylesheet_directory() . '/inc/ce-db.php';
 require_once get_stylesheet_directory() . '/inc/ce-gone.php';
 
@@ -50,6 +53,7 @@ require_once get_stylesheet_directory() . '/inc/ce-plugin-compat.php';
 require_once get_stylesheet_directory() . '/inc/ce-login.php';
 require_once get_stylesheet_directory() . '/inc/ce-rankmath.php';
 require_once get_stylesheet_directory() . '/inc/ce-theme-options.php';
+require_once get_stylesheet_directory() . '/inc/ce-error-pages.php';
 
 // ── ARTICLE LOADER (secure JSON-based article loading with checksum verification)
 require_once get_stylesheet_directory() . '/inc/class-ce-article-loader.php';

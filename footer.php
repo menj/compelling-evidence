@@ -1,3 +1,4 @@
+<?php defined( 'ABSPATH' ) || exit; ?>
 <footer class="ce-footer">
   <div class="footer-inner">
 

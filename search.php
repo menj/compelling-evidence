@@ -4,6 +4,9 @@
  * Handles /?s= queries — shows ce_article + post results
  * with reading time, topic tags, and an empty-state CTA.
  */
+
+defined( 'ABSPATH' ) || exit;
+
 get_header();
 
 $search_term = get_search_query();
