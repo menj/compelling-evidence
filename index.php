@@ -31,7 +31,7 @@
         $topics = wp_get_post_terms(get_the_ID(), 'ce_topic');
         $topic_name = (!empty($topics) && !is_wp_error($topics)) ? $topics[0]->name : '';
       ?>
-      <article class="card reveal">
+      <article <?php post_class( 'card reveal' ); ?>>
         <?php if (has_post_thumbnail()) : ?>
         <a href="<?php the_permalink(); ?>" class="card-img-link" tabindex="-1" aria-hidden="true">
           <?php the_post_thumbnail('medium_large', ['class' => 'card-img', 'loading' => 'lazy', 'alt' => esc_attr( get_the_title() )]); ?>
@@ -68,7 +68,7 @@
 
   <?php else : ?>
     <div class="no-results">
-      <p>No articles found. <a href="<?php echo esc_url(home_url('/')); ?>">Go home</a></p>
+      <p><?php esc_html_e( 'No articles found.', 'compelling-evidence' ); ?> <a href="<?php echo esc_url(home_url('/')); ?>"><?php esc_html_e( 'Go home', 'compelling-evidence' ); ?></a></p>
     </div>
   <?php endif; ?>
 </main>

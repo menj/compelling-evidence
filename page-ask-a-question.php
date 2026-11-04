@@ -9,9 +9,9 @@ get_header(); ?>
 
   <header class="page-hero ask-hero">
     <div class="page-hero-inner">
-      <p class="section-label">Got something on your mind?</p>
-      <h1>Ask a Question</h1>
-      <p class="hero-sub">Can't find an answer on the site? Submit your question and we'll do our best to respond.</p>
+      <p class="section-label"><?php esc_html_e( 'Got something on your mind?', 'compelling-evidence' ); ?></p>
+      <h1><?php esc_html_e( 'Ask a Question', 'compelling-evidence' ); ?></h1>
+      <p class="hero-sub"><?php esc_html_e( 'Can\'t find an answer on the site? Submit your question and we\'ll do our best to respond.', 'compelling-evidence' ); ?></p>
     </div>
   </header>
 
@@ -33,12 +33,12 @@ get_header(); ?>
   <div class="ask-body">
 
     <div class="ask-form-wrap">
-      <?php if ( isset($_GET['sent']) && $_GET['sent'] === '1' ) : ?>
+      <?php if ( isset( $_GET['sent'] ) && '1' === $_GET['sent'] ) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only flag set by the form handler's redirect; nothing is saved. ?>
         <div class="ask-success">
           <svg width="48" height="48" fill="none" stroke="#d4a8ff" stroke-width="1.5" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-          <h2>Question received!</h2>
-          <p>Thank you for reaching out. We'll review your question and get back to you as soon as we can.</p>
-          <a href="<?php echo esc_url(home_url('/')); ?>" class="btn-primary">Back to Home</a>
+          <h2><?php esc_html_e( 'Question received!', 'compelling-evidence' ); ?></h2>
+          <p><?php esc_html_e( 'Thank you for reaching out. We\'ll review your question and get back to you as soon as we can.', 'compelling-evidence' ); ?></p>
+          <a href="<?php echo esc_url(home_url('/')); ?>" class="btn-primary"><?php esc_html_e( 'Back to Home', 'compelling-evidence' ); ?></a>
         </div>
 
       <?php else : ?>
@@ -59,7 +59,7 @@ get_header(); ?>
             $msg  = $errs[ $code ] ?? 'There was a problem submitting your question. Please try again.';
         ?>
           <div class="ask-error" role="alert" style="background:rgba(255,107,107,0.1);border:1px solid rgba(255,107,107,0.4);color:#ff8a8a;padding:1rem 1.2rem;border-radius:8px;margin-bottom:1.5rem;font-size:.95rem;">
-            <strong>Couldn't send your question:</strong> <?php echo esc_html( $msg ); ?>
+            <strong><?php esc_html_e( 'Couldn\'t send your question:', 'compelling-evidence' ); ?></strong> <?php echo esc_html( $msg ); ?>
           </div>
         <?php endif; ?>
 
@@ -70,23 +70,23 @@ get_header(); ?>
 
           <?php /* Honeypot — invisible to humans, attractive to bots. Never display, never read in a screen reader. */ ?>
           <div aria-hidden="true" style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden;">
-            <label for="ask-website">Website (leave blank)</label>
+            <label for="ask-website"><?php esc_html_e( 'Website (leave blank)', 'compelling-evidence' ); ?></label>
             <input type="text" id="ask-website" name="ask_website" tabindex="-1" autocomplete="off" value="">
           </div>
 
           <div class="form-row form-row--2">
             <div class="form-group">
-              <label for="ask-name">Your Name <span aria-hidden="true">*</span></label>
+              <label for="ask-name"><?php esc_html_e( 'Your Name', 'compelling-evidence' ); ?> <span aria-hidden="true">*</span></label>
               <input type="text" id="ask-name" name="ask_name" required placeholder="e.g. Ahmad" value="">
             </div>
             <div class="form-group">
-              <label for="ask-email">Email Address <span aria-hidden="true">*</span></label>
+              <label for="ask-email"><?php esc_html_e( 'Email Address', 'compelling-evidence' ); ?> <span aria-hidden="true">*</span></label>
               <input type="email" id="ask-email" name="ask_email" required placeholder="name@example.com" value="">
             </div>
           </div>
 
           <div class="form-group">
-            <label for="ask-topic">Topic / Category</label>
+            <label for="ask-topic"><?php esc_html_e( 'Topic / Category', 'compelling-evidence' ); ?></label>
             <select id="ask-topic" name="ask_topic">
               <option value="">— Select a topic (optional) —</option>
               <?php
@@ -96,19 +96,19 @@ get_header(); ?>
               ?>
                 <option value="<?php echo esc_attr($term->name); ?>"><?php echo esc_html($term->name); ?></option>
               <?php endforeach; endif; ?>
-              <option value="Other">Other</option>
+              <option value="Other"><?php esc_html_e( 'Other', 'compelling-evidence' ); ?></option>
             </select>
           </div>
 
           <div class="form-group">
-            <label for="ask-question">Your Question <span aria-hidden="true">*</span></label>
-            <textarea id="ask-question" name="ask_question" required rows="6" placeholder="Type your question here…"></textarea>
+            <label for="ask-question"><?php esc_html_e( 'Your Question', 'compelling-evidence' ); ?> <span aria-hidden="true">*</span></label>
+            <textarea id="ask-question" name="ask_question" required rows="6" placeholder="<?php esc_attr_e( 'Type your question here…', 'compelling-evidence' ); ?>"></textarea>
           </div>
 
           <div class="form-group form-group--check">
             <label class="checkbox-label">
               <input type="checkbox" name="ask_consent" required>
-              <span>I understand this question may be published on the site (anonymously) as an article.</span>
+              <span><?php esc_html_e( 'I understand this question may be published on the site (anonymously) as an article.', 'compelling-evidence' ); ?></span>
             </label>
           </div>
 
@@ -123,16 +123,16 @@ get_header(); ?>
 
     <aside class="ask-sidebar">
       <div class="sidebar-widget">
-        <h3 class="widget-title">Before you ask…</h3>
-        <p style="color:var(--muted);font-size:.9rem;line-height:1.7;margin-bottom:1rem;">Your question may already be answered. Try searching first:</p>
+        <h3 class="widget-title"><?php esc_html_e( 'Before you ask…', 'compelling-evidence' ); ?></h3>
+        <p style="color:var(--muted);font-size:.9rem;line-height:1.7;margin-bottom:1rem;"><?php esc_html_e( 'Your question may already be answered. Try searching first:', 'compelling-evidence' ); ?></p>
         <div class="ask-search">
-          <input type="search" id="ask-search-input" placeholder="Search the site…" aria-label="Search articles">
-          <a href="#" id="ask-search-go" class="btn-ghost" style="margin-top:.8rem;display:block;text-align:center;font-size:.85rem;">Search</a>
+          <input type="search" id="ask-search-input" placeholder="<?php esc_attr_e( 'Search the site…', 'compelling-evidence' ); ?>" aria-label="<?php esc_attr_e( 'Search articles', 'compelling-evidence' ); ?>">
+          <a href="#" id="ask-search-go" class="btn-ghost" style="margin-top:.8rem;display:block;text-align:center;font-size:.85rem;"><?php esc_html_e( 'Search', 'compelling-evidence' ); ?></a>
         </div>
       </div>
 
       <div class="sidebar-widget">
-        <h3 class="widget-title">Popular Questions</h3>
+        <h3 class="widget-title"><?php esc_html_e( 'Popular Questions', 'compelling-evidence' ); ?></h3>
         <?php
         $popular = get_posts([
           'post_type'      => ['ce_article', 'post'],

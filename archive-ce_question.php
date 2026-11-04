@@ -9,9 +9,9 @@ get_header(); ?>
 
   <header class="page-hero qa-hero">
     <div class="page-hero-inner">
-      <p class="section-label">Community</p>
-      <h1>Questions & Answers</h1>
-      <p class="hero-sub">Thoughtful responses to questions from our readers.</p>
+      <p class="section-label"><?php esc_html_e( 'Community', 'compelling-evidence' ); ?></p>
+      <h1><?php esc_html_e( 'Questions & Answers', 'compelling-evidence' ); ?></h1>
+      <p class="hero-sub"><?php esc_html_e( 'Thoughtful responses to questions from our readers.', 'compelling-evidence' ); ?></p>
     </div>
   </header>
 
@@ -73,16 +73,16 @@ get_header(); ?>
               $answer = wp_kses_post( apply_filters( 'the_content', $raw_answer ) );
           }
       ?>
-        <article class="qa-item">
+        <article <?php post_class( 'qa-item' ); ?>>
           <div class="qa-question">
-            <span class="qa-label">Question</span>
+            <span class="qa-label"><?php esc_html_e( 'Question', 'compelling-evidence' ); ?></span>
             <h2 class="qa-title"><?php the_title(); ?></h2>
             <?php if ( $topic ) : ?>
               <span class="qa-topic"><?php echo esc_html( $topic ); ?></span>
             <?php endif; ?>
           </div>
           <div class="qa-answer">
-            <span class="qa-label qa-label--answer">Answer</span>
+            <span class="qa-label qa-label--answer"><?php esc_html_e( 'Answer', 'compelling-evidence' ); ?></span>
             <div class="qa-content">
               <?php echo $answer; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_kses_post() applied above, or a static string. ?>
             </div>
@@ -116,16 +116,16 @@ get_header(); ?>
           <svg width="64" height="64" fill="none" stroke="#0cd4e0" stroke-width="1.5" viewBox="0 0 24 24">
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
           </svg>
-          <h3>No published answers yet</h3>
-          <p>We're working on responses to community questions. Check back soon!</p>
-          <a href="<?php echo esc_url( home_url( '/ask-a-question/' ) ); ?>" class="btn-primary">Ask Your Question</a>
+          <h3><?php esc_html_e( 'No published answers yet', 'compelling-evidence' ); ?></h3>
+          <p><?php esc_html_e( 'We\'re working on responses to community questions. Check back soon!', 'compelling-evidence' ); ?></p>
+          <a href="<?php echo esc_url( home_url( '/ask-a-question/' ) ); ?>" class="btn-primary"><?php esc_html_e( 'Ask Your Question', 'compelling-evidence' ); ?></a>
         </div>
       <?php endif; ?>
     </div>
 
     <aside class="qa-sidebar">
       <div class="sidebar-widget">
-        <h3 class="widget-title">Have a question?</h3>
+        <h3 class="widget-title"><?php esc_html_e( 'Have a question?', 'compelling-evidence' ); ?></h3>
         <p style="color:var(--muted);font-size:.9rem;line-height:1.7;margin-bottom:1rem;">
           Can't find an answer on the site? Submit your question and we'll do our best to respond.
         </p>
@@ -135,7 +135,7 @@ get_header(); ?>
       </div>
 
       <div class="sidebar-widget">
-        <h3 class="widget-title">Browse by Topic</h3>
+        <h3 class="widget-title"><?php esc_html_e( 'Browse by Topic', 'compelling-evidence' ); ?></h3>
         <ul class="qa-topic-list">
           <?php
           $canonical_topics = [

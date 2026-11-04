@@ -101,14 +101,14 @@ $reading_secs = $word_count * 0.3; // approx seconds for progress tracking
         <div class="sidebar-sticky-track">
           <div class="sidebar-sticky">
           <!-- Table of Contents (auto-populated by JS) -->
-          <nav class="sidebar-toc sidebar-widget" id="ce-toc" style="display:none;" aria-label="Table of contents">
-            <h3 class="widget-title">In this article</h3>
+          <nav class="sidebar-toc sidebar-widget" id="ce-toc" style="display:none;" aria-label="<?php esc_attr_e( 'Table of contents', 'compelling-evidence' ); ?>">
+            <h3 class="widget-title"><?php esc_html_e( 'In this article', 'compelling-evidence' ); ?></h3>
             <ol class="toc-list" id="ce-toc-list"></ol>
           </nav>
 
           <!-- Sidebar reading progress -->
-          <div class="sidebar-reading-progress" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="srp">
-            <span class="srp-label">Reading progress</span>
+          <div class="sidebar-reading-progress" role="progressbar" aria-label="<?php esc_attr_e( 'Reading progress', 'compelling-evidence' ); ?>" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="srp">
+            <span class="srp-label"><?php esc_html_e( 'Reading progress', 'compelling-evidence' ); ?></span>
             <div class="srp-track">
               <div class="srp-fill" id="srp-fill"></div>
             </div>
@@ -123,7 +123,7 @@ $reading_secs = $word_count * 0.3; // approx seconds for progress tracking
 
         <!-- ── ARTICLE → JOURNEY RETURN WIDGET ──────────────────────── -->
         <div class="sidebar-widget" id="ce-journey-return-widget" style="display:none;">
-          <h3 class="widget-title" id="ce-journey-return-title">Your Journey</h3>
+          <h3 class="widget-title" id="ce-journey-return-title"><?php esc_html_e( 'Your Journey', 'compelling-evidence' ); ?></h3>
           <div id="ce-journey-return-body"></div>
         </div>
 

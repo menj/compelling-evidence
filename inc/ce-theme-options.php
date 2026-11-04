@@ -74,7 +74,7 @@ function ce_options_register() {
     register_setting( 'ce_options_links', 'ce_contextual_links_excluded', [ 'default' => '' ] );
 
     // ── Analytics ──
-    register_setting( 'ce_options_analytics', 'ce_analytics_enabled', [ 'default' => '1' ] );
+    register_setting( 'ce_options_analytics', 'ce_analytics_enabled', [ 'default' => '0' ] );
     register_setting( 'ce_options_analytics', 'ce_analytics_retention_days', [ 'default' => '90' ] );
     register_setting( 'ce_options_analytics', 'ce_analytics_track_scroll', [ 'default' => '1' ] );
     register_setting( 'ce_options_analytics', 'ce_analytics_track_search', [ 'default' => '1' ] );
@@ -100,8 +100,8 @@ add_action( 'admin_init', 'ce_options_register' );
 
 function ce_options_menu() {
     add_theme_page(
-        'CE Theme Options',
-        'CE Theme Options',
+        __( 'CE Theme Options', 'compelling-evidence' ),
+        __( 'CE Theme Options', 'compelling-evidence' ),
         'manage_options',
         'ce-theme-options',
         'ce_options_page'
@@ -111,43 +111,280 @@ add_action( 'admin_menu', 'ce_options_menu' );
 
 function ce_options_admin_assets( $hook ) {
     if ( 'appearance_page_ce-theme-options' !== $hook ) return;
-    wp_enqueue_style( 'ce-theme-options-admin', get_stylesheet_directory_uri() . '/assets/css/ce-theme-options-admin.css', [], wp_get_theme()->get( 'Version' ) );
+    $uri     = get_stylesheet_directory_uri();
+    $version = wp_get_theme()->get( 'Version' );
+    wp_enqueue_style( 'wp-color-picker' );
+    wp_enqueue_style( 'ce-theme-options-admin', $uri . '/assets/css/ce-theme-options-admin.css', [ 'wp-color-picker', 'dashicons' ], $version );
+    wp_enqueue_script( 'ce-theme-options-admin', $uri . '/assets/js/ce-theme-options-admin.js', [ 'jquery', 'wp-color-picker' ], $version, true );
 }
 add_action( 'admin_enqueue_scripts', 'ce_options_admin_assets' );
 
 
 /* ═══════════════════════════════════════════════════════════════════════
-   ADMIN PAGE — TABBED INTERFACE
+   TABS AND USAGE TEXT
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/**
+ * The tabs of the Theme Options page, in order, each with its usage text.
+ *
+ * @since 2.15.0 usage text added; labels translatable.
+ */
+function ce_theme_opts_tabs(): array {
+    return [
+        'general'     => [ 'label' => __( 'General', 'compelling-evidence' ),           'icon' => 'dashicons-admin-home',
+            'usage' => __( 'The words on the home page hero and the footer line. The Arabic verse, its ayah number, translation and reference print together above the search box; change all four when you change the verse. Save, then reload the home page.', 'compelling-evidence' ) ],
+        'identity'    => [ 'label' => __( 'Author & Identity', 'compelling-evidence' ), 'icon' => 'dashicons-businessperson',
+            'usage' => __( 'Who wrote the site, for the byline and for the Person and Organization schema. Fill the author name first: with it empty, articles carry Organization authorship only. Profile and social fields take full URLs; the site Twitter field takes the handle with its @.', 'compelling-evidence' ) ],
+        'colors'      => [ 'label' => __( 'Colors', 'compelling-evidence' ),            'icon' => 'dashicons-art',
+            'usage' => __( 'Seven brand colours, printed as CSS custom properties in the page head. A colour left at its default prints nothing. Pick a colour or type a hex value; Default inside each picker puts the shipped colour back. Check text contrast on the dark background after any change.', 'compelling-evidence' ) ],
+        'typography'  => [ 'label' => __( 'Typography', 'compelling-evidence' ),        'icon' => 'dashicons-editor-textcolor',
+            'usage' => __( 'Click a card to choose the face for headings, for reading text and for small labels. Every face is self-hosted, so no font is fetched from another server. The size scale changes body text only; headings and controls keep their sizes.', 'compelling-evidence' ) ],
+        'links'       => [ 'label' => __( 'Links & Tooltips', 'compelling-evidence' ),  'icon' => 'dashicons-admin-links',
+            'usage' => __( 'Automatic links inside article and answer text: crosslinks to this site, links to the sister sites, murtadd.org counterparts and glossary tooltips. Drag a slider to set a limit; the number beside it is the value that will be saved. Links never go into headings, quotations, Quran or hadith blocks.', 'compelling-evidence' ) ],
+        'media'       => [ 'label' => __( 'Media', 'compelling-evidence' ),             'icon' => 'dashicons-format-image',
+            'usage' => __( 'The lightbox, automatic lead images from Pexels and the import of registered article images into the Media Library. Automatic images stay off until you switch them on and add a Pexels key. Use the buttons below the settings to import or place images now.', 'compelling-evidence' ) ],
+        'quiz'        => [ 'label' => __( 'Quiz & Journeys', 'compelling-evidence' ),   'icon' => 'dashicons-forms',
+            'usage' => __( 'Turn the persona quiz on or off, set how many answers a reader may pick per question, and lay out the journeys overview. With the quiz off, /quiz/ redirects to /journeys/. The scoring and the 14 journeys themselves are not changed here.', 'compelling-evidence' ) ],
+        'engagement'  => [ 'label' => __( 'Engagement', 'compelling-evidence' ),        'icon' => 'dashicons-thumbs-up',
+            'usage' => __( 'Reader feedback under each article (votes and resonance buttons), the home page search and the archive page size. Votes and resonance are stored per article with a hashed address; no account is needed.', 'compelling-evidence' ) ],
+        'analytics'   => [ 'label' => __( 'Analytics', 'compelling-evidence' ),         'icon' => 'dashicons-chart-area',
+            'usage' => __( 'First-party analytics is off by default. Switch it on to record page views, quiz and journey progress, article reads and searches in this database; the report is under CE Analytics. Rows older than the retention period are deleted every day, whether tracking is on or off.', 'compelling-evidence' ) ],
+        'performance' => [ 'label' => __( 'Performance', 'compelling-evidence' ),       'icon' => 'dashicons-performance',
+            'usage' => __( 'Front-end effects, font preloading and the 410 Gone answer for retired paths. List one path prefix per line, each starting with a slash; never list a prefix that real content uses.', 'compelling-evidence' ) ],
+        'security'    => [ 'label' => __( 'Security', 'compelling-evidence' ),          'icon' => 'dashicons-shield',
+            'usage' => __( 'Switches that close the remote-publishing routes spam tools use, the spam gate for new content, and the tools below them: scan and trash spam, revoke application passwords, end sessions and read the security log. The block editor is not affected.', 'compelling-evidence' ) ],
+        'tools'       => [ 'label' => __( 'Tools & Sync', 'compelling-evidence' ),      'icon' => 'dashicons-admin-tools',
+            'usage' => __( 'Articles live in JSON batch files in the theme and sync to the database when the theme version changes. Run the sync by hand after editing a batch file, and use the diagnostics to check the manifest and checksums when articles look empty.', 'compelling-evidence' ) ],
+    ];
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   SANITISING
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/**
+ * Sanitise one submitted value for its field definition.
+ *
+ * @since 2.15.0
+ *
+ * @param array $field Field definition from ce_get_tab_fields().
+ * @param mixed $raw   Unslashed raw value, or null when absent.
+ * @return string
+ */
+function ce_theme_opts_sanitize( array $field, $raw ): string {
+    $type    = $field['type'];
+    $default = (string) ( $field['default'] ?? '' );
+    if ( 'checkbox' === $type ) {
+        return null !== $raw ? '1' : '0';
+    }
+    $value = is_scalar( $raw ) ? (string) $raw : '';
+    switch ( $type ) {
+        case 'color':
+            return sanitize_hex_color( $value ) ?: $default;
+        case 'number':
+        case 'range':
+            $n = absint( $value );
+            if ( isset( $field['min'] ) ) $n = max( (int) $field['min'], $n );
+            if ( isset( $field['max'] ) ) $n = min( (int) $field['max'], $n );
+            return (string) $n;
+        case 'select':
+        case 'choice':
+            $value = sanitize_text_field( $value );
+            return array_key_exists( $value, (array) ( $field['options'] ?? [] ) ) ? $value : $default;
+        case 'textarea':
+            return 'ce_contextual_links_extra' === $field['id'] && function_exists( 'ce_ctx_sanitize_extra_lines' )
+                ? ce_ctx_sanitize_extra_lines( $value )
+                : sanitize_textarea_field( $value );
+        default:
+            return sanitize_text_field( $value );
+    }
+}
+
+/**
+ * Save the fields of one tab from $_POST. The caller has checked the
+ * capability and the nonce.
+ *
+ * @since 2.15.0
+ */
+function ce_theme_opts_save_tab( string $tab ): void {
+    foreach ( ce_get_tab_fields( $tab ) as $field ) {
+        if ( 'info' === $field['type'] ) continue;
+        $key = $field['id'];
+        $raw = isset( $_POST[ $key ] ) ? wp_unslash( $_POST[ $key ] ) : null; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.NonceVerification.Missing -- sanitised by ce_theme_opts_sanitize(); nonce checked by the caller.
+        update_option( $key, ce_theme_opts_sanitize( $field, $raw ) );
+    }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   FIELD RENDERING
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/**
+ * Small sample shown inside a visual selector card, keyed by field.
+ */
+function ce_theme_opts_choice_preview( string $field_id, string $value ): string {
+    switch ( $field_id ) {
+        case 'ce_heading_font':
+        case 'ce_reading_font':
+        case 'ce_accent_font':
+            return '<span class="ce-theme-opts-choice__sample ce-theme-opts-font--' . esc_attr( $value ) . '">' . esc_html__( 'Evidence, then belief', 'compelling-evidence' ) . '</span>';
+        case 'ce_font_scale':
+            return '<span class="ce-theme-opts-choice__sample ce-theme-opts-scale--' . esc_attr( str_replace( '.', '', $value ) ) . '">Aa</span>';
+        case 'ce_crosslink_style':
+            return '<span class="ce-theme-opts-choice__sample">' . esc_html__( 'Read the', 'compelling-evidence' ) . ' <span class="ce-theme-opts-link ce-theme-opts-link--' . esc_attr( $value ) . '">' . esc_html__( 'linked phrase', 'compelling-evidence' ) . '</span></span>';
+        case 'ce_tooltip_style':
+            return '<span class="ce-theme-opts-choice__sample">' . esc_html__( 'The word', 'compelling-evidence' ) . ' <span class="ce-theme-opts-term ce-theme-opts-term--' . esc_attr( $value ) . '">tawhid</span></span>';
+        case 'ce_journeys_per_row':
+            return '<span class="ce-theme-opts-choice__sample ce-theme-opts-grid" aria-hidden="true">' . str_repeat( '<i></i>', (int) $value ) . '</span>';
+        case 'ce_quiz_max_selections':
+            return '<span class="ce-theme-opts-choice__sample ce-theme-opts-dots" aria-hidden="true">' . str_repeat( '<i></i>', (int) $value ) . '</span>';
+        case 'ce_tooltip_trigger':
+            return '<span class="dashicons ' . ( 'hover' === $value ? 'dashicons-visibility' : 'dashicons-admin-generic' ) . '" aria-hidden="true"></span>';
+    }
+    return '';
+}
+
+/**
+ * Print one field row: label and description on the left, control on the right.
+ */
+function ce_theme_opts_render_field( string $tab, array $field ): void {
+    $key   = $field['id'];
+    $id    = 'ce-opt-' . $tab . '-' . str_replace( '_', '-', $key );
+    $value = (string) get_option( $key, $field['default'] ?? '' );
+    $desc  = $field['desc'] ?? '';
+    $did   = $desc ? $id . '-desc' : '';
+    $aria  = $did ? ' aria-describedby="' . esc_attr( $did ) . '"' : '';
+    $type  = $field['type'];
+
+    if ( 'info' === $type ) {
+        echo '<div class="ce-theme-opts-callout"><strong>' . esc_html( $field['label'] ) . '</strong></div>';
+        return;
+    }
+
+    $is_group = 'choice' === $type;
+    echo '<div class="ce-theme-opts-row ce-theme-opts-row--' . esc_attr( $type ) . '">';
+
+    // Label column.
+    echo '<div class="ce-theme-opts-row__label">';
+    if ( $is_group ) {
+        echo '<span class="ce-theme-opts-label" id="' . esc_attr( $id . '-label' ) . '">' . esc_html( $field['label'] ) . '</span>';
+    } else {
+        echo '<label class="ce-theme-opts-label" for="' . esc_attr( $id ) . '">' . esc_html( $field['label'] ) . '</label>';
+    }
+    if ( $desc ) {
+        echo '<p class="ce-theme-opts-desc" id="' . esc_attr( $did ) . '">' . esc_html( $desc ) . '</p>';
+    }
+    echo '</div>';
+
+    // Control column.
+    echo '<div class="ce-theme-opts-row__control">';
+    switch ( $type ) {
+        case 'checkbox':
+            echo '<span class="ce-theme-opts-switch">';
+            echo '<input type="checkbox" role="switch" class="ce-theme-opts-switch__input" id="' . esc_attr( $id ) . '" name="' . esc_attr( $key ) . '" value="1"' . checked( $value, '1', false ) . $aria . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- checked() returns a fixed attribute; $aria is built from esc_attr().
+            echo '<span class="ce-theme-opts-switch__track" aria-hidden="true"><span class="ce-theme-opts-switch__thumb"></span></span>';
+            echo '<span class="ce-theme-opts-switch__state" aria-hidden="true"><span class="is-on">' . esc_html__( 'On', 'compelling-evidence' ) . '</span><span class="is-off">' . esc_html__( 'Off', 'compelling-evidence' ) . '</span></span>';
+            echo '</span>';
+            break;
+
+        case 'range':
+            $min  = (int) ( $field['min'] ?? 0 );
+            $max  = (int) ( $field['max'] ?? 100 );
+            $step = (int) ( $field['step'] ?? 1 );
+            echo '<span class="ce-theme-opts-range">';
+            echo '<input type="range" id="' . esc_attr( $id ) . '" name="' . esc_attr( $key ) . '" min="' . esc_attr( (string) $min ) . '" max="' . esc_attr( (string) $max ) . '" step="' . esc_attr( (string) max( 1, $step ) ) . '" value="' . esc_attr( $value ) . '"' . $aria . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $aria is built from esc_attr().
+            echo '<output class="ce-theme-opts-range__value" id="' . esc_attr( $id . '-value' ) . '" for="' . esc_attr( $id ) . '" aria-live="polite">' . esc_html( $value ) . '</output>';
+            echo '<span class="ce-theme-opts-range__bounds" aria-hidden="true"><span>' . esc_html( (string) $min ) . '</span><span>' . esc_html( (string) $max ) . '</span></span>';
+            echo '</span>';
+            break;
+
+        case 'color':
+            echo '<input type="text" class="ce-theme-opts-color" id="' . esc_attr( $id ) . '" name="' . esc_attr( $key ) . '" value="' . esc_attr( $value ) . '" data-default-color="' . esc_attr( (string) $field['default'] ) . '" maxlength="7" spellcheck="false"' . $aria . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $aria is built from esc_attr().
+            break;
+
+        case 'choice':
+            echo '<div class="ce-theme-opts-choices" role="radiogroup" aria-labelledby="' . esc_attr( $id . '-label' ) . '"' . $aria . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $aria is built from esc_attr().
+            $i = 0;
+            foreach ( (array) $field['options'] as $opt_val => $opt_label ) {
+                $opt_id = $id . '-' . $i++;
+                echo '<label class="ce-theme-opts-choice" for="' . esc_attr( $opt_id ) . '">';
+                echo '<input type="radio" class="ce-theme-opts-choice__input" id="' . esc_attr( $opt_id ) . '" name="' . esc_attr( $key ) . '" value="' . esc_attr( (string) $opt_val ) . '"' . checked( $value, (string) $opt_val, false ) . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- checked() returns a fixed attribute.
+                echo '<span class="ce-theme-opts-choice__card">';
+                echo ce_theme_opts_choice_preview( $key, (string) $opt_val ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- every part is escaped inside the function.
+                echo '<span class="ce-theme-opts-choice__label">' . esc_html( $opt_label ) . '</span>';
+                echo '</span></label>';
+            }
+            echo '</div>';
+            break;
+
+        case 'select':
+            echo '<select id="' . esc_attr( $id ) . '" name="' . esc_attr( $key ) . '"' . $aria . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $aria is built from esc_attr().
+            foreach ( (array) $field['options'] as $opt_val => $opt_label ) {
+                echo '<option value="' . esc_attr( (string) $opt_val ) . '"' . selected( $value, (string) $opt_val, false ) . '>' . esc_html( $opt_label ) . '</option>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- selected() returns a fixed attribute.
+            }
+            echo '</select>';
+            break;
+
+        case 'textarea':
+            echo '<textarea id="' . esc_attr( $id ) . '" name="' . esc_attr( $key ) . '" rows="5"' . $aria . '>' . esc_textarea( $value ) . '</textarea>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $aria is built from esc_attr().
+            break;
+
+        default: // text, password, number
+            $input_type = in_array( $type, [ 'password', 'number' ], true ) ? $type : 'text';
+            $extra = '';
+            if ( 'password' === $type ) $extra .= ' autocomplete="off" spellcheck="false"';
+            foreach ( [ 'min', 'max', 'step' ] as $attr ) {
+                if ( isset( $field[ $attr ] ) ) $extra .= ' ' . $attr . '="' . esc_attr( (string) $field[ $attr ] ) . '"';
+            }
+            echo '<input type="' . esc_attr( $input_type ) . '" id="' . esc_attr( $id ) . '" name="' . esc_attr( $key ) . '" value="' . esc_attr( $value ) . '"' . $extra . $aria . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $extra and $aria are built from esc_attr().
+    }
+    echo '</div></div>';
+}
+
+/**
+ * Print the fields of one tab as cards, one card per section.
+ */
+function ce_theme_opts_render_cards( string $tab ): void {
+    $fields = ce_get_tab_fields( $tab );
+    if ( ! $fields ) return;
+    $open      = false;
+    $is_colors = 'colors' === $tab;
+    foreach ( $fields as $field ) {
+        if ( ! $open || ( ! empty( $field['section'] ) ) ) {
+            if ( $open ) echo '</div></div>';
+            echo '<div class="ce-theme-opts-card' . ( $is_colors ? ' ce-theme-opts-card--colors' : '' ) . '">';
+            if ( ! empty( $field['section'] ) ) {
+                echo '<h2 class="ce-theme-opts-card__title">' . esc_html( $field['section'] ) . '</h2>';
+            }
+            echo '<div class="ce-theme-opts-card__body">';
+            $open = true;
+        }
+        ce_theme_opts_render_field( $tab, $field );
+    }
+    if ( $open ) echo '</div></div>';
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ADMIN PAGE
    ═══════════════════════════════════════════════════════════════════════ */
 
 function ce_options_page() {
     if ( ! current_user_can( 'manage_options' ) ) return;
 
-    $tabs = [
-        'general'     => [ 'label' => 'General',           'icon' => 'dashicons-admin-home' ],
-        'identity'    => [ 'label' => 'Author & Identity', 'icon' => 'dashicons-businessperson' ],
-        'colors'      => [ 'label' => 'Colors',            'icon' => 'dashicons-art' ],
-        'typography'  => [ 'label' => 'Typography',        'icon' => 'dashicons-editor-textcolor' ],
-        'links'       => [ 'label' => 'Links & Tooltips',  'icon' => 'dashicons-admin-links' ],
-        'media'       => [ 'label' => 'Media',             'icon' => 'dashicons-format-image' ],
-        'quiz'        => [ 'label' => 'Quiz & Journeys',   'icon' => 'dashicons-forms' ],
-        'engagement'  => [ 'label' => 'Engagement',        'icon' => 'dashicons-thumbs-up' ],
-        'analytics'   => [ 'label' => 'Analytics',         'icon' => 'dashicons-chart-area' ],
-        'performance' => [ 'label' => 'Performance',       'icon' => 'dashicons-performance' ],
-        'security'    => [ 'label' => 'Security',          'icon' => 'dashicons-shield' ],
-        'tools'       => [ 'label' => 'Tools & Sync',      'icon' => 'dashicons-admin-tools' ],
-    ];
-
-    $active = sanitize_key( $_GET['tab'] ?? 'general' );
+    $tabs   = ce_theme_opts_tabs();
+    $active = sanitize_key( wp_unslash( $_GET['tab'] ?? 'general' ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- tab selection only.
     if ( ! isset( $tabs[ $active ] ) ) $active = 'general';
 
-    // Handle save
-    $saved = false;
-    $sync_result = null;
+    // Handle save. Each tab posts to its own URL (…&tab=<key>) with its own nonce.
+    $saved        = false;
+    $sync_result  = null;
     $media_result = null;
-    
-    if ( isset( $_SERVER['REQUEST_METHOD'] ) && $_SERVER['REQUEST_METHOD'] === 'POST' && check_admin_referer( 'ce_options_' . $active ) ) {
-        // Handle manual sync trigger
+
+    if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['ce_options_tab'] ) ) {
+        check_admin_referer( 'ce_options_' . $active );
         if ( $active === 'tools' && isset( $_POST['ce_manual_sync'] ) ) {
             $sync_result = ce_manual_content_sync();
         } elseif ( $active === 'media' && isset( $_POST['ce_media_auto_action'] ) ) {
@@ -162,263 +399,183 @@ function ce_options_page() {
             } else {
                 delete_option( 'ce_media_import_errors' );
             }
-        } else {
-            $option_group = 'ce_options_' . $active;
-            // WordPress settings API handles the save via options.php,
-            // but we use a direct approach for our tabbed interface.
-            $fields = ce_get_tab_fields( $active );
-            foreach ( $fields as $field ) {
-                $key = $field['id'];
-                if ( $field['type'] === 'checkbox' ) {
-                    update_option( $key, isset( $_POST[ $key ] ) ? '1' : '0' );
-                } else {
-                    // wp_unslash() is required because WordPress magic-quotes
-                    // POST values; without it we double-escape on save.
-                    $value = isset( $_POST[ $key ] ) ? wp_unslash( $_POST[ $key ] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitised per field type immediately below; nonce checked by check_admin_referer().
-                    if ( $field['type'] === 'color' ) {
-                        $value = sanitize_hex_color( $value ) ?: $field['default'];
-                    } elseif ( $field['type'] === 'number' ) {
-                        $value = absint( $value );
-                    } elseif ( $field['type'] === 'textarea' ) {
-                        $value = 'ce_contextual_links_extra' === $key && function_exists( 'ce_ctx_sanitize_extra_lines' ) ? ce_ctx_sanitize_extra_lines( $value ) : sanitize_textarea_field( $value );
-                    } else {
-                        $value = sanitize_text_field( $value );
-                    }
-                    update_option( $key, $value );
-                }
-            }
+        } elseif ( 'tools' !== $active ) {
+            ce_theme_opts_save_tab( $active );
             $saved = true;
         }
     }
 
+    $theme   = wp_get_theme();
+    $repo    = (string) $theme->get( 'ThemeURI' );
     ?>
-    <div class="wrap ce-options-wrap">
-        <h1 class="ce-options-title">
-            <span class="ce-options-logo" title="Compelling Evidence" aria-label="Compelling Evidence">
-                <img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/ce-icon.svg' ); ?>"
-                     alt="CE" width="28" height="28">
+    <div class="wrap ce-theme-opts">
+        <header class="ce-theme-opts__header">
+            <img class="ce-theme-opts__logo" src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/ce-icon.svg' ); ?>" alt="" width="40" height="40">
+            <div class="ce-theme-opts__intro">
+                <h1 class="ce-theme-opts__title"><?php esc_html_e( 'CE Theme Options', 'compelling-evidence' ); ?></h1>
+                <p class="ce-theme-opts__lede"><?php esc_html_e( 'Site-wide settings for Compelling Evidence. Each tab saves on its own.', 'compelling-evidence' ); ?></p>
+            </div>
+            <span class="ce-theme-opts__badge">
+                <?php
+                /* translators: %s: theme version. */
+                echo esc_html( sprintf( __( 'Version %s', 'compelling-evidence' ), $theme->get( 'Version' ) ) );
+                ?>
             </span>
-            CE Theme Options
-        </h1>
+        </header>
+        <hr class="wp-header-end">
 
-        <?php if ( ! empty( $saved ) ) : ?>
-            <div class="notice notice-success is-dismissible"><p>Settings saved.</p></div>
+        <?php if ( $saved ) : ?>
+            <div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Settings saved.', 'compelling-evidence' ); ?></p></div>
         <?php endif; ?>
 
         <?php if ( ! empty( $sync_result ) ) : ?>
             <?php if ( $sync_result['success'] ) : ?>
                 <div class="notice notice-success is-dismissible">
-                    <p><strong>Sync completed successfully!</strong></p>
+                    <p><strong><?php esc_html_e( 'Sync finished.', 'compelling-evidence' ); ?></strong></p>
                     <ul class="ce-sync-list">
-                        <li>✓ Articles synced: <?php echo intval( $sync_result['synced'] ); ?></li>
-                        <li>✓ Topics created: <?php echo intval( $sync_result['topics_created'] ); ?></li>
-                        <li>✓ Topics cleaned: <?php echo intval( $sync_result['topics_cleaned'] ); ?></li>
+                        <?php /* translators: %d: number of articles. */ ?>
+                        <li><?php echo esc_html( sprintf( __( 'Articles synced: %d', 'compelling-evidence' ), (int) $sync_result['synced'] ) ); ?></li>
+                        <?php /* translators: %d: number of topic terms. */ ?>
+                        <li><?php echo esc_html( sprintf( __( 'Topics created: %d', 'compelling-evidence' ), (int) $sync_result['topics_created'] ) ); ?></li>
+                        <?php /* translators: %d: number of topic terms. */ ?>
+                        <li><?php echo esc_html( sprintf( __( 'Topics cleaned: %d', 'compelling-evidence' ), (int) $sync_result['topics_cleaned'] ) ); ?></li>
                         <?php if ( ! empty( $sync_result['duplicates_found'] ) ) : ?>
-                            <li>⚠ Duplicates detected and skipped: <?php echo intval( $sync_result['duplicates_found'] ); ?></li>
+                            <?php /* translators: %d: number of duplicate articles. */ ?>
+                            <li><?php echo esc_html( sprintf( __( 'Duplicates detected and skipped: %d', 'compelling-evidence' ), (int) $sync_result['duplicates_found'] ) ); ?></li>
                         <?php endif; ?>
                     </ul>
                 </div>
             <?php else : ?>
                 <div class="notice notice-error is-dismissible">
-                    <p><strong>Sync failed:</strong> <?php echo esc_html( $sync_result['error'] ); ?></p>
+                    <p><strong><?php esc_html_e( 'Sync failed:', 'compelling-evidence' ); ?></strong> <?php echo esc_html( $sync_result['error'] ); ?></p>
                     <?php if ( ! empty( $sync_result['fallback'] ) ) : ?>
-                        <p><em>Fallback mode activated. <?php echo intval( $sync_result['fallback_synced'] ); ?> articles synced with basic method.</em></p>
+                        <?php /* translators: %d: number of articles. */ ?>
+                        <p><em><?php echo esc_html( sprintf( __( 'Fallback mode ran. %d articles synced with the basic method.', 'compelling-evidence' ), (int) $sync_result['fallback_synced'] ) ); ?></em></p>
                     <?php endif; ?>
                 </div>
             <?php endif; ?>
         <?php endif; ?>
 
-        <!-- Tabs -->
-        <div class="ce-tabs">
-            <?php foreach ( $tabs as $key => $tab ) : ?>
+        <nav class="ce-theme-opts__tabs" role="tablist" aria-label="<?php esc_attr_e( 'Theme option groups', 'compelling-evidence' ); ?>">
+            <?php foreach ( $tabs as $key => $tab ) :
+                $on = $active === $key; ?>
                 <a href="<?php echo esc_url( admin_url( 'themes.php?page=ce-theme-options&tab=' . $key ) ); ?>"
-                   class="ce-tab <?php echo $active === $key ? 'active' : ''; ?>">
-                    <span class="dashicons <?php echo esc_attr( $tab['icon'] ); ?>"></span>
-                    <?php echo esc_html( $tab['label'] ); ?>
+                   class="ce-theme-opts__tab<?php echo $on ? ' is-active' : ''; ?>"
+                   role="tab" id="ce-theme-opts-tab-<?php echo esc_attr( $key ); ?>"
+                   aria-controls="ce-theme-opts-panel-<?php echo esc_attr( $key ); ?>"
+                   aria-selected="<?php echo $on ? 'true' : 'false'; ?>"
+                   tabindex="<?php echo $on ? '0' : '-1'; ?>"
+                   data-tab="<?php echo esc_attr( $key ); ?>">
+                    <span class="dashicons <?php echo esc_attr( $tab['icon'] ); ?>" aria-hidden="true"></span>
+                    <span class="ce-theme-opts__tab-label"><?php echo esc_html( $tab['label'] ); ?></span>
                 </a>
             <?php endforeach; ?>
-        </div>
+        </nav>
 
-        <!-- Panel -->
-        <div class="ce-panel">
-            <form method="post">
-                <?php
-                wp_nonce_field( 'ce_options_' . $active );
-                $fields = ce_get_tab_fields( $active );
-                $last_section = '';
-                foreach ( $fields as $field ) :
-                    if ( ! empty( $field['section'] ) && $field['section'] !== $last_section ) :
-                        $last_section = $field['section'];
-                        ?>
-                        <h3 class="ce-section-title"><?php echo esc_html( $field['section'] ); ?></h3>
+        <?php foreach ( $tabs as $key => $tab ) : ?>
+            <section class="ce-theme-opts__panel" role="tabpanel" tabindex="0"
+                     id="ce-theme-opts-panel-<?php echo esc_attr( $key ); ?>"
+                     aria-labelledby="ce-theme-opts-tab-<?php echo esc_attr( $key ); ?>"<?php echo $active === $key ? '' : ' hidden'; ?>>
+
+                <div class="ce-theme-opts-card ce-theme-opts-card--usage">
+                    <div class="ce-theme-opts-card__body">
+                        <h2 class="ce-theme-opts-card__title"><span class="dashicons dashicons-info-outline" aria-hidden="true"></span> <?php esc_html_e( 'How to use this tab', 'compelling-evidence' ); ?></h2>
+                        <p><?php echo esc_html( $tab['usage'] ); ?></p>
+                    </div>
+                </div>
+
+                <form method="post" action="<?php echo esc_url( admin_url( 'themes.php?page=ce-theme-options&tab=' . $key ) ); ?>" class="ce-theme-opts__form">
+                    <?php // A nonce field without an id: twelve forms share this page. ?>
+                    <input type="hidden" name="_wpnonce" value="<?php echo esc_attr( wp_create_nonce( 'ce_options_' . $key ) ); ?>">
+                    <?php wp_referer_field(); ?>
+                    <input type="hidden" name="ce_options_tab" value="<?php echo esc_attr( $key ); ?>">
+                    <?php if ( 'tools' !== $key ) ce_theme_opts_render_cards( $key ); ?>
+
+                    <?php if ( 'media' === $key && function_exists( 'ce_media_status_html' ) ) : ?>
+                        <div class="ce-theme-opts-card">
+                            <h2 class="ce-theme-opts-card__title"><?php esc_html_e( 'Article images', 'compelling-evidence' ); ?></h2>
+                            <div class="ce-theme-opts-card__body ce-theme-opts-card__body--prose">
+                                <?php if ( $media_result ) : ?>
+                                    <?php /* translators: 1: images imported, 2: images remaining. */ ?>
+                                    <div class="notice notice-success inline"><p><?php echo esc_html( sprintf( __( 'Imported %1$d image(s); %2$d remaining.', 'compelling-evidence' ), (int) $media_result['imported'], (int) $media_result['remaining'] ) ); ?></p></div>
+                                <?php endif; ?>
+                                <?php echo wp_kses_post( ce_media_status_html() ); ?>
+                                <p><?php echo wp_kses( __( 'Figures use images registered in <code>inc/articles/media.json</code>, each with its source page and licence. Images from Wikimedia Commons, Pexels and Flickr are supported; the credit line is printed under every figure.', 'compelling-evidence' ), [ 'code' => [] ] ); ?></p>
+                                <p><button type="submit" name="ce_media_import_now" value="1" class="button button-secondary"><?php esc_html_e( 'Import next 20 images now', 'compelling-evidence' ); ?></button></p>
+                            </div>
+                        </div>
+                        <?php if ( function_exists( 'ce_media_auto_panel_html' ) ) { echo ce_media_auto_panel_html(); } // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- every value is escaped inside the function. ?>
                     <?php endif; ?>
 
-                    <div class="ce-field">
+                    <?php if ( 'tools' === $key ) : ?>
                         <?php
-                        $value = get_option( $field['id'], $field['default'] ?? '' );
-
-                        switch ( $field['type'] ) :
-                            case 'text':
-                            case 'password':
-                            case 'number': ?>
-                                <label class="ce-field-label" for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['label'] ); ?></label>
-                                <input type="<?php echo esc_attr( $field['type'] ); ?>"
-                                       id="<?php echo esc_attr( $field['id'] ); ?>"
-                                       name="<?php echo esc_attr( $field['id'] ); ?>"
-                                       value="<?php echo esc_attr( $value ); ?>"
-                                       <?php if ( 'password' === $field['type'] ) echo 'autocomplete="off" spellcheck="false"'; ?>
-                                       <?php if ( ! empty( $field['min'] ) ) echo 'min="' . esc_attr( $field['min'] ) . '"'; ?>
-                                       <?php if ( ! empty( $field['max'] ) ) echo 'max="' . esc_attr( $field['max'] ) . '"'; ?>
-                                       <?php if ( ! empty( $field['step'] ) ) echo 'step="' . esc_attr( $field['step'] ) . '"'; ?>>
-                                <?php break;
-
-                            case 'textarea': ?>
-                                <label class="ce-field-label" for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['label'] ); ?></label>
-                                <textarea id="<?php echo esc_attr( $field['id'] ); ?>"
-                                          name="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_textarea( $value ); ?></textarea>
-                                <?php break;
-
-                            case 'select': ?>
-                                <label class="ce-field-label" for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['label'] ); ?></label>
-                                <select id="<?php echo esc_attr( $field['id'] ); ?>" name="<?php echo esc_attr( $field['id'] ); ?>">
-                                    <?php foreach ( $field['options'] as $opt_val => $opt_label ) : ?>
-                                        <option value="<?php echo esc_attr( $opt_val ); ?>" <?php selected( $value, $opt_val ); ?>>
-                                            <?php echo esc_html( $opt_label ); ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                                <?php break;
-
-                            case 'color': ?>
-                                <label class="ce-field-label"><?php echo esc_html( $field['label'] ); ?></label>
-                                <div class="ce-color-row">
-                                    <input type="color"
-                                           id="<?php echo esc_attr( $field['id'] ); ?>"
-                                           name="<?php echo esc_attr( $field['id'] ); ?>"
-                                           value="<?php echo esc_attr( $value ); ?>">
-                                    <span class="ce-color-hex"><?php echo esc_html( $value ); ?></span>
-                                </div>
-                                <?php break;
-
-                            case 'checkbox': ?>
-                                <div class="ce-toggle">
-                                    <input type="checkbox"
-                                           id="<?php echo esc_attr( $field['id'] ); ?>"
-                                           name="<?php echo esc_attr( $field['id'] ); ?>"
-                                           value="1"
-                                           <?php checked( $value, '1' ); ?>>
-                                    <label for="<?php echo esc_attr( $field['id'] ); ?>" class="ce-field-label" style="margin:0;"><?php echo esc_html( $field['label'] ); ?></label>
-                                </div>
-                                <?php break;
-
-                            case 'info': ?>
-                                <div style="background:#f8f5ff;border:1px solid #ddd;border-left:3px solid #6b2fa0;border-radius:4px;padding:0.8rem 1rem;">
-                                    <strong style="font-size:0.82rem;color:#1d2327;"><?php echo esc_html( $field['label'] ); ?></strong>
-                                </div>
-                                <?php break;
-                        endswitch;
-
-                        if ( ! empty( $field['desc'] ) ) : ?>
-                            <p class="ce-field-desc"><?php echo esc_html( $field['desc'] ); ?></p>
-                        <?php endif; ?>
-                    </div>
-                <?php endforeach; ?>
-
-                <?php if ( $active === 'media' && function_exists( 'ce_media_status_html' ) ) : ?>
-                    <div class="ce-field" style="background:#f8f9fa;border:1px solid #ddd;border-radius:8px;padding:1.5rem;margin-top:1rem;">
-                        <h3 style="margin-top:0;margin-bottom:0.6rem;font-size:1rem;">Article images</h3>
-                        <?php if ( $media_result ) : ?>
-                            <div class="notice notice-success inline" style="margin:0 0 1rem;"><p><?php echo esc_html( sprintf( 'Imported %d image(s); %d remaining.', (int) $media_result['imported'], (int) $media_result['remaining'] ) ); ?></p></div>
-                        <?php endif; ?>
-                        <?php echo wp_kses_post( ce_media_status_html() ); ?>
-                        <p style="color:#555;">Figures use images registered in <code>inc/articles/media.json</code>, each with its source page and licence. Images from Wikimedia Commons, Pexels and Flickr are supported; the credit line is printed under every figure.</p>
-                        <button type="submit" name="ce_media_import_now" value="1" class="button button-secondary">Import next 20 images now</button>
-                    </div>
-                    <?php if ( function_exists( 'ce_media_auto_panel_html' ) ) { echo ce_media_auto_panel_html(); } // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- every value is escaped inside the function. ?>
-                <?php endif; ?>
-
-                <?php if ( $active === 'tools' ) : ?>
-                    <!-- Special Tools Tab Content -->
-                    <div class="ce-field" style="background:#f8f9fa;border:1px solid #ddd;border-radius:8px;padding:1.5rem;margin-top:1rem;">
-                        <h3 style="margin-top:0;margin-bottom:1rem;font-size:1rem;">Manual Content Synchronization</h3>
-                        <p style="margin-bottom:1rem;color:#555;">
-                            Use this button to manually trigger the article content sync from JSON files to the WordPress database. 
-                            This will update all 120 articles, create missing topic terms, and clean up deprecated categories.
-                        </p>
-                        
-                        <?php 
-                        $last_sync = get_option( 'ce_content_sync_last_run', 'Never' );
-                        $theme_ver = wp_get_theme()->get( 'Version' );
-                        $sync_key = 'ce_content_sync_' . str_replace( '.', '_', $theme_ver );
-                        $has_synced = get_option( $sync_key ) ? 'Yes ✓' : 'No (sync pending)';
+                        $last_sync  = get_option( 'ce_content_sync_last_run', __( 'Never', 'compelling-evidence' ) );
+                        $theme_ver  = $theme->get( 'Version' );
+                        $sync_key   = 'ce_content_sync_' . str_replace( '.', '_', $theme_ver );
+                        $has_synced = get_option( $sync_key ) ? __( 'Yes', 'compelling-evidence' ) : __( 'No (sync pending)', 'compelling-evidence' );
                         ?>
-                        <div style="background:#fff;border:1px solid #e0e0e0;border-radius:4px;padding:1rem;margin-bottom:1rem;font-size:0.85rem;">
-                            <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem;">
-                                <span>Current Theme Version:</span>
-                                <strong><?php echo esc_html( $theme_ver ); ?></strong>
-                            </div>
-                            <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem;">
-                                <span>Sync Status:</span>
-                                <strong><?php echo esc_html( $has_synced ); ?></strong>
-                            </div>
-                            <div style="display:flex;justify-content:space-between;">
-                                <span>Last Manual Sync:</span>
-                                <strong><?php echo esc_html( $last_sync ); ?></strong>
+                        <div class="ce-theme-opts-card">
+                            <h2 class="ce-theme-opts-card__title"><?php esc_html_e( 'Manual content synchronisation', 'compelling-evidence' ); ?></h2>
+                            <div class="ce-theme-opts-card__body ce-theme-opts-card__body--prose">
+                                <p><?php esc_html_e( 'Copies the articles from the JSON batch files into the database, creates missing topic terms and removes retired categories.', 'compelling-evidence' ); ?></p>
+                                <dl class="ce-theme-opts-facts">
+                                    <dt><?php esc_html_e( 'Theme version', 'compelling-evidence' ); ?></dt><dd><?php echo esc_html( $theme_ver ); ?></dd>
+                                    <dt><?php esc_html_e( 'Synced for this version', 'compelling-evidence' ); ?></dt><dd><?php echo esc_html( $has_synced ); ?></dd>
+                                    <dt><?php esc_html_e( 'Last manual sync', 'compelling-evidence' ); ?></dt><dd><?php echo esc_html( (string) $last_sync ); ?></dd>
+                                </dl>
+                                <div class="ce-theme-opts-actions">
+                                    <button type="submit" name="ce_manual_sync" value="1" class="button button-primary ce-theme-opts-button" data-ce-confirm="<?php esc_attr_e( 'This syncs every article from the batch files. Continue?', 'compelling-evidence' ); ?>">
+                                        <span class="dashicons dashicons-update" aria-hidden="true"></span>
+                                        <?php esc_html_e( 'Run content sync now', 'compelling-evidence' ); ?>
+                                    </button>
+                                    <span class="ce-theme-opts-switch ce-theme-opts-switch--inline">
+                                        <input type="checkbox" role="switch" class="ce-theme-opts-switch__input" id="ce-opt-tools-sync-force" name="ce_sync_force" value="1">
+                                        <span class="ce-theme-opts-switch__track" aria-hidden="true"><span class="ce-theme-opts-switch__thumb"></span></span>
+                                        <label for="ce-opt-tools-sync-force"><?php esc_html_e( 'Force re-sync (ignore the version check)', 'compelling-evidence' ); ?></label>
+                                    </span>
+                                </div>
+                                <h3><?php esc_html_e( 'Safeguards', 'compelling-evidence' ); ?></h3>
+                                <ul class="ce-theme-opts-list">
+                                    <li><?php esc_html_e( 'Articles with a duplicate slug are skipped.', 'compelling-evidence' ); ?></li>
+                                    <li><?php esc_html_e( 'If the JSON files fail to load, a basic sync runs instead.', 'compelling-evidence' ); ?></li>
+                                    <li><?php esc_html_e( 'The memory limit rises to 256M for the sync.', 'compelling-evidence' ); ?></li>
+                                    <li><?php esc_html_e( 'A 5-minute time limit stops a sync from hanging half-done.', 'compelling-evidence' ); ?></li>
+                                </ul>
                             </div>
                         </div>
-                        
-                        <div style="display:flex;gap:1rem;align-items:center;">
-                            <button type="submit" name="ce_manual_sync" value="1" class="ce-save-btn" style="background:#e8455a;" onclick="return confirm('This will sync all 120 articles. Continue?');">
-                                <span class="dashicons dashicons-update" style="margin-right:0.3rem;vertical-align:middle;"></span>
-                                Run Content Sync Now
-                            </button>
-                            <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:#666;">
-                                <input type="checkbox" name="ce_sync_force" value="1">
-                                Force re-sync (ignore version check)
-                            </label>
-                        </div>
-                        
-                        <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid #eee;">
-                            <h4 style="margin:0 0 0.5rem;font-size:0.9rem;">Sync Safeguards</h4>
-                            <ul style="margin:0;padding-left:1.2rem;font-size:0.8rem;color:#666;">
-                                <li>Duplicate detection: Skips articles with duplicate slugs</li>
-                                <li>Fallback mode: If JSON loading fails, attempts basic sync</li>
-                                <li>Memory limit: Auto-increases to 256M for large syncs</li>
-                                <li>Timeout protection: 5-minute limit prevents incomplete syncs</li>
-                            </ul>
-                        </div>
-                    </div>
 
-                    <!-- Article Data Diagnostics -->
-                    <div class="ce-field" style="background:#f8f9fa;border:1px solid #ddd;border-radius:8px;padding:1.5rem;margin-top:1rem;">
-                        <h3 style="margin-top:0;margin-bottom:0.3rem;font-size:1rem;">Article Data Diagnostics</h3>
-                        <p style="margin:0 0 1.2rem;color:#555;font-size:0.85rem;">
-                            Verifies manifest integrity, batch file checksums, and loader health. Run this if articles appear empty or sync is not firing.
-                        </p>
-                        <?php ce_render_article_diagnostics(); ?>
-                    </div>
-                <?php else : ?>
-                    <div class="ce-save-row">
-                        <button type="submit" class="ce-save-btn">Save Changes</button>
+                        <div class="ce-theme-opts-card">
+                            <h2 class="ce-theme-opts-card__title"><?php esc_html_e( 'Article data diagnostics', 'compelling-evidence' ); ?></h2>
+                            <div class="ce-theme-opts-card__body ce-theme-opts-card__body--prose">
+                                <p><?php esc_html_e( 'Checks the manifest, the batch file checksums and the loader. Run it when articles look empty or the sync does not fire.', 'compelling-evidence' ); ?></p>
+                                <?php ce_render_article_diagnostics(); ?>
+                            </div>
+                        </div>
+                    <?php else : ?>
+                        <div class="ce-theme-opts-savebar">
+                            <button type="submit" class="button button-primary ce-theme-opts-button"><?php esc_html_e( 'Save changes', 'compelling-evidence' ); ?></button>
+                        </div>
+                    <?php endif; ?>
+                </form>
+
+                <?php if ( 'security' === $key && function_exists( 'ce_sec_render_tools' ) ) : ?>
+                    <div class="ce-theme-opts-card">
+                        <div class="ce-theme-opts-card__body ce-theme-opts-card__body--prose">
+                            <?php ce_sec_render_tools(); ?>
+                        </div>
                     </div>
                 <?php endif; ?>
-            </form>
+            </section>
+        <?php endforeach; ?>
 
-            <?php if ( 'security' === $active && function_exists( 'ce_sec_render_tools' ) ) : ?>
-                <?php ce_sec_render_tools(); ?>
+        <footer class="ce-theme-opts__footer">
+            <?php if ( $repo ) : ?>
+                <a href="<?php echo esc_url( trailingslashit( $repo ) . 'blob/main/readme.txt' ); ?>"><span class="dashicons dashicons-book" aria-hidden="true"></span> <?php esc_html_e( 'Documentation', 'compelling-evidence' ); ?></a>
+                <a href="<?php echo esc_url( trailingslashit( $repo ) . 'issues' ); ?>"><span class="dashicons dashicons-sos" aria-hidden="true"></span> <?php esc_html_e( 'Support and bug reports', 'compelling-evidence' ); ?></a>
             <?php endif; ?>
-        </div>
+            <a href="<?php echo esc_url( admin_url( 'admin.php?page=ce-analytics' ) ); ?>"><span class="dashicons dashicons-chart-area" aria-hidden="true"></span> <?php esc_html_e( 'CE Analytics report', 'compelling-evidence' ); ?></a>
+        </footer>
     </div>
-
-    <script>
-    // Live color hex preview
-    document.querySelectorAll('input[type="color"]').forEach(function(input) {
-        var hex = input.nextElementSibling;
-        if (hex && hex.classList.contains('ce-color-hex')) {
-            input.addEventListener('input', function() { hex.textContent = input.value; });
-        }
-    });
-    </script>
     <?php
 }
 
@@ -430,162 +587,162 @@ function ce_options_page() {
 function ce_get_tab_fields( $tab ) {
     $fields = [
         'general' => [
-            [ 'id' => 'ce_hero_title',             'label' => 'Hero Title',               'type' => 'text',     'default' => 'What if the evidence pointed somewhere you didn\'t expect?', 'section' => 'Hero Section' ],
-            [ 'id' => 'ce_hero_subtitle',           'label' => 'Hero Subtitle',            'type' => 'text',     'default' => 'Challenging what you think you know — with evidence, not assertion.', 'desc' => 'Appears below the Arabic verse on the homepage.' ],
-            [ 'id' => 'ce_hero_verse_arabic',       'label' => 'Arabic Verse',             'type' => 'text',     'default' => 'فَبِأَيِّ آلَاءِ رَبِّكُمَا تُكَذِّبَانِ' ],
-            [ 'id' => 'ce_hero_verse_number',       'label' => 'Verse Number (Arabic)',     'type' => 'text',     'default' => '١٣', 'desc' => 'Ayah number after the verse, in Arabic-Indic digits (١٣); the Quran face draws it inside the ayah medallion, so no brackets.' ],
-            [ 'id' => 'ce_hero_verse_translation',  'label' => 'Verse Translation',        'type' => 'text',     'default' => 'Then which of the favours of your Lord will you deny?' ],
-            [ 'id' => 'ce_hero_verse_ref',          'label' => 'Verse Reference',          'type' => 'text',     'default' => 'Surah Ar-Rahman (55:13)' ],
-            [ 'id' => 'ce_footer_text',             'label' => 'Footer Text',              'type' => 'text',     'default' => '© Compelling Evidence. All rights reserved.', 'section' => 'Footer' ],
+            [ 'id' => 'ce_hero_title',             'label' => __( 'Hero Title', 'compelling-evidence' ),               'type' => 'text',     'default' => 'What if the evidence pointed somewhere you didn\'t expect?', 'section' => __( 'Hero Section', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_hero_subtitle',           'label' => __( 'Hero Subtitle', 'compelling-evidence' ),            'type' => 'text',     'default' => 'Challenging what you think you know — with evidence, not assertion.', 'desc' => __( 'Appears below the Arabic verse on the homepage.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_hero_verse_arabic',       'label' => __( 'Arabic Verse', 'compelling-evidence' ),             'type' => 'text',     'default' => 'فَبِأَيِّ آلَاءِ رَبِّكُمَا تُكَذِّبَانِ' ],
+            [ 'id' => 'ce_hero_verse_number',       'label' => __( 'Verse Number (Arabic)', 'compelling-evidence' ),     'type' => 'text',     'default' => '١٣', 'desc' => __( 'Ayah number after the verse, in Arabic-Indic digits (١٣); the Quran face draws it inside the ayah medallion, so no brackets.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_hero_verse_translation',  'label' => __( 'Verse Translation', 'compelling-evidence' ),        'type' => 'text',     'default' => 'Then which of the favours of your Lord will you deny?' ],
+            [ 'id' => 'ce_hero_verse_ref',          'label' => __( 'Verse Reference', 'compelling-evidence' ),          'type' => 'text',     'default' => 'Surah Ar-Rahman (55:13)' ],
+            [ 'id' => 'ce_footer_text',             'label' => __( 'Footer Text', 'compelling-evidence' ),              'type' => 'text',     'default' => '© Compelling Evidence. All rights reserved.', 'section' => __( 'Footer', 'compelling-evidence' ) ],
         ],
 
         'identity' => [
             // ── Author (Person schema) ─────────────────────────────────────
-            [ 'id' => 'ce_author_name',     'label' => 'Author Name',     'type' => 'text', 'default' => '', 'section' => 'Author', 'desc' => 'Used in Person schema and the visible byline on every article. Leave empty to fall back to Organization-only authorship.' ],
-            [ 'id' => 'ce_author_title',    'label' => 'Author Job Title', 'type' => 'text', 'default' => '', 'desc' => 'e.g. "Editor", "Writer", "Founder". Used in Person schema (jobTitle).' ],
-            [ 'id' => 'ce_author_bio',      'label' => 'Author Bio',      'type' => 'textarea', 'default' => '', 'desc' => 'Up to 300 characters. Used in Person schema (description) and the author archive page.' ],
-            [ 'id' => 'ce_author_url',      'label' => 'Author Profile URL', 'type' => 'text', 'default' => '', 'desc' => 'Where the byline links to. Defaults to the WordPress author archive if empty.' ],
+            [ 'id' => 'ce_author_name',     'label' => __( 'Author Name', 'compelling-evidence' ),     'type' => 'text', 'default' => '', 'section' => __( 'Author', 'compelling-evidence' ), 'desc' => __( 'Used in Person schema and the visible byline on every article. Leave empty to fall back to Organization-only authorship.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_author_title',    'label' => __( 'Author Job Title', 'compelling-evidence' ), 'type' => 'text', 'default' => '', 'desc' => __( 'e.g. "Editor", "Writer", "Founder". Used in Person schema (jobTitle).', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_author_bio',      'label' => __( 'Author Bio', 'compelling-evidence' ),      'type' => 'textarea', 'default' => '', 'desc' => __( 'Up to 300 characters. Used in Person schema (description) and the author archive page.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_author_url',      'label' => __( 'Author Profile URL', 'compelling-evidence' ), 'type' => 'text', 'default' => '', 'desc' => __( 'Where the byline links to. Defaults to the WordPress author archive if empty.', 'compelling-evidence' ) ],
 
             // ── Author social profiles (sameAs schema) ─────────────────────
-            [ 'id' => 'ce_author_twitter',  'label' => 'Author Twitter / X', 'type' => 'text', 'default' => '', 'section' => 'Author Social Profiles', 'desc' => 'Full URL, e.g. https://twitter.com/handle' ],
-            [ 'id' => 'ce_author_youtube',  'label' => 'Author YouTube',  'type' => 'text', 'default' => '', 'desc' => 'Full URL to channel.' ],
-            [ 'id' => 'ce_author_github',   'label' => 'Author GitHub',   'type' => 'text', 'default' => '', 'desc' => 'Full URL to profile.' ],
-            [ 'id' => 'ce_author_linkedin', 'label' => 'Author LinkedIn', 'type' => 'text', 'default' => '', 'desc' => 'Full URL to profile.' ],
-            [ 'id' => 'ce_author_other_urls', 'label' => 'Other Author URLs', 'type' => 'textarea', 'default' => '', 'desc' => 'One URL per line. Wikipedia entry, Scholar profile, ORCID, etc. All added to the Person schema sameAs array.' ],
+            [ 'id' => 'ce_author_twitter',  'label' => __( 'Author Twitter / X', 'compelling-evidence' ), 'type' => 'text', 'default' => '', 'section' => __( 'Author Social Profiles', 'compelling-evidence' ), 'desc' => __( 'Full URL, e.g. https://twitter.com/handle', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_author_youtube',  'label' => __( 'Author YouTube', 'compelling-evidence' ),  'type' => 'text', 'default' => '', 'desc' => __( 'Full URL to channel.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_author_github',   'label' => __( 'Author GitHub', 'compelling-evidence' ),   'type' => 'text', 'default' => '', 'desc' => __( 'Full URL to profile.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_author_linkedin', 'label' => __( 'Author LinkedIn', 'compelling-evidence' ), 'type' => 'text', 'default' => '', 'desc' => __( 'Full URL to profile.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_author_other_urls', 'label' => __( 'Other Author URLs', 'compelling-evidence' ), 'type' => 'textarea', 'default' => '', 'desc' => __( 'One URL per line. Wikipedia entry, Scholar profile, ORCID, etc. All added to the Person schema sameAs array.', 'compelling-evidence' ) ],
 
             // ── Site-level social and contact (Organization schema) ────────
-            [ 'id' => 'ce_site_twitter_handle', 'label' => 'Site Twitter Handle', 'type' => 'text', 'default' => '', 'section' => 'Site Social & Contact', 'desc' => 'Handle only, including the @, e.g. @CompellingEv. Used for twitter:site meta tag.' ],
-            [ 'id' => 'ce_site_youtube_url',    'label' => 'Site YouTube Channel', 'type' => 'text', 'default' => '', 'desc' => 'Full URL.' ],
-            [ 'id' => 'ce_site_facebook_url',   'label' => 'Site Facebook Page', 'type' => 'text', 'default' => '' ],
-            [ 'id' => 'ce_site_contact_email',  'label' => 'Site Contact Email', 'type' => 'text', 'default' => '', 'desc' => 'Used in Organization schema contactPoint.' ],
+            [ 'id' => 'ce_site_twitter_handle', 'label' => __( 'Site Twitter Handle', 'compelling-evidence' ), 'type' => 'text', 'default' => '', 'section' => __( 'Site Social & Contact', 'compelling-evidence' ), 'desc' => __( 'Handle only, including the @, e.g. @CompellingEv. Used for twitter:site meta tag.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_site_youtube_url',    'label' => __( 'Site YouTube Channel', 'compelling-evidence' ), 'type' => 'text', 'default' => '', 'desc' => __( 'Full URL.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_site_facebook_url',   'label' => __( 'Site Facebook Page', 'compelling-evidence' ), 'type' => 'text', 'default' => '' ],
+            [ 'id' => 'ce_site_contact_email',  'label' => __( 'Site Contact Email', 'compelling-evidence' ), 'type' => 'text', 'default' => '', 'desc' => __( 'Used in Organization schema contactPoint.', 'compelling-evidence' ) ],
 
             // ── Logo (Organization schema, ImageObject) ────────────────────
-            [ 'id' => 'ce_org_logo_url',    'label' => 'Logo URL',        'type' => 'text',   'default' => '', 'section' => 'Logo (Organization Schema)', 'desc' => 'Direct URL to logo image. Recommended 1:1 aspect ratio, ≥ 112×112 px for Google rich-result eligibility.' ],
-            [ 'id' => 'ce_org_logo_width',  'label' => 'Logo Width (px)', 'type' => 'number', 'default' => '512', 'min' => 64, 'max' => 4096 ],
-            [ 'id' => 'ce_org_logo_height', 'label' => 'Logo Height (px)', 'type' => 'number', 'default' => '512', 'min' => 64, 'max' => 4096 ],
+            [ 'id' => 'ce_org_logo_url',    'label' => __( 'Logo URL', 'compelling-evidence' ),        'type' => 'text',   'default' => '', 'section' => __( 'Logo (Organization Schema)', 'compelling-evidence' ), 'desc' => __( 'Direct URL to logo image. Recommended 1:1 aspect ratio, ≥ 112×112 px for Google rich-result eligibility.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_org_logo_width',  'label' => __( 'Logo Width (px)', 'compelling-evidence' ), 'type' => 'number', 'default' => '512', 'min' => 64, 'max' => 4096 ],
+            [ 'id' => 'ce_org_logo_height', 'label' => __( 'Logo Height (px)', 'compelling-evidence' ), 'type' => 'number', 'default' => '512', 'min' => 64, 'max' => 4096 ],
         ],
 
         'colors' => [
-            [ 'id' => 'ce_color_accent',      'label' => 'Primary Accent',     'type' => 'color', 'default' => '#e8455a', 'desc' => 'Buttons, links, category labels.', 'section' => 'Brand Colors' ],
-            [ 'id' => 'ce_color_accent2',     'label' => 'Secondary Accent',   'type' => 'color', 'default' => '#ff6b35', 'desc' => 'Gradient endpoints, hover states.' ],
-            [ 'id' => 'ce_color_teal',        'label' => 'Teal',               'type' => 'color', 'default' => '#0cd4e0', 'desc' => 'Quiz CTAs, journey navigation, search highlights.' ],
-            [ 'id' => 'ce_color_purple',      'label' => 'Purple',             'type' => 'color', 'default' => '#6b2fa0', 'desc' => 'Article cards, Quran citation backgrounds.' ],
-            [ 'id' => 'ce_color_gold',        'label' => 'Gold',               'type' => 'color', 'default' => '#f5c518', 'desc' => 'Result CTA, premium elements.' ],
-            [ 'id' => 'ce_color_bg_deep',     'label' => 'Background Deep',    'type' => 'color', 'default' => '#1a0a2e', 'desc' => 'Primary background tone.', 'section' => 'Background' ],
-            [ 'id' => 'ce_color_bg_darkest',  'label' => 'Background Darkest', 'type' => 'color', 'default' => '#0d0820', 'desc' => 'Deepest background (hero, nav).' ],
+            [ 'id' => 'ce_color_accent',      'label' => __( 'Primary Accent', 'compelling-evidence' ),     'type' => 'color', 'default' => '#e8455a', 'desc' => __( 'Buttons, links, category labels.', 'compelling-evidence' ), 'section' => __( 'Brand Colors', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_color_accent2',     'label' => __( 'Secondary Accent', 'compelling-evidence' ),   'type' => 'color', 'default' => '#ff6b35', 'desc' => __( 'Gradient endpoints, hover states.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_color_teal',        'label' => __( 'Teal', 'compelling-evidence' ),               'type' => 'color', 'default' => '#0cd4e0', 'desc' => __( 'Quiz CTAs, journey navigation, search highlights.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_color_purple',      'label' => __( 'Purple', 'compelling-evidence' ),             'type' => 'color', 'default' => '#6b2fa0', 'desc' => __( 'Article cards, Quran citation backgrounds.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_color_gold',        'label' => __( 'Gold', 'compelling-evidence' ),               'type' => 'color', 'default' => '#f5c518', 'desc' => __( 'Result CTA, premium elements.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_color_bg_deep',     'label' => __( 'Background Deep', 'compelling-evidence' ),    'type' => 'color', 'default' => '#1a0a2e', 'desc' => __( 'Primary background tone.', 'compelling-evidence' ), 'section' => __( 'Background', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_color_bg_darkest',  'label' => __( 'Background Darkest', 'compelling-evidence' ), 'type' => 'color', 'default' => '#0d0820', 'desc' => __( 'Deepest background (hero, nav).', 'compelling-evidence' ) ],
         ],
 
         'typography' => [
-            [ 'id' => 'ce_heading_font', 'label' => 'Heading Font', 'type' => 'select', 'default' => 'playfair', 'section' => 'Font Families',
+            [ 'id' => 'ce_heading_font', 'label' => __( 'Heading Font', 'compelling-evidence' ), 'type' => 'choice', 'default' => 'playfair', 'section' => __( 'Font Families', 'compelling-evidence' ),
               'options' => ce_font_options( 'heading' ),
-              'desc' => 'Titles, section headings and display numbers across the site.' ],
-            [ 'id' => 'ce_reading_font', 'label' => 'Reading Body Font', 'type' => 'select', 'default' => 'cormorant',
+              'desc' => __( 'Titles, section headings and display numbers across the site.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_reading_font', 'label' => __( 'Reading Body Font', 'compelling-evidence' ), 'type' => 'choice', 'default' => 'cormorant',
               'options' => ce_font_options( 'reading' ),
-              'desc' => 'Article text, excerpts and quotations. EB Garamond has the closest x-height to Cormorant, so switching between the two keeps line lengths stable.' ],
-            [ 'id' => 'ce_accent_font',  'label' => 'Label & Eyebrow Font', 'type' => 'select', 'default' => 'dm-sans',
+              'desc' => __( 'Article text, excerpts and quotations. EB Garamond has the closest x-height to Cormorant, so switching between the two keeps line lengths stable.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_accent_font',  'label' => __( 'Label & Eyebrow Font', 'compelling-evidence' ), 'type' => 'choice', 'default' => 'dm-sans',
               'options' => ce_font_options( 'accent' ),
-              'desc' => 'Uppercase section labels, topic tags and page eyebrows. Special Elite gives a typewriter case-file look; it covers English text only, so it is never applied to transliterated Arabic.' ],
-            [ 'id' => 'ce_font_scale',   'label' => 'Font Size Scale', 'type' => 'select', 'default' => '1.0', 'section' => 'Sizing',
-              'options' => [ '0.9' => 'Compact (90%)', '1.0' => 'Default (100%)', '1.1' => 'Large (110%)', '1.2' => 'Extra Large (120%)' ],
-              'desc' => 'Scales all body text proportionally. Headings and UI elements remain fixed.' ],
+              'desc' => __( 'Uppercase section labels, topic tags and page eyebrows. Special Elite gives a typewriter case-file look; it covers English text only, so it is never applied to transliterated Arabic.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_font_scale',   'label' => __( 'Font Size Scale', 'compelling-evidence' ), 'type' => 'choice', 'default' => '1.0', 'section' => __( 'Sizing', 'compelling-evidence' ),
+              'options' => [ '0.9' => __( 'Compact (90%)', 'compelling-evidence' ), '1.0' => __( 'Default (100%)', 'compelling-evidence' ), '1.1' => __( 'Large (110%)', 'compelling-evidence' ), '1.2' => __( 'Extra Large (120%)', 'compelling-evidence' ) ],
+              'desc' => __( 'Scales all body text proportionally. Headings and UI elements remain fixed.', 'compelling-evidence' ) ],
         ],
 
         'quiz' => [
-            [ 'id' => 'ce_quiz_enabled',         'label' => 'Enable persona quiz',           'type' => 'checkbox', 'default' => '1', 'section' => 'Quiz', 'desc' => 'When disabled, /quiz/ redirects to /journeys/ overview.' ],
-            [ 'id' => 'ce_quiz_max_selections',   'label' => 'Max selections per question',   'type' => 'select',   'default' => '3',
-              'options' => [ '1' => '1 (single select)', '2' => '2', '3' => '3 (default)' ] ],
-            [ 'id' => 'ce_show_journey_progress', 'label' => 'Show journey progress badges',  'type' => 'checkbox', 'default' => '1', 'section' => 'Journeys', 'desc' => 'Display started/completed badges on the journeys overview page.' ],
-            [ 'id' => 'ce_journeys_per_row',      'label' => 'Journey cards per row',         'type' => 'select',   'default' => '3',
-              'options' => [ '2' => '2 cards', '3' => '3 cards (default)', '4' => '4 cards' ] ],
+            [ 'id' => 'ce_quiz_enabled',         'label' => __( 'Enable persona quiz', 'compelling-evidence' ),           'type' => 'checkbox', 'default' => '1', 'section' => __( 'Quiz', 'compelling-evidence' ), 'desc' => __( 'When disabled, /quiz/ redirects to /journeys/ overview.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_quiz_max_selections',   'label' => __( 'Max selections per question', 'compelling-evidence' ),   'type' => 'choice',   'default' => '3',
+              'options' => [ '1' => __( '1 (single select)', 'compelling-evidence' ), '2' => __( '2', 'compelling-evidence' ), '3' => __( '3 (default)', 'compelling-evidence' ) ] ],
+            [ 'id' => 'ce_show_journey_progress', 'label' => __( 'Show journey progress badges', 'compelling-evidence' ),  'type' => 'checkbox', 'default' => '1', 'section' => __( 'Journeys', 'compelling-evidence' ), 'desc' => __( 'Display started/completed badges on the journeys overview page.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_journeys_per_row',      'label' => __( 'Journey cards per row', 'compelling-evidence' ),         'type' => 'choice',   'default' => '3',
+              'options' => [ '2' => __( '2 cards', 'compelling-evidence' ), '3' => __( '3 cards (default)', 'compelling-evidence' ), '4' => __( '4 cards', 'compelling-evidence' ) ] ],
         ],
 
         'engagement' => [
-            [ 'id' => 'ce_voting_enabled',     'label' => 'Enable article voting (up/down)',     'type' => 'checkbox', 'default' => '1', 'section' => 'Features' ],
-            [ 'id' => 'ce_resonance_enabled',  'label' => 'Enable resonance feedback',           'type' => 'checkbox', 'default' => '1', 'desc' => '"Addressed my question" / "Still have questions" / "Want to discuss" buttons.' ],
-            [ 'id' => 'ce_crosslinks_enabled', 'label' => 'Enable automatic cross-linking',      'type' => 'checkbox', 'default' => '1', 'desc' => 'Auto-links key phrases in articles to related articles (161 phrase mappings).' ],
-            [ 'id' => 'ce_search_enabled',     'label' => 'Enable homepage search',              'type' => 'checkbox', 'default' => '1' ],
-            [ 'id' => 'ce_articles_per_page',  'label' => 'Articles per page (archive)',          'type' => 'number',   'default' => '12', 'min' => 4, 'max' => 48, 'section' => 'Content' ],
+            [ 'id' => 'ce_voting_enabled',     'label' => __( 'Enable article voting (up/down)', 'compelling-evidence' ),     'type' => 'checkbox', 'default' => '1', 'section' => __( 'Features', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_resonance_enabled',  'label' => __( 'Enable resonance feedback', 'compelling-evidence' ),           'type' => 'checkbox', 'default' => '1', 'desc' => __( '"Addressed my question" / "Still have questions" / "Want to discuss" buttons.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_crosslinks_enabled', 'label' => __( 'Enable automatic cross-linking', 'compelling-evidence' ),      'type' => 'checkbox', 'default' => '1', 'desc' => __( 'Auto-links key phrases in articles to related articles (161 phrase mappings).', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_search_enabled',     'label' => __( 'Enable homepage search', 'compelling-evidence' ),              'type' => 'checkbox', 'default' => '1' ],
+            [ 'id' => 'ce_articles_per_page',  'label' => __( 'Articles per page (archive)', 'compelling-evidence' ),          'type' => 'range',   'default' => '12', 'min' => 4, 'max' => 48, 'section' => __( 'Content', 'compelling-evidence' ) ],
         ],
 
         'analytics' => [
-            [ 'id' => 'ce_analytics_enabled',        'label' => 'Enable analytics tracking',         'type' => 'checkbox', 'default' => '1', 'section' => 'Tracking', 'desc' => 'Privacy-first, server-side only. No cookies, no PII, no third-party.' ],
-            [ 'id' => 'ce_analytics_track_scroll',    'label' => 'Track article scroll depth',        'type' => 'checkbox', 'default' => '1', 'desc' => 'Records 25%, 50%, 75%, 100% scroll milestones per article.' ],
-            [ 'id' => 'ce_analytics_track_search',    'label' => 'Track search queries',              'type' => 'checkbox', 'default' => '1', 'desc' => 'Logs search terms (debounced 1.5s) for content gap analysis.' ],
-            [ 'id' => 'ce_analytics_retention_days',  'label' => 'Data retention (days)',             'type' => 'select',   'default' => '90', 'section' => 'Data Management',
-              'options' => [ '30' => '30 days', '60' => '60 days', '90' => '90 days (default)', '180' => '6 months', '365' => '1 year' ],
-              'desc' => 'Auto-purge analytics data older than this. Purge runs on daily cron.' ],
+            [ 'id' => 'ce_analytics_enabled',        'label' => __( 'Enable analytics tracking', 'compelling-evidence' ),         'type' => 'checkbox', 'default' => '0', 'section' => __( 'Tracking', 'compelling-evidence' ), 'desc' => __( 'Off until you switch it on. Events go to a table in this database and nowhere else: no cookies, no raw IP addresses, no third party. While it is off the tracker is not loaded and the quiz and the journeys send nothing.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_analytics_track_scroll',    'label' => __( 'Track article scroll depth', 'compelling-evidence' ),        'type' => 'checkbox', 'default' => '1', 'desc' => __( 'Records 25%, 50%, 75%, 100% scroll milestones per article.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_analytics_track_search',    'label' => __( 'Track search queries', 'compelling-evidence' ),              'type' => 'checkbox', 'default' => '1', 'desc' => __( 'Logs search terms (debounced 1.5s) for content gap analysis.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_analytics_retention_days',  'label' => __( 'Data retention (days)', 'compelling-evidence' ),             'type' => 'select',   'default' => '90', 'section' => __( 'Data Management', 'compelling-evidence' ),
+              'options' => [ '30' => __( '30 days', 'compelling-evidence' ), '60' => __( '60 days', 'compelling-evidence' ), '90' => __( '90 days (default)', 'compelling-evidence' ), '180' => __( '6 months', 'compelling-evidence' ), '365' => __( '1 year', 'compelling-evidence' ) ],
+              'desc' => __( 'Auto-purge analytics data older than this. Purge runs on daily cron.', 'compelling-evidence' ) ],
         ],
 
         'links' => [
-            [ 'id' => 'ce_crosslinks_enabled',     'label' => 'Enable automatic internal crosslinks',  'type' => 'checkbox', 'default' => '1', 'section' => 'Internal Cross-Links',
-              'desc' => 'Auto-links key phrases in article and answer text to related articles: the curated list plus this site\'s entries in the shared network map. Obeys all ground rules.' ],
-            [ 'id' => 'ce_crosslink_max_per_article', 'label' => 'Maximum crosslinks per article', 'type' => 'number', 'default' => '5', 'min' => 1, 'max' => 15,
-              'desc' => 'Upper limit. Actual count may be lower if fewer phrases match.' ],
-            [ 'id' => 'ce_crosslink_min_per_article', 'label' => 'Minimum crosslinks per article', 'type' => 'number', 'default' => '3', 'min' => 0, 'max' => 10,
-              'desc' => 'If the first pass finds fewer than this, a second pass runs with relaxed paragraph rules to reach the minimum. Set to 0 to disable minimum.' ],
-            [ 'id' => 'ce_crosslink_style',   'label' => 'Crosslink style',  'type' => 'select', 'default' => 'underline',
-              'options' => [ 'underline' => 'Underline (default)', 'dotted' => 'Dotted underline', 'bold' => 'Bold text, no underline', 'subtle' => 'Color only, no underline' ] ],
-            [ 'id' => 'ce_crosslink_color',   'label' => 'Crosslink color',  'type' => 'color',  'default' => '#e8455a', 'desc' => 'Text color for internal crosslinks.' ],
-            [ 'id' => 'ce_crosslink_nofollow', 'label' => 'Add rel="nofollow" to crosslinks', 'type' => 'checkbox', 'default' => '0',
-              'desc' => 'Not recommended — internal links should pass link equity. Only enable if you have a specific SEO reason.' ],
-            [ 'id' => 'ce_crosslink_disabled_categories', 'label' => 'Disable crosslinks for categories', 'type' => 'text', 'default' => '',
-              'desc' => 'Comma-separated topic slugs (e.g. "the-bigger-picture,the-inner-journey"). Articles in these categories will have no auto-crosslinks.' ],
-            [ 'id' => 'ce_sister_links_enabled', 'label' => 'Link to the sister sites', 'type' => 'checkbox', 'default' => '1', 'section' => 'Sister-Site Links',
-              'desc' => 'The first mention of a phrase another site in the network treats (Abrahamic Religions, Best of Islam, The Injil, Apostle of Doom, Murtadd, Lailatulqadar) links to that inner page. Phrases come from inc/data/network-links.json, the same file in all seven themes. Never in headings, quotations, Quran or hadith blocks, figures or tables; one added link a paragraph; never in a paragraph that already has a crosslink or tooltip.' ],
-            [ 'id' => 'ce_sister_links_max', 'label' => 'Maximum sister-site links per article', 'type' => 'number', 'default' => '3', 'min' => 0, 'max' => 10,
-              'desc' => 'Counted apart from the internal crosslinks above. 0 turns them off.' ],
-            [ 'id' => 'ce_murtadd_counterparts_enabled', 'label' => 'Link to murtadd.org counterparts', 'type' => 'checkbox', 'default' => '1',
-              'desc' => 'A "Read this on murtadd.org" card after the article text, listing the murtadd rebuttals and doubts that name this article as their counterpart. Data: inc/data/murtadd-counterparts.json, rebuilt with bin/build-murtadd-counterparts.py.' ],
-            [ 'id' => 'ce_contextual_links_extra', 'label' => 'Extra phrases', 'type' => 'textarea', 'default' => '',
-              'desc' => 'One per line: phrase | /articles/slug/ for this site, or phrase | https://injil.help/paul/james/ for a sister site. These win over the shared map. Other addresses are ignored.' ],
-            [ 'id' => 'ce_contextual_links_excluded', 'label' => 'Pages without crosslinks', 'type' => 'textarea', 'default' => '',
-              'desc' => 'Article or question slugs, one per line. These get neither internal nor sister-site links; glossary tooltips are unaffected.' ],
-            [ 'id' => 'ce_tooltips_enabled',        'label' => 'Enable glossary tooltips',              'type' => 'checkbox', 'default' => '1', 'section' => 'Glossary Tooltips',
-              'desc' => 'Auto-links Islamic/Arabic terms and shows definition tooltips on hover. 53 terms defined.' ],
-            [ 'id' => 'ce_tooltip_max_per_article',  'label' => 'Maximum tooltips per article',          'type' => 'number',   'default' => '8', 'min' => 1, 'max' => 20,
-              'desc' => 'Upper limit. Only terms that actually appear in the article are linked.' ],
-            [ 'id' => 'ce_tooltip_style',   'label' => 'Tooltip link style', 'type' => 'select', 'default' => 'dashed',
-              'options' => [ 'dashed' => 'Dashed underline (default)', 'dotted' => 'Dotted underline', 'solid' => 'Solid underline', 'none' => 'Color only, cursor: help' ] ],
-            [ 'id' => 'ce_tooltip_color',   'label' => 'Tooltip link color', 'type' => 'color',  'default' => '#0cd4e0', 'desc' => 'Text color for glossary tooltip terms.' ],
-            [ 'id' => 'ce_tooltip_show_arabic', 'label' => 'Show Arabic script in tooltips', 'type' => 'checkbox', 'default' => '1', 'desc' => 'Display Arabic transliteration alongside the definition.' ],
-            [ 'id' => 'ce_tooltip_trigger',  'label' => 'Tooltip trigger',   'type' => 'select', 'default' => 'hover',
-              'options' => [ 'hover' => 'Hover (desktop) / Tap (mobile)', 'click' => 'Click/tap only' ],
-              'desc' => 'When set to hover, tooltip appears on mouseover. On mobile, first tap shows tooltip, second tap follows link.' ],
-            [ 'id' => 'ce_pretty_search',  'label' => 'Pretty search URLs', 'type' => 'checkbox', 'default' => '1', 'section' => 'Search URLs',
-              'desc' => 'Redirects /?s=term to /search/term/. Built in; replaces the Pretty Search Permalinks plugin. Search results stay noindexed and disallowed in robots.txt.' ],
-            [ 'id' => 'ce_search_base',    'label' => 'Search base', 'type' => 'text', 'default' => 'search',
-              'desc' => 'The path segment before the search term. Letters, numbers and hyphens only. Save Settings → Permalinks after changing it.' ],
+            [ 'id' => 'ce_crosslinks_enabled',     'label' => __( 'Enable automatic internal crosslinks', 'compelling-evidence' ),  'type' => 'checkbox', 'default' => '1', 'section' => __( 'Internal Cross-Links', 'compelling-evidence' ),
+              'desc' => __( 'Auto-links key phrases in article and answer text to related articles: the curated list plus this site\'s entries in the shared network map. Obeys all ground rules.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_crosslink_max_per_article', 'label' => __( 'Maximum crosslinks per article', 'compelling-evidence' ), 'type' => 'range', 'default' => '5', 'min' => 1, 'max' => 15,
+              'desc' => __( 'Upper limit. Actual count may be lower if fewer phrases match.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_crosslink_min_per_article', 'label' => __( 'Minimum crosslinks per article', 'compelling-evidence' ), 'type' => 'range', 'default' => '3', 'min' => 0, 'max' => 10,
+              'desc' => __( 'If the first pass finds fewer than this, a second pass runs with relaxed paragraph rules to reach the minimum. Set to 0 to disable minimum.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_crosslink_style',   'label' => __( 'Crosslink style', 'compelling-evidence' ),  'type' => 'choice', 'default' => 'underline',
+              'options' => [ 'underline' => __( 'Underline (default)', 'compelling-evidence' ), 'dotted' => __( 'Dotted underline', 'compelling-evidence' ), 'bold' => __( 'Bold text, no underline', 'compelling-evidence' ), 'subtle' => __( 'Color only, no underline', 'compelling-evidence' ) ] ],
+            [ 'id' => 'ce_crosslink_color',   'label' => __( 'Crosslink color', 'compelling-evidence' ),  'type' => 'color',  'default' => '#e8455a', 'desc' => __( 'Text color for internal crosslinks.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_crosslink_nofollow', 'label' => __( 'Add rel="nofollow" to crosslinks', 'compelling-evidence' ), 'type' => 'checkbox', 'default' => '0',
+              'desc' => __( 'Not recommended — internal links should pass link equity. Only enable if you have a specific SEO reason.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_crosslink_disabled_categories', 'label' => __( 'Disable crosslinks for categories', 'compelling-evidence' ), 'type' => 'text', 'default' => '',
+              'desc' => __( 'Comma-separated topic slugs (e.g. "the-bigger-picture,the-inner-journey"). Articles in these categories will have no auto-crosslinks.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_sister_links_enabled', 'label' => __( 'Link to the sister sites', 'compelling-evidence' ), 'type' => 'checkbox', 'default' => '1', 'section' => __( 'Sister-Site Links', 'compelling-evidence' ),
+              'desc' => __( 'The first mention of a phrase another site in the network treats (Abrahamic Religions, Best of Islam, The Injil, Apostle of Doom, Murtadd, Lailatulqadar) links to that inner page. Phrases come from inc/data/network-links.json, the same file in all seven themes. Never in headings, quotations, Quran or hadith blocks, figures or tables; one added link a paragraph; never in a paragraph that already has a crosslink or tooltip.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_sister_links_max', 'label' => __( 'Maximum sister-site links per article', 'compelling-evidence' ), 'type' => 'range', 'default' => '3', 'min' => 0, 'max' => 10,
+              'desc' => __( 'Counted apart from the internal crosslinks above. 0 turns them off.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_murtadd_counterparts_enabled', 'label' => __( 'Link to murtadd.org counterparts', 'compelling-evidence' ), 'type' => 'checkbox', 'default' => '1',
+              'desc' => __( 'A "Read this on murtadd.org" card after the article text, listing the murtadd rebuttals and doubts that name this article as their counterpart. Data: inc/data/murtadd-counterparts.json, rebuilt with bin/build-murtadd-counterparts.py.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_contextual_links_extra', 'label' => __( 'Extra phrases', 'compelling-evidence' ), 'type' => 'textarea', 'default' => '',
+              'desc' => __( 'One per line: phrase | /articles/slug/ for this site, or phrase | https://injil.help/paul/james/ for a sister site. These win over the shared map. Other addresses are ignored.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_contextual_links_excluded', 'label' => __( 'Pages without crosslinks', 'compelling-evidence' ), 'type' => 'textarea', 'default' => '',
+              'desc' => __( 'Article or question slugs, one per line. These get neither internal nor sister-site links; glossary tooltips are unaffected.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_tooltips_enabled',        'label' => __( 'Enable glossary tooltips', 'compelling-evidence' ),              'type' => 'checkbox', 'default' => '1', 'section' => __( 'Glossary Tooltips', 'compelling-evidence' ),
+              'desc' => __( 'Auto-links Islamic/Arabic terms and shows definition tooltips on hover. 53 terms defined.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_tooltip_max_per_article',  'label' => __( 'Maximum tooltips per article', 'compelling-evidence' ),          'type' => 'range',   'default' => '8', 'min' => 1, 'max' => 20,
+              'desc' => __( 'Upper limit. Only terms that actually appear in the article are linked.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_tooltip_style',   'label' => __( 'Tooltip link style', 'compelling-evidence' ), 'type' => 'choice', 'default' => 'dashed',
+              'options' => [ 'dashed' => __( 'Dashed underline (default)', 'compelling-evidence' ), 'dotted' => __( 'Dotted underline', 'compelling-evidence' ), 'solid' => __( 'Solid underline', 'compelling-evidence' ), 'none' => __( 'Color only, cursor: help', 'compelling-evidence' ) ] ],
+            [ 'id' => 'ce_tooltip_color',   'label' => __( 'Tooltip link color', 'compelling-evidence' ), 'type' => 'color',  'default' => '#0cd4e0', 'desc' => __( 'Text color for glossary tooltip terms.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_tooltip_show_arabic', 'label' => __( 'Show Arabic script in tooltips', 'compelling-evidence' ), 'type' => 'checkbox', 'default' => '1', 'desc' => __( 'Display Arabic transliteration alongside the definition.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_tooltip_trigger',  'label' => __( 'Tooltip trigger', 'compelling-evidence' ),   'type' => 'choice', 'default' => 'hover',
+              'options' => [ 'hover' => __( 'Hover (desktop) / Tap (mobile)', 'compelling-evidence' ), 'click' => __( 'Click/tap only', 'compelling-evidence' ) ],
+              'desc' => __( 'When set to hover, tooltip appears on mouseover. On mobile, first tap shows tooltip, second tap follows link.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_pretty_search',  'label' => __( 'Pretty search URLs', 'compelling-evidence' ), 'type' => 'checkbox', 'default' => '1', 'section' => __( 'Search URLs', 'compelling-evidence' ),
+              'desc' => __( 'Redirects /?s=term to /search/term/. Built in; replaces the Pretty Search Permalinks plugin. Search results stay noindexed and disallowed in robots.txt.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_search_base',    'label' => __( 'Search base', 'compelling-evidence' ), 'type' => 'text', 'default' => 'search',
+              'desc' => __( 'The path segment before the search term. Letters, numbers and hyphens only. Save Settings → Permalinks after changing it.', 'compelling-evidence' ) ],
         ],
 
         'media' => [
-            [ 'id' => 'ce_lightbox_enabled', 'label' => 'Open article images and diagrams in a lightbox', 'type' => 'checkbox', 'default' => '1', 'section' => 'Lightbox',
-              'desc' => 'Built into the theme (no jQuery, no plugin). Keyboard, swipe and screen-reader accessible. Replaces the Lightbox2 plugin.' ],
-            [ 'id' => 'ce_media_auto', 'label' => 'Find and publish lead images for new articles automatically', 'type' => 'checkbox', 'default' => '0', 'section' => 'Automatic images',
-              'desc' => 'Every hour, articles with no featured image and no figure get a Pexels photograph chosen from their title, imported, credited, set as the featured image and shown after the first paragraph. Published at once; correct any choice below with Replace or Remove.' ],
-            [ 'id' => 'ce_pexels_key', 'label' => 'Pexels API key', 'type' => 'password', 'default' => '',
-              'desc' => 'From pexels.com/api. Stored in the database only, never in the theme files.' ],
-            [ 'id' => 'ce_media_import', 'label' => 'Import article images into the Media Library', 'type' => 'checkbox', 'default' => '1', 'section' => 'Image import',
-              'desc' => 'Copies each registered image into the Media Library, a few per admin page load, so pages serve local, responsive images. Until an image is imported, figures load it from its source.' ],
+            [ 'id' => 'ce_lightbox_enabled', 'label' => __( 'Open article images and diagrams in a lightbox', 'compelling-evidence' ), 'type' => 'checkbox', 'default' => '1', 'section' => __( 'Lightbox', 'compelling-evidence' ),
+              'desc' => __( 'Built into the theme (no jQuery, no plugin). Keyboard, swipe and screen-reader accessible. Replaces the Lightbox2 plugin.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_media_auto', 'label' => __( 'Find and publish lead images for new articles automatically', 'compelling-evidence' ), 'type' => 'checkbox', 'default' => '0', 'section' => __( 'Automatic images', 'compelling-evidence' ),
+              'desc' => __( 'Every hour, articles with no featured image and no figure get a Pexels photograph chosen from their title, imported, credited, set as the featured image and shown after the first paragraph. Published at once; correct any choice below with Replace or Remove.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_pexels_key', 'label' => __( 'Pexels API key', 'compelling-evidence' ), 'type' => 'password', 'default' => '',
+              'desc' => __( 'From pexels.com/api. Stored in the database only, never in the theme files.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_media_import', 'label' => __( 'Import article images into the Media Library', 'compelling-evidence' ), 'type' => 'checkbox', 'default' => '1', 'section' => __( 'Image import', 'compelling-evidence' ),
+              'desc' => __( 'Copies each registered image into the Media Library, a few per admin page load, so pages serve local, responsive images. Until an image is imported, figures load it from its source.', 'compelling-evidence' ) ],
         ],
 
         'performance' => [
-            [ 'id' => 'ce_parallax_enabled', 'label' => 'Enable homepage parallax effect',  'type' => 'checkbox', 'default' => '1', 'section' => 'Visual Effects', 'desc' => 'Dot grid, glow orb, and Arabic verse parallax layers. Automatically disabled on mobile and prefers-reduced-motion.' ],
-            [ 'id' => 'ce_preload_fonts',    'label' => 'Preload critical fonts',           'type' => 'checkbox', 'default' => '1', 'desc' => 'Adds <link rel="preload"> for the selected heading font and DM Sans 400 to eliminate flash of invisible text.' ],
-            [ 'id' => 'ce_minify_inline',    'label' => 'Minify inline script output',      'type' => 'checkbox', 'default' => '0', 'desc' => 'Strips whitespace from wp_localize_script output. Minor savings.' ],
-            [ 'id' => 'ce_gone_enabled',     'label' => 'Answer retired URLs with 410 Gone', 'type' => 'checkbox', 'default' => '1', 'section' => 'Retired URLs', 'desc' => 'Returns a lightweight 410 response, before the main query runs, for paths that never belonged to this site (left behind by a past spam injection). Crawlers drop 410 URLs faster than 404 URLs.' ],
-            [ 'id' => 'ce_gone_paths',       'label' => 'Retired path prefixes',            'type' => 'textarea', 'default' => ce_gone_default_paths(), 'desc' => 'One path prefix per line, starting with a slash. Any request whose path begins with a listed prefix receives 410. Never list a prefix used by real content.' ],
+            [ 'id' => 'ce_parallax_enabled', 'label' => __( 'Enable homepage parallax effect', 'compelling-evidence' ),  'type' => 'checkbox', 'default' => '1', 'section' => __( 'Visual Effects', 'compelling-evidence' ), 'desc' => __( 'Dot grid, glow orb, and Arabic verse parallax layers. Automatically disabled on mobile and prefers-reduced-motion.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_preload_fonts',    'label' => __( 'Preload critical fonts', 'compelling-evidence' ),           'type' => 'checkbox', 'default' => '1', 'desc' => __( 'Adds <link rel="preload"> for the selected heading font and DM Sans 400 to eliminate flash of invisible text.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_minify_inline',    'label' => __( 'Minify inline script output', 'compelling-evidence' ),      'type' => 'checkbox', 'default' => '0', 'desc' => __( 'Strips whitespace from wp_localize_script output. Minor savings.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_gone_enabled',     'label' => __( 'Answer retired URLs with 410 Gone', 'compelling-evidence' ), 'type' => 'checkbox', 'default' => '1', 'section' => __( 'Retired URLs', 'compelling-evidence' ), 'desc' => __( 'Returns a lightweight 410 response, before the main query runs, for paths that never belonged to this site (left behind by a past spam injection). Crawlers drop 410 URLs faster than 404 URLs.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_gone_paths',       'label' => __( 'Retired path prefixes', 'compelling-evidence' ),            'type' => 'textarea', 'default' => ce_gone_default_paths(), 'desc' => __( 'One path prefix per line, starting with a slash. Any request whose path begins with a listed prefix receives 410. Never list a prefix used by real content.', 'compelling-evidence' ) ],
         ],
 
         'security' => [
-            [ 'id' => 'ce_sec_xmlrpc_off',        'label' => 'Turn off XML-RPC',                                  'type' => 'checkbox', 'default' => '1', 'section' => 'Remote publishing', 'desc' => 'Spam tools publish from outside the site with a stored password; these switches close the doors they use, and writing in the editor is not affected. xmlrpc.php answers 403, counted per day, and the pingback header goes. On Apache the theme also blocks xmlrpc.php in .htaccess, and removes that block when this is switched off. The Jetpack plugin and old mobile apps need XML-RPC.' ],
-            [ 'id' => 'ce_sec_app_passwords_off', 'label' => 'Turn off application passwords',                    'type' => 'checkbox', 'default' => '1', 'desc' => 'Stored application passwords stop working at once. Revoke them as well, below, so they cannot return if this is switched off.' ],
-            [ 'id' => 'ce_sec_rest_lock',         'label' => 'Allow REST API changes only from a logged-in browser', 'type' => 'checkbox', 'default' => '1', 'desc' => 'A logged-in request that creates, changes or deletes content must come from a browser session on this site with a valid nonce. Basic authentication and passwords sent in a header are refused. Reading through the API, the block editor, Rank Math, contact forms and the quiz work as before, and visitors who are not logged in are not affected.' ],
-            [ 'id' => 'ce_sec_spam_gate',         'label' => 'Hold suspected gambling spam as Pending',           'type' => 'checkbox', 'default' => '1', 'section' => 'New content', 'desc' => 'A post, page, article or question going public whose title, address or text reads as casino or betting spam is saved as Pending and logged below. So is anything published from outside the editor. The articles and pages the theme seeds are exempt, and questions sent through Ask a Question arrive as Pending as before.' ],
-            [ 'id' => 'ce_sec_gone',              'label' => 'Answer 410 Gone on the address of removed spam',    'type' => 'checkbox', 'default' => '1', 'desc' => 'Search engines drop a 410 address faster than a 404 one. Only addresses of spam moved to the trash from this tab are affected. Retired URL prefixes stay under Performance.' ],
+            [ 'id' => 'ce_sec_xmlrpc_off',        'label' => __( 'Turn off XML-RPC', 'compelling-evidence' ),                                  'type' => 'checkbox', 'default' => '1', 'section' => __( 'Remote publishing', 'compelling-evidence' ), 'desc' => __( 'Spam tools publish from outside the site with a stored password; these switches close the doors they use, and writing in the editor is not affected. xmlrpc.php answers 403, counted per day, and the pingback header goes. On Apache the theme also blocks xmlrpc.php in .htaccess, and removes that block when this is switched off. The Jetpack plugin and old mobile apps need XML-RPC.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_sec_app_passwords_off', 'label' => __( 'Turn off application passwords', 'compelling-evidence' ),                    'type' => 'checkbox', 'default' => '1', 'desc' => __( 'Stored application passwords stop working at once. Revoke them as well, below, so they cannot return if this is switched off.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_sec_rest_lock',         'label' => __( 'Allow REST API changes only from a logged-in browser', 'compelling-evidence' ), 'type' => 'checkbox', 'default' => '1', 'desc' => __( 'A logged-in request that creates, changes or deletes content must come from a browser session on this site with a valid nonce. Basic authentication and passwords sent in a header are refused. Reading through the API, the block editor, Rank Math, contact forms and the quiz work as before, and visitors who are not logged in are not affected.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_sec_spam_gate',         'label' => __( 'Hold suspected gambling spam as Pending', 'compelling-evidence' ),           'type' => 'checkbox', 'default' => '1', 'section' => __( 'New content', 'compelling-evidence' ), 'desc' => __( 'A post, page, article or question going public whose title, address or text reads as casino or betting spam is saved as Pending and logged below. So is anything published from outside the editor. The articles and pages the theme seeds are exempt, and questions sent through Ask a Question arrive as Pending as before.', 'compelling-evidence' ) ],
+            [ 'id' => 'ce_sec_gone',              'label' => __( 'Answer 410 Gone on the address of removed spam', 'compelling-evidence' ),    'type' => 'checkbox', 'default' => '1', 'desc' => __( 'Search engines drop a 410 address faster than a 404 one. Only addresses of spam moved to the trash from this tab are affected. Retired URL prefixes stay under Performance.', 'compelling-evidence' ) ],
         ],
 
         'tools' => [
-            [ 'id' => 'ce_sync_info', 'label' => 'Content Sync', 'type' => 'info', 'section' => 'Manual Article Sync' ],
+            [ 'id' => 'ce_sync_info', 'label' => __( 'Content Sync', 'compelling-evidence' ), 'type' => 'info', 'section' => __( 'Manual Article Sync', 'compelling-evidence' ) ],
         ],
     ];
 
@@ -598,8 +755,8 @@ function ce_get_tab_fields( $tab ) {
    ═══════════════════════════════════════════════════════════════════════ */
 
 function ce_analytics_cron_purge() {
-    if ( get_option( 'ce_analytics_enabled', '1' ) !== '1' ) return;
-
+    // Runs whether or not tracking is on, so rows left from an earlier
+    // opt-in still leave on schedule.
     global $wpdb;
     $table = $wpdb->prefix . 'ce_analytics';
     $days  = absint( get_option( 'ce_analytics_retention_days', 90 ) );

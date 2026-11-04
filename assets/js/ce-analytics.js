@@ -6,6 +6,12 @@
 (function() {
   'use strict';
 
+  // Per-feature switches from the Analytics tab (printed as CE_ANALYTICS).
+  // Absent means on, as before 2.15.0.
+  var cfg = window.CE_ANALYTICS || {};
+  var trackScroll = cfg.scroll !== false && cfg.scroll !== '';
+  var trackSearch = cfg.search !== false && cfg.search !== '';
+
   // Session ID — unique per browser tab session, no persistence
   var SESSION_KEY = 'ce_analytics_sid';
   var session = sessionStorage.getItem(SESSION_KEY);
@@ -72,7 +78,7 @@
     track('article_view', { slug: articleSlug });
 
     // Scroll depth tracking (25%, 50%, 75%, 100%)
-    if (articleBody) {
+    if (articleBody && trackScroll) {
       var depthsFired = {};
       var depths = [25, 50, 75, 100];
 
@@ -104,7 +110,7 @@
 
   // ── SEARCH TRACKING ──
   var searchInput = document.getElementById('ce-search-input');
-  if (searchInput) {
+  if (searchInput && trackSearch) {
     var searchTimer;
     searchInput.addEventListener('input', function() {
       clearTimeout(searchTimer);

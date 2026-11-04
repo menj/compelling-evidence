@@ -30,7 +30,7 @@ $ce_recent = new WP_Query( [
 <main id="main" tabindex="-1" role="main">
 <section class="not-found-hero">
 
-  <p class="not-found-kicker">Exhibit 404 <span aria-hidden="true">·</span> Evidence not found</p>
+  <p class="not-found-kicker"><?php esc_html_e( 'Exhibit 404', 'compelling-evidence' ); ?> <span aria-hidden="true">·</span> <?php esc_html_e( 'Evidence not found', 'compelling-evidence' ); ?></p>
 
   <div class="not-found-code" aria-hidden="true">404</div>
 
@@ -38,7 +38,7 @@ $ce_recent = new WP_Query( [
     <h1 class="not-found-title" id="nf-title"><?php echo esc_html( $ce_excuse['title'] ); ?></h1>
     <p class="not-found-sub" id="nf-body"><?php echo esc_html( $ce_excuse['body'] ); ?></p>
     <p class="nf-source">
-      <span class="nf-source-label">Cf. <span id="nf-label"><?php echo esc_html( $ce_excuse['label'] ); ?></span></span>
+      <span class="nf-source-label"><?php esc_html_e( 'Cf.', 'compelling-evidence' ); ?> <span id="nf-label"><?php echo esc_html( $ce_excuse['label'] ); ?></span></span>
       <a id="nf-link" href="<?php echo esc_url( $ce_excuse['url'] ); ?>"><span id="nf-cta"><?php echo esc_html( $ce_excuse['cta'] ); ?></span> <span aria-hidden="true">→</span></a>
     </p>
   </div>
@@ -49,21 +49,21 @@ $ce_recent = new WP_Query( [
   </a>
 
   <div class="not-found-actions">
-    <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="not-found-btn not-found-btn--primary">Go home</a>
-    <a href="<?php echo esc_url( home_url( '/quiz' ) ); ?>" class="not-found-btn not-found-btn--secondary">Find your path</a>
-    <a href="<?php echo esc_url( home_url( '/articles' ) ); ?>" class="not-found-btn not-found-btn--ghost">Browse articles</a>
+    <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="not-found-btn not-found-btn--primary"><?php esc_html_e( 'Go home', 'compelling-evidence' ); ?></a>
+    <a href="<?php echo esc_url( home_url( '/quiz' ) ); ?>" class="not-found-btn not-found-btn--secondary"><?php esc_html_e( 'Find your path', 'compelling-evidence' ); ?></a>
+    <a href="<?php echo esc_url( home_url( '/articles' ) ); ?>" class="not-found-btn not-found-btn--ghost"><?php esc_html_e( 'Browse articles', 'compelling-evidence' ); ?></a>
   </div>
 
   <div class="not-found-search" role="search">
     <form method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>">
-      <input type="search" name="s" placeholder="Search a question or topic…" aria-label="Search" autocomplete="off">
-      <button type="submit">Search</button>
+      <input type="search" name="s" placeholder="<?php esc_attr_e( 'Search a question or topic…', 'compelling-evidence' ); ?>" aria-label="<?php esc_attr_e( 'Search', 'compelling-evidence' ); ?>" autocomplete="off">
+      <button type="submit"><?php esc_html_e( 'Search', 'compelling-evidence' ); ?></button>
     </form>
   </div>
 
   <?php if ( $ce_recent->have_posts() ) : ?>
-  <nav class="nf-recent" aria-label="Recent case files">
-    <p class="nf-recent-label">Recent case files</p>
+  <nav class="nf-recent" aria-label="<?php esc_attr_e( 'Recent case files', 'compelling-evidence' ); ?>">
+    <p class="nf-recent-label"><?php esc_html_e( 'Recent case files', 'compelling-evidence' ); ?></p>
     <ul>
       <?php while ( $ce_recent->have_posts() ) : $ce_recent->the_post(); ?>
         <li><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></li>

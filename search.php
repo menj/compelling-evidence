@@ -223,8 +223,8 @@ $results = new WP_Query($args);
 })();
 </script>
 <div id="inf-scroll-status-search" style="text-align:center;padding:1rem 0;">
-  <p class="inf-scroll-request" style="display:none;color:rgba(242,238,255,0.3);font-size:0.8rem;">Loading more…</p>
-  <p class="inf-scroll-last"    style="display:none;color:rgba(242,238,255,0.2);font-size:0.75rem;">All results loaded.</p>
+  <p class="inf-scroll-request" style="display:none;color:rgba(242,238,255,0.3);font-size:0.8rem;"><?php esc_html_e( 'Loading more…', 'compelling-evidence' ); ?></p>
+  <p class="inf-scroll-last"    style="display:none;color:rgba(242,238,255,0.2);font-size:0.75rem;"><?php esc_html_e( 'All results loaded.', 'compelling-evidence' ); ?></p>
 </div>
 
 </main><!-- /#main -->

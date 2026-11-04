@@ -14,6 +14,20 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+/**
+ * Whether the owner has switched analytics on.
+ *
+ * Analytics is opt-in from 2.15.0: until the Analytics tab saves
+ * ce_analytics_enabled as '1', no tracker loads, the quiz and the journeys
+ * send no events and the endpoint records nothing. A site that had saved
+ * the tab with tracking on keeps its stored '1'.
+ *
+ * @since 2.15.0
+ */
+function ce_theme_analytics_enabled(): bool {
+    return '1' === (string) get_option( 'ce_analytics_enabled', '0' );
+}
+
 
 /* ═══════════════════════════════════════════════════════════════════════
    DATABASE
@@ -100,6 +114,10 @@ function ce_analytics_record( $type, $data = [], $session_id = '' ) {
 
 function ce_ajax_analytics() {
     check_ajax_referer( 'ce_nonce', 'nonce' );
+
+    if ( ! ce_theme_analytics_enabled() ) {
+        wp_send_json_error( 'Analytics is off', 403 );
+    }
 
     if ( ce_rate_limited( 'analytics', 30, 60 ) ) {
         wp_send_json_error( 'Rate limited' );
@@ -459,7 +477,7 @@ function ce_handle_purge_analytics() {
         "DELETE FROM %i WHERE created_at < %s", $table, $before
     ) );
 
-    wp_redirect( admin_url( 'admin.php?page=ce-analytics&purged=' . $deleted ) );
+    wp_safe_redirect( admin_url( 'admin.php?page=ce-analytics&purged=' . (int) $deleted ) );
     exit;
 }
 add_action( 'admin_post_ce_purge_analytics', 'ce_handle_purge_analytics' );

@@ -45,7 +45,7 @@
     <?php endif; ?>
   </a>
 
-  <button type="button" class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="ce-nav-links">
+  <button type="button" class="nav-toggle" aria-label="<?php esc_attr_e( 'Toggle menu', 'compelling-evidence' ); ?>" aria-expanded="false" aria-controls="ce-nav-links">
     <span></span><span></span><span></span>
   </button>
 
@@ -72,7 +72,7 @@
     <a href="<?php echo esc_url(home_url('/my-progress')); ?>" id="ce-nav-progress-btn" class="nav-progress-link" title="<?php esc_attr_e('My Progress', 'compelling-evidence'); ?>" style="display:none;">
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
     </a>
-    <a href="#" class="nav-random" id="ce-random-btn" title="Random article">
+    <a href="#" class="nav-random" id="ce-random-btn" title="<?php esc_attr_e( 'Random article', 'compelling-evidence' ); ?>">
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2 18h1.4c1.3 0 2.5-.6 3.3-1.7l6.1-8.6c.8-1.1 2-1.7 3.3-1.7H22"/><path d="m18 2 4 4-4 4"/><path d="M2 6h1.9c1 0 1.8.4 2.5 1"/><path d="m22 18-4 4-4-4"/><path d="M17.5 17c.7.7 1.6 1 2.5 1H22"/></svg>
       Random
     </a>

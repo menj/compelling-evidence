@@ -20,9 +20,9 @@ ksort( $grouped );
 
   <header class="page-hero glossary-hero">
     <div class="page-hero-inner">
-      <p class="section-label">Reference</p>
-      <h1>Glossary of Terms</h1>
-      <p class="hero-sub">Key concepts from the Islamic intellectual tradition used throughout this site — defined clearly and without jargon.</p>
+      <p class="section-label"><?php esc_html_e( 'Reference', 'compelling-evidence' ); ?></p>
+      <h1><?php esc_html_e( 'Glossary of Terms', 'compelling-evidence' ); ?></h1>
+      <p class="hero-sub"><?php esc_html_e( 'Key concepts from the Islamic intellectual tradition used throughout this site — defined clearly and without jargon.', 'compelling-evidence' ); ?></p>
     </div>
   </header>
 
@@ -43,7 +43,7 @@ ksort( $grouped );
 
   <div class="glossary-body">
 
-    <nav class="glossary-alphabet" aria-label="Jump to letter">
+    <nav class="glossary-alphabet" aria-label="<?php esc_attr_e( 'Jump to letter', 'compelling-evidence' ); ?>">
       <?php foreach ( array_keys( $grouped ) as $letter ) : ?>
         <a href="#letter-<?php echo esc_attr( $letter ); ?>"><?php echo esc_html( $letter ); ?></a>
       <?php endforeach; ?>

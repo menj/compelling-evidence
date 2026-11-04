@@ -32,10 +32,10 @@ $reading_secs = $word_count * 0.3; // approx seconds for progress tracking
         ?>
 
         <!-- Breadcrumbs -->
-        <nav class="ce-breadcrumbs" aria-label="Breadcrumb">
+        <nav class="ce-breadcrumbs" aria-label="<?php esc_attr_e( 'Breadcrumb', 'compelling-evidence' ); ?>">
           <ol>
-            <li><a href="<?php echo esc_url(home_url('/')); ?>">Home</a></li>
-            <li><a href="<?php echo esc_url(home_url('/articles')); ?>">Articles</a></li>
+            <li><a href="<?php echo esc_url(home_url('/')); ?>"><?php esc_html_e( 'Home', 'compelling-evidence' ); ?></a></li>
+            <li><a href="<?php echo esc_url(home_url('/articles')); ?>"><?php esc_html_e( 'Articles', 'compelling-evidence' ); ?></a></li>
             <?php if ($topic_name && $topic_link) : ?>
               <li><a href="<?php echo esc_url($topic_link); ?>"><?php echo esc_html($topic_name); ?></a></li>
             <?php endif; ?>
@@ -121,14 +121,14 @@ $reading_secs = $word_count * 0.3; // approx seconds for progress tracking
         <div class="sidebar-sticky-track">
           <div class="sidebar-sticky">
           <!-- Table of Contents (auto-populated by JS) -->
-          <nav class="sidebar-toc sidebar-widget" id="ce-toc" style="display:none;" role="doc-toc" aria-label="Table of contents">
-            <h3 class="widget-title">In this article</h3>
+          <nav class="sidebar-toc sidebar-widget" id="ce-toc" style="display:none;" role="doc-toc" aria-label="<?php esc_attr_e( 'Table of contents', 'compelling-evidence' ); ?>">
+            <h3 class="widget-title"><?php esc_html_e( 'In this article', 'compelling-evidence' ); ?></h3>
             <ol class="toc-list" id="ce-toc-list"></ol>
           </nav>
 
           <!-- Sidebar reading progress -->
-          <div class="sidebar-reading-progress" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="srp">
-            <span class="srp-label">Reading progress</span>
+          <div class="sidebar-reading-progress" role="progressbar" aria-label="<?php esc_attr_e( 'Reading progress', 'compelling-evidence' ); ?>" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="srp">
+            <span class="srp-label"><?php esc_html_e( 'Reading progress', 'compelling-evidence' ); ?></span>
             <div class="srp-track">
               <div class="srp-fill" id="srp-fill"></div>
             </div>
@@ -142,7 +142,7 @@ $reading_secs = $word_count * 0.3; // approx seconds for progress tracking
 
         <!-- ── ARTICLE → JOURNEY RETURN WIDGET ──────────────────────── -->
         <div class="sidebar-widget" id="ce-journey-return-widget" style="display:none;">
-          <h3 class="widget-title" id="ce-journey-return-title">Your Journey</h3>
+          <h3 class="widget-title" id="ce-journey-return-title"><?php esc_html_e( 'Your Journey', 'compelling-evidence' ); ?></h3>
           <div id="ce-journey-return-body"></div>
         </div>
 
@@ -212,7 +212,7 @@ $reading_secs = $word_count * 0.3; // approx seconds for progress tracking
   if ($related_cards && count($related_cards) >= 2) : ?>
   <section class="ce-related-articles">
     <div class="related-articles-inner">
-      <h2 class="related-articles-title">Continue Reading</h2>
+      <h2 class="related-articles-title"><?php esc_html_e( 'Continue Reading', 'compelling-evidence' ); ?></h2>
       <div class="related-articles-grid">
         <?php foreach ($related_cards as $rc) :
             $rc_topics = wp_get_post_terms($rc->ID, 'ce_topic');

@@ -173,7 +173,7 @@ class CE_Feed_Redirector {
             return;
         }
 
-        wp_redirect( $canonical_url, 301 );
+        wp_safe_redirect( $canonical_url, 301 );
         exit;
     }
 
