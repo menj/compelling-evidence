@@ -15,9 +15,9 @@ $faq_sections = ce_faq_sections();
 
   <header class="page-hero faq-hero">
     <div class="page-hero-inner">
-      <p class="section-label">Got questions about the site?</p>
-      <h1>Frequently Asked Questions</h1>
-      <p class="hero-sub">Answers to the most common questions about Compelling Evidence — what it is, how it works, and what it asks of you.</p>
+      <p class="section-label"><?php esc_html_e( 'Got questions about the site?', 'compelling-evidence' ); ?></p>
+      <h1><?php esc_html_e( 'Frequently Asked Questions', 'compelling-evidence' ); ?></h1>
+      <p class="hero-sub"><?php esc_html_e( 'Answers to the most common questions about Compelling Evidence — what it is, how it works, and what it asks of you.', 'compelling-evidence' ); ?></p>
     </div>
   </header>
 

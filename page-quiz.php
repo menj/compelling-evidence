@@ -10,11 +10,11 @@ if ( ! file_exists( $quiz_file ) ) {
     <main id="main" tabindex="-1" role="main">
 <section class="not-found-hero">
       <div class="not-found-code" aria-hidden="true">404</div>
-      <h1 class="not-found-title">Quiz not available</h1>
-      <p class="not-found-sub">The quiz could not be loaded. Browse all journey paths directly or read the articles.</p>
+      <h1 class="not-found-title"><?php esc_html_e( 'Quiz not available', 'compelling-evidence' ); ?></h1>
+      <p class="not-found-sub"><?php esc_html_e( 'The quiz could not be loaded. Browse all journey paths directly or read the articles.', 'compelling-evidence' ); ?></p>
       <div class="not-found-actions">
-        <a href="<?php echo esc_url(home_url('/journeys')); ?>" class="not-found-btn not-found-btn--primary">Browse all paths</a>
-        <a href="<?php echo esc_url(home_url('/articles')); ?>" class="not-found-btn not-found-btn--secondary">Read articles</a>
+        <a href="<?php echo esc_url(home_url('/journeys')); ?>" class="not-found-btn not-found-btn--primary"><?php esc_html_e( 'Browse all paths', 'compelling-evidence' ); ?></a>
+        <a href="<?php echo esc_url(home_url('/articles')); ?>" class="not-found-btn not-found-btn--secondary"><?php esc_html_e( 'Read articles', 'compelling-evidence' ); ?></a>
       </div>
     </section>
     <?php
@@ -85,17 +85,19 @@ if ( $seo_tags ) {
     $html = str_replace( '</head>', $seo_tags . '</head>', $html );
 }
 
-// ── Inject analytics tracker into standalone quiz HTML ──
-// quiz_abandon fires on pagehide: sendBeacon first, and when the browser
-// refuses the beacon (it returns false), a keepalive fetch instead.
-$analytics_js = '<script>'
-    . 'window.CE={ajaxUrl:"' . admin_url('admin-ajax.php') . '",nonce:"' . wp_create_nonce('ce_nonce') . '"};'
-    . '(function(){var s=null;try{s=sessionStorage.getItem("ce_analytics_sid");}catch(e){}if(!s){s=Math.random().toString(36).substr(2,12)+Date.now().toString(36);try{sessionStorage.setItem("ce_analytics_sid",s);}catch(e){}}window.ceTrack=function(t,d){var b=new FormData();b.append("action","ce_analytics");b.append("nonce",CE.nonce);b.append("event_type",t);b.append("event_data",JSON.stringify(d||{}));b.append("session_id",s);var q=t==="quiz_abandon";if(q&&navigator.sendBeacon){var p=new URLSearchParams();p.append("action","ce_analytics");p.append("nonce",CE.nonce);p.append("event_type",t);p.append("event_data",JSON.stringify(d||{}));p.append("session_id",s);try{if(navigator.sendBeacon(CE.ajaxUrl,p))return;}catch(e){}}fetch(CE.ajaxUrl,{method:"POST",body:b,credentials:"same-origin",keepalive:q}).catch(function(){});};'
-    . 'ceTrack("pageview",{page:"quiz",path:"/quiz/"});'
-    . '})();'
-    . '</script>';
-// Inject before the first <script> in body (so ceTrack is defined before quiz JS calls it)
-$html = preg_replace( '/(<script>)/', $analytics_js . '$1', $html, 1 );
+// ── Inject analytics tracker into standalone quiz HTML (opt-in) ──
+if ( ce_theme_analytics_enabled() ) {
+    // quiz_abandon fires on pagehide: sendBeacon first, and when the browser
+    // refuses the beacon (it returns false), a keepalive fetch instead.
+    $analytics_js = '<script>'
+        . 'window.CE={ajaxUrl:"' . admin_url('admin-ajax.php') . '",nonce:"' . wp_create_nonce('ce_nonce') . '"};'
+        . '(function(){var s=null;try{s=sessionStorage.getItem("ce_analytics_sid");}catch(e){}if(!s){s=Math.random().toString(36).substr(2,12)+Date.now().toString(36);try{sessionStorage.setItem("ce_analytics_sid",s);}catch(e){}}window.ceTrack=function(t,d){var b=new FormData();b.append("action","ce_analytics");b.append("nonce",CE.nonce);b.append("event_type",t);b.append("event_data",JSON.stringify(d||{}));b.append("session_id",s);var q=t==="quiz_abandon";if(q&&navigator.sendBeacon){var p=new URLSearchParams();p.append("action","ce_analytics");p.append("nonce",CE.nonce);p.append("event_type",t);p.append("event_data",JSON.stringify(d||{}));p.append("session_id",s);try{if(navigator.sendBeacon(CE.ajaxUrl,p))return;}catch(e){}}fetch(CE.ajaxUrl,{method:"POST",body:b,credentials:"same-origin",keepalive:q}).catch(function(){});};'
+        . 'ceTrack("pageview",{page:"quiz",path:"/quiz/"});'
+        . '})();'
+        . '</script>';
+    // Inject before the first <script> in body (so ceTrack is defined before quiz JS calls it)
+    $html = preg_replace( '/(<script>)/', $analytics_js . '$1', $html, 1 );
+}
 
 header('Content-Type: text/html; charset=UTF-8');
 $html = ce_standalone_html_seo( $html, get_permalink() );

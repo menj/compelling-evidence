@@ -6,104 +6,128 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.14.0
+Version: 2.15.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Template: twentytwentyfive
 Tags: custom-menu, custom-logo, featured-images, rtl-language-support, translation-ready
 
-A child theme of Twenty Twenty-Five for compelling-evidence.com — an Islamic apologetics site
-delivering personalised inquiry journeys for 14 intellectual starting points, 131 articles,
-a weighted persona quiz, and a full engagement layer.
+Child theme of Twenty Twenty-Five for compelling-evidence.com: 14 journeys, a persona quiz and 131 articles on God, evidence and Islam.
 
 == Description ==
 
-Compelling Evidence is a purpose-built WordPress child theme. It is not a general-purpose theme
-and is not submitted to the WordPress.org theme directory. This readme.txt is included for
-structural compliance inside the .zip distribution package.
+CE Theme runs one site, compelling-evidence.com. It is a child of Twenty Twenty-Five and is not built as a general-purpose theme.
 
-The theme delivers:
+A reader takes a 10-question quiz, gets routed to 1 of 14 journeys written for a starting point (atheist, agnostic, scientist, sceptic and so on), and reads on into 131 articles in 11 topics. Everything the theme needs (articles, topics, pages) ships inside it and syncs to the database on activation.
 
-* 14 self-contained persona journey paths (Volume I complete)
-* 131 articles across 11 topic categories, auto-published on activation
-* 10-question weighted persona quiz with 6-layer scoring algorithm
-* Gamified progress dashboard driven by localStorage
-* Privacy-first server-side analytics (IP-hashed, no raw storage)
-* Voting, resonance feedback, and 9-platform social sharing
-* 85-term Islamic/Arabic glossary with hover/click tooltip auto-linking
-* 197 phrase-to-article crosslink mappings with enforced ground rules
-* 8-tab admin Theme Options panel (Appearance > CE Theme Options)
-* RTL Arabic support with self-hosted KFGQPC HAFS Uthmanic Script (Quranic verses only) and CE Hadith fonts
-* Malay (ms-MY) translation included
+All fonts are self-hosted. With default settings the theme makes no request to another server from a visitor's browser, sets no cookie and tracks nothing.
+
+== Features ==
+
+* 14 journeys, each a stand-alone page with saved progress, a visible FAQ and FAQPage markup.
+* A persona quiz in three modes (quick, standard, full) with weighted scoring; it also carries a visible FAQ and FAQPage markup.
+* 131 articles and their topic taxonomy (ce_topic), seeded from JSON batch files.
+* Reader questions (ce_question) with an Ask a Question form, spam honeypot and nonce.
+* A progress page driven by localStorage.
+* Votes and resonance buttons under each article.
+* A glossary of Islamic and Arabic terms with tooltips, and automatic crosslinks to this site and the 6 sister sites.
+* One schema.org graph per page (Article, FAQPage, Quiz, LearningResource, QAPage, ImageObject, Quotation and more).
+* A built-in lightbox, figure credits and import of registered images into the Media Library.
+* Security switches: XML-RPC off, application passwords off, REST changes only from a logged-in browser, and a gambling-spam gate.
+* Optional first-party analytics, off until you switch it on.
+* RTL Arabic with the KFGQPC HAFS Uthmanic Script for Quran text. Malay (ms_MY) translation included.
+* A Theme Options page with 12 tabs.
+
+== Usage ==
+
+Open Appearance > CE Theme Options. Each tab opens with a short note on what it controls and saves on its own. Use the arrow keys to move between tabs.
+
+* General: hero title, subtitle, the Arabic verse with its number, translation and reference, and the footer line.
+* Author & Identity: author name, bio, profiles and logo for the byline and the schema.
+* Colors: 7 brand colours in a picker grid. A colour left at its default prints nothing.
+* Typography: click a card to pick the heading, reading and label faces; pick a size scale.
+* Links & Tooltips: crosslinks, sister-site links, murtadd.org counterparts and glossary tooltips. Sliders show the value they will save.
+* Media: lightbox, automatic Pexels lead images (off by default, needs your own key) and image import.
+* Quiz & Journeys: quiz on or off, answers per question, cards per row.
+* Engagement: votes, resonance, home page search, archive page size.
+* Analytics: the opt-in switch, scroll and search tracking, retention.
+* Performance: parallax, font preloading, the 410 Gone list for retired paths.
+* Security: the remote-publishing switches, the spam gate, and the spam scan, password and session tools.
+* Tools & Sync: run the article sync by hand and check the batch files.
+
+The analytics report is under CE Analytics in the admin menu.
 
 == Installation ==
 
-1. Install Twenty Twenty-Five parent theme (must be present on disk, need not be active).
-2. Upload compelling-evidence.zip via Appearance > Themes > Add New > Upload Theme.
-3. Activate the theme. On first admin page load four auto-run modules fire automatically:
-   - Category migration (creates 10 taxonomy terms, remaps articles)
-   - Content sync (publishes all 131 articles from the JSON batch files to the database)
-   - Secondary pages creation (About, Editorial Policy, Privacy, Contact, FAQ, Glossary,
-     Ask a Question)
-   - Next articles creation (ce_create_next_articles — publishes orders 100+)
-4. Go to Settings > Permalinks and click Save Changes to flush rewrite rules.
-5. Go to Settings > Reading and set a static front page.
-6. Verify: /articles/ shows all 10 topic categories; /journeys/ shows all 14 paths.
-
-= Server configuration =
-
-The .htaccess-performance file in the theme root contains Apache mod_deflate/mod_brotli
-compression rules and mod_expires cache headers. These must be manually merged into the
-WordPress root .htaccess — the theme cannot activate them automatically.
+1. Install Twenty Twenty-Five. It must be on disk; it need not be active.
+2. Upload the theme zip under Appearance > Themes > Add New > Upload Theme, and activate it.
+3. Load any admin page once. The theme creates its topics, publishes the articles from inc/articles/ and creates the secondary pages (About, Editorial Policy, Privacy, Contact, FAQ, Glossary, Ask a Question).
+4. Go to Settings > Permalinks and click Save Changes.
+5. Go to Settings > Reading and pick a static front page if you want one. The theme follows that setting.
+6. Check that /articles/ lists the topics and /journeys/ lists 14 paths.
 
 == Frequently Asked Questions ==
 
+= Does the theme track visitors? =
+
+Not by default. Analytics stays off until you switch it on under Appearance > CE Theme Options > Analytics. See Privacy below for what it records once on.
+
 = How does content sync work? =
 
-ce-content-sync.php derives a sync key from the theme version in style.css. Each version bump
-triggers a fresh sync on next admin page load. Manual DB edits to article content will be
-overwritten on the next version deploy.
+inc/ce-content-sync.php builds a sync key from the theme version. A version bump runs a fresh sync on the next admin page load. Edits made to article content in the database are overwritten by the next sync, so edit the JSON batch files instead.
 
 = How do I add new articles? =
 
-Add entries to inc/articles-data-next.php using nowdoc format (slug, title, topic, order,
-excerpt, content). Bump the theme version in style.css — content sync publishes automatically.
+Add the article to a batch file in inc/articles/, update manifest.json and its checksum, and bump the theme version. Tools & Sync runs the sync by hand and checks the checksums.
 
 = Where are journey files served from? =
 
-/journeys/[slug]-journey.html. Served via page-journey.php which bypasses wp_head/wp_footer.
-Each file holds the prose, its own few styles and a CE_JOURNEY data object. The shared code is in
-assets/css/journey.css and assets/js/journey.js, printed by inc/ce-journey-assets.php.
+/journey/[slug]/, through page-journey.php, which prints a stand-alone document. The prose sits in journeys/; the shared code is assets/css/journey.css and assets/js/journey.js, printed by inc/ce-journey-assets.php.
 
 = How do I change the hero Arabic verse? =
 
-Appearance > CE Theme Options > General tab. No template editing required.
+Appearance > CE Theme Options > General. Change the verse, its number, translation and reference together.
 
-= What is the .htaccess-performance file? =
+= Why are feed links missing from the page head? =
 
-Apache rules for gzip/brotli compression and 1-year Cache-Control headers. Must be merged into
-the WordPress root .htaccess manually — it is not activated by WordPress automatically.
+The theme declares automatic-feed-links, and its feed redirector then removes the links and sends feed URLs to the matching page. The site publishes no feed on purpose.
 
-== Theme Options ==
+== Privacy ==
 
-Appearance > CE Theme Options — 8 tabs:
+With default settings the theme sets no cookie, stores nothing about visitors and loads nothing from another server.
 
-1. General       Hero title, subtitle, Arabic verse, verse number, translation, reference, footer text
-2. Colors        7 color pickers injected as CSS custom properties via wp_head
-3. Typography    Heading font, reading body font and label font (Playfair Display, Cormorant
-                  Garamond, EB Garamond, Sabon Next LT, DM Sans, Special Elite), scale (90-120%)
-4. Links &       Crosslinks and glossary tooltips: enable/disable, max counts, link styles, colors,
-   Tooltips      Arabic display toggle, trigger method (hover/click)
-5. Quiz &        Quiz enable/disable, max selections per question, journey progress badges, cards per row
-   Journeys
-6. Engagement    Toggle voting, resonance, crosslinks, search; articles per page
-7. Analytics     Toggle tracking, scroll depth logging, search query logging; data retention; auto-purge
-8. Performance   Toggle parallax, font preloading, inline script minification;
-                  Retired URLs (410 Gone path prefixes)
-9. Security      XML-RPC, application password and REST locks; spam gate;
-                  spam scan and trash; reports and security log
+* Analytics (opt-in). Once switched on, the theme records page views, quiz starts, answers and results, journey progress, article reads and scroll depth, and site search terms in the wp_ce_analytics table. Each row has a salted hash of the IP address (the raw address is not kept), a per-tab session id held in sessionStorage, the page address, the referrer and a device type. Rows older than the retention period (30 days to 1 year) are deleted daily, whether tracking is on or off. Nothing is sent to a third party.
+* Votes and resonance store a count per article and a salted IP hash to stop repeat votes.
+* Ask a Question stores the name, email address, topic and question as a pending ce_question post.
+* Journey and quiz progress lives in the visitor's localStorage. For a logged-in user the quiz result and journey progress are also saved in user meta.
+* Automatic images (opt-in) call the Pexels API from the server with your key. Image import copies registered images from Wikimedia Commons, Pexels or Flickr to the Media Library from the server; until an image is imported, its figure loads it from the source site.
+
+== Resources ==
+
+CE Theme, Copyright 2026 MENJ. Licensed GPLv2 or later.
+
+* Parent theme: Twenty Twenty-Five, Automattic, GPLv2 or later.
+* Playfair Display, Copyright 2017 The Playfair Display Project Authors, SIL OFL 1.1. Source: Google Fonts. assets/fonts/licenses/Playfair-Display-OFL.txt
+* DM Sans, Copyright 2014 The DM Sans Project Authors, SIL OFL 1.1. Source: Google Fonts. assets/fonts/licenses/DM-Sans-OFL.txt
+* Cormorant Garamond, Copyright 2015 The Cormorant Project Authors, SIL OFL 1.1. Source: Google Fonts. assets/fonts/licenses/Cormorant-Garamond-OFL.txt
+* EB Garamond, Copyright 2017 The EB Garamond Project Authors, SIL OFL 1.1. assets/fonts/licenses/EB-Garamond-OFL.txt
+* Special Elite, Astigmatic, Apache License 2.0. assets/fonts/licenses/Special-Elite-LICENSE.txt
+* CE Hadith (ce-hadith-*.woff2): Noto Naskh Arabic, The Noto Project Authors, SIL OFL 1.1. assets/fonts/licenses/Noto-Naskh-Arabic-CE-Hadith-OFL.txt
+* KFGQPC HAFS Uthmanic Script, King Fahd Glorious Quran Printing Complex, under its own free-distribution licence (assets/fonts/licenses/kfgqpc-hafs-uthmanic-script-LICENSE.txt). It is not GPL-compatible and forbids modification; the owner chose to ship a WOFF2 conversion. Used for Quran text only.
+* Sabon Next LT (sabon-next-lt-*.woff2), Monotype, a commercial licence held by the site owner. It is not GPL-compatible and may not be redistributed with the theme outside this site. It is an optional face in Typography; the default faces do not use it.
+* Images in assets/images and assets/diagrams (icons, favicons, the Al-Rahman calligraphy, diagrams) and screenshot.png: made for this site, GPLv2 or later.
+* Article figures are not bundled. inc/articles/media.json lists each with its source page, creator and licence, and the credit prints under the figure.
 
 == Changelog ==
+
+= 2.15.0 - November 2026 =
+
+* Analytics is opt-in. The tracker, the quiz and journey events and the endpoint stay off until the Analytics tab switches them on; a site that had saved tracking on keeps it. The scroll and search switches now work, and retention purging runs whether tracking is on or off.
+* Theme Options rebuilt: cards, keyboard tabs with ARIA roles, toggle switches, selector cards for fonts and link styles, sliders that show their value, a colour picker grid, a usage note on each tab, and a layout that stacks at 782px. Option keys and their effects are unchanged. Values are checked against their type, range and allowed choices on save.
+* The page assets (CSS and JS) load only on the Theme Options screen. The inline script is gone.
+* Strings in the templates, the options page and two admin notices are translatable. Both admin notices can be dismissed.
+* automatic-feed-links declared; post_class on every post loop. wp_safe_redirect for internal redirects; request paths unslashed before use.
+* Licence header in style.css, a Resources section, OFL files for Playfair Display, DM Sans, Cormorant Garamond and Noto Naskh Arabic, and a .gitattributes that keeps dev files out of release zips.
 
 = 2.14.0 - November 2026 =
 * Mobile and accessibility pass, done to two owner briefs of 4 November 2026: the mobile-first audit and the WCAG 2.2 AA policy. Pages were measured at 9 widths from 320px to 1280px with axe-core. No page scrolled sideways before or after.
@@ -462,6 +486,9 @@ For full version history see CHANGELOG.md.
 
 == Upgrade Notice ==
 
+= 2.15.0 =
+Analytics is now off unless the Analytics tab was saved with tracking on. To keep collecting, open Appearance > CE Theme Options > Analytics and switch it on.
+
 = 2.7.1 =
 Upload and load any admin page once. On Apache the theme writes the xmlrpc.php block into .htaccess.
 
@@ -473,17 +500,3 @@ No manual steps required.
 = 2.2.78 =
 Content sync runs automatically on first admin page load. No manual DB changes required.
 Upgrading from below 2.2.0: run the category migration — see UPGRADING.md.
-
-== Credits ==
-
-Parent theme: Twenty Twenty-Five by Automattic (GPL-2.0-or-later).
-KFGQPC HAFS Uthmanic Script, King Fahd Glorious Quran Printing Complex (Quranic verses only), served as a woff2 conversion of the original TTF by the owner's decision, although its licence forbids modification.
-CE Hadith font: Noto Naskh Arabic (Google, Apache 2.0).
-Playfair Display, DM Sans, Cormorant Garamond: Google Fonts (SIL Open Font License).
-All fonts self-hosted — zero external font requests at runtime.
-
-== Privacy ==
-
-The theme includes a privacy-first analytics system (ce-analytics.php) tracking 12 event types
-via IP hashing (no raw IP storage). Data stored in a custom WP database table. Retention
-configurable (30 days to 1 year), auto-purged via WP-Cron. Google Tag Manager is optional.

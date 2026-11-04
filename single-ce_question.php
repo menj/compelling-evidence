@@ -12,7 +12,7 @@ get_header();
 
 <main class="ce-page ce-qa-single" id="main" tabindex="-1">
 
-  <article class="qa-single">
+  <article id="post-<?php the_ID(); ?>" <?php post_class( 'qa-single' ); ?>>
 
     <header class="qa-single-header">
       <a href="<?php echo esc_url( home_url( '/qa/' ) ); ?>" class="qa-back-link">
@@ -21,7 +21,7 @@ get_header();
       </a>
 
       <div class="qa-question-wrap">
-        <span class="qa-label">Question</span>
+        <span class="qa-label"><?php esc_html_e( 'Question', 'compelling-evidence' ); ?></span>
         <h1 class="qa-title"><?php the_title(); ?></h1>
         <?php
         $topic = get_post_meta( get_the_ID(), '_ce_question_topic', true );
@@ -32,7 +32,7 @@ get_header();
     </header>
 
     <div class="qa-answer-wrap">
-      <span class="qa-label qa-label--answer">Answer</span>
+      <span class="qa-label qa-label--answer"><?php esc_html_e( 'Answer', 'compelling-evidence' ); ?></span>
       <div class="qa-content">
         <?php
         $answer_raw = get_the_content();
@@ -54,7 +54,7 @@ get_header();
       </div>
 
       <div class="qa-actions">
-        <p>Have a follow-up question?</p>
+        <p><?php esc_html_e( 'Have a follow-up question?', 'compelling-evidence' ); ?></p>
         <a href="<?php echo esc_url( home_url( '/ask-a-question/' ) ); ?>" class="btn-ghost">
           Ask Another Question
         </a>

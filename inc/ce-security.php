@@ -499,7 +499,7 @@ function ce_sec_attack_notice() {
 		return;
 	}
 	$url = ce_sec_url();
-	echo '<div class="notice notice-error"><p><strong>' . esc_html__( 'Security:', 'compelling-evidence' ) . '</strong> ';
+	echo '<div class="notice notice-error is-dismissible"><p><strong>' . esc_html__( 'Security:', 'compelling-evidence' ) . '</strong> ';
 	if ( $today ) {
 		esc_html_e( 'Someone sent a correct password through XML-RPC today. The login was refused, but the password is known: change it now.', 'compelling-evidence' );
 		echo ' ';
@@ -1161,9 +1161,9 @@ add_action( 'wp_ajax_ce_sec_trash', 'ce_sec_ajax_trash' );
  * @param string $hook Screen hook.
  */
 function ce_sec_assets( $hook ) {
-	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- tab selection only.
-	$tab = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : '';
-	if ( 'appearance_page_ce-theme-options' !== $hook || 'security' !== $tab || ! current_user_can( 'manage_options' ) ) {
+	// Every tab of the options page is in the page since 2.15.0, so the
+	// Security assets load with it whichever tab opens first.
+	if ( 'appearance_page_ce-theme-options' !== $hook || ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
 	$uri     = get_stylesheet_directory_uri();
@@ -1225,8 +1225,9 @@ function ce_sec_button( $action, $label, $confirm, $class = 'secondary' ) {
 	?>
 	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="ce-sec-form" data-ce-confirm="<?php echo esc_attr( $confirm ); ?>">
 		<input type="hidden" name="action" value="<?php echo esc_attr( $action ); ?>">
-		<?php wp_nonce_field( $action ); ?>
-		<?php submit_button( $label, $class, 'submit', false ); ?>
+		<input type="hidden" name="_wpnonce" value="<?php echo esc_attr( wp_create_nonce( $action ) ); ?>">
+		<?php wp_referer_field(); ?>
+		<?php submit_button( $label, $class, 'submit', false, array( 'id' => 'ce-sec-submit-' . sanitize_html_class( $action ) ) ); ?>
 	</form>
 	<?php
 }

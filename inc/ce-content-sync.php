@@ -67,7 +67,7 @@ function ce_redirect_renamed_article_slugs() {
     if ( ! is_404() ) {
         return;
     }
-    $path = trim( (string) wp_parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ), '/' );
+    $path = trim( (string) wp_parse_url( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) ), PHP_URL_PATH ), '/' );
     if ( ! preg_match( '#^articles/([a-z0-9-]+)$#', $path, $m ) ) {
         return;
     }

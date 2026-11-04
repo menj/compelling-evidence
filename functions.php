@@ -120,8 +120,15 @@ function ce_enqueue_assets() {
         'homeUrl' => home_url( '/' ),
     ] );
 
-    // Analytics tracker (privacy-first, no cookies)
-    wp_enqueue_script( 'ce-analytics', $stylesheet_uri . '/assets/js/ce-analytics.js', [ 'ce-main' ], $version, true );
+    // Analytics tracker (first-party, no cookies). Opt-in since 2.15.0:
+    // it loads only once the Analytics tab switches tracking on.
+    if ( ce_theme_analytics_enabled() ) {
+        wp_enqueue_script( 'ce-analytics', $stylesheet_uri . '/assets/js/ce-analytics.js', [ 'ce-main' ], $version, true );
+        wp_localize_script( 'ce-analytics', 'CE_ANALYTICS', [
+            'scroll' => '1' === (string) get_option( 'ce_analytics_track_scroll', '1' ),
+            'search' => '1' === (string) get_option( 'ce_analytics_track_search', '1' ),
+        ] );
+    }
 
     // Article table of contents (builds the sidebar TOC, scrolls to sections, scroll spy)
     if ( is_singular( [ 'ce_article', 'post' ] ) ) {
@@ -135,6 +142,7 @@ add_action( 'wp_enqueue_scripts', 'ce_enqueue_assets' );
 
 function ce_theme_setup() {
     add_theme_support('title-tag');
+    add_theme_support('automatic-feed-links');
     add_theme_support('post-thumbnails');
     add_theme_support('html5', ['search-form', 'comment-form', 'comment-list', 'gallery', 'caption']);
     add_theme_support('custom-logo', [
@@ -1147,7 +1155,7 @@ function ce_redirect_topic_placeholder_pages() {
         $slug = get_post_field( 'post_name', get_queried_object_id() );
     } elseif ( is_404() ) {
         // Drafted duplicates no longer resolve as pages; match the request path.
-        $slug = trim( (string) wp_parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ), '/' );
+        $slug = trim( (string) wp_parse_url( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) ), PHP_URL_PATH ), '/' );
         // Under a subdirectory install the path starts with the home path.
         $home = trim( (string) wp_parse_url( home_url(), PHP_URL_PATH ), '/' );
         if ( '' !== $home && ( $slug === $home || 0 === strpos( $slug, $home . '/' ) ) ) {

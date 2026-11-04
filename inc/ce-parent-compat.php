@@ -60,16 +60,17 @@ function ce_parent_theme_notice() {
     }
     $parent = wp_get_theme()->parent();
     if ( ! $parent || 'twentytwentyfive' !== $parent->get_stylesheet() ) {
-        $message = 'CE Theme is a child of Twenty Twenty-Five. Install and keep Twenty Twenty-Five in wp-content/themes/twentytwentyfive.';
+        $message = __( 'CE Theme is a child of Twenty Twenty-Five. Install and keep Twenty Twenty-Five in wp-content/themes/twentytwentyfive.', 'compelling-evidence' );
     } elseif ( (int) $parent->get( 'Version' ) > (int) CE_PARENT_TESTED_VERSION ) {
         $message = sprintf(
-            'Twenty Twenty-Five %1$s is installed. CE Theme was last tested with %2$s. Check the front page, an article and a plain page before relying on this parent version.',
+            /* translators: 1: installed parent version, 2: last tested parent version. */
+            __( 'Twenty Twenty-Five %1$s is installed. CE Theme was last tested with %2$s. Check the front page, an article and a plain page before relying on this parent version.', 'compelling-evidence' ),
             $parent->get( 'Version' ),
             CE_PARENT_TESTED_VERSION
         );
     } else {
         return;
     }
-    echo '<div class="notice notice-warning"><p>' . esc_html( $message ) . '</p></div>';
+    echo '<div class="notice notice-warning is-dismissible"><p>' . esc_html( $message ) . '</p></div>';
 }
 add_action( 'admin_notices', 'ce_parent_theme_notice' );

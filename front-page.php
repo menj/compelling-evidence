@@ -1,6 +1,6 @@
 <?php get_header(); ?>
 
-<main id="main" tabindex="-1" role="main" aria-label="Main content">
+<main id="main" tabindex="-1" role="main" aria-label="<?php esc_attr_e( 'Main content', 'compelling-evidence' ); ?>">
 
 <!-- ── HERO ─────────────────────────────────────────────────────────────── -->
 <section class="hero">
@@ -48,23 +48,23 @@
     </div>
   </div>
 
-  <h1 class="hero-sub">Honest, evidence-based inquiry into the questions that matter most — written for where you actually are.</h1>
+  <h1 class="hero-sub"><?php esc_html_e( 'Honest, evidence-based inquiry into the questions that matter most — written for where you actually are.', 'compelling-evidence' ); ?></h1>
 
   <div class="hero-search-wrap">
     <div class="hero-search" role="search">
       <input
         type="search"
         id="ce-search-input"
-        placeholder="Search a question or topic…"
-        aria-label="Search topics"
+        placeholder="<?php esc_attr_e( 'Search a question or topic…', 'compelling-evidence' ); ?>"
+        aria-label="<?php esc_attr_e( 'Search topics', 'compelling-evidence' ); ?>"
         autocomplete="off"
       >
-      <button id="ce-search-btn" type="button">Search</button>
+      <button id="ce-search-btn" type="button"><?php esc_html_e( 'Search', 'compelling-evidence' ); ?></button>
       <div id="ce-search-results" class="search-dropdown" aria-live="polite"></div>
     </div>
 
-    <div class="hero-prompts" aria-label="Suggested topics">
-      <p class="hero-prompts-label">Try asking —</p>
+    <div class="hero-prompts" aria-label="<?php esc_attr_e( 'Suggested topics', 'compelling-evidence' ); ?>">
+      <p class="hero-prompts-label"><?php esc_html_e( 'Try asking —', 'compelling-evidence' ); ?></p>
       <div class="hero-prompts-chips" id="hero-chips">
         <button class="hero-prompt-chip hero-prompt-chip--a" data-query="why does anything exist" type="button" style="display:none"><span class="chip-icon" aria-hidden="true">✦</span>why does anything exist</button>
         <button class="hero-prompt-chip hero-prompt-chip--b" data-query="problem of evil" type="button" style="display:none"><span class="chip-icon" aria-hidden="true">◈</span>problem of evil</button>
@@ -122,16 +122,16 @@
   <div class="scroll-hint" aria-hidden="true">
     <div class="scroll-hint-preview">
       <a href="<?php echo esc_url(home_url('/topic/does-god-exist/')); ?>" class="scroll-hint-tile" tabindex="-1">
-        <span class="sht-label">Does God Exist?</span>
+        <span class="sht-label"><?php esc_html_e( 'Does God Exist?', 'compelling-evidence' ); ?></span>
       </a>
       <a href="<?php echo esc_url(home_url('/topic/the-problem-of-evil/')); ?>" class="scroll-hint-tile" tabindex="-1">
-        <span class="sht-label">The Problem of Evil</span>
+        <span class="sht-label"><?php esc_html_e( 'The Problem of Evil', 'compelling-evidence' ); ?></span>
       </a>
       <a href="<?php echo esc_url(home_url('/topic/the-inner-journey/')); ?>" class="scroll-hint-tile" tabindex="-1">
-        <span class="sht-label">The Inner Journey</span>
+        <span class="sht-label"><?php esc_html_e( 'The Inner Journey', 'compelling-evidence' ); ?></span>
       </a>
     </div>
-    <span class="scroll-hint-label">Explore</span>
+    <span class="scroll-hint-label"><?php esc_html_e( 'Explore', 'compelling-evidence' ); ?></span>
     <div class="scroll-hint-line"></div>
   </div>
 </section>
@@ -142,36 +142,36 @@
     <div class="qa-card-icon">
       <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
     </div>
-    <h2>Top Questions</h2>
-    <p>The most commonly asked questions about Islam, God, and existence.</p>
-    <span class="qa-card-cta">Browse questions →</span>
+    <h2><?php esc_html_e( 'Top Questions', 'compelling-evidence' ); ?></h2>
+    <p><?php esc_html_e( 'The most commonly asked questions about Islam, God, and existence.', 'compelling-evidence' ); ?></p>
+    <span class="qa-card-cta"><?php esc_html_e( 'Browse questions →', 'compelling-evidence' ); ?></span>
   </a>
 
   <a href="<?php echo esc_url(home_url('/qa')); ?>" class="qa-card qa-card--qa">
     <div class="qa-card-icon">
       <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></svg>
     </div>
-    <h2>Reader Q&amp;A</h2>
-    <p>Real questions submitted by readers, answered with care.</p>
-    <span class="qa-card-cta">Read answers →</span>
+    <h2><?php esc_html_e( 'Reader Q&A', 'compelling-evidence' ); ?></h2>
+    <p><?php esc_html_e( 'Real questions submitted by readers, answered with care.', 'compelling-evidence' ); ?></p>
+    <span class="qa-card-cta"><?php esc_html_e( 'Read answers →', 'compelling-evidence' ); ?></span>
   </a>
 
   <a href="<?php echo esc_url(home_url('/articles')); ?>" class="qa-card qa-card--new">
     <div class="qa-card-icon">
       <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
     </div>
-    <h2>What's New</h2>
-    <p>Our most recently published articles and answers.</p>
-    <span class="qa-card-cta">See latest →</span>
+    <h2><?php esc_html_e( 'What\'s New', 'compelling-evidence' ); ?></h2>
+    <p><?php esc_html_e( 'Our most recently published articles and answers.', 'compelling-evidence' ); ?></p>
+    <span class="qa-card-cta"><?php esc_html_e( 'See latest →', 'compelling-evidence' ); ?></span>
   </a>
 
   <a href="<?php echo esc_url(home_url('/ask-a-question')); ?>" class="qa-card qa-card--ask">
     <div class="qa-card-icon">
       <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M12 7v6M9 10h6"/></svg>
     </div>
-    <h2>Ask a Question</h2>
-    <p>Can't find what you're looking for? Submit your question directly.</p>
-    <span class="qa-card-cta">Ask now →</span>
+    <h2><?php esc_html_e( 'Ask a Question', 'compelling-evidence' ); ?></h2>
+    <p><?php esc_html_e( 'Can\'t find what you\'re looking for? Submit your question directly.', 'compelling-evidence' ); ?></p>
+    <span class="qa-card-cta"><?php esc_html_e( 'Ask now →', 'compelling-evidence' ); ?></span>
   </a>
 </section>
 
@@ -179,10 +179,10 @@
 <section class="articles" id="articles">
   <div class="articles-header reveal">
     <div>
-      <p class="section-label">Key Questions</p>
-      <h2>What are you searching for?</h2>
+      <p class="section-label"><?php esc_html_e( 'Key Questions', 'compelling-evidence' ); ?></p>
+      <h2><?php esc_html_e( 'What are you searching for?', 'compelling-evidence' ); ?></h2>
     </div>
-    <p>Honest engagement with the strongest objections to belief — approached with reason, evidence, and intellectual integrity.</p>
+    <p><?php esc_html_e( 'Honest engagement with the strongest objections to belief — approached with reason, evidence, and intellectual integrity.', 'compelling-evidence' ); ?></p>
   </div>
 
   <div class="grid">
@@ -225,7 +225,7 @@
         $topics = wp_get_post_terms(get_the_ID(), 'ce_topic');
         $topic_name = (!empty($topics) && !is_wp_error($topics)) ? $topics[0]->name : get_post_type_object(get_post_type())->labels->singular_name;
     ?>
-    <article class="card reveal">
+    <article <?php post_class( 'card reveal' ); ?>>
       <?php if (has_post_thumbnail()) : ?>
         <a href="<?php the_permalink(); ?>" class="card-img-link" tabindex="-1" aria-hidden="true">
           <?php the_post_thumbnail('medium_large', ['class' => 'card-img', 'loading' => 'lazy', 'alt' => esc_attr( get_the_title() )]); ?>
@@ -286,9 +286,9 @@
 <section class="journey-entry">
   <div class="je-inner">
     <div class="je-text">
-      <p class="je-eyebrow">Your personalised path</p>
-      <h2 class="je-title">Where are you <em>starting from?</em></h2>
-      <p class="je-sub">Not a generic introduction — an argument written for someone exactly like you. Ten questions. Two minutes.</p>
+      <p class="je-eyebrow"><?php esc_html_e( 'Your personalised path', 'compelling-evidence' ); ?></p>
+      <h2 class="je-title"><?php echo wp_kses( __( 'Where are you <em>starting from?</em>', 'compelling-evidence' ), [ 'em' => [] ] ); ?></h2>
+      <p class="je-sub"><?php esc_html_e( 'Not a generic introduction — an argument written for someone exactly like you. Ten questions. Two minutes.', 'compelling-evidence' ); ?></p>
       <div id="je-stats" class="je-stats" style="display:none;"></div>
       <div class="je-actions">
         <a href="<?php echo esc_url( home_url('/quiz') ); ?>" class="btn-journey-cta" id="ce-quiz-btn">
@@ -309,31 +309,31 @@
 <!-- ── CTA ───────────────────────────────────────────────────────────────── -->
 <section class="cta" id="contact">
   <div class="cta-left reveal">
-    <p class="section-label">Still Searching?</p>
-    <h2>Want to ask <span>more questions?</span></h2>
-    <p>Whether you are a convinced atheist, an agnostic, a scientist, a sceptic, or someone carrying doubts you have never voiced — this is for you. Every question deserves a serious answer, not a rehearsed one.</p>
+    <p class="section-label"><?php esc_html_e( 'Still Searching?', 'compelling-evidence' ); ?></p>
+    <h2><?php echo wp_kses( __( 'Want to ask <span>more questions?</span>', 'compelling-evidence' ), [ 'span' => [] ] ); ?></h2>
+    <p><?php esc_html_e( 'Whether you are a convinced atheist, an agnostic, a scientist, a sceptic, or someone carrying doubts you have never voiced — this is for you. Every question deserves a serious answer, not a rehearsed one.', 'compelling-evidence' ); ?></p>
     <div class="cta-buttons">
-      <a href="<?php echo esc_url(home_url('/contact-compelling-evidence')); ?>" class="btn-primary">Get In Touch</a>
-      <a href="#articles" class="btn-ghost">Browse Topics</a>
+      <a href="<?php echo esc_url(home_url('/contact-compelling-evidence')); ?>" class="btn-primary"><?php esc_html_e( 'Get In Touch', 'compelling-evidence' ); ?></a>
+      <a href="#articles" class="btn-ghost"><?php esc_html_e( 'Browse Topics', 'compelling-evidence' ); ?></a>
     </div>
   </div>
 
   <div class="cta-right reveal">
     <div class="cta-stat">
       <span class="cta-stat-num">400+</span>
-      <span class="cta-stat-label">Verses in the Quran addressing disbelievers directly</span>
+      <span class="cta-stat-label"><?php esc_html_e( 'Verses in the Quran addressing disbelievers directly', 'compelling-evidence' ); ?></span>
     </div>
     <div class="cta-stat">
       <span class="cta-stat-num">10<sup style="font-size:0.5em;vertical-align:super;">80</sup></span>
-      <span class="cta-stat-label">Atoms in the observable universe</span>
+      <span class="cta-stat-label"><?php esc_html_e( 'Atoms in the observable universe', 'compelling-evidence' ); ?></span>
     </div>
     <div class="cta-stat">
       <span class="cta-stat-num">1.9B</span>
-      <span class="cta-stat-label">Muslims asking the same questions</span>
+      <span class="cta-stat-label"><?php esc_html_e( 'Muslims asking the same questions', 'compelling-evidence' ); ?></span>
     </div>
     <div class="cta-stat">
       <span class="cta-stat-num">∞</span>
-      <span class="cta-stat-label">Reasons to keep seeking truth</span>
+      <span class="cta-stat-label"><?php esc_html_e( 'Reasons to keep seeking truth', 'compelling-evidence' ); ?></span>
     </div>
   </div>
 </section>

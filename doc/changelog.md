@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.15.0] - November 2026
+
+Upgrade to the owner's theme rules of 4 November 2026. No feature removed and no public identifier renamed.
+
+### Changed
+- Analytics is opt-in. `ce_analytics_enabled` now defaults to `0`; `ce_theme_analytics_enabled()` gates the tracker enqueue, the quiz and journey tracker injection and the `ce_analytics` endpoint. A stored `1` is kept. `ce_analytics_track_scroll` and `ce_analytics_track_search` reach the tracker through `CE_ANALYTICS`. The daily purge runs whether tracking is on or off.
+- Theme Options rebuilt on the admin design system: cards, ARIA tabs with arrow-key, Home and End support, toggle switches, selector cards, live-value sliders, a wp-color-picker grid, a usage card per tab, stacked layout at 782px. `assets/css/ce-theme-options-admin.css` and the new `assets/js/ce-theme-options-admin.js` load on `appearance_page_ce-theme-options` only. Saving goes through `ce_theme_opts_sanitize()` (type, min and max, allowed choices). Option keys, the `manage_options` check and the per-tab nonce are unchanged.
+- Security tab assets load with the page, since every tab is in it.
+- Template strings, options page strings and the parent-theme notice are translatable; both global admin notices are dismissible.
+
+### Added
+- `automatic-feed-links` support (the feed redirector still removes the links), `post_class()` on all post loops, licence header in `style.css`, a Resources section in `readme.txt`, OFL texts for four bundled faces, `.gitattributes`.
+
+### Fixed
+- `REQUEST_URI` unslashed and sanitised before parsing in two redirects; `wp_safe_redirect()` for the journey, feed and analytics purge redirects.
+
 ## [2.12.0] - November 2026
 
 The owner keeps all schema.org markup (rule of 3 November 2026). This release adds markup for what the pages already show and gives every page one graph. No type was removed.

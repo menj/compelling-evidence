@@ -8,7 +8,7 @@
         <div class="footer-logo">
           <span class="footer-logo-ce">Compelling</span><span class="footer-logo-ev"> Evidence</span>
         </div>
-        <p class="footer-tagline">Honest inquiry into the questions that matter most — for the curious, the doubtful, and the unconvinced.</p>
+        <p class="footer-tagline"><?php esc_html_e( 'Honest inquiry into the questions that matter most — for the curious, the doubtful, and the unconvinced.', 'compelling-evidence' ); ?></p>
         <a href="<?php echo esc_url(home_url('/quiz')); ?>" class="footer-cta">
           Find my path
           <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -28,11 +28,11 @@
           </ul>
         <?php else : ?>
           <ul>
-            <li><a href="<?php echo esc_url(home_url('/articles')); ?>">All Articles</a></li>
-            <li><a href="<?php echo esc_url(home_url('/topic/does-god-exist')); ?>">Does God Exist?</a></li>
-            <li><a href="<?php echo esc_url(home_url('/topic/the-problem-of-evil')); ?>">The Problem of Evil</a></li>
-            <li><a href="<?php echo esc_url(home_url('/topic/the-inner-journey')); ?>">The Inner Journey</a></li>
-            <li><a href="<?php echo esc_url(home_url('/topic/rights-freedom')); ?>">Rights &amp; Freedom</a></li>
+            <li><a href="<?php echo esc_url(home_url('/articles')); ?>"><?php esc_html_e( 'All Articles', 'compelling-evidence' ); ?></a></li>
+            <li><a href="<?php echo esc_url(home_url('/topic/does-god-exist')); ?>"><?php esc_html_e( 'Does God Exist?', 'compelling-evidence' ); ?></a></li>
+            <li><a href="<?php echo esc_url(home_url('/topic/the-problem-of-evil')); ?>"><?php esc_html_e( 'The Problem of Evil', 'compelling-evidence' ); ?></a></li>
+            <li><a href="<?php echo esc_url(home_url('/topic/the-inner-journey')); ?>"><?php esc_html_e( 'The Inner Journey', 'compelling-evidence' ); ?></a></li>
+            <li><a href="<?php echo esc_url(home_url('/topic/rights-freedom')); ?>"><?php esc_html_e( 'Rights & Freedom', 'compelling-evidence' ); ?></a></li>
           </ul>
         <?php endif; ?>
       </div>
