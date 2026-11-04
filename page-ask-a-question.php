@@ -5,7 +5,7 @@
  */
 get_header(); ?>
 
-<main class="ce-page ce-ask" id="main">
+<main class="ce-page ce-ask" id="main" tabindex="-1">
 
   <header class="page-hero ask-hero">
     <div class="page-hero-inner">

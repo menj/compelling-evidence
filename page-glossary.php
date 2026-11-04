@@ -16,7 +16,7 @@ foreach ( $terms as $t ) {
 ksort( $grouped );
 ?>
 
-<main class="ce-page ce-glossary" id="main">
+<main class="ce-page ce-glossary" id="main" tabindex="-1">
 
   <header class="page-hero glossary-hero">
     <div class="page-hero-inner">

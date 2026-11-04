@@ -1,6 +1,6 @@
 <?php get_header(); ?>
 
-<main class="ce-archive" id="main">
+<main class="ce-archive" id="main" tabindex="-1">
   <div class="archive-header reveal">
     <p class="section-label">
       <?php

@@ -403,16 +403,16 @@ function ce_render_vote_widget( ?int $post_id = null ) {
     $cls_vote = $voted ? ' ce-voted' : '';
     ?>
     <div class="ce-vote-widget<?php echo esc_attr( $cls_vote ); ?>" data-post-id="<?php echo (int) $post_id; ?>">
-        <button class="ce-vote-btn ce-vote-up<?php echo ce_has_acted($post_id,'vote_up') ? ' active' : ''; ?>"
+        <button type="button" aria-label="<?php esc_attr_e( 'Helpful', 'compelling-evidence' ); ?>" class="ce-vote-btn ce-vote-up<?php echo ce_has_acted($post_id,'vote_up') ? ' active' : ''; ?>"
                 data-direction="up" <?php echo $voted ? 'disabled' : ''; ?>>
-            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+            <svg aria-hidden="true" focusable="false" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
         </button>
         <span class="ce-vote-score" id="ce-vote-score-<?php echo (int) $post_id; ?>">
             <?php echo (int) $data['vote_score']; ?>
         </span>
-        <button class="ce-vote-btn ce-vote-down<?php echo ce_has_acted($post_id,'vote_down') ? ' active' : ''; ?>"
+        <button type="button" aria-label="<?php esc_attr_e( 'Not helpful', 'compelling-evidence' ); ?>" class="ce-vote-btn ce-vote-down<?php echo ce_has_acted($post_id,'vote_down') ? ' active' : ''; ?>"
                 data-direction="down" <?php echo $voted ? 'disabled' : ''; ?>>
-            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+            <svg aria-hidden="true" focusable="false" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
         </button>
     </div>
     <?php

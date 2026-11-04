@@ -20,7 +20,7 @@ $args = [
 $results = new WP_Query($args);
 ?>
 
-<main id="main" role="main">
+<main id="main" tabindex="-1" role="main">
 <div class="search-page">
 
   <!-- Hero / Search bar -->

@@ -32,6 +32,7 @@
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
+<a class="ce-skip-link" href="#main"><?php esc_html_e( 'Skip to content', 'compelling-evidence' ); ?></a>
 
 <nav class="ce-nav" id="ce-nav">
   <a href="<?php echo esc_url(home_url('/')); ?>" class="nav-logo">
@@ -44,7 +45,7 @@
     <?php endif; ?>
   </a>
 
-  <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+  <button type="button" class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="ce-nav-links">
     <span></span><span></span><span></span>
   </button>
 
@@ -53,9 +54,10 @@
     'theme_location' => 'primary',
     'container'      => false,
     'menu_class'     => 'nav-links',
-    'items_wrap'     => '<ul class="%2$s">%3$s</ul>',
+    'menu_id'        => 'ce-nav-links',
+    'items_wrap'     => '<ul id="%1$s" class="%2$s">%3$s</ul>',
     'fallback_cb'    => function() { ?>
-      <ul class="nav-links">
+      <ul id="ce-nav-links" class="nav-links">
         <li><a href="<?php echo esc_url(home_url('/journeys')); ?>"><?php esc_html_e('Journeys', 'compelling-evidence'); ?></a></li>
         <li><a href="<?php echo esc_url(home_url('/articles')); ?>"><?php esc_html_e('Articles', 'compelling-evidence'); ?></a></li>
         <li><a href="<?php echo esc_url(home_url('/qa')); ?>"><?php esc_html_e('Q&amp;A', 'compelling-evidence'); ?></a></li>

@@ -71,13 +71,25 @@
   // ── FEATURED STRIP: hide on scroll down ─────────────────────────────────────
   var strip      = document.getElementById('featured-strip');
   var lastScroll = 0;
+  // --ce-fixed-h: what the fixed nav and strip cover, for scroll-padding-top.
+  function setFixedHeight() {
+    var h = nav ? nav.offsetHeight : 0;
+    if (strip && !strip.classList.contains('hidden')) h += strip.offsetHeight;
+    if (h) document.documentElement.style.setProperty('--ce-fixed-h', h + 'px');
+  }
   if (strip) {
     window.addEventListener('scroll', function () {
       var current = window.scrollY;
-      strip.classList.toggle('hidden', current > lastScroll && current > 120);
+      var hide = current > lastScroll && current > 120;
+      if (hide !== strip.classList.contains('hidden')) {
+        strip.classList.toggle('hidden', hide);
+        setFixedHeight();
+      }
       lastScroll = current <= 0 ? 0 : current;
     }, { passive: true });
   }
+  setFixedHeight();
+  window.addEventListener('resize', setFixedHeight, { passive: true });
 
   // ── SCROLL REVEAL ────────────────────────────────────────────────────────────
   var reveals = document.querySelectorAll('.reveal');

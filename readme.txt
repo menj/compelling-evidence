@@ -6,7 +6,7 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.13.0
+Version: 2.14.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Template: twentytwentyfive
@@ -104,6 +104,17 @@ Appearance > CE Theme Options — 8 tabs:
                   spam scan and trash; reports and security log
 
 == Changelog ==
+
+= 2.14.0 - November 2026 =
+* Mobile and accessibility pass, done to two owner briefs of 4 November 2026: the mobile-first audit and the WCAG 2.2 AA policy. Pages were measured at 9 widths from 320px to 1280px with axe-core. No page scrolled sideways before or after.
+* Small labels, counts and excerpts on the purple and dark grounds now reach 4.5:1. They sat between 1.3:1 and 4.4:1, on the article index, search, articles, the journey list and every journey chapter. Same hues, higher alpha, so the colours shift a little on desktop as well.
+* The journey Continue button had no styles and stood 23px high. It now matches the site's teal button at 44px. The closing links on each journey are no longer browser blue.
+* The menu button is 44px square and names the menu it opens (aria-controls). Mobile menu links, footer links, topic filters and the hero chips are 44px high below 1025px. The home search field uses 16px text, so iOS stops zooming into it.
+* The vote buttons under articles have names (Helpful, Not helpful). Collapsed FAQ answers and the hidden scroll hint on the home page no longer take keyboard focus. The current chapter dot carries aria-current.
+* Every page starts with a Skip to content link, and it moves keyboard focus into the content (each main element takes tabindex -1). The journeys had no main landmark; the chapters and the FAQ now sit inside one.
+* Anchor jumps stop below the fixed header and the featured strip. main.js sets the offset from their real height, so it shrinks when the strip hides on scroll.
+* On phones, a focused quiz option clears the sticky Back and Next bar.
+* The journeys and the quiz preload Playfair Display 900 and DM Sans 400. The heading reflowed when they arrived (layout shift up to 0.4 at 768px).
 
 = 2.13.0 - November 2026 =
 * The 14 journey pages and the quiz end with a short FAQ section, 4 or 5 questions each, in native details and summary elements. Styles are in assets/css/standalone-faq.css and use each page's own colours.

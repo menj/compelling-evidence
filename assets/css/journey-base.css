@@ -75,3 +75,46 @@
 /* Keyboard: journey.js gives the choice cards, reading-path steps, header
    dots and the completion badge a button role and a tab stop. */
 [role="button"]:focus-visible { outline: 2px solid var(--teal, #0cd4e0); outline-offset: 3px; }
+
+/* ── WCAG 2.2 layer (2.14.0) ──────────────────────────────────────────
+   Loaded last, so these win over journey.css and each page's <style>. */
+
+/* 1.4.3: the dimmed token sat at 2.2:1 on the page ground. It colours
+   chapter numbers, sidebar titles, quote sources and section breaks. */
+:root { --dimmed: rgba(242,238,255,0.55); }
+.go-deeper-widget .sw-title,
+.rel-item > span { color: rgba(12,212,224,0.72); }
+/* The "Have a question?" widget sets its title inline at 3.3:1. */
+.sw-title[style*="12,212,224"] { color: rgba(12,212,224,0.72) !important; }
+.ps.locked > span:not(.ps-n) { color: rgba(245,197,24,0.68); }
+/* Eleven closing screens set this label inline at 3.7:1. */
+.nc-label { color: rgba(245,197,24,0.68) !important; }
+.vol-bridge-eyebrow,
+.vol-coming,
+.btn-vol2-sub { color: rgba(196,170,255,0.85); }
+/* Links with no colour of their own fell back to the browser's blue (2:1). */
+:where(.screen) a:where(:not([class])) { color: var(--teal, #0cd4e0); }
+
+/* 2.5.8 and the mobile brief: the chapter's Continue button had no styles
+   and stood 23px high. Same look as the site's .btn-teal. */
+.btn-teal {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  min-height: 44px; padding: 0.8rem 1.8rem; margin-top: 1rem;
+  border: 0; border-radius: 50px; cursor: pointer;
+  background: linear-gradient(135deg, #0cd4e0, #09b8c4); color: #0d0820;
+  font: 700 0.85rem var(--body, 'DM Sans', sans-serif);
+}
+.btn-outline {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  min-height: 44px; padding: 0.7rem 1.5rem;
+  border: 1px solid rgba(12,212,224,0.4); border-radius: 50px;
+  color: var(--teal, #0cd4e0); text-decoration: none; font-size: 0.85rem;
+}
+.btn-teal:focus-visible { outline: 2px solid var(--white, #f2eeff); outline-offset: 3px; }
+
+/* 2.4.1: skip link, off screen until it takes focus. */
+.ce-skip-link { position: absolute; left: 1rem; top: -100px; z-index: 1000; padding: 0.75rem 1.25rem; border-radius: 8px; background: #0cd4e0; color: #0d0820; font-weight: 600; text-decoration: none; }
+.ce-skip-link:focus { top: 0.75rem; outline: 2px solid #f2eeff; outline-offset: 2px; }
+main[tabindex="-1"]:focus { outline: none; }
+/* 2.4.11: anchor targets clear the fixed 68px journey header. */
+html { scroll-padding-top: 84px; }

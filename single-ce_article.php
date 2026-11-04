@@ -17,7 +17,7 @@ $reading_secs = $word_count * 0.3; // approx seconds for progress tracking
   <div id="ce-reading-progress-fill"></div>
 </div>
 
-<main class="ce-single" id="main" data-reading-article="1">
+<main class="ce-single" id="main" tabindex="-1" data-reading-article="1">
   <?php while (have_posts()) : the_post(); ?>
 
   <article id="post-<?php the_ID(); ?>" <?php post_class('single-article'); ?>>

@@ -42,7 +42,7 @@ $is_filtered = is_tax('ce_topic');
 $active_term = $is_filtered ? get_queried_object() : null;
 ?>
 
-<main id="main" role="main">
+<main id="main" tabindex="-1" role="main">
 
 <div class="articles-archive">
 

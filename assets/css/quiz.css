@@ -130,3 +130,13 @@ input[type=radio],input[type=checkbox]{accent-color:var(--accent);width:18px;hei
   .res-actions > *{width:100%;}
 }
 @media (prefers-reduced-motion: reduce){ .qp-fill{transition:none;} }
+
+/* WCAG 2.4.11 (2.14.0): a focused option never hides under the fixed
+   header or, on phones, under the sticky Back/Next bar. */
+html{scroll-padding-top:76px;}
+@media (max-width: 600px){ html{scroll-padding-bottom:110px;} }
+
+/* 2.4.1: skip link, off screen until it takes focus. */
+.ce-skip-link { position: absolute; left: 1rem; top: -100px; z-index: 1000; padding: 0.75rem 1.25rem; border-radius: 8px; background: #0cd4e0; color: #0d0820; font-weight: 600; text-decoration: none; }
+.ce-skip-link:focus { top: 0.75rem; outline: 2px solid #f2eeff; outline-offset: 2px; }
+main[tabindex="-1"]:focus { outline: none; }
