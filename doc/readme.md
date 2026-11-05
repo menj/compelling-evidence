@@ -1,6 +1,6 @@
 # CE Theme (Compelling Evidence) — WordPress Theme
 
-**Version:** 2.18.0 | **Parent theme:** Twenty Twenty-Five (tested with 1.5) | **Requires:** WordPress 6.7+ (tested to 7.1), PHP 8.0 to 8.4  
+**Version:** 2.18.5 | **Parent theme:** Twenty Twenty-Five (tested with 1.5) | **Requires:** WordPress 6.7+ (tested to 7.1), PHP 8.0 to 8.4  
 **Site:** https://compelling-evidence.com | **Repository:** https://github.com/menj/compelling-evidence | **Author:** [MENJ](https://menj.blog) | **Text domain:** `compelling-evidence`
 
 An Islamic apologetics child theme delivering personalised argumentation journeys across 14 persona paths, 131 articles across 11 investigative categories, a weighted intake quiz, a gamified progress system, a privacy-first analytics layer, and a full engagement suite. Built for a single deployment — not a general-purpose theme.
@@ -39,7 +39,7 @@ compelling-evidence/
 ├── functions.php                     CPT, taxonomy, AJAX, hooks, all performance/SEO filters
 ├── header.php                        Nav (logo, primary menu, random article, progress link)
 ├── footer.php                        4-column footer grid (brand, topics, navigate, about)
-├── front-page.php                    Homepage (hero, quick-access, cards, journey entry, CTA)
+├── front-page.php                    Homepage, told as one story: hero, key questions, journey entry, quick-access, CTA (doc/ssot.md, section 29)
 ├── single-ce_article.php             Article view (breadcrumbs, TOC, related cards, journey widget)
 ├── single.php                        Standard post view (mirrors article template structure)
 ├── archive-ce_article.php            /articles/ — 10 topic sections in logical reading order
@@ -268,7 +268,7 @@ All 7 are overridable via Theme Options > Colors (injected as inline CSS at `wp_
 
 ## Error pages
 
-WordPress reads three files from `wp-content` when it cannot build a page. The theme writes them on activation (`after_switch_theme`), again on an administrator's next admin page when a file is missing or outdated (`admin_init`, `edit_theme_options`), and at once with **Install error pages** on CE Theme Options > Tools & Sync, which shows each as not installed, installed, outdated, left behind by another theme or another file left alone. A copy another theme left behind (marked "Written by the ... theme; safe to delete") is replaced. A file without such a mark is never overwritten. When another theme is activated (`switch_theme`), the theme deletes the files that carry its own marker, `Compelling Evidence error page drop-in`.
+WordPress reads three files from `wp-content` when it cannot build a page. The theme writes them on activation (`after_switch_theme`), again on an administrator's next admin page when a file is missing or outdated (`admin_init`, `edit_theme_options`), and at once with **Install error pages** on CE Theme Options > Tools & Sync, which shows each as not installed, installed, outdated, left behind by another theme or another file left alone. A copy another theme left behind (marked "Written by the ... theme; safe to delete") is replaced. A file without such a mark is never overwritten. When another theme is activated (`switch_theme`), the theme deletes the files that carry its own marker, `Compelling Evidence error page drop-in`, except on a network, where `wp-content` is shared and another site may still use the theme, so the files stay.
 
 | File | Shown when | Status sent |
 |---|---|---|

@@ -343,6 +343,23 @@ msgstr ""
 msgid "Still Searching?"
 msgstr ""
 
+#: front-page.php:272
+msgid "Read Further"
+msgstr ""
+
+#: front-page.php:273
+msgid "Where to go next"
+msgstr ""
+
+#: front-page.php:274
+msgid "Your path is one way in. These four open the rest of the site, and the last one takes a question of your own."
+msgstr ""
+
+#. translators: %d: step number on the home page.
+#: functions.php
+msgid "Step %d"
+msgstr ""
+
 #: front-page.php:313
 msgid "Want to ask <span>more questions?</span>"
 msgstr ""

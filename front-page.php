@@ -137,50 +137,11 @@
   </div>
 </section>
 
-<!-- ── QUICK ACCESS CARDS ─────────────────────────────────────────────────── -->
-<section class="quick-access">
-  <a href="<?php echo esc_url(home_url('/articles?orderby=popular')); ?>" class="qa-card qa-card--questions">
-    <div class="qa-card-icon">
-      <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
-    </div>
-    <h2><?php esc_html_e( 'Top Questions', 'compelling-evidence' ); ?></h2>
-    <p><?php esc_html_e( 'The most commonly asked questions about Islam, God, and existence.', 'compelling-evidence' ); ?></p>
-    <span class="qa-card-cta"><?php esc_html_e( 'Browse questions →', 'compelling-evidence' ); ?></span>
-  </a>
-
-  <a href="<?php echo esc_url(home_url('/qa')); ?>" class="qa-card qa-card--qa">
-    <div class="qa-card-icon">
-      <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></svg>
-    </div>
-    <h2><?php esc_html_e( 'Reader Q&A', 'compelling-evidence' ); ?></h2>
-    <p><?php esc_html_e( 'Real questions submitted by readers, answered with care.', 'compelling-evidence' ); ?></p>
-    <span class="qa-card-cta"><?php esc_html_e( 'Read answers →', 'compelling-evidence' ); ?></span>
-  </a>
-
-  <a href="<?php echo esc_url(home_url('/articles')); ?>" class="qa-card qa-card--new">
-    <div class="qa-card-icon">
-      <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-    </div>
-    <h2><?php esc_html_e( 'What\'s New', 'compelling-evidence' ); ?></h2>
-    <p><?php esc_html_e( 'Our most recently published articles and answers.', 'compelling-evidence' ); ?></p>
-    <span class="qa-card-cta"><?php esc_html_e( 'See latest →', 'compelling-evidence' ); ?></span>
-  </a>
-
-  <a href="<?php echo esc_url(home_url('/ask-a-question')); ?>" class="qa-card qa-card--ask">
-    <div class="qa-card-icon">
-      <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M12 7v6M9 10h6"/></svg>
-    </div>
-    <h2><?php esc_html_e( 'Ask a Question', 'compelling-evidence' ); ?></h2>
-    <p><?php esc_html_e( 'Can\'t find what you\'re looking for? Submit your question directly.', 'compelling-evidence' ); ?></p>
-    <span class="qa-card-cta"><?php esc_html_e( 'Ask now →', 'compelling-evidence' ); ?></span>
-  </a>
-</section>
-
 <!-- ── ARTICLES ──────────────────────────────────────────────────────────── -->
 <section class="articles" id="articles">
   <div class="articles-header reveal">
     <div>
-      <p class="section-label"><?php esc_html_e( 'Key Questions', 'compelling-evidence' ); ?></p>
+      <p class="section-label"><?php echo esc_html( ce_home_step( 1 ) ); ?> · <?php esc_html_e( 'Key Questions', 'compelling-evidence' ); ?></p>
       <h2><?php esc_html_e( 'What are you searching for?', 'compelling-evidence' ); ?></h2>
     </div>
     <p><?php esc_html_e( 'Honest engagement with the strongest objections to belief — approached with reason, evidence, and intellectual integrity.', 'compelling-evidence' ); ?></p>
@@ -287,7 +248,7 @@
 <section class="journey-entry">
   <div class="je-inner">
     <div class="je-text">
-      <p class="je-eyebrow"><?php esc_html_e( 'Your personalised path', 'compelling-evidence' ); ?></p>
+      <p class="je-eyebrow"><?php echo esc_html( ce_home_step( 2 ) ); ?> · <?php esc_html_e( 'Your personalised path', 'compelling-evidence' ); ?></p>
       <h2 class="je-title"><?php echo wp_kses( __( 'Where are you <em>starting from?</em>', 'compelling-evidence' ), [ 'em' => [] ] ); ?></h2>
       <p class="je-sub"><?php esc_html_e( 'Not a generic introduction — an argument written for someone exactly like you. Ten questions. Two minutes.', 'compelling-evidence' ); ?></p>
       <div id="je-stats" class="je-stats" style="display:none;"></div>
@@ -305,12 +266,56 @@
   </div>
 </section>
 
+<!-- ── QUICK ACCESS CARDS ─────────────────────────────────────────────────── -->
+<section class="quick-access" aria-labelledby="qa-heading">
+  <div class="qa-head">
+    <p class="section-label"><?php echo esc_html( ce_home_step( 3 ) ); ?> · <?php esc_html_e( 'Read Further', 'compelling-evidence' ); ?></p>
+    <h2 id="qa-heading"><?php esc_html_e( 'Where to go next', 'compelling-evidence' ); ?></h2>
+    <p><?php esc_html_e( 'Your path is one way in. These four open the rest of the site, and the last one takes a question of your own.', 'compelling-evidence' ); ?></p>
+  </div>
+  <a href="<?php echo esc_url(home_url('/articles?orderby=popular')); ?>" class="qa-card qa-card--questions">
+    <div class="qa-card-icon">
+      <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+    </div>
+    <h3><?php esc_html_e( 'Top Questions', 'compelling-evidence' ); ?></h3>
+    <p><?php esc_html_e( 'The most commonly asked questions about Islam, God, and existence.', 'compelling-evidence' ); ?></p>
+    <span class="qa-card-cta"><?php esc_html_e( 'Browse questions →', 'compelling-evidence' ); ?></span>
+  </a>
+
+  <a href="<?php echo esc_url(home_url('/qa')); ?>" class="qa-card qa-card--qa">
+    <div class="qa-card-icon">
+      <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></svg>
+    </div>
+    <h3><?php esc_html_e( 'Reader Q&A', 'compelling-evidence' ); ?></h3>
+    <p><?php esc_html_e( 'Real questions submitted by readers, answered with care.', 'compelling-evidence' ); ?></p>
+    <span class="qa-card-cta"><?php esc_html_e( 'Read answers →', 'compelling-evidence' ); ?></span>
+  </a>
+
+  <a href="<?php echo esc_url(home_url('/articles')); ?>" class="qa-card qa-card--new">
+    <div class="qa-card-icon">
+      <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+    </div>
+    <h3><?php esc_html_e( 'What\'s New', 'compelling-evidence' ); ?></h3>
+    <p><?php esc_html_e( 'Our most recently published articles and answers.', 'compelling-evidence' ); ?></p>
+    <span class="qa-card-cta"><?php esc_html_e( 'See latest →', 'compelling-evidence' ); ?></span>
+  </a>
+
+  <a href="<?php echo esc_url(home_url('/ask-a-question')); ?>" class="qa-card qa-card--ask">
+    <div class="qa-card-icon">
+      <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M12 7v6M9 10h6"/></svg>
+    </div>
+    <h3><?php esc_html_e( 'Ask a Question', 'compelling-evidence' ); ?></h3>
+    <p><?php esc_html_e( 'Can\'t find what you\'re looking for? Submit your question directly.', 'compelling-evidence' ); ?></p>
+    <span class="qa-card-cta"><?php esc_html_e( 'Ask now →', 'compelling-evidence' ); ?></span>
+  </a>
+</section>
+
 <div class="ce-divider"></div>
 
 <!-- ── CTA ───────────────────────────────────────────────────────────────── -->
 <section class="cta" id="contact">
   <div class="cta-left reveal">
-    <p class="section-label"><?php esc_html_e( 'Still Searching?', 'compelling-evidence' ); ?></p>
+    <p class="section-label"><?php echo esc_html( ce_home_step( 4 ) ); ?> · <?php esc_html_e( 'Still Searching?', 'compelling-evidence' ); ?></p>
     <h2><?php echo wp_kses( __( 'Want to ask <span>more questions?</span>', 'compelling-evidence' ), [ 'span' => [] ] ); ?></h2>
     <p><?php esc_html_e( 'Whether you are a convinced atheist, an agnostic, a scientist, a sceptic, or someone carrying doubts you have never voiced — this is for you. Every question deserves a serious answer, not a rehearsed one.', 'compelling-evidence' ); ?></p>
     <div class="cta-buttons">

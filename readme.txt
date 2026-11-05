@@ -6,7 +6,7 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.18.4
+Version: 2.18.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Template: twentytwentyfive
@@ -121,6 +121,9 @@ CE Theme, Copyright 2026 MENJ. Licensed GPLv2 or later.
 * Article figures are not bundled. inc/articles/media.json lists each with its source page, creator and licence, and the credit prints under the figure.
 
 == Changelog ==
+
+= 2.18.5 - November 2026 =
+* The home page reads as one story in four steps: the key questions, your personalised path, where to go next, and the invitation to ask.
 
 = 2.18.4 - November 2026 =
 * The web server error pages work when WordPress sits in a subfolder. The theme writes a copy of each into wp-content/compelling-evidence-errors with the site's home address, and the .htaccess lines on Tools & Sync point there.

@@ -1260,3 +1260,20 @@ function ce_sitemap_exclude_pages( array $args, string $post_type ): array {
     return $args;
 }
 add_filter( 'wp_sitemaps_posts_query_args', 'ce_sitemap_exclude_pages', 10, 2 );
+
+/**
+ * The step number shown before each home page section label.
+ *
+ * The home page reads as one story in four steps (see doc/ssot.md, "Home
+ * page arc"). The number is a string of its own, so the section labels
+ * keep their existing translations.
+ *
+ * @since 2.18.5
+ *
+ * @param int $n Step number.
+ * @return string For example "Step 2".
+ */
+function ce_home_step( int $n ): string {
+    /* translators: %d: step number on the home page. */
+    return sprintf( __( 'Step %d', 'compelling-evidence' ), $n );
+}
