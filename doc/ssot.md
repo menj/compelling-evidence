@@ -1,7 +1,7 @@
 # SSOT — Single Source of Truth
 ## Compelling Evidence Theme — System Design, Naming Conventions, Configuration Rules
 
-**Version:** 2.18.0  
+**Version:** 2.18.5  
 **Location:** `/doc/SSOT.md`
 
 This document is authoritative. When any other file conflicts with a rule stated here, this document is correct and the other file should be updated.
@@ -633,4 +633,22 @@ Reference documents: Google's SEO Starter Guide and Google's list of structured 
 ## 28. Content Sync Safety (since 2.6.36)
 
 The orphan pass (trashing articles no longer in the JSON) runs only when the loader reports no errors. Before 2.6.36, one batch failing its checksum removed that batch from the article list and the orphan pass trashed every article in it. After editing any batch file, recompute its checksum in `manifest.json`.
+
+## 29. Home Page Arc (since 2.18.5)
+
+`front-page.php` reads as one story from top to bottom. Keep this order, and give a new section a step in it.
+
+| Order | Section | Label | Role |
+|---|---|---|---|
+| 1 | `.hero` | none | The hook: a verse of the Qur'an, the promise of honest inquiry, and a search box |
+| 2 | `.articles` (#articles) | Step 1 · Key Questions | The questions and the evidence: the strongest objections to belief, each with its article |
+| 3 | `.journey-entry` | Step 2 · Your personalised path | The argument fitted to the reader: the quiz and the 14 paths |
+| 4 | `.quick-access` | Step 3 · Read Further | Where to go next: top questions, reader Q&A, what is new, and Ask a Question |
+| 5 | `.cta` (#contact) | Step 4 · Still Searching? | The reader's own next step: get in touch |
+
+The Top Questions and What's New cards open the article archive with `?orderby=popular` (most read in 30 days, from the theme's analytics) and `?orderby=date` (newest articles and answers). `ce_archive_lens()` reads the parameter and the archive prints that list above its topic sections.
+
+The step number comes from `ce_home_step()`, a translatable string of its own, so the section labels keep their translations. The quick-access cards have their own section heading (`.qa-head`, `h2`), and the card titles under it are `h3`.
+
+The order follows `.claude/FARUQI.md`: conviction is reached through evidence, so the questions and their answers come before the invitation, and the page ends by asking the reader to send the questions it has not answered.
 

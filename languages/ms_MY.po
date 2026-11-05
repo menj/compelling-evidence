@@ -358,3 +358,53 @@ msgstr "Artikel Berkaitan"
 #: single-ce_article.php
 msgid "Read more"
 msgstr "Baca lagi"
+
+#. translators: %d: step number on the home page.
+#: front-page.php
+msgid "Step %d"
+msgstr "Langkah %d"
+
+#: front-page.php
+msgid "Read Further"
+msgstr "Baca Lanjut"
+
+#: front-page.php
+msgid "Where to go next"
+msgstr "Ke mana selepas ini"
+
+#: front-page.php
+msgid "Your path is one way in. These four open the rest of the site, and the last one takes a question of your own."
+msgstr "Laluan anda ialah satu jalan masuk. Empat kad ini membuka seluruh laman, dan kad terakhir menerima soalan anda sendiri."
+
+#: archive-ce_article.php
+msgid "Newest first"
+msgstr "Terbaharu dahulu"
+
+#: archive-ce_article.php
+msgid "The latest articles and answered reader questions. The full collection follows, by topic."
+msgstr "Artikel terbaharu dan soalan pembaca yang telah dijawab. Koleksi penuh menyusul, mengikut topik."
+
+#: archive-ce_article.php
+msgid "Where to begin"
+msgstr "Mula di sini"
+
+#: archive-ce_article.php
+msgid "Reading figures are not in yet, so these follow the reading order. The full collection follows, by topic."
+msgstr "Angka bacaan belum ada, jadi senarai ini mengikut susunan bacaan. Koleksi penuh menyusul, mengikut topik."
+
+#: archive-ce_article.php
+msgid "Most read this month"
+msgstr "Paling banyak dibaca bulan ini"
+
+#: archive-ce_article.php
+msgid "The articles readers opened most in the last 30 days. The full collection follows, by topic."
+msgstr "Artikel yang paling kerap dibuka pembaca dalam 30 hari lalu. Koleksi penuh menyusul, mengikut topik."
+
+#: archive-ce_article.php
+msgid "Answer"
+msgstr "Jawapan"
+
+#. translators: %d: reading time in minutes.
+#: archive-ce_article.php
+msgid "%d min"
+msgstr "%d min"

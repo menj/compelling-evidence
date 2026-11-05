@@ -343,6 +343,23 @@ msgstr ""
 msgid "Still Searching?"
 msgstr ""
 
+#: front-page.php:272
+msgid "Read Further"
+msgstr ""
+
+#: front-page.php:273
+msgid "Where to go next"
+msgstr ""
+
+#: front-page.php:274
+msgid "Your path is one way in. These four open the rest of the site, and the last one takes a question of your own."
+msgstr ""
+
+#. translators: %d: step number on the home page.
+#: functions.php
+msgid "Step %d"
+msgstr ""
+
 #: front-page.php:313
 msgid "Want to ask <span>more questions?</span>"
 msgstr ""
@@ -2505,4 +2522,33 @@ msgstr ""
 
 #: inc/ce-theme-options.php:721
 msgid "On reader questions"
+msgstr ""
+
+#: archive-ce_article.php
+msgid "Newest first"
+msgstr ""
+
+#: archive-ce_article.php
+msgid "The latest articles and answered reader questions. The full collection follows, by topic."
+msgstr ""
+
+#: archive-ce_article.php
+msgid "Where to begin"
+msgstr ""
+
+#: archive-ce_article.php
+msgid "Reading figures are not in yet, so these follow the reading order. The full collection follows, by topic."
+msgstr ""
+
+#: archive-ce_article.php
+msgid "Most read this month"
+msgstr ""
+
+#: archive-ce_article.php
+msgid "The articles readers opened most in the last 30 days. The full collection follows, by topic."
+msgstr ""
+
+#. translators: %d: reading time in minutes.
+#: archive-ce_article.php
+msgid "%d min"
 msgstr ""

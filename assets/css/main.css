@@ -1366,6 +1366,28 @@ h1.hero-sub {
   position: relative;
   z-index: 1;
 }
+/* Section head for the quick-access cards: step label, heading, one line. */
+.qa-head {
+  grid-column: 1 / -1;
+  padding: 3.5rem 4rem 2rem;
+  background: var(--bg-deepest, #0d0820);
+}
+.qa-head h2 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 0.8rem;
+}
+.qa-head > p:last-child {
+  max-width: 36rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.75;
+}
+@media (max-width: 768px) {
+  .qa-head { padding: 3rem 1.5rem 1.5rem; }
+}
 @media (max-width: 1024px) {
   .quick-access { grid-template-columns: repeat(2, 1fr); }
 }
@@ -2054,10 +2076,15 @@ a.ce-crosslink:hover {
   .quick-access {
     max-width: 1120px;
     margin: 0 auto;
-    padding: 2rem clamp(1.25rem, 2vw, 2rem) 0;
+    padding: 2rem clamp(1.25rem, 2vw, 2rem) 4rem;
     gap: 0.8rem;
     background: transparent;
     border: 0;
+  }
+
+  .qa-head {
+    padding: 2.5rem 0 1rem;
+    background: transparent;
   }
 
   .qa-card {
