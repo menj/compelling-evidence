@@ -12,7 +12,7 @@ The browser icon set is complete. No feature removed.
 
 ### Added
 - `assets/images/icon-192.png`, `icon-512.png`, `icon-maskable-512.png`, `favicon.svg` (a copy of `ce-icon.svg`) and `site.webmanifest`, rendered from `ce-icon.svg`.
-- `ce_favicon_tags()` prints the SVG icon, the 16px PNG, `favicon.ico`, the manifest link and `theme-color` (#180d2e) on the site (from `header.php`), the login screen and the admin. The admin also gets the 32px and touch icons, since WordPress prints none there.
+- `ce_favicon_tags()` prints the SVG icon, the 16px PNG, `favicon.ico`, the manifest link and `theme-color` (#180d2e) on the site (from `header.php`), the login screen and the admin.
 - `ce_serve_favicon()` answers `/favicon.ico` with the icon: a day's cache and an ETag, with a 304 while it is unchanged, and HEAD requests get the same headers.
 - The error pages and drop-ins carry the CE mark as their tab icon, as a `data:` address, so it shows on any path and in a subfolder install.
 

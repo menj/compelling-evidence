@@ -1103,9 +1103,8 @@ add_filter( 'get_site_icon_url', 'ce_site_icon_url', 10, 2 );
 
 /**
  * The icon tags WordPress does not print, until the owner sets a Site Icon:
- * the SVG icon, favicon.ico, the web app manifest and the theme colour. On the
- * admin screens, where WordPress prints no icon tags, the PNG and touch icons
- * come too. Hooked on wp_head (from header.php's place), login_head and admin_head.
+ * the SVG icon, the 16px PNG, favicon.ico, the web app manifest and the theme
+ * colour. Called from header.php, and hooked on login_head and admin_head.
  */
 function ce_favicon_tags() {
     if ( ce_owner_site_icon() ) {
@@ -1114,10 +1113,6 @@ function ce_favicon_tags() {
     $dir = get_stylesheet_directory_uri() . '/assets/images/';
     echo '<link rel="icon" type="image/svg+xml" href="' . esc_url( $dir . 'favicon.svg' ) . '">' . "\n";
     echo '<link rel="icon" type="image/png" sizes="16x16" href="' . esc_url( $dir . 'favicon-16x16.png' ) . '">' . "\n";
-    if ( is_admin() ) {
-        echo '<link rel="icon" type="image/png" sizes="32x32" href="' . esc_url( $dir . 'favicon-32x32.png' ) . '">' . "\n";
-        echo '<link rel="apple-touch-icon" sizes="180x180" href="' . esc_url( $dir . 'apple-touch-icon.png' ) . '">' . "\n";
-    }
     echo '<link rel="shortcut icon" href="' . esc_url( $dir . 'favicon.ico' ) . '">' . "\n";
     echo '<link rel="manifest" href="' . esc_url( $dir . 'site.webmanifest' ) . '">' . "\n";
     echo '<meta name="theme-color" content="#180d2e">' . "\n";
