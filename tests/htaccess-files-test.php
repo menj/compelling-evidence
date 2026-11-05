@@ -21,6 +21,7 @@ if ( 'cli' !== PHP_SAPI ) {
 define( 'ABSPATH', '/srv/site/' );
 function wp_normalize_path( $p ) { return str_replace( '\\', '/', (string) $p ); } // phpcs:ignore
 function trailingslashit( $p ) { return rtrim( (string) $p, '/\\' ) . '/'; } // phpcs:ignore
+function untrailingslashit( $p ) { return rtrim( (string) $p, '/\\' ); } // phpcs:ignore
 function get_stylesheet_directory() { return $GLOBALS['ce_theme_root'] . '/compelling-evidence'; } // phpcs:ignore
 function get_theme_root() { return $GLOBALS['ce_theme_root']; } // phpcs:ignore
 
@@ -71,7 +72,7 @@ function ce_forbidden( $lines, $uri, $base ) {
 	return false;
 }
 
-$ce_denied  = array( '.git/config', '.git/HEAD', '.gitignore', '.claude/CLAUDE.md', 'wp-content/themes/compelling-evidence/.git/config', 'wp-content/themes/compelling-evidence/.claude/FARUQI.md', 'wp-includes/version.php', 'wp-includes/blocks/archives.php', 'wp-includes/version.php/x', 'wp-includes/blocks/archives.php/wp-includes/js/tinymce/wp-tinymce.php', 'wp-includes/blocks/archives.php/wp-includes/ms-files.php', 'wp-settings.php/x', 'wp-admin/includes/admin.php', 'wp-content/themes/compelling-evidence/functions.php', 'wp-content/themes/twentytwentyfive/functions.php', 'wp-content/themes/compelling-evidence/tests/unlist-test.php', 'wp-content/themes/compelling-evidence/bin/build-error-pages.php', 'wp-content/themes/compelling-evidence/tools/x.py', 'wp-content/themes/compelling-evidence/tools/', 'wp-settings.php', 'wp-config-sample.php', 'wp-admin/install.php', 'readme.html' );
+$ce_denied  = array( '.git/config', '.git/HEAD', '.gitignore', '.claude/CLAUDE.md', 'wp-content/themes/compelling-evidence/.git/config', 'wp-content/themes/compelling-evidence/.claude/FARUQI.md', 'wp-includes/version.php', 'wp-includes/blocks/archives.php', 'wp-includes/version.php/x', 'wp-includes/blocks/archives.php/wp-includes/js/tinymce/wp-tinymce.php', 'wp-includes/blocks/archives.php/wp-includes/ms-files.php', 'wp-settings.php/x', 'wp-admin/includes/admin.php', 'wp-content/themes/compelling-evidence/functions.php', 'wp-content/themes/twentytwentyfive/functions.php', 'wp-content/themes/compelling-evidence/tests/unlist-test.php', 'wp-content/themes/compelling-evidence/bin/build-error-pages.php', 'wp-content/themes/compelling-evidence/tools/x.py', 'wp-content/themes/compelling-evidence/tools/', 'wp-config.php', 'wp-settings.php', 'wp-config-sample.php', 'wp-admin/install.php', 'readme.html' );
 $ce_allowed = array( '', 'index.php', 'wp-login.php', 'wp-cron.php', 'xmlrpc.php', 'wp-admin/', 'wp-admin/index.php', 'wp-admin/admin-ajax.php', 'wp-admin/post.php', 'wp-admin/load-scripts.php', 'wp-json/wp/v2/posts', 'wp-includes/js/tinymce/wp-tinymce.php', 'wp-includes/ms-files.php', 'wp-includes/js/dist/block-editor.min.js', 'wp-includes/css/dist/block-library/style.min.css', 'wp-content/themes/compelling-evidence/style.css', 'wp-content/themes/compelling-evidence/assets/js/theme.js', 'wp-content/themes/compelling-evidence/testsuite.css', 'wp-content/uploads/2026/11/photo.webp', 'what-is-the-qibla/', 'binary-choices/', 'documents/', 'articles/does-god-exist/', 'journeys/', 'quiz/', 'wp-content/themes/compelling-evidence/doc/readme.md' );
 
 $ce_sites = array(
@@ -113,7 +114,69 @@ ce_check( 'wp\\.6/' === $ce_pfx && 1 === preg_match( '#^' . $ce_pfx . 'wp-includ
 $GLOBALS['ce_theme_root'] = '/srv/site/wp-content/themes';
 $ce_split = ce_sec_files_htaccess_lines( '/srv/' );
 ce_check( (bool) preg_grep( '#\^site/wp-includes/#', $ce_split ) && (bool) preg_grep( '#\^site/wp-content/themes/compelling-evidence/#', $ce_split ), 'core and the theme below the .htaccess folder get their prefix' );
+ce_check( ce_forbidden( $ce_split, '/wp-config.php', '/' ) && ce_forbidden( $ce_split, '/site/wp-config.php', '/' ), 'wp-config.php is refused in the core folder and in the folder above it' );
 ce_check( ce_forbidden( $ce_split, '/site/wp-includes/version.php', '/' ) && ! ce_forbidden( $ce_split, '/site/wp-includes/js/tinymce/wp-tinymce.php', '/' ), 'the prefixed rules refuse and allow as at the root' );
+
+// The theme folder's own .htaccess, which Apache reads before WordPress runs.
+$ce_own = array();
+foreach ( file( dirname( __DIR__ ) . '/.htaccess', FILE_IGNORE_NEW_LINES ) as $ce_line ) {
+	if ( preg_match( '/^RedirectMatch 403 (\S+)$/', $ce_line, $ce_m ) ) {
+		$ce_own[] = $ce_m[1];
+	}
+}
+$ce_own_hit = function ( $uri ) use ( $ce_own ) {
+	foreach ( $ce_own as $p ) {
+		if ( preg_match( '#' . $p . '#', $uri ) ) {
+			return true;
+		}
+	}
+	return false;
+};
+ce_check( 2 === count( $ce_own ), "the theme's .htaccess has its 2 RedirectMatch lines" );
+foreach ( array( '.git/config', '.github/workflows/ci.yml', '.gitignore', '.claude/CLAUDE.md', '.env', '.vscode/settings.json', 'assets/.DS_Store', 'tests/unlist-test.php', 'bin/build-error-pages.php', 'functions.php', 'inc/ce-seo.php/x' ) as $ce_p ) {
+	ce_check( $ce_own_hit( '/wp-content/themes/compelling-evidence/' . $ce_p ), "theme .htaccess: 403 for $ce_p" );
+}
+foreach ( array( 'style.css', 'screenshot.png', 'assets/js/main.js', 'assets/css/main.css', 'journeys/quiz.html', 'journeys/data/agnostic/screens/conclusion.html', 'doc/readme.md', '.well-known/x', 'assets/js/main.min.js' ) as $ce_p ) {
+	ce_check( ! $ce_own_hit( '/wp-content/themes/compelling-evidence/' . $ce_p ), "theme .htaccess: open $ce_p" );
+}
+
+// The theme .htaccess's own RewriteRule, matched against the path below the
+// theme folder as mod_rewrite does in an .htaccess.
+$ce_rw = array();
+foreach ( file( dirname( __DIR__ ) . '/.htaccess', FILE_IGNORE_NEW_LINES ) as $ce_line ) {
+	if ( preg_match( '/^RewriteRule (\S+) - \[F\]$/', $ce_line, $ce_m ) ) {
+		$ce_rw[] = $ce_m[1];
+	}
+}
+$ce_rw_hit = function ( $rel ) use ( $ce_rw ) {
+	foreach ( $ce_rw as $p ) {
+		if ( preg_match( '#' . $p . '#', $rel ) ) {
+			return true;
+		}
+	}
+	return false;
+};
+ce_check( 3 === count( $ce_rw ), "the theme's .htaccess has its 3 RewriteRule lines" );
+foreach ( array( 'tools/build.py', 'tools/', 'tools', 'bin/quiz-sim.js', 'tests/lock-test.php', '.git/config', '.claude/CLAUDE.md', 'assets/.env', 'functions.php', 'inc/ce-seo.php/x' ) as $ce_p ) {
+	ce_check( $ce_rw_hit( $ce_p ), "theme .htaccess rewrite: 403 for $ce_p" );
+}
+foreach ( array( 'assets/js/main.js', 'toolsmith.css', 'journeys/quiz.html', 'assets/tools/x.js', '.well-known/x', 'assets/css/main.min.css' ) as $ce_p ) {
+	ce_check( ! $ce_rw_hit( $ce_p ), "theme .htaccess rewrite: open $ce_p" );
+}
+
+// Without mod_rewrite: the <If> on the file's own path.
+$ce_if = preg_match( '/<If "%\{REQUEST_FILENAME\} =~ m#(.+)#">/', (string) file_get_contents( dirname( __DIR__ ) . '/.htaccess' ), $ce_m ) ? $ce_m[1] : '';
+ce_check( '' !== $ce_if && 1 === preg_match( '#' . $ce_if . '#', '/home/site/public_html/wp-content/themes/compelling-evidence/tools/build.py' ) && 0 === preg_match( '#' . $ce_if . '#', '/home/site/public_html/wp-content/themes/compelling-evidence/assets/js/main.js' ), 'without mod_rewrite, tools/ is refused by its file path and assets stay open' );
+
+// tests/ and bin/ refuse every request into them, whatever the theme's address.
+foreach ( array( 'tests', 'bin', 'tools' ) as $ce_d ) {
+	$ce_ht = (string) @file_get_contents( dirname( __DIR__ ) . "/$ce_d/.htaccess" ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+	ce_check( false !== strpos( $ce_ht, 'Require all denied' ) && false !== strpos( $ce_ht, 'Deny from all' ), "$ce_d/.htaccess refuses everything, on Apache 2.4 and 2.2" );
+}
+
+// Without mod_alias and mod_rewrite: the <If> on the request path refuses dot folders.
+$ce_if = preg_match( '/<If "%\\{REQUEST_URI\\} =~ m#(.+)#">/', (string) file_get_contents( dirname( __DIR__ ) . '/.htaccess' ), $ce_mm ) ? $ce_mm[1] : '';
+ce_check( '' !== $ce_if && 1 === preg_match( '#' . $ce_if . '#', '/wp-content/themes/x/.git/config' ) && 0 === preg_match( '#' . $ce_if . '#', '/wp-content/themes/x/.well-known/a' ) && 0 === preg_match( '#' . $ce_if . '#', '/wp-content/themes/x/assets/css/a.min.css' ), 'without mod_alias and mod_rewrite, the <If> refuses .git/config and leaves .well-known and assets open' );
 
 echo $ce_fail ? "$ce_fail failed\n" : "all passed\n";
 exit( $ce_fail ? 1 : 0 );

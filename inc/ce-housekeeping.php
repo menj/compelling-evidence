@@ -66,6 +66,26 @@ function ce_keep_dev_files() {
  * @return bool
  */
 function ce_remove_path( $path, $root ) {
+	// The cleanup renews its lock every 200 entries, and at least every 30
+	// seconds, so a long run over a large .git tree on a slow disk is never
+	// taken for a dead one, and a holder that lost its lock stops within
+	// 30 seconds.
+	static $seen = 0, $renewed = 0;
+	if ( ! $renewed ) {
+		$renewed = time();
+	}
+	// A holder that finds its lock gone (another request took it over after
+	// a long pause) stops at once and leaves the rest to that request.
+	if ( ! empty( $GLOBALS['ce_dev_files_lost'] ) ) {
+		return false;
+	}
+	if ( ( 0 === ++$seen % 200 || time() - $renewed >= 30 ) && ! empty( $GLOBALS['ce_dev_files_token'] ) && defined( 'CE_LOCK_READY' ) ) {
+		$renewed = time();
+		if ( ! ce_lock_renew( 'ce_dev_files_lock', $GLOBALS['ce_dev_files_token'] ) ) {
+			$GLOBALS['ce_dev_files_lost'] = true; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+			return false;
+		}
+	}
 	$real_root = realpath( $root );
 	$real      = realpath( $path );
 
@@ -95,6 +115,17 @@ function ce_remove_path( $path, $root ) {
 		ce_remove_path( $path . DIRECTORY_SEPARATOR . $item, $root );
 	}
 
+	// Lost the lock below, or while the last entry was going: leave this
+	// folder, and every one above it, as it is. The lease is renewed (and so
+	// checked) before every folder is removed.
+	if ( ! empty( $GLOBALS['ce_dev_files_lost'] ) ) {
+		return false;
+	}
+	if ( ! empty( $GLOBALS['ce_dev_files_token'] ) && defined( 'CE_LOCK_READY' ) && ! ce_lock_renew( 'ce_dev_files_lock', $GLOBALS['ce_dev_files_token'] ) ) {
+		$GLOBALS['ce_dev_files_lost'] = true; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+		return false;
+	}
+
 	return @rmdir( $path ); // phpcs:ignore WordPress.PHP.NoSilencedErrors, WordPress.WP.AlternativeFunctions
 }
 
@@ -119,6 +150,16 @@ function ce_remove_dev_files( $root = '', $version = '' ) {
 		return;
 	}
 
+	// One cleanup at a time, whichever hook started it (inc/ce-lock.php); a
+	// lock not renewed for ten minutes is from a request that died, and is
+	// taken over. Until the lock code has arrived, nothing is deleted.
+	$token = defined( 'CE_LOCK_READY' ) ? ce_lock_take( 'ce_dev_files_lock', 10 * MINUTE_IN_SECONDS ) : '';
+	if ( '' === $token ) {
+		return;
+	}
+	$GLOBALS['ce_dev_files_token'] = $token; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+	$GLOBALS['ce_dev_files_lost']  = false; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+
 	$left = array();
 
 	foreach ( ce_dev_paths( $root ) as $rel ) {
@@ -136,12 +177,20 @@ function ce_remove_dev_files( $root = '', $version = '' ) {
 	// The version is recorded only once every path is gone. A path PHP could
 	// not delete (file ownership, say) is tried again an hour later from the
 	// front end, and on every admin page load.
-	if ( $left ) {
-		set_transient( 'ce_dev_files_retry', $left, HOUR_IN_SECONDS );
+	// Lost the lock part-way: record nothing, and leave the lock alone.
+	if ( ! empty( $GLOBALS['ce_dev_files_lost'] ) || ! ce_lock_holds( 'ce_dev_files_lock', $token ) ) {
+		unset( $GLOBALS['ce_dev_files_token'], $GLOBALS['ce_dev_files_lost'] );
 		return;
 	}
 
-	update_option( 'ce_dev_files_removed', $version, false );
+	if ( $left ) {
+		set_transient( 'ce_dev_files_retry', $left, HOUR_IN_SECONDS );
+	} else {
+		update_option( 'ce_dev_files_removed', $version, true ); // Autoloaded: the front end reads it on every request.
+	}
+
+	ce_lock_release( 'ce_dev_files_lock', $token );
+	unset( $GLOBALS['ce_dev_files_token'] );
 }
 // Both hooks pass arguments of their own (after_switch_theme the old
 // theme's name), so neither may reach the $root parameter.
@@ -154,14 +203,14 @@ add_action( 'admin_init', 'ce_remove_dev_files_hook', 10, 0 );
 /**
  * The same, on the first front-end request after an FTP update: such an
  * update fires no switch hook, and the site may see no admin visit for
- * days. A one-minute lock keeps two requests from deleting at once.
+ * days. ce_remove_dev_files() takes the lock that keeps two requests from
+ * deleting at once.
  */
 function ce_remove_dev_files_front() {
-	if ( is_admin() || ce_keep_dev_files() || get_transient( 'ce_dev_files_lock' ) || get_transient( 'ce_dev_files_retry' ) || get_option( 'ce_dev_files_removed' ) === (string) wp_get_theme()->get( 'Version' ) ) {
+	// The autoloaded record first, so a finished cleanup costs no query.
+	if ( is_admin() || get_option( 'ce_dev_files_removed' ) === (string) wp_get_theme()->get( 'Version' ) || ce_keep_dev_files() || get_transient( 'ce_dev_files_retry' ) ) {
 		return;
 	}
-	set_transient( 'ce_dev_files_lock', 1, MINUTE_IN_SECONDS );
 	ce_remove_dev_files();
-	delete_transient( 'ce_dev_files_lock' );
 }
 add_action( 'init', 'ce_remove_dev_files_front', 99 );

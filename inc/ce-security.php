@@ -173,13 +173,35 @@ function ce_sec_files_htaccess_lines( $home = '' ) {
 		// with either one appended as path info is still refused.
 		$rules[] = 'RewriteRule ^' . $core . 'wp-includes/(?!(js/tinymce/wp-tinymce|ms-files)\.php$).+\.php(/|$) - [F]';
 		$rules[] = 'RewriteRule ^' . $core . 'wp-admin/includes/.+\.php(/|$) - [F]';
-		$rules[] = 'RewriteRule ^' . $core . '(wp-settings\.php|wp-config-sample\.php|wp-admin/install\.php|readme\.html)(/|$) - [F]';
+		$rules[] = 'RewriteRule ^' . $core . '(wp-config\.php|wp-settings\.php|wp-config-sample\.php|wp-admin/install\.php|readme\.html)(/|$) - [F]';
+		// WordPress also reads wp-config.php from the folder above its own.
+		$parent = '' === $core ? null : ce_sec_rewrite_prefix( dirname( untrailingslashit( wp_normalize_path( ABSPATH ) ) ), $home );
+		if ( null !== $parent ) {
+			$rules[] = 'RewriteRule ^' . $parent . 'wp-config\.php(/|$) - [F]';
+		}
 	}
 	if ( null !== $themes && '' !== $themes ) {
 		$rules[] = 'RewriteRule ^' . $themes . '.+\.php(/|$) - [F]';
 	}
 
 	return array_merge( array( '<IfModule mod_rewrite.c>', 'RewriteEngine On' ), $rules, array( '</IfModule>' ) );
+}
+
+/**
+ * Whether wp-config.php sits in the folder above WordPress while the
+ * .htaccess the theme writes is WordPress's own folder: the rules there
+ * cannot reach the folder above, so the Security tab says so.
+ *
+ * @return bool
+ */
+function ce_sec_parent_config_uncovered() {
+	if ( ! function_exists( 'get_home_path' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+	}
+	$parent = dirname( untrailingslashit( wp_normalize_path( ABSPATH ) ) );
+	return '' === ce_sec_rewrite_prefix( ABSPATH, get_home_path() )
+		&& ! file_exists( ABSPATH . 'wp-config.php' )
+		&& file_exists( $parent . '/wp-config.php' );
 }
 
 /**
@@ -229,9 +251,148 @@ function ce_sec_sync_htaccess( $force = false ) {
 		return false;
 	}
 	set_transient( 'ce_sec_htaccess_checked', 1, HOUR_IN_SECONDS );
+
+	// One writer at a time, whichever hook started it: admin_init, a theme
+	// switch, a settings change or the first request of a new version. A
+	// sync that finds the lock taken leaves a note, and the holder runs once
+	// more before it lets go, so a change made meanwhile is not lost.
+	$ok     = false;
+	$rounds = 0;
+	do {
+		$token = ce_sec_htaccess_lock();
+		if ( '' === $token && 0 === $rounds ) {
+			// Another request is writing: leave the note it reads after it
+			// lets go, then try once more, in case it already has.
+			ce_sec_note( 'ce_sec_htaccess_dirty', true );
+			$token = ce_sec_htaccess_lock();
+		}
+		if ( '' === $token ) {
+			// The holder reads the note (still there) before it stops.
+			return $ok;
+		}
+		$writes = 0;
+		do {
+			ce_sec_note( 'ce_sec_htaccess_dirty', false );
+			// Another request may have changed the settings since this one
+			// read them: read them afresh before each write.
+			wp_cache_delete( 'alloptions', 'options' );
+			wp_cache_delete( 'notoptions', 'options' );
+			wp_cache_delete( 'ce_sec_xmlrpc_off', 'options' );
+			// Still this request's lock? A sync paused past the lock's minute
+			// may have lost it; it then writes nothing more and lets go of
+			// nothing that is not its own.
+			if ( ! ce_lock_renew( 'ce_sec_htaccess_lock', $token ) ) {
+				return false;
+			}
+			$ok = ce_sec_write_htaccess();
+			++$writes;
+		} while ( $writes < 3 && ce_sec_htaccess_dirty() );
+		// A theme switch that found the lock taken asked for the sections to go.
+		// This theme's own section always goes. The "Block xmlrpc.php" one is
+		// shared with the sister themes: it stays when the theme switched to
+		// is one of them, which keeps it, and goes when it is not.
+		if ( ce_sec_note( 'ce_sec_htaccess_remove' ) ) {
+			ce_sec_note( 'ce_sec_htaccess_remove', false );
+			$file = ce_sec_htaccess_file();
+			if ( '' !== $file ) {
+				insert_with_markers( $file, CE_SEC_FILES_MARKER, array() );
+				if ( ! ce_sec_is_sister_theme( ce_sec_option_raw( 'stylesheet' ) ) ) {
+					insert_with_markers( $file, 'Block xmlrpc.php', array() );
+				}
+			}
+			ce_lock_release( 'ce_sec_htaccess_lock', $token );
+			return false;
+		}
+		ce_lock_release( 'ce_sec_htaccess_lock', $token );
+		++$rounds;
+		// A note left between the last check and the release is taken up
+		// here, by this request or by whichever one now holds the lock.
+	} while ( $rounds < 3 && ( ce_sec_htaccess_dirty() || ce_sec_note( 'ce_sec_htaccess_remove' ) ) );
+	// Three rounds and still a note: not done. The note stays until it is
+	// read, the hourly throttle is lifted, and the caller records nothing,
+	// so the next admin page load or request writes again.
+	if ( ce_sec_htaccess_dirty() || ce_sec_note( 'ce_sec_htaccess_remove' ) ) {
+		delete_transient( 'ce_sec_htaccess_checked' );
+		return false;
+	}
+
+	return $ok;
+}
+
+/**
+ * Whether a theme is one of the sister themes that keep the shared "Block
+ * xmlrpc.php" section in .htaccess.
+ *
+ * @param string $stylesheet Theme folder name.
+ * @return bool
+ */
+function ce_sec_is_sister_theme( $stylesheet ) {
+	$sisters = array( 'abrahamic', 'bestofislam', 'compelling-evidence', 'injil.help', 'injil-help', 'islamicdilemma', 'lailatulqadar', 'murtadd', 'paulus', 'tbe' );
+	return in_array( (string) $stylesheet, (array) apply_filters( 'ce_sec_sister_themes', $sisters ), true );
+}
+
+/**
+ * Takes the .htaccess lock (inc/ce-lock.php); a lock older than a minute is
+ * from a request that died, and is taken over.
+ *
+ * @return string The holder's token, or '' when it is taken or the lock code
+ *                has not arrived yet.
+ */
+function ce_sec_htaccess_lock() {
+	return defined( 'CE_LOCK_READY' ) ? ce_lock_take( 'ce_sec_htaccess_lock', MINUTE_IN_SECONDS ) : '';
+}
+
+/**
+ * Whether another request asked for a sync while this one held the lock.
+ * Read from the lock table, past this request's option cache.
+ *
+ * @return bool
+ */
+function ce_sec_htaccess_dirty() {
+	return ce_sec_note( 'ce_sec_htaccess_dirty' );
+}
+
+/**
+ * A note between requests about the .htaccess sync, kept beside the lock
+ * (inc/ce-lock.php), so on a network a request on one site sees what a
+ * request on another left. False while the lock code has not arrived.
+ *
+ * @param string    $name Note name.
+ * @param bool|null $set  True sets it, false clears it, null only reads it.
+ * @return bool
+ */
+function ce_sec_note( $name, $set = null ) {
+	return defined( 'CE_LOCK_READY' ) ? ce_lock_note( $name, $set ) : false;
+}
+
+/**
+ * An option's value straight from the table ('' when absent).
+ *
+ * @param string $name Option name.
+ * @return string
+ */
+function ce_sec_option_raw( $name ) {
+	global $wpdb;
+	return (string) $wpdb->get_var( $wpdb->prepare( "SELECT option_value FROM {$wpdb->options} WHERE option_name = %s", $name ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+}
+
+/**
+ * Writes both .htaccess sections as the settings want them.
+ *
+ * @return bool Whether both sections are now as wanted.
+ */
+function ce_sec_write_htaccess() {
 	$file = ce_sec_htaccess_file();
 	if ( '' === $file ) {
 		update_option( 'ce_security_htaccess', 'unavailable', false );
+		return false;
+	}
+	// A request that started before a theme switch must not write this
+	// theme's section back after the switch took it out: the stored theme,
+	// read past this request's cache, decides.
+	$active = ce_sec_option_raw( 'stylesheet' );
+	if ( '' !== $active && $active !== get_option( 'stylesheet' ) && ! has_filter( 'pre_option_stylesheet' ) ) {
+		insert_with_markers( $file, CE_SEC_FILES_MARKER, array() );
 		return false;
 	}
 	$want    = ce_sec_on( 'ce_sec_xmlrpc_off' );
@@ -271,14 +432,15 @@ function ce_sec_sync_htaccess_once() {
 	// The key carries the CE_BLOCK_DIRECT_FILES choice, so changing that
 	// constant takes effect on the next request too.
 	$version = (string) wp_get_theme()->get( 'Version' ) . ( ce_sec_files_block_on() ? '' : '-files-off' );
-	if ( get_option( 'ce_sec_htaccess_version' ) === $version || get_transient( 'ce_sec_htaccess_lock' ) ) {
+	if ( get_option( 'ce_sec_htaccess_version' ) === $version || get_transient( 'ce_sec_htaccess_retry' ) ) {
 		return;
 	}
-	set_transient( 'ce_sec_htaccess_lock', 1, MINUTE_IN_SECONDS );
 	// Recorded only once the sections are written, or where no .htaccess
 	// applies (not Apache); a failed write is tried again a minute later.
 	if ( ce_sec_sync_htaccess( true ) || empty( $GLOBALS['is_apache'] ) ) {
-		update_option( 'ce_sec_htaccess_version', $version, false );
+		update_option( 'ce_sec_htaccess_version', $version, true ); // Autoloaded: read on every request.
+	} else {
+		set_transient( 'ce_sec_htaccess_retry', 1, MINUTE_IN_SECONDS );
 	}
 }
 add_action( 'init', 'ce_sec_sync_htaccess_once', 99 );
@@ -291,12 +453,31 @@ add_action( 'update_option_ce_sec_xmlrpc_off', function () { ce_sec_sync_htacces
  * themes. A sister theme writes the same block back on its first admin load.
  */
 function ce_sec_remove_htaccess() {
+	delete_transient( 'ce_sec_htaccess_checked' );
+	$token = ce_sec_htaccess_lock();
+	if ( '' === $token ) {
+		// Another request is writing: leave the request it reads before it
+		// lets go, then try once more, in case it already has.
+		ce_sec_note( 'ce_sec_htaccess_remove', true );
+		$token = ce_sec_htaccess_lock();
+		if ( '' === $token ) {
+			return;
+		}
+		ce_sec_note( 'ce_sec_htaccess_remove', false );
+	}
+	ce_sec_clear_htaccess();
+	ce_lock_release( 'ce_sec_htaccess_lock', $token );
+}
+
+/**
+ * Takes both of this theme's sections out of .htaccess.
+ */
+function ce_sec_clear_htaccess() {
 	$file = ce_sec_htaccess_file();
 	if ( '' !== $file ) {
 		insert_with_markers( $file, 'Block xmlrpc.php', array() );
 		insert_with_markers( $file, CE_SEC_FILES_MARKER, array() );
 	}
-	delete_transient( 'ce_sec_htaccess_checked' );
 }
 add_action( 'switch_theme', 'ce_sec_remove_htaccess' );
 
@@ -1522,6 +1703,9 @@ function ce_sec_render_tools() {
 			<p class="ce-field-desc"><?php esc_html_e( 'The web server also refuses xmlrpc.php: the theme keeps a "Block xmlrpc.php" section in .htaccess and repairs it if it goes missing.', 'compelling-evidence' ); ?></p>
 		<?php elseif ( 'unavailable' === $ce_sec_ht && ce_sec_on( 'ce_sec_xmlrpc_off' ) ) : ?>
 			<div class="notice notice-warning inline"><p><?php esc_html_e( 'The theme could not write .htaccess (the server is not Apache, or the file is read-only). WordPress still refuses xmlrpc.php; ask the host to deny it at the server as well.', 'compelling-evidence' ); ?></p></div>
+		<?php endif; ?>
+		<?php if ( ce_sec_parent_config_uncovered() ) : ?>
+			<div class="notice notice-warning inline"><p><?php esc_html_e( 'wp-config.php sits in the folder above WordPress, outside the folder whose .htaccess the theme writes, so the theme cannot refuse direct requests for it. Ask the host to deny wp-config.php at the server, or move the file into the WordPress folder.', 'compelling-evidence' ); ?></p></div>
 		<?php endif; ?>
 		<?php if ( 'written' === get_option( 'ce_security_htaccess_files', '' ) ) : ?>
 			<p class="ce-field-desc"><?php esc_html_e( 'The web server also refuses direct requests for PHP files in wp-includes, wp-admin/includes and the themes folder, the installer and version files, .git and .claude, and the theme\'s tests, bin and tools folders: the theme keeps a "Compelling Evidence: block direct file access" section in .htaccess. Define CE_BLOCK_DIRECT_FILES as false in wp-config.php to leave it out.', 'compelling-evidence' ); ?></p>

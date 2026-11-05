@@ -1,7 +1,7 @@
 # SSOT — Single Source of Truth
 ## Compelling Evidence Theme — System Design, Naming Conventions, Configuration Rules
 
-**Version:** 2.18.6  
+**Version:** 2.18.7  
 **Location:** `/doc/SSOT.md`
 
 This document is authoritative. When any other file conflicts with a rule stated here, this document is correct and the other file should be updated.
@@ -659,7 +659,7 @@ The order follows `.claude/FARUQI.md`: conviction is reached through evidence, s
 The owner uploads the theme over FTP, and on 4 November 2026 the upload carried `.git` (503 files) to the live site. The server logs showed 500s from direct requests to `wp-settings.php`, `wp-config-sample.php` and `wp-includes/blocks/*.php`.
 
 - **Development files.** `ce_remove_dev_files()` (`inc/ce-housekeeping.php`) deletes every `.git*` entry, `.claude`, `tests`, `bin` and `tools` from the theme folder on activation and once per version. It does nothing while `wp_get_environment_type()` is `local` or `development`, or `CE_KEEP_DEV_FILES` is true. It also runs on the first front-end request of a new version, since an FTP update fires no switch hook. A symbolic link is removed, never what it points to.
-- **Direct file access.** `ce_sec_sync_htaccess()` keeps a "Compelling Evidence: block direct file access" section in `.htaccess` beside "Block xmlrpc.php". Under `<IfModule mod_rewrite.c>`, with `[F]`, it refuses any path segment starting `.git` or `.claude`, the theme's `tests`, `bin` and `tools`, PHP in `wp-includes` (except `js/tinymce/wp-tinymce.php` and `ms-files.php`), `wp-admin/includes` and the themes folder, `wp-settings.php`, `wp-config-sample.php`, `wp-admin/install.php` and `readme.html`. `CE_BLOCK_DIRECT_FILES` false leaves it out. `tests/htaccess-files-test.php` checks the lines.
+- **Direct file access.** `ce_sec_sync_htaccess()` keeps a "Compelling Evidence: block direct file access" section in `.htaccess` beside "Block xmlrpc.php". Under `<IfModule mod_rewrite.c>`, with `[F]`, it refuses any path segment starting `.git` or `.claude`, the theme's `tests`, `bin` and `tools`, PHP in `wp-includes` (except `js/tinymce/wp-tinymce.php` and `ms-files.php`), `wp-admin/includes` and the themes folder, `wp-config.php` (also one folder up, since 2.18.7), `wp-settings.php`, `wp-config-sample.php`, `wp-admin/install.php` and `readme.html`. `CE_BLOCK_DIRECT_FILES` false leaves it out. `tests/htaccess-files-test.php` checks the lines. The theme folder also ships its own `.htaccess` (mod_alias `RedirectMatch 403` for `.git*`, `.claude` and theme PHP; mod_rewrite for `tests`, `bin` and `tools`), and `tests/`, `bin/` and `tools/` each carry one that refuses everything in them; Apache applies them before WordPress runs (since 2.18.7).
 - **CLI only.** Every PHP file in `tests/` and `bin/` exits unless it runs from the command line.
 - **Users.** A visitor who is not logged in gets no `/wp/v2/users` routes and a 404 for `?author=N` (`ce_sec_hide_user_routes()`, `ce_sec_block_author_query()`). The users sitemap has been off since 2.11.0.
 - **Sitemap aliases.** `/sitemap.xml` and `/sitemaps.xml` answer 301 with the index in use: Rank Math's `/sitemap_index.xml` when its sitemap module is on, otherwise `/wp-sitemap.xml` (`ce_sitemap_alias_redirect()`).

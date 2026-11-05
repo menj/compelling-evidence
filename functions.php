@@ -7,17 +7,66 @@
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * The theme caught half uploaded (2.18.7): a file this one loads missing, or
+ * there but half written (a ParseError). This file itself is parsed before
+ * any of it runs, so it cannot guard itself. The owner uploads over FTP one file at a time, so
+ * for a while either can happen. The request gets a 503 with Retry-After
+ * instead of a fatal error, and the error log gets one line per problem and
+ * ten minutes, not one per request. The login screen, AJAX, cron and the
+ * command line go on without the notice, and the admin gets it only when a
+ * file broke part-way through loading.
+ *
+ * @param string $what What is wrong, for the log.
+ * @param bool   $all  Send the notice to the admin screens too.
+ */
+function ce_incomplete_theme( $what, $all = false ) {
+    $key = 'ce_incomplete_' . md5( $what );
+    if ( ! get_transient( $key ) ) {
+        set_transient( $key, 1, 10 * MINUTE_IN_SECONDS );
+        error_log( 'Compelling Evidence: the theme is incomplete or being uploaded (' . $what . '); visitors see the maintenance notice until it is whole.' ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions
+    }
+    // The login screen by its path, not a query that happens to hold the word.
+    $path  = (string) wp_parse_url( (string) ( $_SERVER['REQUEST_URI'] ?? '' ), PHP_URL_PATH ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+    $login = 'wp-login.php' === ( $GLOBALS['pagenow'] ?? '' ) || 'wp-login.php' === basename( $path );
+    if ( wp_doing_ajax() || wp_doing_cron() || 'cli' === PHP_SAPI || $login || ( is_admin() && ! $all ) ) {
+        return;
+    }
+    if ( ! headers_sent() ) {
+        header( 'HTTP/1.1 503 Service Unavailable', true, 503 );
+        header( 'Content-Type: text/html; charset=utf-8' );
+        header( 'Retry-After: 300' );
+        header( 'Cache-Control: no-store, max-age=0' );
+        header( 'X-Robots-Tag: noindex' );
+    }
+    echo '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="robots" content="noindex"><title>Back shortly</title></head><body><h1>Back shortly</h1><p>The site is being updated. Please try again in a few minutes.</p></body></html>';
+    exit;
+}
+
+// Every file loaded below, read from this file itself so the list cannot
+// drift from the requires: each is loaded unconditionally, and each must be
+// readable before any loads.
+$ce_theme_files = preg_match_all( "#get_stylesheet_directory\\(\\) \\. '(/inc/[a-z0-9-]+\\.php)'#", (string) file_get_contents( __FILE__ ), $ce_theme_m ) ? array_unique( $ce_theme_m[1] ) : array(); // phpcs:ignore WordPress.WP.AlternativeFunctions
+foreach ( $ce_theme_files as $ce_theme_file ) {
+    if ( ! is_readable( get_stylesheet_directory() . $ce_theme_file ) ) {
+        ce_incomplete_theme( ltrim( $ce_theme_file, '/' ) . ' is missing' );
+        return;
+    }
+}
+unset( $ce_theme_files, $ce_theme_file, $ce_theme_m );
+
+try {
 require_once get_stylesheet_directory() . '/inc/ce-db.php';
 require_once get_stylesheet_directory() . '/inc/ce-gone.php';
 
 // ── SECURITY (remote-publishing lock, spam gate, clean-up; Security tab) ─────
 require_once get_stylesheet_directory() . '/inc/ce-security-detector.php';
+// The cross-request lock (2.18.7). The upload guard above waits for it like
+// every other file.
+require_once get_stylesheet_directory() . '/inc/ce-lock.php';
 require_once get_stylesheet_directory() . '/inc/ce-security.php';
-// Loaded only once it exists, so an FTP upload that sends functions.php first
-// does not fail on it.
-if ( is_readable( get_stylesheet_directory() . '/inc/ce-housekeeping.php' ) ) {
-    require_once get_stylesheet_directory() . '/inc/ce-housekeeping.php';
-}
+// The production cleanup of the development files (2.18.6).
+require_once get_stylesheet_directory() . '/inc/ce-housekeeping.php';
 require_once get_stylesheet_directory() . '/inc/ce-engagement.php';
 
 // ── SEO & SCHEMA MARKUP (JSON-LD, OG tags, print CSS) ───────────────────────
@@ -80,6 +129,10 @@ require_once get_stylesheet_directory() . '/inc/ce-glossary.php';
 
 // ── Q&A SYSTEM (ticketing-style question management) ────────────────────────
 require_once get_stylesheet_directory() . '/inc/ce-question-cpt.php';
+} catch ( Throwable $ce_theme_error ) {
+    ce_incomplete_theme( $ce_theme_error->getMessage() . ' in ' . basename( $ce_theme_error->getFile() ), true );
+    return;
+}
 
 
 // ── LEGACY URL REDIRECTS ──────────────────────────────────────────────────────
