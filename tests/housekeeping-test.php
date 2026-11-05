@@ -28,7 +28,9 @@ if ( 'keep' === $ce_case ) {
 $GLOBALS['ce_o']   = array();
 $GLOBALS['ce_env'] = 'local';
 function add_action() {}
-function apply_filters( $h, $v ) { return $v; }
+function apply_filters( $h, $v ) { return 'ce_dev_paths' === $h ? array_merge( $v, $GLOBALS['ce_extra'] ?? array() ) : $v; }
+function set_transient( $k, $v, $t = 0 ) { $GLOBALS['ce_t'][ $k ] = $v; return true; }
+define( 'HOUR_IN_SECONDS', 3600 );
 function get_option( $k, $d = false ) { return $GLOBALS['ce_o'][ $k ] ?? $d; }
 function update_option( $k, $v ) { $GLOBALS['ce_o'][ $k ] = $v; return true; }
 function wp_get_environment_type() { return $GLOBALS['ce_env']; }
@@ -80,6 +82,15 @@ if ( 'keep' === $ce_case ) {
 	mkdir( "$ce_root/tests" );
 	ce_remove_dev_files( $ce_root, '9.9.9' );
 	ce_check( is_dir( "$ce_root/tests" ), 'the cleanup runs once per version' );
+
+	// A path the remover refuses (it resolves outside the theme) stands for
+	// one PHP cannot delete.
+	$GLOBALS['ce_extra'] = array( '../' . basename( $ce_outside ) );
+	ce_remove_dev_files( $ce_root, '9.9.10' );
+	ce_check( '9.9.9' === get_option( 'ce_dev_files_removed' ) && array( '../' . basename( $ce_outside ) ) === ( $GLOBALS['ce_t']['ce_dev_files_retry'] ?? null ) && is_file( "$ce_outside/precious" ), 'a path left behind keeps the new version unrecorded and is queued for a retry' );
+	$GLOBALS['ce_extra'] = array();
+	ce_remove_dev_files( $ce_root, '9.9.10' );
+	ce_check( '9.9.10' === get_option( 'ce_dev_files_removed' ), 'the retry records the version once every path is gone' );
 }
 
 exec( 'rm -rf ' . escapeshellarg( $ce_root ) . ' ' . escapeshellarg( $ce_outside ) );

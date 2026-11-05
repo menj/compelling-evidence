@@ -119,12 +119,26 @@ function ce_remove_dev_files( $root = '', $version = '' ) {
 		return;
 	}
 
+	$left = array();
+
 	foreach ( ce_dev_paths( $root ) as $rel ) {
 		$path = $root . DIRECTORY_SEPARATOR . ltrim( $rel, '/\\' );
 
 		if ( file_exists( $path ) || is_link( $path ) ) {
 			ce_remove_path( $path, $root );
 		}
+		clearstatcache();
+		if ( file_exists( $path ) || is_link( $path ) ) {
+			$left[] = $rel;
+		}
+	}
+
+	// The version is recorded only once every path is gone. A path PHP could
+	// not delete (file ownership, say) is tried again an hour later from the
+	// front end, and on every admin page load.
+	if ( $left ) {
+		set_transient( 'ce_dev_files_retry', $left, HOUR_IN_SECONDS );
+		return;
 	}
 
 	update_option( 'ce_dev_files_removed', $version, false );
@@ -143,7 +157,7 @@ add_action( 'admin_init', 'ce_remove_dev_files_hook', 10, 0 );
  * days. A one-minute lock keeps two requests from deleting at once.
  */
 function ce_remove_dev_files_front() {
-	if ( is_admin() || ce_keep_dev_files() || get_transient( 'ce_dev_files_lock' ) || get_option( 'ce_dev_files_removed' ) === (string) wp_get_theme()->get( 'Version' ) ) {
+	if ( is_admin() || ce_keep_dev_files() || get_transient( 'ce_dev_files_lock' ) || get_transient( 'ce_dev_files_retry' ) || get_option( 'ce_dev_files_removed' ) === (string) wp_get_theme()->get( 'Version' ) ) {
 		return;
 	}
 	set_transient( 'ce_dev_files_lock', 1, MINUTE_IN_SECONDS );
