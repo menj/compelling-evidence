@@ -26,6 +26,10 @@ function untrailingslashit( $s ) { return rtrim( $s, '/' ); }
 function get_stylesheet_directory_uri() { return 'https://example.test/wp-content/themes/compelling-evidence'; }
 function update_option( $k, $v ) { $GLOBALS['err_opt'][ $k ] = $v; return true; }
 function get_option( $k, $d = false ) { return $GLOBALS['err_opt'][ $k ] ?? $d; }
+function delete_option( $k ) { unset( $GLOBALS['err_opt'][ $k ] ); }
+function wp_delete_file( $p ) { @unlink( $p ); }
+function is_multisite() { return false; }
+function current_user_can() { return true; }
 class Err_Theme_Stub { public function get( $k ) { return '9.9.9'; } }
 function wp_get_theme() { return new Err_Theme_Stub(); }
 
@@ -69,17 +73,33 @@ err_check( 'outdated' === ce_error_state( 'maintenance.php' ), 'an older copy of
 err_check( 'written' === ce_error_install()['maintenance.php'] && file_get_contents( "$err_tmp/maintenance.php" ) === $err_src['maintenance.php'], 'installer refreshes an outdated copy' );
 file_put_contents( "$err_tmp/php-error.php", $err_src['maintenance.php'] );
 err_check( 'outdated' === ce_error_state( 'php-error.php' ) && 'written' === ce_error_install()['php-error.php'] && file_get_contents( "$err_tmp/php-error.php" ) === $err_src['php-error.php'], 'the maintenance page in php-error.php is replaced by the right page' );
+file_put_contents( "$err_tmp/maintenance.php", "<?php\n// Paulus error page drop-in 2.77.3. Written by the Paulus theme; safe to delete.\n" );
+err_check( 'theme' === ce_error_state( 'maintenance.php' ), 'another theme\'s marked leftover reads as theme' );
+err_check( 'written' === ce_error_install()['maintenance.php'] && file_get_contents( "$err_tmp/maintenance.php" ) === $err_src['maintenance.php'], 'installer replaces another theme\'s marked leftover' );
+err_check( ce_error_needs_install(), 'with nothing remembered, the files need writing' );
+ce_error_auto_install();
+err_check( ! ce_error_needs_install(), 'after an automatic install nothing is pending' );
+file_put_contents( "$err_tmp/maintenance.php", str_replace( 'Back shortly', 'Edited', (string) file_get_contents( "$err_tmp/maintenance.php" ) ) );
+err_check( ce_error_needs_install(), 'an edited copy of its own is noticed with the fingerprint current' );
+ce_error_maybe_install();
+err_check( 'installed' === ce_error_state( 'maintenance.php' ), 'an administrator\'s visit repairs it' );
+unlink( "$err_tmp/php-error.php" );
+err_check( ce_error_needs_install(), 'a missing file is noticed' );
+ce_error_maybe_install();
+err_check( 'installed' === ce_error_state( 'php-error.php' ), 'an administrator\'s visit writes it back' );
+ce_error_remove();
+err_check( 'missing' === ce_error_state( 'maintenance.php' ) && 'missing' === ce_error_state( 'php-error.php' ) && "<?php // Somebody else's page\n" === file_get_contents( "$err_tmp/db-error.php" ), 'switching away removes only the theme\'s own files' );
 foreach ( glob( "$err_tmp/*.tmp" ) as $err_left ) {
 	err_check( false, "temporary file left: $err_left" );
 }
 
 exec( escapeshellarg( PHP_BINARY ) . ' ' . escapeshellarg( dirname( __DIR__ ) . '/bin/build-error-pages.php' ) . ' --check 2>&1', $err_o, $err_code );
 err_check( 0 === $err_code, 'errors/*.html match the builder' );
-foreach ( array( '403', '500', '502', '503' ) as $err_c ) {
+foreach ( array( '403', '500', '502', '503', '504' ) as $err_c ) {
 	$err_h = (string) @file_get_contents( dirname( __DIR__ ) . "/errors/$err_c.html" );
 	err_check( false !== strpos( $err_h, 'noindex' ) && false === strpos( $err_h, '<?php' ), "errors/$err_c.html is static and noindex" );
 }
-err_check( false !== strpos( ce_error_htaccess_snippet(), 'ErrorDocument 503 /wp-content/themes/compelling-evidence/errors/503.html' ), '.htaccess lines point at errors/' );
+err_check( false !== strpos( ce_error_htaccess_snippet(), 'ErrorDocument 503 /wp-content/themes/compelling-evidence/errors/503.html' ) && false !== strpos( ce_error_htaccess_snippet(), 'ErrorDocument 504 /wp-content/themes/compelling-evidence/errors/504.html' ), '.htaccess lines point at errors/' );
 
 array_map( 'unlink', glob( "$err_tmp/*" ) );
 rmdir( $err_tmp );

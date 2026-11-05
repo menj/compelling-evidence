@@ -267,7 +267,7 @@ All 7 are overridable via Theme Options > Colors (injected as inline CSS at `wp_
 
 ## Error pages
 
-WordPress reads three files from `wp-content` when it cannot build a page. CE Theme Options > Tools & Sync writes them with **Install error pages** and shows each as not installed, installed, outdated or another file left alone. A file without the marker `Compelling Evidence error page drop-in` is never overwritten.
+WordPress reads three files from `wp-content` when it cannot build a page. The theme writes them on activation (`after_switch_theme`), again on an administrator's next admin page when a file is missing or outdated (`admin_init`, `edit_theme_options`), and at once with **Install error pages** on CE Theme Options > Tools & Sync, which shows each as not installed, installed, outdated, left behind by another theme or another file left alone. A copy another theme left behind (marked "Written by the ... theme; safe to delete") is replaced. A file without such a mark is never overwritten. When another theme is activated (`switch_theme`), the theme deletes the files that carry its own marker, `Compelling Evidence error page drop-in`.
 
 | File | Shown when | Status sent |
 |---|---|---|
@@ -275,13 +275,14 @@ WordPress reads three files from `wp-content` when it cannot build a page. CE Th
 | `php-error.php` | a fatal PHP error | 500 |
 | `db-error.php` | the database cannot be reached | 503, `Retry-After: 600` |
 
-Static pages in `errors/` cover the errors the web server answers before WordPress starts. Add to `.htaccess`, with the folder name of the theme:
+Static 403, 500, 502, 503 and 504 pages in `errors/` cover the errors the web server answers before WordPress starts. Add to `.htaccess`, with the folder name of the theme:
 
 ```
 ErrorDocument 403 /wp-content/themes/compelling-evidence/errors/403.html
 ErrorDocument 500 /wp-content/themes/compelling-evidence/errors/500.html
 ErrorDocument 502 /wp-content/themes/compelling-evidence/errors/502.html
 ErrorDocument 503 /wp-content/themes/compelling-evidence/errors/503.html
+ErrorDocument 504 /wp-content/themes/compelling-evidence/errors/504.html
 ```
 
 Rebuild them with `php bin/build-error-pages.php` after changing `inc/ce-error-page-html.php`.

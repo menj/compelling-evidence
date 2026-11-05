@@ -69,6 +69,14 @@ function ce_error_page_kinds() {
 			'lines' => array( 'A server between you and the site gave a wrong answer.', 'Please try again in a few minutes.' ),
 			'again' => 'Try again',
 		),
+		'504' => array(
+			'status' => 504,
+			'retry' => 0,
+			'eyebrow' => 'Error 504',
+			'title' => 'Gateway timeout',
+			'lines' => array( 'A server between you and the site took too long to answer.', 'Please try again in a few minutes.' ),
+			'again' => 'Try again',
+		),
 		'503' => array(
 			'status' => 503,
 			'retry' => 600,

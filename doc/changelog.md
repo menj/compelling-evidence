@@ -6,6 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.18.3] - November 2026
+
+No feature removed and no public identifier renamed.
+
+### Changed
+- The error drop-ins no longer wait for the button. `ce_error_auto_install()` runs `ce_error_install()` on `after_switch_theme`, and `ce_error_maybe_install()` runs it on `admin_init` for a user with `edit_theme_options` when a file is missing, is another theme's leftover, or was written for another version, site name or home address (option `ce_error_pages_fingerprint`). **Install error pages** stays.
+- A drop-in another theme left behind, marked "Written by the ... theme; safe to delete", is replaced at install (`ce_error_is_other_theme()`, state `theme`). A file without such a mark is still never touched.
+
+### Added
+- `ce_error_remove()` on `switch_theme` deletes the drop-ins that carry the theme's marker, and only those.
+- `errors/504.html` (gateway timeout), in the design of the 502 page, and an `ErrorDocument 504` line in the tab and `doc/readme.md`.
+- `tests/error-pages-test.php` covers the automatic install, the replacement, the removal and the 504 page.
+
+---
+
 ## [2.18.2] - November 2026
 
 No feature removed and no public identifier renamed.
