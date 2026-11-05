@@ -5,8 +5,8 @@
 # refused from the moment they arrive. inc/ce-housekeeping.php deletes them
 # on production, and the "Compelling Evidence: block direct file access"
 # section in the site's own .htaccess refuses them as well (doc/ssot.md,
-# section 30). The tests and bin folders also carry an .htaccess of their
-# own that refuses everything in them, for a server without mod_rewrite.
+# section 30). The tests, bin and tools folders also carry an .htaccess of
+# their own that refuses everything in them, for a server without mod_rewrite.
 # Nothing here touches the styles, scripts, fonts, images or journey files
 # the pages load.
 
