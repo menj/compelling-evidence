@@ -256,6 +256,23 @@ function ce_sec_sync_htaccess( $force = false ) {
 	update_option( 'ce_security_htaccess_files', $ok_files ? ( $want_files ? 'written' : 'off' ) : 'unavailable', false );
 }
 add_action( 'admin_init', 'ce_sec_sync_htaccess' );
+
+/**
+ * Once per theme version, on whatever request comes first: the owner
+ * updates the theme over FTP, which fires no switch hook, and the site may
+ * see no admin visit for days. The .htaccess sections are written on the
+ * first request after the new files arrive.
+ */
+function ce_sec_sync_htaccess_once() {
+	$version = (string) wp_get_theme()->get( 'Version' );
+	if ( get_option( 'ce_sec_htaccess_version' ) === $version || get_transient( 'ce_sec_htaccess_lock' ) ) {
+		return;
+	}
+	set_transient( 'ce_sec_htaccess_lock', 1, MINUTE_IN_SECONDS );
+	ce_sec_sync_htaccess( true );
+	update_option( 'ce_sec_htaccess_version', $version, false );
+}
+add_action( 'init', 'ce_sec_sync_htaccess_once', 99 );
 add_action( 'after_switch_theme', function () { ce_sec_sync_htaccess( true ); } );
 add_action( 'add_option_ce_sec_xmlrpc_off', function () { ce_sec_sync_htaccess( true ); } );
 add_action( 'update_option_ce_sec_xmlrpc_off', function () { ce_sec_sync_htaccess( true ); } );

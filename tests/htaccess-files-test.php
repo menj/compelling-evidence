@@ -105,6 +105,10 @@ foreach ( $ce_sites as $ce_label => $ce_site ) {
 	}
 }
 
+// A folder name with a regex metacharacter is quoted, so its own paths match.
+$ce_pfx = ce_sec_rewrite_prefix( '/srv/wp.6/', '/srv/' );
+ce_check( 'wp\\.6/' === $ce_pfx && 1 === preg_match( '#^' . $ce_pfx . 'wp-includes/.+\\.php$#', 'wp.6/wp-includes/version.php' ) && 0 === preg_match( '#^' . $ce_pfx . 'wp-includes/.+\\.php$#', 'wpx6/wp-includes/version.php' ), 'a dot in a folder name is escaped, and the prefix matches that folder only' );
+
 // WordPress in its own folder below the .htaccess (wp/), themes beside it.
 $GLOBALS['ce_theme_root'] = '/srv/site/wp-content/themes';
 $ce_split = ce_sec_files_htaccess_lines( '/srv/' );

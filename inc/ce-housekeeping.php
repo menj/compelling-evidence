@@ -136,3 +136,18 @@ function ce_remove_dev_files_hook() {
 }
 add_action( 'after_switch_theme', 'ce_remove_dev_files_hook', 10, 0 );
 add_action( 'admin_init', 'ce_remove_dev_files_hook', 10, 0 );
+
+/**
+ * The same, on the first front-end request after an FTP update: such an
+ * update fires no switch hook, and the site may see no admin visit for
+ * days. A one-minute lock keeps two requests from deleting at once.
+ */
+function ce_remove_dev_files_front() {
+	if ( is_admin() || ce_keep_dev_files() || get_transient( 'ce_dev_files_lock' ) || get_option( 'ce_dev_files_removed' ) === (string) wp_get_theme()->get( 'Version' ) ) {
+		return;
+	}
+	set_transient( 'ce_dev_files_lock', 1, MINUTE_IN_SECONDS );
+	ce_remove_dev_files();
+	delete_transient( 'ce_dev_files_lock' );
+}
+add_action( 'init', 'ce_remove_dev_files_front', 99 );
