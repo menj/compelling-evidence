@@ -60,7 +60,20 @@
   window.ceTrack = track;
 
   // ── PAGEVIEW ──
-  var path = window.location.pathname;
+  // The path below the home address, so a site in a subfolder (/blog/)
+  // sees /articles/<slug>/ as a site at the domain root does. CE.homeUrl is
+  // home_url('/'); without it the full path is used, as before.
+  var fullPath = window.location.pathname;
+  var homePath = '/';
+  try {
+    if (window.CE && CE.homeUrl) homePath = new URL(CE.homeUrl, window.location.href).pathname;
+  } catch (e) {}
+  if (homePath.charAt(homePath.length - 1) !== '/') homePath += '/';
+  var path = fullPath;
+  if (homePath !== '/') {
+    if (fullPath.indexOf(homePath) === 0) path = '/' + fullPath.slice(homePath.length);
+    else if (fullPath + '/' === homePath) path = '/';
+  }
   var pageType = 'other';
   if (path === '/' || path === '') pageType = 'home';
   else if (path.indexOf('/articles/') === 0) pageType = 'article';
@@ -76,7 +89,7 @@
   // ── ARTICLE TRACKING ──
   if (pageType === 'article') {
     var articleBody = document.getElementById('article-body');
-    var articleSlug = path.replace('/articles/', '').replace(/\/$/, '');
+    var articleSlug = path.slice('/articles/'.length).replace(/\/$/, '');
 
     track('article_view', { slug: articleSlug });
 

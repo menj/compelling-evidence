@@ -72,8 +72,8 @@ function ce_forbidden( $lines, $uri, $base ) {
 	return false;
 }
 
-$ce_denied  = array( '.git/config', '.git/HEAD', '.gitignore', '.claude/CLAUDE.md', 'wp-content/themes/compelling-evidence/.git/config', 'wp-content/themes/compelling-evidence/.claude/FARUQI.md', 'wp-includes/version.php', 'wp-includes/blocks/archives.php', 'wp-includes/version.php/x', 'wp-includes/blocks/archives.php/wp-includes/js/tinymce/wp-tinymce.php', 'wp-includes/blocks/archives.php/wp-includes/ms-files.php', 'wp-settings.php/x', 'wp-admin/includes/admin.php', 'wp-content/themes/compelling-evidence/functions.php', 'wp-content/themes/twentytwentyfive/functions.php', 'wp-content/themes/compelling-evidence/tests/unlist-test.php', 'wp-content/themes/compelling-evidence/bin/build-error-pages.php', 'wp-content/themes/compelling-evidence/tools/x.py', 'wp-content/themes/compelling-evidence/tools/', 'wp-config.php', 'wp-settings.php', 'wp-config-sample.php', 'wp-admin/install.php', 'readme.html' );
-$ce_allowed = array( '', 'index.php', 'wp-login.php', 'wp-cron.php', 'xmlrpc.php', 'wp-admin/', 'wp-admin/index.php', 'wp-admin/admin-ajax.php', 'wp-admin/post.php', 'wp-admin/load-scripts.php', 'wp-json/wp/v2/posts', 'wp-includes/js/tinymce/wp-tinymce.php', 'wp-includes/ms-files.php', 'wp-includes/js/dist/block-editor.min.js', 'wp-includes/css/dist/block-library/style.min.css', 'wp-content/themes/compelling-evidence/style.css', 'wp-content/themes/compelling-evidence/assets/js/theme.js', 'wp-content/themes/compelling-evidence/testsuite.css', 'wp-content/uploads/2026/11/photo.webp', 'what-is-the-qibla/', 'binary-choices/', 'documents/', 'articles/does-god-exist/', 'journeys/', 'quiz/', 'wp-content/themes/compelling-evidence/doc/readme.md' );
+$ce_denied  = array( '.git/config', '.git/HEAD', '.gitignore', '.claude/CLAUDE.md', 'wp-content/themes/compelling-evidence/.git/config', 'wp-content/themes/compelling-evidence/.claude/FARUQI.md', 'wp-includes/version.php', 'wp-includes/blocks/archives.php', 'wp-includes/version.php/x', 'wp-includes/blocks/archives.php/wp-includes/js/tinymce/wp-tinymce.php', 'wp-includes/blocks/archives.php/wp-includes/ms-files.php', 'wp-settings.php/x', 'wp-admin/includes/admin.php', 'wp-content/themes/compelling-evidence/functions.php', 'wp-content/themes/twentytwentyfive/functions.php', 'wp-content/themes/compelling-evidence/tests/unlist-test.php', 'wp-content/themes/compelling-evidence/bin/build-error-pages.php', 'wp-content/themes/compelling-evidence/tools/x.py', 'wp-content/themes/compelling-evidence/tools/', 'wp-content/themes/compelling-evidence/doc/readme.md', 'wp-content/themes/compelling-evidence/doc/', 'wp-config.php', 'wp-settings.php', 'wp-config-sample.php', 'wp-admin/install.php', 'readme.html' );
+$ce_allowed = array( '', 'index.php', 'wp-login.php', 'wp-cron.php', 'xmlrpc.php', 'wp-admin/', 'wp-admin/index.php', 'wp-admin/admin-ajax.php', 'wp-admin/post.php', 'wp-admin/load-scripts.php', 'wp-json/wp/v2/posts', 'wp-includes/js/tinymce/wp-tinymce.php', 'wp-includes/ms-files.php', 'wp-includes/js/dist/block-editor.min.js', 'wp-includes/css/dist/block-library/style.min.css', 'wp-content/themes/compelling-evidence/style.css', 'wp-content/themes/compelling-evidence/assets/js/theme.js', 'wp-content/themes/compelling-evidence/testsuite.css', 'wp-content/uploads/2026/11/photo.webp', 'what-is-the-qibla/', 'binary-choices/', 'documents/', 'articles/does-god-exist/', 'journeys/', 'quiz/', 'wp-content/themes/compelling-evidence/documents/readme.css', 'wp-content/themes/compelling-evidence/docs.css' );
 
 $ce_sites = array(
 	'at the domain root' => array( '/srv/site/', '/' ),
@@ -136,7 +136,7 @@ ce_check( 2 === count( $ce_own ), "the theme's .htaccess has its 2 RedirectMatch
 foreach ( array( '.git/config', '.github/workflows/ci.yml', '.gitignore', '.claude/CLAUDE.md', '.env', '.vscode/settings.json', 'assets/.DS_Store', 'tests/unlist-test.php', 'bin/build-error-pages.php', 'functions.php', 'inc/ce-seo.php/x' ) as $ce_p ) {
 	ce_check( $ce_own_hit( '/wp-content/themes/compelling-evidence/' . $ce_p ), "theme .htaccess: 403 for $ce_p" );
 }
-foreach ( array( 'style.css', 'screenshot.png', 'assets/js/main.js', 'assets/css/main.css', 'journeys/quiz.html', 'journeys/data/agnostic/screens/conclusion.html', 'doc/readme.md', '.well-known/x', 'assets/js/main.min.js' ) as $ce_p ) {
+foreach ( array( 'style.css', 'screenshot.png', 'assets/js/main.js', 'assets/css/main.css', 'journeys/quiz.html', 'journeys/data/agnostic/screens/conclusion.html', 'doc.css', '.well-known/x', 'assets/js/main.min.js' ) as $ce_p ) {
 	ce_check( ! $ce_own_hit( '/wp-content/themes/compelling-evidence/' . $ce_p ), "theme .htaccess: open $ce_p" );
 }
 
@@ -157,19 +157,30 @@ $ce_rw_hit = function ( $rel ) use ( $ce_rw ) {
 	return false;
 };
 ce_check( 3 === count( $ce_rw ), "the theme's .htaccess has its 3 RewriteRule lines" );
-foreach ( array( 'tools/build.py', 'tools/', 'tools', 'bin/quiz-sim.js', 'tests/lock-test.php', '.git/config', '.claude/CLAUDE.md', 'assets/.env', 'functions.php', 'inc/ce-seo.php/x' ) as $ce_p ) {
+foreach ( array( 'tools/build.py', 'tools/', 'tools', 'doc/readme.md', 'doc/', 'doc', 'bin/quiz-sim.js', 'tests/lock-test.php', '.git/config', '.claude/CLAUDE.md', 'assets/.env', 'functions.php', 'inc/ce-seo.php/x' ) as $ce_p ) {
 	ce_check( $ce_rw_hit( $ce_p ), "theme .htaccess rewrite: 403 for $ce_p" );
 }
-foreach ( array( 'assets/js/main.js', 'toolsmith.css', 'journeys/quiz.html', 'assets/tools/x.js', '.well-known/x', 'assets/css/main.min.css' ) as $ce_p ) {
+foreach ( array( 'assets/js/main.js', 'toolsmith.css', 'doctrine.css', 'documents/x.css', 'journeys/quiz.html', 'assets/tools/x.js', '.well-known/x', 'assets/css/main.min.css' ) as $ce_p ) {
 	ce_check( ! $ce_rw_hit( $ce_p ), "theme .htaccess rewrite: open $ce_p" );
 }
 
 // Without mod_rewrite: the <If> on the file's own path.
 $ce_if = preg_match( '/<If "%\{REQUEST_FILENAME\} =~ m#(.+)#">/', (string) file_get_contents( dirname( __DIR__ ) . '/.htaccess' ), $ce_m ) ? $ce_m[1] : '';
 ce_check( '' !== $ce_if && 1 === preg_match( '#' . $ce_if . '#', '/home/site/public_html/wp-content/themes/compelling-evidence/tools/build.py' ) && 0 === preg_match( '#' . $ce_if . '#', '/home/site/public_html/wp-content/themes/compelling-evidence/assets/js/main.js' ), 'without mod_rewrite, tools/ is refused by its file path and assets stay open' );
+ce_check( '' !== $ce_if && 1 === preg_match( '#' . $ce_if . '#', '/home/site/public_html/wp-content/themes/compelling-evidence/doc/readme.md' ), 'without mod_rewrite, doc/ is refused by its file path' );
 
-// tests/ and bin/ refuse every request into them, whatever the theme's address.
-foreach ( array( 'tests', 'bin', 'tools' ) as $ce_d ) {
+// Markdown files by their own name, with no module beyond the core.
+$ce_md = preg_match( '/<FilesMatch "([^"]*md[^"]*)">\s*<IfModule mod_authz_core\.c>\s*Require all denied/', (string) file_get_contents( dirname( __DIR__ ) . '/.htaccess' ), $ce_m ) ? $ce_m[1] : '';
+ce_check( '' !== $ce_md, 'the theme .htaccess refuses Markdown files with a FilesMatch' );
+foreach ( array( 'readme.md', 'CHANGELOG.md', 'SSOT.MD', 'notes.Md' ) as $ce_p ) {
+	ce_check( '' !== $ce_md && 1 === preg_match( '#' . $ce_md . '#', $ce_p ), "theme .htaccess FilesMatch: 403 for $ce_p" );
+}
+foreach ( array( 'style.css', 'readme.txt', 'quiz.html', 'main.md.css', 'md' ) as $ce_p ) {
+	ce_check( '' === $ce_md || 0 === preg_match( '#' . $ce_md . '#', $ce_p ), "theme .htaccess FilesMatch: open $ce_p" );
+}
+
+// tests/, bin/, tools/ and doc/ refuse every request into them, whatever the theme's address.
+foreach ( array( 'tests', 'bin', 'tools', 'doc' ) as $ce_d ) {
 	$ce_ht = (string) @file_get_contents( dirname( __DIR__ ) . "/$ce_d/.htaccess" ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
 	ce_check( false !== strpos( $ce_ht, 'Require all denied' ) && false !== strpos( $ce_ht, 'Deny from all' ), "$ce_d/.htaccess refuses everything, on Apache 2.4 and 2.2" );
 }

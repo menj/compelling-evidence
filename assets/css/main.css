@@ -880,7 +880,7 @@ h1.hero-sub {
 .footer-cta:hover { color: rgba(12,212,224,1); border-color: rgba(12,212,224,0.5); }
 
 /* Link columns */
-.footer-col h4, .footer-col h3 {
+.footer-col h2, .footer-col h3, .footer-col h4 {
   font-size: 0.62rem;
   font-weight: 700;
   letter-spacing: 0.2em;

@@ -5,10 +5,10 @@
 # refused from the moment they arrive. inc/ce-housekeeping.php deletes them
 # on production, and the "Compelling Evidence: block direct file access"
 # section in the site's own .htaccess refuses them as well (doc/ssot.md,
-# section 30). The tests, bin and tools folders also carry an .htaccess of
-# their own that refuses everything in them, for a server without mod_rewrite.
-# Nothing here touches the styles, scripts, fonts, images or journey files
-# the pages load.
+# section 30). The tests, bin, tools and doc folders also carry an .htaccess
+# of their own that refuses everything in them, for a server without
+# mod_rewrite. Nothing here touches the styles, scripts, fonts, images or
+# journey files the pages load.
 
 <IfModule mod_rewrite.c>
 RewriteEngine On
@@ -20,15 +20,15 @@ RewriteOptions Inherit
 RewriteRule (^|/)\.(?!well-known(/|$)) - [F]
 # Theme PHP too, for a server without mod_alias.
 RewriteRule \.php(/|$) - [F]
-# The tests, build scripts and tools at the theme root. The pattern is the
-# path below this folder, whatever the theme folder's address.
-RewriteRule ^(tests|bin|tools)(/|$) - [F]
+# The tests, build scripts, tools and documentation at the theme root. The
+# pattern is the path below this folder, whatever the theme folder's address.
+RewriteRule ^(tests|bin|tools|doc)(/|$) - [F]
 </IfModule>
 
 # Without mod_rewrite, Apache 2.4 tests the file's own path instead.
 <IfModule !mod_rewrite.c>
 <IfModule mod_authz_core.c>
-<If "%{REQUEST_FILENAME} =~ m#/themes/[^/]+/(tests|bin|tools)(/|$)#">
+<If "%{REQUEST_FILENAME} =~ m#/themes/[^/]+/(tests|bin|tools|doc)(/|$)#">
 Require all denied
 </If>
 </IfModule>
@@ -45,6 +45,18 @@ RedirectMatch 403 \.php(/|$)
 
 # Theme PHP files by their own name, with neither mod_alias nor mod_rewrite.
 <FilesMatch "\.php$">
+<IfModule mod_authz_core.c>
+Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+Order allow,deny
+Deny from all
+</IfModule>
+</FilesMatch>
+
+# Markdown notes (the docs, readmes and changelogs) by their own name,
+# wherever they sit and with no module beyond the core. No page links one.
+<FilesMatch "(?i)\.md$">
 <IfModule mod_authz_core.c>
 Require all denied
 </IfModule>

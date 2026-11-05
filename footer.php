@@ -23,7 +23,7 @@ $ce_privacy_url = get_privacy_policy_url();
 
       <!-- Column 2: Topics -->
       <div class="footer-col">
-        <h3><?php esc_html_e('Topics', 'compelling-evidence'); ?></h3>
+        <h2><?php esc_html_e('Topics', 'compelling-evidence'); ?></h2>
         <?php
         $topics = get_terms(['taxonomy' => 'ce_topic', 'hide_empty' => false, 'number' => 7, 'orderby' => 'count', 'order' => 'DESC']);
         if (!empty($topics) && !is_wp_error($topics)) : ?>
@@ -45,7 +45,7 @@ $ce_privacy_url = get_privacy_policy_url();
 
       <!-- Column 3: Navigate -->
       <div class="footer-col">
-        <h3><?php esc_html_e('Navigate', 'compelling-evidence'); ?></h3>
+        <h2><?php esc_html_e('Navigate', 'compelling-evidence'); ?></h2>
         <ul>
           <li><a href="<?php echo esc_url(home_url( '/quiz/' )); ?>"><?php esc_html_e('Take the Quiz', 'compelling-evidence'); ?></a></li>
           <li><a href="<?php echo esc_url(home_url( '/journeys/' )); ?>"><?php esc_html_e('All Paths', 'compelling-evidence'); ?></a></li>
@@ -60,7 +60,7 @@ $ce_privacy_url = get_privacy_policy_url();
 
       <!-- Column 4: About -->
       <div class="footer-col">
-        <h3><?php esc_html_e('About', 'compelling-evidence'); ?></h3>
+        <h2><?php esc_html_e('About', 'compelling-evidence'); ?></h2>
         <ul>
           <li><a href="<?php echo esc_url(home_url( '/about-compelling-evidence/' )); ?>"><?php esc_html_e('About This Site', 'compelling-evidence'); ?></a></li>
           <li><a href="<?php echo esc_url(home_url( '/editorial-policy/' )); ?>"><?php esc_html_e('Editorial Policy', 'compelling-evidence'); ?></a></li>
