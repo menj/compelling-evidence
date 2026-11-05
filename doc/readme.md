@@ -36,7 +36,7 @@ php bin/build-error-pages.php                        # rebuild errors/*.html fro
 node bin/quiz-sim.js                                 # quiz scoring simulation
 python3 bin/build-murtadd-counterparts.py            # rebuild inc/data/murtadd-counterparts.json
 python3 bin/build-quiz-murtadd-links.py              # rebuild inc/data/quiz-murtadd-links.json
-git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.9.zip HEAD
+git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.9.zip v2.18.9   # after the release is committed and tagged
 ```
 
 Every PHP script in `tests/` and `bin/` exits unless it runs from the command line. `.gitattributes` keeps `.gitattributes`, `.gitignore`, `.claude/`, `phpcs.xml.dist`, `bin/` and `tests/` out of the zip; `doc/` and `tools/` ship, and the live-server clean-up removes them.
@@ -119,6 +119,7 @@ Total: 143 articles (manifest 2.8.4).
 |---|---|---|
 | `ce-content-sync.php` | `ce_content_sync_{version}` | The version changes |
 | `ce-migration-2-2-0.php` | `ce_category_migration_2_2_0` | The flag is absent |
+| `ce-migration-2-2-74.php` | `ce_migration_2_2_74` | The flag is absent |
 | `ce-secondary-pages.php` | `ce_secondary_pages_created`, `ce_v2_pages_created`, `ce_about_v2_updated` | Each flag is absent |
 
 To force a sync without a version bump: Tools & Sync, Run Content Sync Now, or `wp eval 'ce_sync_article_content( true );'`.
