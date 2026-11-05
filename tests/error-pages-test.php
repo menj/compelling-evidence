@@ -79,6 +79,10 @@ err_check( 'written' === ce_error_install()['maintenance.php'] && file_get_conte
 err_check( ce_error_needs_install(), 'with nothing remembered, the files need writing' );
 ce_error_auto_install();
 err_check( ! ce_error_needs_install(), 'after an automatic install nothing is pending' );
+file_put_contents( "$err_tmp/maintenance.php", str_replace( 'Back shortly', 'Edited', (string) file_get_contents( "$err_tmp/maintenance.php" ) ) );
+err_check( ce_error_needs_install(), 'an edited copy of its own is noticed with the fingerprint current' );
+ce_error_maybe_install();
+err_check( 'installed' === ce_error_state( 'maintenance.php' ), 'an administrator\'s visit repairs it' );
 unlink( "$err_tmp/php-error.php" );
 err_check( ce_error_needs_install(), 'a missing file is noticed' );
 ce_error_maybe_install();
