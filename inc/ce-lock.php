@@ -9,7 +9,8 @@
  * Each holder writes its own token and renews its time while it works, so
  * only a lock nobody renewed is taken over, with an UPDATE that succeeds
  * only while the old value is still there; a release deletes the row only
- * while it still holds the releaser's token. Used by the dev-file cleanup and the .htaccess sync.
+ * while it still holds the releaser's token. Used by the dev-file cleanup
+ * and the .htaccess sync.
  *
  * @since 2.18.7
  */
