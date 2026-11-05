@@ -107,6 +107,92 @@ function ce_sec_htaccess_lines() {
 }
 
 /**
+ * The .htaccess marker for the direct-access block. It names this theme,
+ * since the rules carry this theme's folder.
+ */
+define( 'CE_SEC_FILES_MARKER', 'Compelling Evidence: block direct file access' );
+
+/**
+ * A filesystem path relative to the folder that holds .htaccess, as a
+ * mod_rewrite pattern prefix ('' at the same folder, 'wp/' below it), or
+ * null when the path lies outside that folder.
+ *
+ * @param string $path Absolute path of a folder.
+ * @param string $home Absolute path of the folder that holds .htaccess.
+ * @return string|null
+ */
+function ce_sec_rewrite_prefix( $path, $home ) {
+	$path = trailingslashit( wp_normalize_path( $path ) );
+	$home = trailingslashit( wp_normalize_path( $home ) );
+	if ( 0 !== strpos( $path, $home ) ) {
+		return null;
+	}
+	$rel = (string) substr( $path, strlen( $home ) );
+	if ( '' === $rel ) {
+		return '';
+	}
+	$parts = array();
+	foreach ( explode( '/', rtrim( $rel, '/' ) ) as $segment ) {
+		$parts[] = preg_replace( '/[^A-Za-z0-9_-]/', '\\\\$0', $segment );
+	}
+	return implode( '/', $parts ) . '/';
+}
+
+/**
+ * mod_rewrite lines that refuse direct requests for files that never serve
+ * a page: any path segment that starts with .git or .claude, this theme's
+ * tests, bin and tools folders, PHP files in wp-includes, wp-admin/includes
+ * and the themes folder, and core files that only reveal the version or run
+ * the installer. Each answers 403.
+ *
+ * wp-includes/js/tinymce/wp-tinymce.php (the classic editor) and
+ * wp-includes/ms-files.php (uploads on old multisite networks) stay open.
+ * The admin, admin-ajax.php, wp-cron.php, wp-login.php, the REST API and
+ * the editor's scripts and styles are outside these patterns.
+ *
+ * @param string $home Folder that holds .htaccess; get_home_path() if empty.
+ * @return string[]
+ */
+function ce_sec_files_htaccess_lines( $home = '' ) {
+	if ( '' === $home ) {
+		if ( ! function_exists( 'get_home_path' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+		}
+		$home = get_home_path();
+	}
+	$core   = ce_sec_rewrite_prefix( ABSPATH, $home );
+	$themes = ce_sec_rewrite_prefix( get_theme_root(), $home );
+	$theme  = ce_sec_rewrite_prefix( get_stylesheet_directory(), $home );
+
+	$rules = array( 'RewriteRule (^|/)\.(git|claude) - [F]' );
+	if ( null !== $theme && '' !== $theme ) {
+		$rules[] = 'RewriteRule ^' . $theme . '(tests|bin|tools)(/|$) - [F]';
+	}
+	if ( null !== $core ) {
+		// The two exceptions are exact paths after the prefix; a PHP file
+		// with either one appended as path info is still refused.
+		$rules[] = 'RewriteRule ^' . $core . 'wp-includes/(?!(js/tinymce/wp-tinymce|ms-files)\.php$).+\.php(/|$) - [F]';
+		$rules[] = 'RewriteRule ^' . $core . 'wp-admin/includes/.+\.php(/|$) - [F]';
+		$rules[] = 'RewriteRule ^' . $core . '(wp-settings\.php|wp-config-sample\.php|wp-admin/install\.php|readme\.html)(/|$) - [F]';
+	}
+	if ( null !== $themes && '' !== $themes ) {
+		$rules[] = 'RewriteRule ^' . $themes . '.+\.php(/|$) - [F]';
+	}
+
+	return array_merge( array( '<IfModule mod_rewrite.c>', 'RewriteEngine On' ), $rules, array( '</IfModule>' ) );
+}
+
+/**
+ * Whether the direct-access block is wanted. On by default; defining
+ * CE_BLOCK_DIRECT_FILES false in wp-config.php leaves it out.
+ *
+ * @return bool
+ */
+function ce_sec_files_block_on() {
+	return ! ( defined( 'CE_BLOCK_DIRECT_FILES' ) && ! CE_BLOCK_DIRECT_FILES );
+}
+
+/**
  * Path of the site's .htaccess, or '' when the server is not Apache or the
  * file cannot be written.
  *
@@ -136,16 +222,17 @@ function ce_sec_htaccess_file() {
  * hour, so a lost or overwritten .htaccess is repaired without any action.
  *
  * @param bool $force Skip the hourly throttle.
+ * @return bool Whether both sections are now as wanted.
  */
 function ce_sec_sync_htaccess( $force = false ) {
 	if ( ! $force && get_transient( 'ce_sec_htaccess_checked' ) ) {
-		return;
+		return false;
 	}
 	set_transient( 'ce_sec_htaccess_checked', 1, HOUR_IN_SECONDS );
 	$file = ce_sec_htaccess_file();
 	if ( '' === $file ) {
 		update_option( 'ce_security_htaccess', 'unavailable', false );
-		return;
+		return false;
 	}
 	$want    = ce_sec_on( 'ce_sec_xmlrpc_off' );
 	$current = function_exists( 'extract_from_markers' ) ? extract_from_markers( $file, 'Block xmlrpc.php' ) : array();
@@ -161,8 +248,40 @@ function ce_sec_sync_htaccess( $force = false ) {
 		$state = $ok ? 'written' : 'unavailable';
 	}
 	update_option( 'ce_security_htaccess', $state, false );
+
+	$want_files    = ce_sec_files_block_on() ? ce_sec_files_htaccess_lines() : array();
+	$current_files = function_exists( 'extract_from_markers' ) ? extract_from_markers( $file, CE_SEC_FILES_MARKER ) : array();
+	$ok_files      = true;
+	if ( $current_files !== $want_files ) {
+		$ok_files = true === insert_with_markers( $file, CE_SEC_FILES_MARKER, $want_files );
+	}
+	update_option( 'ce_security_htaccess_files', $ok_files ? ( $want_files ? 'written' : 'off' ) : 'unavailable', false );
+
+	return $ok && $ok_files;
 }
 add_action( 'admin_init', 'ce_sec_sync_htaccess' );
+
+/**
+ * Once per theme version, on whatever request comes first: the owner
+ * updates the theme over FTP, which fires no switch hook, and the site may
+ * see no admin visit for days. The .htaccess sections are written on the
+ * first request after the new files arrive.
+ */
+function ce_sec_sync_htaccess_once() {
+	// The key carries the CE_BLOCK_DIRECT_FILES choice, so changing that
+	// constant takes effect on the next request too.
+	$version = (string) wp_get_theme()->get( 'Version' ) . ( ce_sec_files_block_on() ? '' : '-files-off' );
+	if ( get_option( 'ce_sec_htaccess_version' ) === $version || get_transient( 'ce_sec_htaccess_lock' ) ) {
+		return;
+	}
+	set_transient( 'ce_sec_htaccess_lock', 1, MINUTE_IN_SECONDS );
+	// Recorded only once the sections are written, or where no .htaccess
+	// applies (not Apache); a failed write is tried again a minute later.
+	if ( ce_sec_sync_htaccess( true ) || empty( $GLOBALS['is_apache'] ) ) {
+		update_option( 'ce_sec_htaccess_version', $version, false );
+	}
+}
+add_action( 'init', 'ce_sec_sync_htaccess_once', 99 );
 add_action( 'after_switch_theme', function () { ce_sec_sync_htaccess( true ); } );
 add_action( 'add_option_ce_sec_xmlrpc_off', function () { ce_sec_sync_htaccess( true ); } );
 add_action( 'update_option_ce_sec_xmlrpc_off', function () { ce_sec_sync_htaccess( true ); } );
@@ -175,10 +294,54 @@ function ce_sec_remove_htaccess() {
 	$file = ce_sec_htaccess_file();
 	if ( '' !== $file ) {
 		insert_with_markers( $file, 'Block xmlrpc.php', array() );
+		insert_with_markers( $file, CE_SEC_FILES_MARKER, array() );
 	}
 	delete_transient( 'ce_sec_htaccess_checked' );
 }
 add_action( 'switch_theme', 'ce_sec_remove_htaccess' );
+
+/**
+ * The user list is not for visitors. A visitor who is not logged in gets no
+ * /wp/v2/users routes (the REST API answers rest_no_route, 404), no
+ * ?author=N lookup (a 404 where WordPress would redirect to the author's
+ * address and so reveal the login name). The users sitemap is already off
+ * (functions.php, 2.11.0). Logged-in editors keep both, so the block
+ * editor's author picker works.
+ *
+ * @since 2.18.6
+ *
+ * @param array $endpoints REST routes.
+ * @return array
+ */
+function ce_sec_hide_user_routes( $endpoints ) {
+	if ( is_user_logged_in() ) {
+		return $endpoints;
+	}
+	foreach ( array_keys( (array) $endpoints ) as $route ) {
+		if ( 0 === strpos( (string) $route, '/wp/v2/users' ) ) {
+			unset( $endpoints[ $route ] );
+		}
+	}
+	return $endpoints;
+}
+add_filter( 'rest_endpoints', 'ce_sec_hide_user_routes', 99 );
+
+/**
+ * ?author=N for a visitor who is not logged in: a 404.
+ *
+ * @param array $query_vars Parsed query variables.
+ * @return array
+ */
+function ce_sec_block_author_query( $query_vars ) {
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only check of the raw query.
+	if ( is_admin() || ! isset( $_GET['author'] ) || is_user_logged_in() ) {
+		return $query_vars;
+	}
+	unset( $query_vars['author'], $query_vars['author_name'] );
+	$query_vars['error'] = '404';
+	return $query_vars;
+}
+add_filter( 'request', 'ce_sec_block_author_query', 99 );
 
 /**
  * Application passwords off.
@@ -1359,6 +1522,9 @@ function ce_sec_render_tools() {
 			<p class="ce-field-desc"><?php esc_html_e( 'The web server also refuses xmlrpc.php: the theme keeps a "Block xmlrpc.php" section in .htaccess and repairs it if it goes missing.', 'compelling-evidence' ); ?></p>
 		<?php elseif ( 'unavailable' === $ce_sec_ht && ce_sec_on( 'ce_sec_xmlrpc_off' ) ) : ?>
 			<div class="notice notice-warning inline"><p><?php esc_html_e( 'The theme could not write .htaccess (the server is not Apache, or the file is read-only). WordPress still refuses xmlrpc.php; ask the host to deny it at the server as well.', 'compelling-evidence' ); ?></p></div>
+		<?php endif; ?>
+		<?php if ( 'written' === get_option( 'ce_security_htaccess_files', '' ) ) : ?>
+			<p class="ce-field-desc"><?php esc_html_e( 'The web server also refuses direct requests for PHP files in wp-includes, wp-admin/includes and the themes folder, the installer and version files, .git and .claude, and the theme\'s tests, bin and tools folders: the theme keeps a "Compelling Evidence: block direct file access" section in .htaccess. Define CE_BLOCK_DIRECT_FILES as false in wp-config.php to leave it out.', 'compelling-evidence' ); ?></p>
 		<?php endif; ?>
 
 		<h3 class="ce-section-title"><?php esc_html_e( 'Clean up spam', 'compelling-evidence' ); ?></h3>

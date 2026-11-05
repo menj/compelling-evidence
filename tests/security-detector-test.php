@@ -10,6 +10,10 @@
  * @package CE_Theme
  */
 
+if ( 'cli' !== PHP_SAPI ) {
+	exit;
+}
+
 define( 'CE_SECURITY_TEST', true );
 $root = dirname( __DIR__ );
 require $root . '/inc/ce-security-detector.php';

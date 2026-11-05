@@ -1,7 +1,7 @@
 # SSOT — Single Source of Truth
 ## Compelling Evidence Theme — System Design, Naming Conventions, Configuration Rules
 
-**Version:** 2.18.5  
+**Version:** 2.18.6  
 **Location:** `/doc/SSOT.md`
 
 This document is authoritative. When any other file conflicts with a rule stated here, this document is correct and the other file should be updated.
@@ -472,9 +472,9 @@ Suppresses WordPress RSS/Atom feeds entirely. The site has no use case for syndi
 | Option | Default | Purpose |
 |---|---|---|
 | `ce_gone_enabled` | `1` | Master switch |
-| `ce_gone_paths` | `/shop/manufacturer-site`, `/product-similar-image`, `/product/category/` | Path prefixes, one per line, case-insensitive |
+| `ce_gone_paths` | `/shop/manufacturer-site`, `/product-similar-image`, `/product/category/`, and since 2.18.6 the previous owner's shop paths `/f/`, `/etc/`, `/guide/knowledge/`, `/odr/`, `/ctg/`, `/mbr/`, `/iqr/` | Path prefixes, one per line, case-insensitive |
 
-Rules: a blank line or a bare `/` is ignored, so the whole site can never be retired by mistake. Admin, AJAX, cron, REST and WP-CLI requests are exempt. Never add a prefix that real content uses.
+Rules: a blank line or a bare `/` is ignored, so the whole site can never be retired by mistake. A default added in a later version is appended once to a saved list (`ce_gone_merge_defaults()`, which records the defaults it has seen in `ce_gone_defaults_seen`), and one the owner deletes afterwards stays deleted. Admin, AJAX, cron, REST and WP-CLI requests are exempt. Never add a prefix that real content uses.
 
 ---
 
@@ -652,3 +652,15 @@ The step number comes from `ce_home_step()`, a translatable string of its own, s
 
 The order follows `.claude/FARUQI.md`: conviction is reached through evidence, so the questions and their answers come before the invitation, and the page ends by asking the reader to send the questions it has not answered.
 
+---
+
+## 30. Live-Server Hardening (since 2.18.6)
+
+The owner uploads the theme over FTP, and on 4 November 2026 the upload carried `.git` (503 files) to the live site. The server logs showed 500s from direct requests to `wp-settings.php`, `wp-config-sample.php` and `wp-includes/blocks/*.php`.
+
+- **Development files.** `ce_remove_dev_files()` (`inc/ce-housekeeping.php`) deletes every `.git*` entry, `.claude`, `tests`, `bin` and `tools` from the theme folder on activation and once per version. It does nothing while `wp_get_environment_type()` is `local` or `development`, or `CE_KEEP_DEV_FILES` is true. It also runs on the first front-end request of a new version, since an FTP update fires no switch hook. A symbolic link is removed, never what it points to.
+- **Direct file access.** `ce_sec_sync_htaccess()` keeps a "Compelling Evidence: block direct file access" section in `.htaccess` beside "Block xmlrpc.php". Under `<IfModule mod_rewrite.c>`, with `[F]`, it refuses any path segment starting `.git` or `.claude`, the theme's `tests`, `bin` and `tools`, PHP in `wp-includes` (except `js/tinymce/wp-tinymce.php` and `ms-files.php`), `wp-admin/includes` and the themes folder, `wp-settings.php`, `wp-config-sample.php`, `wp-admin/install.php` and `readme.html`. `CE_BLOCK_DIRECT_FILES` false leaves it out. `tests/htaccess-files-test.php` checks the lines.
+- **CLI only.** Every PHP file in `tests/` and `bin/` exits unless it runs from the command line.
+- **Users.** A visitor who is not logged in gets no `/wp/v2/users` routes and a 404 for `?author=N` (`ce_sec_hide_user_routes()`, `ce_sec_block_author_query()`). The users sitemap has been off since 2.11.0.
+- **Sitemap aliases.** `/sitemap.xml` and `/sitemaps.xml` answer 301 with the index in use: Rank Math's `/sitemap_index.xml` when its sitemap module is on, otherwise `/wp-sitemap.xml` (`ce_sitemap_alias_redirect()`).
+- **Links.** Theme links to pages end in a slash (`/articles/`, `/journeys/`, `/quiz/` and the rest), so they no longer cost a 301 each. The footer's Privacy Policy link comes from `get_privacy_policy_url()` and is left out when no privacy page is published.

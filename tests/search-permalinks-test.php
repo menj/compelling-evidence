@@ -6,6 +6,10 @@
  *
  * Run: php tests/search-permalinks-test.php
  */
+
+if ( 'cli' !== PHP_SAPI ) {
+	exit;
+}
 define( 'ABSPATH', '/' );
 $GLOBALS['opt'] = [];
 $GLOBALS['qv']  = [];

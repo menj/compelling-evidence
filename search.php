@@ -146,11 +146,11 @@ $results = new WP_Query($args);
       </div>
 
       <div class="search-cta-row">
-        <a href="<?php echo esc_url(home_url('/quiz')); ?>" class="search-btn-primary">
+        <a href="<?php echo esc_url(home_url( '/quiz/' )); ?>" class="search-btn-primary">
           Find my path
           <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
-        <a href="<?php echo esc_url(home_url('/articles')); ?>" class="search-btn-ghost">
+        <a href="<?php echo esc_url(home_url( '/articles/' )); ?>" class="search-btn-ghost">
           Browse all articles
           <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>

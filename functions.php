@@ -13,6 +13,11 @@ require_once get_stylesheet_directory() . '/inc/ce-gone.php';
 // ── SECURITY (remote-publishing lock, spam gate, clean-up; Security tab) ─────
 require_once get_stylesheet_directory() . '/inc/ce-security-detector.php';
 require_once get_stylesheet_directory() . '/inc/ce-security.php';
+// Loaded only once it exists, so an FTP upload that sends functions.php first
+// does not fail on it.
+if ( is_readable( get_stylesheet_directory() . '/inc/ce-housekeeping.php' ) ) {
+    require_once get_stylesheet_directory() . '/inc/ce-housekeeping.php';
+}
 require_once get_stylesheet_directory() . '/inc/ce-engagement.php';
 
 // ── SEO & SCHEMA MARKUP (JSON-LD, OG tags, print CSS) ───────────────────────
@@ -878,6 +883,39 @@ function ce_is_rankmath_active(): bool {
     return class_exists( 'RankMath' ) || class_exists( 'RankMath\\Helper' );
 }
 
+/**
+ * /sitemap.xml and /sitemaps.xml, which crawlers try first, answer 301 with
+ * the sitemap index in use: Rank Math's sitemap_index.xml when its sitemap
+ * module is on, otherwise WordPress's wp-sitemap.xml while core sitemaps are
+ * on. With neither, the request stays a 404.
+ *
+ * @since 2.18.6
+ */
+function ce_sitemap_alias_redirect() {
+    if ( ! is_404() || empty( $_SERVER['REQUEST_URI'] ) ) {
+        return;
+    }
+    $path = (string) wp_parse_url( esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ), PHP_URL_PATH );
+    $home = (string) wp_parse_url( home_url( '/' ), PHP_URL_PATH );
+    if ( '' !== trim( $home, '/' ) && 0 === strpos( $path, $home ) ) {
+        $path = substr( $path, strlen( $home ) );
+    }
+    if ( ! in_array( strtolower( trim( $path, '/' ) ), [ 'sitemap.xml', 'sitemaps.xml' ], true ) ) {
+        return;
+    }
+    $target = '';
+    if ( ce_is_rankmath_active() && class_exists( 'RankMath\\Helper' ) && method_exists( 'RankMath\\Helper', 'is_module_active' ) && \RankMath\Helper::is_module_active( 'sitemap' ) ) {
+        $target = home_url( '/sitemap_index.xml' );
+    } elseif ( function_exists( 'wp_sitemaps_get_server' ) && wp_sitemaps_get_server()->sitemaps_enabled() ) {
+        $target = home_url( '/wp-sitemap.xml' );
+    }
+    if ( '' !== $target ) {
+        wp_safe_redirect( $target, 301 );
+        exit;
+    }
+}
+add_action( 'template_redirect', 'ce_sitemap_alias_redirect', 1 );
+
 function ce_robots_txt( $output, $public ) {
     if ( ce_is_rankmath_active() ) {
         return $output;
@@ -1334,13 +1372,18 @@ function ce_archive_lens_posts( string $lens, ?bool &$fallback = null, int $limi
             set_transient( 'ce_lens_popular', $ids, HOUR_IN_SECONDS );
         }
         if ( $ids ) {
-            return get_posts( [
+            $posts = get_posts( [
                 'post_type'      => 'ce_article',
                 'post_status'    => 'publish',
                 'post__in'       => $ids,
                 'orderby'        => 'post__in',
                 'posts_per_page' => $limit,
             ] );
+            // The cached IDs can all have been unpublished or unlisted since;
+            // the reading order then stands in, as it does with no figures.
+            if ( $posts ) {
+                return $posts;
+            }
         }
         $fallback = true;
         return get_posts( [

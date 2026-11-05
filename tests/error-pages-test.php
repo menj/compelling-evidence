@@ -8,6 +8,10 @@
  *
  * Run: php tests/error-pages-test.php
  */
+
+if ( 'cli' !== PHP_SAPI ) {
+	exit;
+}
 define( 'ABSPATH', __DIR__ . '/' );
 // A fresh directory of its own, so the cleanup at the end removes only what this test wrote.
 $err_tmp = sys_get_temp_dir() . '/err-test-' . getmypid() . '-' . bin2hex( random_bytes( 6 ) );
