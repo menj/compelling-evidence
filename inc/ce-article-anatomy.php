@@ -36,7 +36,7 @@ function ce_anatomy_post() {
         return null;
     }
     $post = get_queried_object();
-    return ( $post instanceof WP_Post && '' === $post->post_password ) ? $post : null;
+    return ( $post instanceof WP_Post && ! post_password_required( $post ) ) ? $post : null;
 }
 
 /**
@@ -132,12 +132,14 @@ function ce_anatomy_points( $text ) {
  * @return bool
  */
 function ce_anatomy_answer_shows( $post ) {
-    return $post instanceof WP_Post && ( '' !== trim( (string) $post->post_excerpt ) || ce_anatomy_points( get_post_meta( $post->ID, '_ce_takeaways', true ) ) );
+    // A post behind a password shows none of its text until the password is given.
+    return $post instanceof WP_Post && ! post_password_required( $post ) && ( '' !== trim( (string) $post->post_excerpt ) || ce_anatomy_points( get_post_meta( $post->ID, '_ce_takeaways', true ) ) );
 }
 
 /**
  * Prints "In short": the excerpt as the summary, and the key points typed in
- * the Key points box. Nothing when the article has neither.
+ * the Key points box. Nothing when the article has neither, or while its
+ * password has not been given.
  *
  * @param WP_Post|null $post Article; the current post when null.
  * @return void
@@ -252,7 +254,14 @@ function ce_anatomy_passage_ids( $content ) {
     if ( ! $post || is_admin() || is_feed() || ! is_main_query() || doing_filter( 'get_the_excerpt' ) || (int) get_the_ID() !== $post->ID ) {
         return $content;
     }
-    $n = 0;
+    // A post split by <!--nextpage--> numbers its cards across all its pages,
+    // as the sources list does, so each page starts after the cards before it.
+    $n    = 0;
+    $page = max( 1, (int) get_query_var( 'page' ) );
+    if ( $page > 1 ) {
+        $before = array_slice( explode( '<!--nextpage-->', (string) $post->post_content ), 0, $page - 1 );
+        $n      = (int) preg_match_all( '#<div class="(?:quran|hadith)-citation"#', implode( '', $before ) );
+    }
     return (string) preg_replace_callback(
         '#<div class="(quran|hadith)-citation">#',
         static function ( $m ) use ( &$n ) {

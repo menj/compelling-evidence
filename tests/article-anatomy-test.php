@@ -22,6 +22,8 @@ function esc_attr( $s ) { return esc_html( $s ); }
 function wp_strip_all_tags( $s ) { return strip_tags( (string) $s ); }
 function wpautop( $s ) { return '<p>' . $s . '</p>'; }
 function get_post_meta( $id, $key ) { return $GLOBALS['meta'][ $key ] ?? ''; }
+function get_post( $p = null ) { return $p; }
+function post_password_required( $post ) { return '' !== $post->post_password; }
 class WP_Post {
 	public $ID            = 5;
 	public $post_password = '';
@@ -74,6 +76,12 @@ check( '' === ce_anatomy_faq_section( $post ) && [] === ce_anatomy_faq_items( nu
 check( ! ce_anatomy_answer_shows( $post ), 'no excerpt and no key points: no box' );
 $post->post_excerpt = 'A summary.';
 check( ce_anatomy_answer_shows( $post ), 'an excerpt shows the box' );
+$post->post_password = 'secret';
+check( ! ce_anatomy_answer_shows( $post ), 'behind a password: no box until the password is given' );
+ob_start();
+ce_anatomy_answer_box( $post );
+check( '' === ob_get_clean(), 'behind a password: In short prints nothing' );
+$post->post_password = '';
 
 echo $fail ? "$fail of $n checks failed\n" : "All $n checks passed\n";
 exit( $fail ? 1 : 0 );
