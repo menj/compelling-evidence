@@ -36,7 +36,7 @@ Require all denied
 # Every file and folder whose name begins with a dot, wherever it sits in
 # the theme: .git, .github, .gitignore, .claude, .vscode, .env, this file and
 # the like. .well-known stays open.
-RedirectMatch 403 /\.(?!well-known(/|$))[^/]+(/|$)
+RedirectMatch 403 /[.](?!well-known(/|$))[^/]+(/|$)
 # No PHP file in the theme serves a page of its own.
 RedirectMatch 403 \.php(/|$)
 </IfModule>
