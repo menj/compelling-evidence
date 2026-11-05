@@ -19,12 +19,10 @@ The browser icon set is complete. No feature removed.
 
 ### Changed
 - `favicon.ico` holds 16, 32 and 48px, rendered from `ce-icon.svg`, in place of a single 16px image.
+- `favicon-16x16.png`, `favicon-32x32.png`, `favicon-96x96.png` and `apple-touch-icon.png` are rendered again from `ce-icon.svg`. They showed a white C and a coral E, where the SVG, the header wordmark, the login logo and the error pages show a coral C and a white E. The touch icon now sits on a solid background.
 - `ce_site_icon_url()` steps aside when the owner sets a Site Icon (`ce_owner_site_icon()`). Before, it replaced the owner's icon with the theme's on every size. It also answers 192 with `icon-192.png` and 270 and up with `icon-512.png`, where it gave the 96px and 180px files before.
 - `header.php` no longer hard-codes five icon tags, which WordPress then repeated through the filter; it calls `ce_favicon_tags()`.
 - The Organization `logo` falls back to `assets/images/icon-512.png`, a 512px square, in place of `screenshot.png`, which is 880 by 660 but was declared 512 by 512.
-
-### Known
-- `favicon-16x16.png`, `favicon-32x32.png`, `favicon-96x96.png` and `apple-touch-icon.png` are kept as they were. They show a white C and a coral E, where `ce-icon.svg`, the header wordmark and the error pages show a coral C and a white E.
 
 ## [2.18.12] - November 2026
 
