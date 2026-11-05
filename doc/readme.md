@@ -193,7 +193,7 @@ Fixed in code: `CE_SITE_KEY` (`ce`), `CE_ERR_MARKER`, `CE_STATIC_ERRORS` (`compe
 
 ### Root .htaccess sections
 
-On Apache the theme keeps two sections in the site's `.htaccess` through `insert_with_markers()`, synced on the first request of a version and from the admin, and removes both on a theme switch.
+On Apache the theme keeps two sections in the site's `.htaccess` through `insert_with_markers()`, synced on the first request of a version and from the admin. A theme switch removes both. When the switch finds another request holding the lock, the removal waits for that request, which takes out the direct-file section and keeps the shared xmlrpc.php section if the new theme is one that writes the same block (`ce_sec_sister_themes`).
 
 ```
 # BEGIN Block xmlrpc.php
@@ -251,7 +251,7 @@ error_page 503 /wp-content/compelling-evidence-errors/503.html;
 error_page 504 /wp-content/compelling-evidence-errors/504.html;
 ```
 
-Nginx serves `error_page` for PHP's own 500 and 503 answers only with `fastcgi_intercept_errors on;` in the FastCGI location; without it those answers reach visitors as PHP sent them. Jetpack needs XML-RPC: leave out the `xmlrpc.php` line and also switch "Turn off XML-RPC" off on the Security tab, since the theme refuses XML-RPC in PHP too. Where the client logs in to XML-RPC with a password, switch the REST lock off as well, since `ce_sec_refuse_remote_password()` refuses those logins while either switch is on. These rules do not follow the Security switches or `CE_SECURITY_LOCK`: to let XML-RPC through, take the `xmlrpc.php` line out by hand as well. The `wp-config.php` rule matches at any depth, so it also covers a `wp-config.php` in the folder above a WordPress that lives in a subfolder. Prefix the other paths when WordPress lives in a subfolder.
+Nginx serves `error_page` for PHP's own 500 and 503 answers only with `fastcgi_intercept_errors on;` in the FastCGI location; without it those answers reach visitors as PHP sent them. Jetpack needs XML-RPC: leave out the `xmlrpc.php` line and also switch "Turn off XML-RPC" off on the Security tab, since the theme refuses XML-RPC in PHP too. Where the client logs in to XML-RPC, with a password or any other credential, switch the REST lock off as well, since `ce_sec_refuse_remote_password()` refuses every XML-RPC login while either switch is on. These rules do not follow the Security switches or `CE_SECURITY_LOCK`: to let XML-RPC through, take the `xmlrpc.php` line out by hand as well. The `wp-config.php` rule matches at any depth, so it also covers a `wp-config.php` in the folder above a WordPress that lives in a subfolder. Prefix the other paths when WordPress lives in a subfolder.
 
 ---
 
@@ -283,7 +283,7 @@ Settings, articles, analytics and the Security records are per site. On a networ
 
 - Only the main site writes the drop-ins and the static copies, which every site shares, so they carry the main site's name and address. A subsite's Tools & Sync says so. A theme switch never removes them, since another site may still use the theme.
 - The lock in `inc/ce-lock.php` lives in the main site's options table, so every site that runs the theme shares one lock.
-- The root `.htaccess` is one file. A theme switch on any site removes both sections until another site's next sync writes them back.
+- The root `.htaccess` is one file. A theme switch on any site removes the sections (the xmlrpc.php one can stay, as described under Root .htaccess sections) until another site's next sync writes them back.
 
 ---
 
