@@ -81,6 +81,9 @@ require_once get_stylesheet_directory() . '/inc/ce-standalone-faq.php';
 // ── AEO META BOXES & SCHEMA (FAQ items, about/mentions entities) ─────────────
 require_once get_stylesheet_directory() . '/inc/ce-aeo.php';
 
+// ── ARTICLE ANATOMY (dates, In short, the visible FAQ, sources) ─────────────
+require_once get_stylesheet_directory() . '/inc/ce-article-anatomy.php';
+
 // ── SECONDARY PAGES (About, Editorial, Privacy, Contact) ────────────────────
 require_once get_stylesheet_directory() . '/inc/ce-secondary-pages.php';
 

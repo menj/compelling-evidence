@@ -322,7 +322,8 @@ function ce_aeo_get_faq_schema( $post = null ): ?array {
 
     $main_entity = [];
     foreach ( $items as $item ) {
-        if ( empty( $item['q'] ) || empty( $item['a'] ) ) {
+        // A question or answer of "0" is text; only a blank one is missing.
+        if ( '' === trim( (string) ( $item['q'] ?? '' ) ) || '' === trim( (string) ( $item['a'] ?? '' ) ) ) {
             continue;
         }
         $main_entity[] = [

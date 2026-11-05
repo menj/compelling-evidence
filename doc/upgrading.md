@@ -15,6 +15,14 @@ This document describes the update steps, the notes for each version that needs 
 
 ---
 
+## Upgrading to v2.18.10 from v2.18.9
+
+Replace the theme files. The new files are `LICENSE`, `inc/ce-article-anatomy.php`, `assets/css/ce-article-anatomy.css` and `tests/article-anatomy-test.php`.
+
+Questions saved in an article's FAQ Items box now show at the foot of the article. Before the update, open the articles that have FAQ items and read them as a reader will. Key points go in the new Key points box; until then "In short" shows the excerpt alone.
+
+---
+
 ## Upgrading to v2.18.9 from v2.18.8
 
 Documentation only, with no change to the articles. As with every version, the first admin page runs the content sync: it writes every article from the JSON batches over the database copy and moves to the trash any published `ce_article` whose slug is not in them. An edit made to an article in WordPress is lost, so make it in the batch file instead (see Content Sync Behaviour on Upgrade).
@@ -772,6 +780,7 @@ These are plans, not promises. Each item rests on something on record: the code,
 
 ### Ideas
 
+- Key points for the 143 seeded articles, carried in the JSON batches. The box is built, but the batches hold no key points yet, so "In short" shows the excerpt alone.
 - Ornate ayah brackets (U+FD3E, U+FD3F) in the Quran face. `doc/ssot.md`, section 14, records that KFGQPC lacks them and CE Hadith draws them.
 - Answer the sign-in probes earlier. The October 2026 SSL log shows 3,170 requests answering 401 on `/`, and 1,328, 1,142 and 384 on `/login`, `/signin` and `/signup`. They come from the host's layer, so the answer may sit outside the theme.
 

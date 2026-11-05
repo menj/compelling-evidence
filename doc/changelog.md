@@ -6,6 +6,32 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.18.10] - November 2026
+
+The article anatomy for `single-ce_article.php` and `single.php`. No section or feature removed and no public identifier renamed.
+
+### Added
+- Visible dates in `.article-meta`: Published, and Updated when the article changed a day or more after it was published (`ce_anatomy_dates()`).
+- Breadcrumbs on `single.php`, the trail the BreadcrumbList already described: Home, Articles, the topic, the post (`ce_anatomy_breadcrumbs()`).
+- "In short" at the top of the text (`ce_anatomy_answer_box()`, `.ce-answer`): the excerpt as the summary, and the key points from a new Key points box (`_ce_takeaways`). The WebPage `speakable` names `.ce-answer` when it shows. The sticky contents leave it out.
+- The visible FAQ: the `_ce_faq_items` saved in the FAQ Items box show at the foot of the article as "Questions readers ask" (`ce_anatomy_faq_section()`). The article's FAQPage (`ce_aeo_get_faq_schema()`, `#faq`, part of the WebPage) is emitted only when they show, as the owner decided on 2026-11-03.
+- The sources section (`ce_anatomy_sources_section()`): every Qur'an and hadith card the article quotes, in order, each linked to its card (`id="passage-N"`). When the article has its own Sources list, that list stays in place and the section is headed "Passages quoted". The items of that Sources list now join the Article `citation` as CreativeWork nodes, beside the Quotations.
+- `inc/ce-article-anatomy.php`, `assets/css/ce-article-anatomy.css` and `tests/article-anatomy-test.php`.
+
+### Changed
+- The theme is licensed GNU GPL version 3 or later (`style.css`, `readme.txt`), and the full text ships in a new `LICENSE` file. Bundled fonts and images keep their own licences.
+- The sticky contents (`assets/js/ce-toc.js`) show from three sections up, as on the other themes, and skip the "In short" heading.
+
+### Fixed
+- The article sidebar was an `aside` inside the `article`, which axe reports as a nested landmark. It is a `div` with the same class.
+- The "Did this article help?" heading was an `h4` after `h2` sections. It is an `h3`.
+- The hadith reference under each card was too faint for its size (axe colour contrast). It is brighter.
+
+### Already in place
+- The sticky contents (`#ce-toc`), the table style and its scrolling region (`.ce-table-wrap`), the quiz and journeys, the sidebar Ask a Question link and the Continue Reading cards.
+- The Qur'an and hadith Quotations in the Article `citation` (`ce_schema_scripture()`).
+- The byline shows only when the Identity tab has an author name, as before.
+
 ## [2.18.9] - November 2026
 
 Documentation release. No code, setting or address changed beyond the version.

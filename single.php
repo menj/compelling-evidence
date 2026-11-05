@@ -23,6 +23,7 @@ $reading_secs = $word_count * 0.3; // approx seconds for progress tracking
     <!-- Article Header -->
     <header class="article-hero">
       <div class="article-hero-inner">
+        <?php ce_anatomy_breadcrumbs(); ?>
         <?php
         $topics = wp_get_post_terms(get_the_ID(), 'ce_topic');
         if (!empty($topics) && !is_wp_error($topics)) : ?>
@@ -66,6 +67,7 @@ $reading_secs = $word_count * 0.3; // approx seconds for progress tracking
           </span>
           <span class="meta-sep">·</span>
           <span><?php echo esc_html( number_format( (int) $word_count ) ); ?> words</span>
+          <?php ce_anatomy_dates(); ?>
 
         </div>
       </div>
@@ -74,6 +76,7 @@ $reading_secs = $word_count * 0.3; // approx seconds for progress tracking
     <!-- Content -->
     <div class="article-content-wrap">
       <div class="article-content" id="article-body">
+        <?php ce_anatomy_answer_box(); ?>
         <?php the_content(); ?>
         <?php
         wp_link_pages([
@@ -81,6 +84,8 @@ $reading_secs = $word_count * 0.3; // approx seconds for progress tracking
           'after'  => '</nav>',
         ]);
         ?>
+
+        <?php ce_anatomy_after_content(); ?>
 
         <!-- Engagement: Share + Vote + Resonance -->
         <div class="ce-engagement-footer">
@@ -94,7 +99,7 @@ $reading_secs = $word_count * 0.3; // approx seconds for progress tracking
       </div>
 
       <!-- Sidebar -->
-      <aside class="article-sidebar">
+      <div class="article-sidebar">
 
         <!-- Sticky group: stays in view for the whole article (TOC + reading progress) -->
         <div class="sidebar-sticky-track">
@@ -168,7 +173,7 @@ $reading_secs = $word_count * 0.3; // approx seconds for progress tracking
             <?php esc_html_e('Ask a Question', 'compelling-evidence'); ?>
           </a>
         </div>
-      </aside>
+      </div>
     </div>
 
   </article>

@@ -1,7 +1,7 @@
 # SSOT: Single Source of Truth
 ## Compelling Evidence theme: system design, naming conventions, configuration rules
 
-**Version:** 2.18.9  
+**Version:** 2.18.10  
 **Location:** `doc/ssot.md`
 
 This document is authoritative. When any other file conflicts with a rule stated here, this document is correct and the other file should be updated.
@@ -19,6 +19,7 @@ This document is authoritative. When any other file conflicts with a rule stated
 | Text Domain | `compelling-evidence` |
 | Parent Theme | `twentytwentyfive` (Template field in style.css) |
 | Version source | `style.css` — the only place version is set |
+| Licence | GNU GPL v3 or later (`style.css`, `readme.txt`, the full text in `LICENSE`), set by the owner on 2026-11-05 |
 | Site URL | https://compelling-evidence.com |
 | WP minimum | 6.7 (Twenty Twenty-Five 1.5 requires it) |
 | Parent version tested | Twenty Twenty-Five 1.5 (`CE_PARENT_TESTED_VERSION`) |
@@ -301,7 +302,7 @@ Main branch is `main`. Version tags follow semantic versioning prefixed with `v`
 
 Distribution zip is built with `git archive`, which honours the `export-ignore` lines in `.gitattributes` (`.claude/`, `bin/`, `tests/`, `phpcs.xml.dist`, `.gitattributes`, `.gitignore`):
 ```bash
-git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.9.zip HEAD
+git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.10.zip HEAD
 ```
 
 ---
@@ -546,6 +547,8 @@ Reference documents: Google's SEO Starter Guide and Google's list of structured 
 - Articles: Article (headline, dates, author, publisher, word count, reading time, keywords, accessibility, copyright), BreadcrumbList, the hero image and every `[ce_figure]` and `[ce_diagram]` as ImageObject with the credit and licence from `inc/articles/media.json`, WPSideBar for the contents rail, and speakable on the title and first paragraph.
 - Qur'an and hadith blocks (`quran-citation`, `hadith-citation`): two Quotation nodes each, the Arabic and the English shown under it (`translationOfWork`). Qur'an passages sit in a Chapter (the surah) of the Book "The Qur'an". Hadith sit in the collection Books the reference names, with the hadith number as `identifier`. A grading is marked (`additionalProperty` "grading") only where the reference states one. The article cites the English quotations.
 - Glossary terms the article links to are `mentions`, by `@id`, of the DefinedTerm on /glossary/.
+- The article's own Sources list (the list after a "Sources" heading): CreativeWork nodes in the Article `citation`, beside the Quotations (since 2.18.10).
+- An article's FAQ Items (`_ce_faq_items`): an FAQPage (`#faq`, part of the WebPage), only while the same questions show at the foot of the article (since 2.18.10, by the owner decision of 2026-11-03).
 - /faq/: FAQPage. /glossary/: DefinedTermSet with every DefinedTerm. Reader questions in the "published" status: QAPage with a Question, and an Answer only when the page shows one, plus the Article node. Topic pages: CollectionPage with an ItemList of their articles in page order. Ask a Question and Contact: ContactPage. About: AboutPage. Search: SearchResultsPage.
 - Quiz: Quiz with every Question and its options as suggestedAnswer. The quiz has no right answers and the page reveals none, so no question has an acceptedAnswer.
 - Journeys: the nodes in each `journey.json` (Article, BreadcrumbList, WebPage with speakable) and a LearningResource whose steps are the chapters in reading order, each with the articles it points to.
@@ -680,6 +683,8 @@ The owner uploads the theme over FTP, and on 4 November 2026 the upload carried 
 Owner decisions, copied word for word from `.claude/CLAUDE.md`:
 
 - The journey and quiz pages carry FAQPage markup, with a visible FAQ section built from the same data. The owner decided this on 2026-11-03, reversing an earlier note the same day. Structured data still describes only what a page shows, so the questions must appear on the page.
+
+Article anatomy (since 2.18.10): a next step on these pages is only ever keep reading, check the sources, the quiz or a journey, or ask a question. No price, buy button or sales wording. The byline shows only when the Identity tab has an author name.
 
 Contributor rules:
 
