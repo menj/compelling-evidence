@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Version | 2.18.10 |
+| Version | 2.18.11 |
 | Licence | GNU GPL v3 or later; the full text is in `LICENSE` |
 | Parent | Twenty Twenty-Five, tested with 1.5 (`CE_PARENT_TESTED_VERSION`) |
 | Requires | WordPress 6.7 (tested to 7.1), PHP 8.0 (tested to 8.4) |
@@ -37,12 +37,12 @@ php bin/build-error-pages.php                        # rebuild errors/*.html fro
 node bin/quiz-sim.js                                 # quiz scoring simulation
 python3 bin/build-murtadd-counterparts.py            # rebuild inc/data/murtadd-counterparts.json
 python3 bin/build-quiz-murtadd-links.py              # rebuild inc/data/quiz-murtadd-links.json
-git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.10.zip v2.18.10   # after the release is committed and tagged
+git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.11.zip v2.18.11   # after the release is committed and tagged
 ```
 
 Every PHP script in `tests/` and `bin/` exits unless it runs from the command line. `.gitattributes` keeps `.gitattributes`, `.gitignore`, `.claude/`, `phpcs.xml.dist`, `bin/` and `tests/` out of the zip; `doc/` and `tools/` ship, and the live-server clean-up removes them.
 
-Deploy by the dashboard ("Replace active with uploaded", never a switch to another theme first, which takes the error pages and the `.htaccess` sections away) or by FTP: show hidden files, upload to a temporary folder, then rename the old folder away and the new one into place, one straight after the other. Load one admin page afterwards: the version change runs the content sync.
+Deploy by the dashboard ("Replace active with uploaded", never a switch to another theme first, which takes the error pages and the `.htaccess` sections away) or by FTP: show hidden files, upload to a temporary folder inside `wp-content/themes/` with the `.htaccess` files first, then rename the old folder away and the new one into place, one straight after the other. Load one admin page afterwards: the version change runs the content sync.
 
 A release bumps `Version` in `style.css` (the only version source; PHP reads it with `wp_get_theme()`), `Version` and `Stable tag` in `readme.txt`, this file and `doc/ssot.md`, adds an entry to `doc/changelog.md` and the short form to `readme.txt`, and updates the batch checksums in `inc/articles/manifest.json` when a batch changed.
 
