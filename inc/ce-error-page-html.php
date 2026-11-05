@@ -126,6 +126,8 @@ p{margin:0 auto .6rem;max-width:30rem;color:var(--muted)}
 .again:hover{filter:brightness(1.1)}
 .again:focus-visible{outline:3px solid var(--coral);outline-offset:3px}
 CSS;
+	// The mark is the page's tab icon too, as a data address: an error page
+	// answers at any path, in a subfolder install too, and asks for no file.
 	$mark = <<<'MARK'
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" focusable="false"><rect width="100" height="100" rx="22" fill="#180d2e"/><text x="50" y="68" font-family="'DM Sans', 'Helvetica Neue', Arial, sans-serif" font-weight="900" font-size="54" text-anchor="middle" letter-spacing="-3" fill="#f5f0ff"><tspan fill="#e8455a">C</tspan>E</text></svg>
 MARK;
@@ -136,6 +138,7 @@ MARK;
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <title>' . $e( $k['title'] ) . ' | ' . $e( $site ) . '</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,' . $e( rawurlencode( $mark ) ) . '">
 <style>
 ' . $css . '
 </style>

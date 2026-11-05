@@ -15,6 +15,10 @@ This document describes the update steps, the notes for each version that needs 
 
 ---
 
+## Upgrading to v2.18.13 from v2.18.12
+
+Replace the theme files. The new files are in `assets/images/`: `favicon.svg`, `icon-192.png`, `icon-512.png`, `icon-maskable-512.png` and `site.webmanifest`. A Site Icon you set under Appearance > Customize > Site Identity now replaces the theme's icons; before, the theme's won. If a `favicon.ico` file sits in the site root, the web server sends it and the theme never answers; delete it to use the theme's. The first admin page rewrites the error pages with the icon, and runs the content sync as with every version.
+
 ## Upgrading to v2.18.12 from v2.18.11
 
 Documentation only, with no change to the articles. On Nginx, replace the two theme lines in the server block with those in `doc/readme.md`, which also cover the `-new` and `-old` folders of an FTP update. As with every version, the first admin page runs the content sync, so make any article edit in the batch file instead (see Content Sync Behaviour on Upgrade).

@@ -6,8 +6,8 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.18.12
-Stable tag: 2.18.12
+Version: 2.18.13
+Stable tag: 2.18.13
 License: GNU General Public License v3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Template: twentytwentyfive
@@ -155,6 +155,10 @@ CE Theme, Copyright 2026 MENJ. Licensed under the GNU GPL, version 3 or later; t
 * Article figures are not bundled. inc/articles/media.json lists each with its source page, creator and licence, and the credit prints under the figure.
 
 == Changelog ==
+
+= 2.18.13 - November 2026 =
+* The browser icon set is complete: favicon.ico at 16, 32 and 48px, 192px, 512px and maskable icons and a web app manifest, all from the CE mark. The site answers /favicon.ico with the icon, and the error pages show it in the tab.
+* A Site Icon you set under Appearance, Customize, Site Identity now replaces the theme's icons everywhere. Before, the theme's icons won over it.
 
 = 2.18.12 - November 2026 =
 * The Nginx rules in the technical notes also cover the temporary folders of an FTP update, and the FTP steps say to add them first.
@@ -595,6 +599,9 @@ Uthmani Quran font replaced with KFGQPC HAFS version (608 glyphs). CE Hadith add
 For the full version history see doc/changelog.md in the theme zip.
 
 == Upgrade Notice ==
+
+= 2.18.13 =
+Replace the theme files. A Site Icon you set now wins over the theme's icons. As with every version, the first admin page rewrites the articles from the theme's files.
 
 = 2.18.12 =
 Documentation only. On Nginx, update the theme lines in the server block from doc/readme.md. As with every version, the first admin page rewrites the articles from the theme's files, so copy any edit made in WordPress into the theme's article files first.

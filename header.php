@@ -5,12 +5,8 @@
   <meta charset="<?php bloginfo('charset'); ?>">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="profile" href="https://gmpg.org/xfn/11">
-  <!-- Favicons -->
-  <link rel="icon" type="image/svg+xml" href="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/ce-icon.svg' ); ?>">
-  <link rel="icon" type="image/png" sizes="32x32" href="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/favicon-32x32.png' ); ?>">
-  <link rel="icon" type="image/png" sizes="16x16" href="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/favicon-16x16.png' ); ?>">
-  <link rel="apple-touch-icon" sizes="180x180" href="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/apple-touch-icon.png' ); ?>">
-  <link rel="shortcut icon" href="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/images/favicon.ico' ); ?>">
+  <!-- Favicons: WordPress prints the PNG and touch icons (ce_site_icon_url()); ce_favicon_tags() adds the rest -->
+  <?php ce_favicon_tags(); ?>
 
   <!-- Preload critical fonts (heading + UI families; see inc/ce-fonts.php) -->
   <?php ce_fonts_preload_tags(); ?>

@@ -6,6 +6,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.18.13] - November 2026
+
+The browser icon set is complete. No feature removed.
+
+### Added
+- `assets/images/icon-192.png`, `icon-512.png`, `icon-maskable-512.png`, `favicon.svg` (a copy of `ce-icon.svg`) and `site.webmanifest`, rendered from `ce-icon.svg`.
+- `ce_favicon_tags()` prints the SVG icon, the 16px PNG, `favicon.ico`, the manifest link and `theme-color` (#180d2e) on the site (from `header.php`), the login screen and the admin. The admin also gets the 32px and touch icons, since WordPress prints none there.
+- `ce_serve_favicon()` answers `/favicon.ico` with the icon: a day's cache and an ETag, with a 304 while it is unchanged, and HEAD requests get the same headers.
+- The error pages and drop-ins carry the CE mark as their tab icon, as a `data:` address, so it shows on any path and in a subfolder install.
+
+### Changed
+- `favicon.ico` holds 16, 32 and 48px, rendered from `ce-icon.svg`, in place of a single 16px image.
+- `ce_site_icon_url()` steps aside when the owner sets a Site Icon (`ce_owner_site_icon()`). Before, it replaced the owner's icon with the theme's on every size. It also answers 192 with `icon-192.png` and 270 and up with `icon-512.png`, where it gave the 96px and 180px files before.
+- `header.php` no longer hard-codes five icon tags, which WordPress then repeated through the filter; it calls `ce_favicon_tags()`.
+- The Organization `logo` falls back to `assets/images/icon-512.png`, a 512px square, in place of `screenshot.png`, which is 880 by 660 but was declared 512 by 512.
+
+### Known
+- `favicon-16x16.png`, `favicon-32x32.png`, `favicon-96x96.png` and `apple-touch-icon.png` are kept as they were. They show a white C and a coral E, where `ce-icon.svg`, the header wordmark and the error pages show a coral C and a white E.
+
 ## [2.18.12] - November 2026
 
 Documentation only. No code, setting or public identifier changes.
