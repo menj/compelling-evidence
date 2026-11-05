@@ -4,10 +4,10 @@
  *
  * Taking it is one INSERT IGNORE of a unique option name, which only one
  * request can win. (add_option() is no lock: it reads first and then
- * inserts with ON DUPLICATE KEY UPDATE, so two requests can both succeed.) Each holder writes its own token, so a stale lock is
- * taken over with an UPDATE that only succeeds while the old token is still
- * there, and a release deletes the row only while it still holds the
- * releaser's token. Used by the dev-file cleanup and the .htaccess sync.
+ * inserts with ON DUPLICATE KEY UPDATE, so two requests can both succeed.)
+ * Each holder writes its own token, so a stale lock is taken over with an
+ * UPDATE that only succeeds while the old token is still there, and a
+ * release deletes the row only while it still holds the releaser's token. Used by the dev-file cleanup and the .htaccess sync.
  *
  * @since 2.18.7
  */

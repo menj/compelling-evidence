@@ -156,11 +156,11 @@ $ce_rw_hit = function ( $rel ) use ( $ce_rw ) {
 	}
 	return false;
 };
-ce_check( 1 === count( $ce_rw ), "the theme's .htaccess has its RewriteRule" );
-foreach ( array( 'tools/build.py', 'tools/', 'tools', 'bin/quiz-sim.js', 'tests/lock-test.php' ) as $ce_p ) {
+ce_check( 2 === count( $ce_rw ), "the theme's .htaccess has its 2 RewriteRule lines" );
+foreach ( array( 'tools/build.py', 'tools/', 'tools', 'bin/quiz-sim.js', 'tests/lock-test.php', '.git/config', '.claude/CLAUDE.md', 'assets/.env' ) as $ce_p ) {
 	ce_check( $ce_rw_hit( $ce_p ), "theme .htaccess rewrite: 403 for $ce_p" );
 }
-foreach ( array( 'assets/js/main.js', 'toolsmith.css', 'journeys/quiz.html', 'assets/tools/x.js' ) as $ce_p ) {
+foreach ( array( 'assets/js/main.js', 'toolsmith.css', 'journeys/quiz.html', 'assets/tools/x.js', '.well-known/x', 'assets/css/main.min.css' ) as $ce_p ) {
 	ce_check( ! $ce_rw_hit( $ce_p ), "theme .htaccess rewrite: open $ce_p" );
 }
 

@@ -8,8 +8,9 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * The theme caught half uploaded (2.18.7): a file missing, or there but half
- * written (a ParseError). The owner uploads over FTP one file at a time, so
+ * The theme caught half uploaded (2.18.7): a file this one loads missing, or
+ * there but half written (a ParseError). This file itself is parsed before
+ * any of it runs, so it cannot guard itself. The owner uploads over FTP one file at a time, so
  * for a while either can happen. The request gets a 503 with Retry-After
  * instead of a fatal error, and the error log gets one line per problem and
  * ten minutes, not one per request. The login screen, AJAX, cron and the
