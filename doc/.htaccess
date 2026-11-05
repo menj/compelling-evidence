@@ -1,6 +1,6 @@
 # Written by the Compelling Evidence theme. Nothing in this folder serves a
 # page: Apache refuses every request into it, whatever the address of the
-# theme folder. inc/ce-housekeeping.php deletes the folder on production.
+# theme folder. inc/ce-housekeeping.php deletes the folder on production (since 2.18.8).
 <IfModule mod_authz_core.c>
 Require all denied
 </IfModule>

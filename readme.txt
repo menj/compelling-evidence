@@ -125,7 +125,7 @@ CE Theme, Copyright 2026 MENJ. Licensed GPLv2 or later.
 = 2.18.8 - November 2026 =
 * The footer column headings are level 2, so the 404 page has no skipped heading level.
 * The analytics tracker reads the article slug correctly when WordPress sits in a subfolder.
-* The web server refuses the doc folder and every Markdown file in the theme.
+* The web server refuses the doc folder and every Markdown file in the theme, and the production cleanup deletes the doc folder.
 
 = 2.18.7 - November 2026 =
 * A theme caught half uploaded shows a short "Back shortly" page (503) instead of an error.

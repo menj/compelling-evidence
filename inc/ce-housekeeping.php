@@ -22,14 +22,14 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Paths, relative to the theme root, that have no business on a server:
  * every entry whose name starts with .git (.git, .github, .githooks,
- * .gitattributes, .gitignore), .claude, tests, bin and tools.
+ * .gitattributes, .gitignore), .claude, tests, bin, tools and doc.
  *
  * @param string $root Theme root.
  * @return string[]
  */
 function ce_dev_paths( $root = '' ) {
 	$root  = '' === $root ? get_stylesheet_directory() : $root;
-	$paths = array( '.claude', 'tests', 'bin', 'tools' );
+	$paths = array( '.claude', 'tests', 'bin', 'tools', 'doc' );
 	$items = is_dir( $root ) ? scandir( $root ) : false;
 
 	foreach ( false === $items ? array() : $items as $item ) {
