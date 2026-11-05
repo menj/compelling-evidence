@@ -56,6 +56,7 @@ compelling-evidence/
 ├── page.php                          Generic page fallback
 ├── sitemap.xml                       Redirect pointer to /wp-sitemap.xml
 ├── readme.txt                        WordPress.org standard readme (root only)
+├── .claude/                          Notes for coding agents (CLAUDE.md, FARUQI.md); not in the zip
 │
 ├── doc/                              Documentation (this folder)
 │   ├── README.md                     Theme overview and quick start
@@ -275,17 +276,17 @@ WordPress reads three files from `wp-content` when it cannot build a page. The t
 | `php-error.php` | a fatal PHP error | 500 |
 | `db-error.php` | the database cannot be reached | 503, `Retry-After: 600` |
 
-Static 403, 500, 502, 503 and 504 pages in `errors/` cover the errors the web server answers before WordPress starts. Add to `.htaccess`, with the folder name of the theme:
+Static 403, 500, 502, 503 and 504 pages cover the errors the web server answers before WordPress starts. The theme writes a copy of each into `wp-content/compelling-evidence-errors/` with the site's own name and home address, at the same times as the drop-ins, so the home link works when WordPress sits in a subfolder. It removes them when another theme is activated. Tools & Sync gives the `.htaccess` lines for the site; at the domain root they read:
 
 ```
-ErrorDocument 403 /wp-content/themes/compelling-evidence/errors/403.html
-ErrorDocument 500 /wp-content/themes/compelling-evidence/errors/500.html
-ErrorDocument 502 /wp-content/themes/compelling-evidence/errors/502.html
-ErrorDocument 503 /wp-content/themes/compelling-evidence/errors/503.html
-ErrorDocument 504 /wp-content/themes/compelling-evidence/errors/504.html
+ErrorDocument 403 /wp-content/compelling-evidence-errors/403.html
+ErrorDocument 500 /wp-content/compelling-evidence-errors/500.html
+ErrorDocument 502 /wp-content/compelling-evidence-errors/502.html
+ErrorDocument 503 /wp-content/compelling-evidence-errors/503.html
+ErrorDocument 504 /wp-content/compelling-evidence-errors/504.html
 ```
 
-Rebuild them with `php bin/build-error-pages.php` after changing `inc/ce-error-page-html.php`.
+`errors/` in the theme holds the copies for a site at the domain root. Rebuild them with `php bin/build-error-pages.php` after changing `inc/ce-error-page-html.php`.
 
 ## Theme Options Reference
 

@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.18.4] - November 2026
+
+No feature removed and no public identifier renamed.
+
+### Changed
+- `CLAUDE.md` and `FARUQI.md` moved from the theme root to `.claude/CLAUDE.md` and `.claude/FARUQI.md`. `.gitattributes` export-ignores `/.claude` in place of the `CLAUDE.md` line, so `FARUQI.md`, which had no entry, no longer ships in `git archive` zips either.
+- The static 403, 500, 502, 503 and 504 pages now work when WordPress is installed in a subfolder. `ce_error_install()` also writes a copy of each into `wp-content/compelling-evidence-errors/` with the site's name and home address (`ce_error_static_files()`, `ce_error_file_source()`); the automatic install, the admin check, the status table and `ce_error_remove()` cover them like the drop-ins. `ce_error_htaccess_snippet()` points at that folder. `errors/` stays as the copy for a site at the domain root.
+
+### Added
+- `tests/error-pages-test.php` covers the static copies: written, refreshed for a subfolder home, a foreign file kept, removed on switch.
+
 ## [2.18.3] - November 2026
 
 No feature removed and no public identifier renamed.

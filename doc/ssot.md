@@ -37,6 +37,7 @@ All theme documentation is in `/doc/`:
 | `doc/upgrading.md` | Migration guides for each version |
 | `doc/ssot.md` | This file — naming conventions and system design |
 | `readme.txt` | WordPress.org standard (remains in root) |
+| `.claude/CLAUDE.md`, `.claude/FARUQI.md` | Working rules for coding agents; export-ignored |
 
 ---
 
@@ -503,7 +504,7 @@ CE Theme stays a child of Twenty Twenty-Five and is built to coexist with it.
 
 `404.php` opens on a random excuse from `ce_404_excuses()` in `inc/ce-404.php`. Each excuse has a headline, a one-line explanation, the argument it riffs on and the slug of the article that treats that argument seriously; the page links to it with "Read the real argument". "Hear another excuse" is swapped client-side by `assets/js/ce-404.js`; without JavaScript its `?excuse=N` link reloads the page on the next excuse. The page sends `noindex, follow` (`ce_404_robots()`, since 2.18.0).
 
-Error pages (since 2.18.0): `inc/ce-error-pages.php` writes `wp-content/maintenance.php` (503, Retry-After 600), `php-error.php` (500) and `db-error.php` (503, Retry-After 600) only from the Install error pages button on Tools & Sync, never over a file without the marker `Compelling Evidence error page drop-in`; `inc/ce-error-page-html.php` builds them and the static pages in `errors/` (`bin/build-error-pages.php`). Every template and include file opens with `defined( 'ABSPATH' ) || exit;`; the drop-ins do not.
+Error pages (since 2.18.0): `inc/ce-error-pages.php` writes `wp-content/maintenance.php` (503, Retry-After 600), `php-error.php` (500) and `db-error.php` (503, Retry-After 600) only from the Install error pages button on Tools & Sync, never over a file without the marker `Compelling Evidence error page drop-in`; `inc/ce-error-page-html.php` builds them and the static pages in `errors/` (`bin/build-error-pages.php`), which assume a site at the domain root. Since 2.18.4 the theme also writes a copy of each static page into `wp-content/compelling-evidence-errors/` with the site's home address, and the `.htaccess` lines on Tools & Sync point there. Every template and include file opens with `defined( 'ABSPATH' ) || exit;`; the drop-ins do not.
 
 **House rules for excuses.** The joke lands on the missing page, the server or the webmaster, never on a faith, a scripture or the reader. Every entry points at a real article (or `''` for a general link to /articles/). Copy follows the site's English rules: no contractions, no em-dashes, no contrastive negation.
 
