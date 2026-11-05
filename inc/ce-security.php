@@ -273,18 +273,26 @@ function ce_sec_sync_htaccess( $force = false ) {
 		$writes = 0;
 		do {
 			delete_option( 'ce_sec_htaccess_dirty' );
+			// Another request may have changed the settings since this one
+			// read them: read them afresh before each write.
+			wp_cache_delete( 'alloptions', 'options' );
+			wp_cache_delete( 'notoptions', 'options' );
+			wp_cache_delete( 'ce_sec_xmlrpc_off', 'options' );
 			$ok = ce_sec_write_htaccess();
 			++$writes;
 		} while ( $writes < 3 && ce_sec_htaccess_dirty() );
 		// A theme switch that found the lock taken asked for the sections to go.
-		// Only this theme's own section goes then. The "Block xmlrpc.php" one
-		// is shared with the sister themes, and the theme switched to may
-		// already have written it again; other notes are left as they are.
+		// This theme's own section always goes. The "Block xmlrpc.php" one is
+		// shared with the sister themes: it stays when the theme switched to
+		// is one of them, which keeps it, and goes when it is not.
 		if ( '' !== ce_sec_option_raw( 'ce_sec_htaccess_remove' ) ) {
 			delete_option( 'ce_sec_htaccess_remove' );
 			$file = ce_sec_htaccess_file();
 			if ( '' !== $file ) {
 				insert_with_markers( $file, CE_SEC_FILES_MARKER, array() );
+				if ( ! ce_sec_is_sister_theme( ce_sec_option_raw( 'stylesheet' ) ) ) {
+					insert_with_markers( $file, 'Block xmlrpc.php', array() );
+				}
 			}
 			ce_lock_release( 'ce_sec_htaccess_lock', $token );
 			return false;
@@ -298,6 +306,18 @@ function ce_sec_sync_htaccess( $force = false ) {
 	// a new version writes again, since the note stays until it is read.
 
 	return $ok;
+}
+
+/**
+ * Whether a theme is one of the sister themes that keep the shared "Block
+ * xmlrpc.php" section in .htaccess.
+ *
+ * @param string $stylesheet Theme folder name.
+ * @return bool
+ */
+function ce_sec_is_sister_theme( $stylesheet ) {
+	$sisters = array( 'abrahamic', 'bestofislam', 'compelling-evidence', 'injil.help', 'injil-help', 'islamicdilemma', 'lailatulqadar', 'murtadd', 'paulus', 'tbe' );
+	return in_array( (string) $stylesheet, (array) apply_filters( 'ce_sec_sister_themes', $sisters ), true );
 }
 
 /**
