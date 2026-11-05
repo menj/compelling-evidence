@@ -248,7 +248,7 @@ error_page 503 /wp-content/compelling-evidence-errors/503.html;
 error_page 504 /wp-content/compelling-evidence-errors/504.html;
 ```
 
-Leave out the `xmlrpc.php` line while Jetpack is in use. Prefix the paths when WordPress lives in a subfolder.
+Nginx serves `error_page` for PHP's own 500 and 503 answers only with `fastcgi_intercept_errors on;` in the FastCGI location; without it those answers reach visitors as PHP sent them. Jetpack needs XML-RPC: leave out the `xmlrpc.php` line and also switch "Turn off XML-RPC" off on the Security tab, since the theme refuses XML-RPC in PHP too. Prefix the paths when WordPress lives in a subfolder, and when `wp-config.php` sits in the folder above WordPress, add a rule for it there as well, for example `location = /wp-config.php { deny all; }` above a WordPress in `/wp/`.
 
 ---
 

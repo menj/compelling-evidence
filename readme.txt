@@ -78,10 +78,10 @@ Upload the new zip under Appearance > Themes > Add New > Upload Theme and choose
 
 1. Turn on hidden files in your FTP program. The theme carries files whose names begin with a dot, such as .htaccess, which keep its private files closed to visitors. In FileZilla: Server > Force showing hidden files.
 2. Upload the new compelling-evidence folder next to the old one under a temporary name, such as wp-content/themes/compelling-evidence-new. Wait until every file has arrived.
-3. Rename the old folder to compelling-evidence-old and, straight after, rename compelling-evidence-new to compelling-evidence. Between the two renames the site has no theme folder, so do them one after the other and keep the admin closed until both are done.
+3. Rename the old folder to compelling-evidence-old and, straight after, rename compelling-evidence-new to compelling-evidence. Between the two renames the site has no theme folder and its pages may fail for that moment, so do them one after the other and keep the admin closed until both are done.
 4. Load any admin page, check the site, then delete compelling-evidence-old.
 
-If you upload straight over the live folder and the copy stops halfway, visitors see a short "Back shortly" page with a 503 status instead of an error, and you can still log in. Upload the missing files and the site returns. That page comes from functions.php, so it cannot help while functions.php itself is missing or half written, or in the moment between the two renames above. The temporary-folder method avoids those cases.
+If you upload straight over the live folder and the copy stops halfway, leaving a file missing or broken, visitors see a short "Back shortly" page with a 503 status instead of an error, and you can still log in. Upload the missing files and the site returns. That page comes from functions.php, so it cannot help while functions.php itself is missing or half written, or in the moment between the two renames above. A file cut short at a point where it still reads as valid code also slips past it. The temporary-folder method avoids those cases.
 
 Never upload a fresh copy of WordPress itself over the site without keeping wp-config.php. That file holds the database details; without it WordPress opens its installer to anyone who visits.
 
