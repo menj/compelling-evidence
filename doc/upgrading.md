@@ -1,8 +1,37 @@
-# Upgrading — Compelling Evidence Theme
+# Upgrading: Compelling Evidence theme
 
-This document describes every real migration path required when upgrading the theme.
-Only paths explicitly identified in development are documented here.
+This document describes the update steps, the notes for each version that needs action, and the roadmap.
 "Not specified in context" is written where migration details are unknown.
+
+---
+
+## Updating an existing site
+
+1. Back up the database.
+2. Upload the new zip under Appearance > Themes > Add New > Upload Theme and choose "Replace active with uploaded". Do not switch to another theme first: a switch removes the error pages and the two `.htaccess` sections. By FTP instead: turn on hidden files so the `.htaccess` files go up, upload the folder as `compelling-evidence-new`, then rename `compelling-evidence` to `compelling-evidence-old` and, straight after, `compelling-evidence-new` to `compelling-evidence`, with the admin closed in between. Never upload WordPress itself without keeping `wp-config.php`.
+3. Load any admin page. The version change runs the content sync, and the theme writes its error pages, its `.htaccess` sections and its run-once pages.
+4. Check `/articles/` and `/journeys/`, then delete `compelling-evidence-old`.
+5. Read the note below for the version you are moving to.
+
+---
+
+## Upgrading to v2.18.9 from v2.18.8
+
+Documentation only, with no change to the articles. As with every version, the first admin page runs the content sync: it writes every article from the JSON batches over the database copy and moves to the trash any published `ce_article` whose slug is not in them. An edit made to an article in WordPress is lost, so make it in the batch file instead (see Content Sync Behaviour on Upgrade).
+
+---
+
+## Upgrading to v2.18.6, v2.18.7 or v2.18.8
+
+Replace the theme files and load any page. On a live server the theme deletes its development files on activation and once per version: every `.git*` entry, `.claude`, `tests`, `bin`, `tools` and, from 2.18.8, `doc`. To keep them on a server where you work on the theme, set `WP_ENVIRONMENT_TYPE` to `local` or `development`, or add `define( 'CE_KEEP_DEV_FILES', true );` to `wp-config.php`, before you upload.
+
+On Apache the first request writes a "Compelling Evidence: block direct file access" section into `.htaccess` beside "Block xmlrpc.php". If anything that used to load now answers 403, add `define( 'CE_BLOCK_DIRECT_FILES', false );` and report the address. If the Security tab says `wp-config.php` sits in a folder the rules cannot reach, deny it at the server.
+
+---
+
+## Upgrading to v2.18.5 from v2.18.4
+
+Replace the theme files and load any admin page: the home page tells one story in the new order (`doc/ssot.md`, section 29). Nothing to set.
 
 ---
 
@@ -427,14 +456,7 @@ Custom feed endpoints registered via `add_feed()` are unaffected.
 
 ## General Upgrade Procedure (Any Version)
 
-1. **Back up** the WordPress database.
-2. Deactivate the current theme temporarily (switch to Twenty Twenty-Five).
-3. Delete the old `compelling-evidence` theme folder via FTP or File Manager.
-4. Upload the new zip via **Appearance → Themes → Add New → Upload Theme**.
-5. Activate the theme.
-6. Load any WordPress admin page — auto-run modules fire on `admin_init`.
-7. Go to **Settings → Permalinks → Save Changes**.
-8. Verify articles at `/articles/` and journeys at `/journeys/`.
+Follow "Updating an existing site" at the top of this file. The older procedure here, which switched to Twenty Twenty-Five and deleted the folder first, is retired: a theme switch removes the error pages and the `.htaccess` sections, so the site went without them until the next admin page. After an update that changes addresses, save Settings > Permalinks once.
 
 ---
 
@@ -732,6 +754,29 @@ The command above reads the version dynamically. Alternatively replace `{version
 
 ---
 
+## Roadmap
+
+These are plans, not promises. Each item rests on something on record: the code, the server logs of October and November 2026, a documented limit, or a feature another of the owner's themes already has. Items leave this list when they ship and go into `doc/changelog.md`. GitHub had no open issues or pull requests when the list was last checked (2026-11-05), and the code carries no TODO markers.
+
+### Next
+
+- A private login address. The abrahamic and bestofislam themes move the login screen to an address of the owner's choosing; here `inc/ce-login.php` styles the screen only. The October 2026 log shows 327 requests for `/wp-login.php` with an address appended and 1,328 for `/login`.
+- Security headers on front-end responses (`X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options`, HSTS as an opt-in). The bestofislam theme sends them from `inc/security-headers.php`; this theme sends only cache headers.
+- Keep the root `.htaccess` sections on a network when one site leaves the theme. `ce_sec_remove_htaccess()` runs on any site's `switch_theme`, and the shared file then lacks both sections until another site's next sync.
+
+### Later
+
+- Export, import and reset for CE Theme Options. The abrahamic theme has all three on its Tools tab; here a new site means setting more than 60 options by hand. Waits on one settings array, since each setting is its own option today.
+- Error pages on a network whose main site runs another theme. Only the main site writes the drop-ins (`ce_error_maybe_install()`), so they stop updating once it leaves the theme. The abrahamic theme hands the job to the subsite with the lowest ID that runs it.
+- Malay journeys. `journeys/ms-MY/` holds only a README; `page-journey.php` already falls back to English. Waits on translated text.
+
+### Ideas
+
+- Ornate ayah brackets (U+FD3E, U+FD3F) in the Quran face. `doc/ssot.md`, section 14, records that KFGQPC lacks them and CE Hadith draws them.
+- Answer the sign-in probes earlier. The October 2026 SSL log shows 3,170 requests answering 401 on `/`, and 1,328, 1,142 and 384 on `/login`, `/signin` and `/signup`. They come from the host's layer, so the answer may sit outside the theme.
+
+---
+
 ## Rollback Procedure
 
 1. **Back up the database** before any upgrade.
@@ -744,8 +789,8 @@ The command above reads the version dynamically. Alternatively replace `{version
 ## What is NOT Required on Upgrade
 
 - No direct database schema changes after v1.0.0 (the analytics table is created once on first activation; the `ce_article` CPT and `ce_topic` taxonomy are registered on every page load via `functions.php`).
-- No wp-config.php changes.
-- No server configuration changes (the `.htaccess-performance` file is additive, not required).
+- No wp-config.php changes, unless you keep the development files on a live server (`CE_KEEP_DEV_FILES`) or need the direct-file section out of `.htaccess` (`CE_BLOCK_DIRECT_FILES`).
+- No server configuration changes on Apache: the theme writes its own `.htaccess` sections. On Nginx add the rules in `doc/readme.md`, Security. The `ErrorDocument` lines are optional.
 - No plugin installations (the theme is self-contained).
 
 ---
@@ -754,12 +799,14 @@ The command above reads the version dynamically. Alternatively replace `{version
 
 All theme documentation has been moved to the `/doc/` folder:
 
-- `doc/readme.md` — Theme overview and quick start
-- `doc/changelog.md` — Version history and release notes
-- `doc/upgrading.md` — This file (migration instructions)
-- `doc/ssot.md` — Single Source of Truth (naming conventions, system design)
-- `readme.txt` — Remains in root for WordPress.org compliance
+- `doc/readme.md`: for developers and hosts
+- `doc/changelog.md`: version history
+- `doc/upgrading.md`: this file, upgrade notes and roadmap
+- `doc/ssot.md`: the fixed facts and rules
+- `readme.txt`: for site owners, at the theme root
+
+The live-server clean-up removes `doc/`, so read these in the zip or the repository.
 
 ---
 
-*Last updated: April 2026 (v2.6.10)*
+*Last updated: November 2026 (v2.18.9)*

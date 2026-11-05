@@ -1,199 +1,326 @@
-# CE Theme (Compelling Evidence) — WordPress Theme
+# CE Theme (Compelling Evidence)
 
-**Version:** 2.18.8 | **Parent theme:** Twenty Twenty-Five (tested with 1.5) | **Requires:** WordPress 6.7+ (tested to 7.1), PHP 8.0 to 8.4  
-**Site:** https://compelling-evidence.com | **Repository:** https://github.com/menj/compelling-evidence | **Author:** [MENJ](https://menj.blog) | **Text domain:** `compelling-evidence`
+| | |
+|---|---|
+| Version | 2.18.9 |
+| Parent | Twenty Twenty-Five, tested with 1.5 (`CE_PARENT_TESTED_VERSION`) |
+| Requires | WordPress 6.7 (tested to 7.1), PHP 8.0 (tested to 8.4) |
+| Hosting | Apache 2.4 with mod_rewrite for the managed `.htaccess` rules; Nginx works with the rules below added by hand. Multisite works with the limits below |
+| Site | https://compelling-evidence.com |
+| Repository | https://github.com/menj/compelling-evidence |
+| Text domain | `compelling-evidence` |
 
-An Islamic apologetics child theme delivering personalised argumentation journeys across 14 persona paths, 131 articles across 11 investigative categories, a weighted intake quiz, a gamified progress system, a privacy-first analytics layer, and a full engagement suite. Built for a single deployment — not a general-purpose theme.
+A child theme for one site: 14 journeys, a weighted intake quiz, 143 articles in 11 topics, reader questions, a glossary, first-party analytics (off by default) and an engagement suite. It is not a general-purpose theme.
 
----
-
-## Documentation Structure
-
-| File | Purpose |
-|------|---------|
-| `readme.md` | This file — quick start and architecture overview |
-| `changelog.md` | Version history and release notes |
-| `upgrading.md` | Migration guides for each version |
-| `ssot.md` | Single Source of Truth — naming conventions and system design |
+`readme.txt` is for site owners. This file is for developers and hosts. `doc/ssot.md` holds the fixed facts and wins on matters of fact; `doc/changelog.md` is the history and `doc/upgrading.md` the upgrade notes and roadmap.
 
 ---
 
-## Quick Start
+## Install, build, test and release
 
 ```
-1. Install Twenty Twenty-Five (parent — must be present, need not be active)
-2. Upload zip via Appearance → Themes → Add New → Upload Theme
-3. Activate — four auto-run modules fire on first admin page load
-4. Settings → Permalinks → Save Changes  (flush rewrite rules)
-5. Settings → Reading → set static front page
-6. Merge .htaccess-performance into WordPress root .htaccess
+# Install
+1. Install Twenty Twenty-Five (must be on disk, need not be active)
+2. Upload the zip under Appearance > Themes > Add New > Upload Theme, and activate
+3. Load any admin page: the topics, articles and secondary pages are created
+4. Settings > Permalinks > Save Changes
+5. Settings > Reading: pick a static front page if wanted
 ```
 
----
-
-## File Structure
-
 ```
-compelling-evidence/
-├── style.css                         Theme header (Version, Template, Text Domain)
-├── functions.php                     CPT, taxonomy, AJAX, hooks, all performance/SEO filters
-├── header.php                        Nav (logo, primary menu, random article, progress link)
-├── footer.php                        4-column footer grid (brand, topics, navigate, about)
-├── front-page.php                    Homepage, told as one story: hero, key questions, journey entry, quick-access, CTA (doc/ssot.md, section 29)
-├── single-ce_article.php             Article view (breadcrumbs, TOC, related cards, journey widget)
-├── single.php                        Standard post view (mirrors article template structure)
-├── archive-ce_article.php            /articles/ — 10 topic sections in logical reading order
-├── taxonomy-ce_topic.php             /topic/[slug]/ — delegates to archive-ce_article.php
-├── page-quiz.php                     /quiz — renders /journeys/quiz.html
-├── page-journey.php                  /journey/[slug]/, built from the journey template (bypasses wp_head)
-├── page-journeys.php                 /journeys — all-paths overview grid
-├── page-progress.php                 /my-progress — localStorage-driven progress dashboard
-├── page-faq.php                      /faq — accordion UI (FAQPage node built in inc/ce-schema.php)
-├── page-glossary.php                 /glossary — 85-term alphabetical glossary
-├── page-ask-a-question.php           /ask-a-question — question form with admin email notification
-├── search.php                        /?s= — ce_article + post combined results
-├── 404.php                           Not found
-├── page.php                          Generic page fallback
-├── sitemap.xml                       Redirect pointer to /wp-sitemap.xml
-├── readme.txt                        WordPress.org standard readme (root only)
-├── .claude/                          Notes for coding agents (CLAUDE.md, FARUQI.md); not in the zip
-│
-├── doc/                              Documentation (this folder)
-│   ├── README.md                     Theme overview and quick start
-│   ├── CHANGELOG.md                  Version history
-│   ├── UPGRADING.md                  Upgrade instructions
-│   └── SSOT.md                       System design and naming conventions
-│
-├── inc/                              PHP includes
-│   ├── articles/                     Article batches (JSON) and manifest.json with their SHA-256 checksums
-│   ├── data/                         Seed and lookup data (JSON): seed-pages.json, network-links.json, murtadd-counterparts.json
-│   ├── ce-analytics.php              Privacy-first analytics: 12 event types, IP hashing, dashboard
-│   ├── ce-content-sync.php           Version-keyed content sync (data files → WP database)
-│   ├── ce-db.php                     Custom-table helpers (no dbDelta/upgrade.php dependency)
-│   ├── ce-gone.php                   410 Gone for retired spam URL prefixes (Performance tab)
-│   ├── ce-security.php               Security tab: remote-publishing locks, spam gate, clean-up, reports
-│   ├── ce-security-detector.php      Gambling spam detector (plain PHP; tests/security-detector-test.php)
-│   ├── ce-social-icons.php           Footer social icons, [ce_social_icons], block pattern
-│   ├── ce-reading-progress.php       Reading progress bar and its options
-│   ├── ce-unlist.php                 Unlisted posts (tests/unlist-test.php)
-│   ├── ce-search-permalinks.php      /search/term/ URLs (tests/search-permalinks-test.php)
-│   ├── ce-login.php                  Login screen design (tests/login-test.php)
-│   ├── ce-404.php                    404 excuses (data, link resolution, script enqueue)
-│   ├── ce-icons.php                  Topic line icons for article cards without a featured image
-│   ├── ce-parent-compat.php          Template priority over parent block templates; parent version notice
-│   ├── ce-fonts.php                  Font registry, role variables, font preload tags (Typography tab)
-│   ├── ce-crosslinks.php             Unified crosslink + tooltip filter (curated phrases + shared map, 85 glossary terms)
-│   ├── ce-contextual-links.php       Shared network map loader + sister-site link pass (Links & Tooltips tab)
-│   ├── ce-engagement.php             Voting, resonance, 9-platform social sharing, reading time
-│   ├── ce-glossary.php               85 Islamic/Arabic terms with Arabic script + definitions
-│   ├── ce-migration-2-2-0.php        Category restructure (creates 10 terms, remaps articles)
-│   ├── ce-migration-2-2-74.php       v2.2.74 data migration
-│   ├── ce-secondary-pages.php        Auto-creates About, Editorial, Privacy, Contact, FAQ,
-│   │                                 Glossary, Ask a Question pages on activation
-│   ├── ce-seo.php                    Meta, canonical, OG/Twitter, JSON-LD site nodes and Article, title builder
-│   ├── ce-schema.php                 The rest of the one JSON-LD graph: page frame, FAQ, glossary, quiz,
-│   │                                 journeys, QAPage, topic lists, figures, Qur'an and hadith quotations
-│   │                                 (tests/schema-graph-test.php)
-│   ├── ce-image-sitemap.php          /image-sitemap.xml when no SEO plugin is active
-│   ├── ce-journey-assets.php         Registers and prints the shared journey and quiz CSS/JS
-│   ├── ce-journey-template.php       Finds, loads and renders a journey's data folder
-│   └── class-ce-feed-redirector.php  Feed suppression (301 redirects, noindex, robots.txt, sitemap)
-│   ├── ce-theme-options.php          8-tab admin settings UI
-│
-├── template-parts/journey/           Journey template: document, nav, screen, v2-preview, scripts
-├── journeys/                         Journey data and the quiz
-│   ├── quiz.html                     10-question intake quiz (questions and scoring data)
-│   ├── data/[14 persona]/            journey.json, style.css, screens/<chapter>.html
-│   ├── i18n/en.php                   Interface text for the template and journey.js
-│   └── ms-MY/                        Malay translations (none yet)
-│
-├── assets/                           Static assets
-│   ├── css/                          Stylesheets
-│   ├── js/                           JavaScript
-│   ├── fonts/                        23 self-hosted woff2 files, licenses/ (OFL, Apache)
-│   └── images/                       Theme images
-│
-└── languages/                        Translations
-    ├── compelling-evidence.pot       Translation template
-    ├── ms_MY.po                      Malay source
-    └── ms_MY.mo                      Malay compiled binary
+set -e                                               # stop at the first failure
+for t in tests/*.php; do php "$t" || exit 1; done   # PHP self-tests, WordPress stubbed
+node tests/analytics-path-test.js                    # the analytics page type and slug
+for f in functions.php inc/*.php; do php -l "$f" > /dev/null || exit 1; done
+php bin/build-error-pages.php                        # rebuild errors/*.html from inc/ce-error-page-html.php
+node bin/quiz-sim.js                                 # quiz scoring simulation
+python3 bin/build-murtadd-counterparts.py            # rebuild inc/data/murtadd-counterparts.json
+python3 bin/build-quiz-murtadd-links.py              # rebuild inc/data/quiz-murtadd-links.json
+git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.9.zip v2.18.9   # after the release is committed and tagged
 ```
+
+Every PHP script in `tests/` and `bin/` exits unless it runs from the command line. `.gitattributes` keeps `.gitattributes`, `.gitignore`, `.claude/`, `phpcs.xml.dist`, `bin/` and `tests/` out of the zip; `doc/` and `tools/` ship, and the live-server clean-up removes them.
+
+Deploy by the dashboard ("Replace active with uploaded", never a switch to another theme first, which takes the error pages and the `.htaccess` sections away) or by FTP: show hidden files, upload to a temporary folder, then rename the old folder away and the new one into place, one straight after the other. Load one admin page afterwards: the version change runs the content sync.
+
+A release bumps `Version` in `style.css` (the only version source; PHP reads it with `wp_get_theme()`), `Version` and `Stable tag` in `readme.txt`, this file and `doc/ssot.md`, adds an entry to `doc/changelog.md` and the short form to `readme.txt`, and updates the batch checksums in `inc/articles/manifest.json` when a batch changed.
 
 ---
 
 ## Architecture
 
-### Custom Post Type: `ce_article`
+### Boot sequence
 
-Registered in `functions.php`. Key properties:
+1. `functions.php` reads its own `require_once` list and checks that every `inc/` file is readable before it loads any (`ce_incomplete_theme()`). A missing file stops the load.
+2. The files load inside `try`, so a half-written file (a `ParseError`) stops it too. Either way visitors get a 503 "Back shortly" page with `Retry-After: 300`, `no-store` and noindex; the log gets one line per problem every ten minutes. The login screen, AJAX, cron and the command line go on without it. `functions.php` cannot guard its own parse.
+3. The modules load in this order: ce-db, ce-gone, ce-security-detector, ce-lock, ce-security, ce-housekeeping, ce-engagement, ce-seo, ce-schema, ce-journey-assets, ce-journey-template, ce-standalone-faq, ce-aeo, ce-secondary-pages, ce-migration-2-2-0, ce-migration-2-2-74, ce-analytics, ce-parent-compat, ce-fonts, ce-icons, ce-404, ce-media, ce-image-sitemap, ce-media-auto, ce-search-permalinks, ce-social-icons, ce-reading-progress, ce-unlist, ce-plugin-compat, ce-login, ce-rankmath, ce-theme-options, ce-error-pages, class-ce-article-loader, class-ce-feed-redirector, ce-content-sync, ce-quran-text, ce-contextual-links, ce-crosslinks, ce-murtadd-counterparts, ce-glossary, ce-question-cpt.
+4. On `init` (priority 99) the first request of a new version runs the dev-file clean-up and the `.htaccess` sync, each under the lock in `inc/ce-lock.php`. On `admin_init` the content sync and the one-time page and migration modules run.
 
-- `public`: true
-- `has_archive`: true (archive at `/articles/`)
-- `rewrite`: `['slug' => 'articles']`
-- `supports`: title, editor, excerpt, thumbnail, page-attributes
-- `menu_order` used for article ordering within topics
+### File map
 
-### Custom Taxonomy: `ce_topic`
-
-- `hierarchical`: false
-- Attached to: `ce_article` and `post`
-- 11 terms in canonical order (see Article Categories below)
-- Term slugs registered at migration time — do not rename
-
-### Auto-Run Modules
-
-Five modules fire on `admin_init`, each guarded by an option flag:
-
-| File | Option flag | Fires when |
-|---|---|---|
-| `ce-migration-2-2-0.php` | `ce_category_migration_2_2_0` | Flag absent |
-| `ce-content-sync.php` | `ce_content_sync_{version}` | Version changes |
-| `ce-secondary-pages.php` | `ce_secondary_pages_created` | Flag absent |
-| `ce-secondary-pages.php` | `ce_v2_pages_created` | Flag absent |
-| `ce-secondary-pages.php` | `ce_about_v2_updated` | Flag absent (added v2.6.10) |
-
-Content sync key is derived directly from `wp_get_theme()->get('Version')`. Every version bump triggers a fresh sync. Article content in the database is authoritative for display but treated as a cache — the PHP data files are the source of truth.
-
-### Article Data Format
-
-Five PHP files in `inc/`, each returning an array from a getter function. All content uses PHP nowdoc syntax to avoid escaping issues:
-
-```php
-[
-    'slug'    => 'article-slug',
-    'title'   => 'Article Title',
-    'topic'   => 'Does God Exist?',
-    'order'   => 1,
-    'excerpt' => 'Meta description and card text.',
-    'content' => <<<'CE_ARTICLE_1'
-<p class="article-lead">...</p>
-<h2>Section heading</h2>
-<p>Body text.</p>
-CE_ARTICLE_1,
-]
+```
+compelling-evidence/
+├── style.css, functions.php, theme.json, screenshot.png, readme.txt
+├── .htaccess                  Refuses dot entries, theme PHP, tests/bin/tools/doc and Markdown
+├── header.php, footer.php, index.php, page.php, single.php, search.php, 404.php
+├── front-page.php             Home page, one story (doc/ssot.md, section 29)
+├── single-ce_article.php, archive-ce_article.php, archive-ce_topic.php, taxonomy-ce_topic.php
+├── single-ce_question.php, archive-ce_question.php
+├── page-quiz.php, page-journey.php, page-journeys.php, page-progress.php
+├── page-faq.php, page-glossary.php, page-ask-a-question.php
+├── sitemap.xml                Pointer to /wp-sitemap.xml
+├── inc/                       43 modules (load order above)
+├── inc/articles/              batch-001.json to batch-009.json (143 articles), manifest.json
+│                              (SHA-256 per batch), media.json (figure credits), seo.json
+├── inc/data/                  seed-pages.json, network-links.json, murtadd-counterparts.json,
+│                              quiz-murtadd-links.json, standalone-faq.json, seo-titles.json,
+│                              rankmath-legacy-titles.json
+├── template-parts/journey/    document, nav, screen, scripts, v2-preview
+├── journeys/                  quiz.html, data/<14 personas>/ (journey.json, style.css, screens/),
+│                              i18n/en.php, ms-MY/
+├── assets/css, assets/js      One file per concern; journey and quiz files printed by inc/ce-journey-assets.php
+├── assets/fonts/              Self-hosted WOFF2 files and licenses/
+├── assets/images/             Icons, favicons, social marks, calligraphy, diagrams
+├── errors/                    Static 403, 500, 502, 503, 504 pages for a site at the domain root
+├── languages/                 compelling-evidence.pot, ms_MY.po, ms_MY.mo
+├── bin/                       Build scripts (own .htaccess; export-ignored)
+├── tests/                     Self-tests (own .htaccess; export-ignored)
+├── tools/                     Own .htaccess; removed on a live site
+├── doc/                       readme.md, changelog.md, upgrading.md, ssot.md (own .htaccess)
+└── .claude/                   Notes for contributors (export-ignored, refused, removed on a live site)
 ```
 
-Single quotes in excerpts must be escaped as `\'`. Article titles with apostrophes use PHP mixed-quote syntax: `'title' => "It's a title"`.
+### Content model
 
----
+- `ce_article`: public, archive at `/articles/`, supports title, editor, excerpt, thumbnail and page attributes; `menu_order` orders articles within a topic.
+- `ce_topic`: flat taxonomy on `ce_article` and `post`, 11 terms in canonical order (`doc/ssot.md`, section 5). Never rename a slug.
+- `ce_question`: reader questions from Ask a Question, held as pending posts; an answered one gets a QAPage.
+- Articles live in the JSON batches. `inc/ce-content-sync.php` writes them to the database once per version (`ce_content_sync_{version}` option, `ce_content_sync_lock`), so the database copy is a cache and an edit made in WordPress is overwritten by the next sync.
 
-## Article Categories (11 topics, canonical order)
-
-| # | Taxonomy term | Slug | Articles |
+| # | Topic | Slug | Articles |
 |---|---|---|---|
 | 1 | Does God Exist? | `does-god-exist` | 12 |
 | 2 | The Problem of Evil | `the-problem-of-evil` | 9 |
 | 3 | Ethics Without God? | `ethics-without-god` | 5 |
 | 4 | Science & Evidence | `science-evidence` | 11 |
-| 5 | The Quran & Its Sources | `quran-and-sources` | 24 |
-| 6 | History, Context & Comparison | `history-context-comparison` | 12 |
+| 5 | The Quran & Its Sources | `quran-and-sources` | 30 |
+| 6 | History, Context & Comparison | `history-context-comparison` | 15 |
 | 7 | Divine Justice & Fairness | `divine-justice-fairness` | 7 |
 | 8 | Islamic Practice & Ritual | `islamic-practice-ritual` | 8 |
-| 9 | Rights & Freedom | `rights-freedom` | 15 |
+| 9 | Rights & Freedom | `rights-freedom` | 17 |
 | 10 | The Inner Journey | `the-inner-journey` | 17 |
-| 11 | Revelation & Meaning | `revelation-meaning` | 11 |
+| 11 | Revelation & Meaning | `revelation-meaning` | 12 |
 
-**Total: 131 articles** (v2.6.22)
+Total: 143 articles (manifest 2.8.4).
+
+### Run-once modules on `admin_init`
+
+| File | Option flag | Runs when |
+|---|---|---|
+| `ce-content-sync.php` | `ce_content_sync_{version}` | The version changes |
+| `ce-migration-2-2-0.php` | `ce_category_migration_2_2_0` | The flag is absent |
+| `ce-migration-2-2-74.php` | `ce_migration_2_2_74` | The flag is absent |
+| `ce-secondary-pages.php` | `ce_secondary_pages_created`, `ce_v2_pages_created`, `ce_about_v2_updated` | Each flag is absent |
+
+To force a sync without a version bump: Tools & Sync, Run Content Sync Now, or `wp eval 'ce_sync_article_content( true );'`.
+
+---
+
+## Settings
+
+Appearance > CE Theme Options (`themes.php?page=ce-theme-options`), built in `inc/ce-theme-options.php`. Each setting is its own `ce_*` option. Twelve tabs:
+
+| Tab | Holds | Code |
+|---|---|---|
+| General | Hero title and subtitle, the Arabic verse, its number, translation and reference, footer text | `inc/ce-theme-options.php` |
+| Author & Identity | Byline, Person and Organization schema, profiles, footer social icons | `inc/ce-seo.php`, `inc/ce-social-icons.php` |
+| Colors | 7 brand colours as CSS custom properties | `inc/ce-theme-options.php` (front end), `inc/ce-login.php` (login screen) |
+| Typography | Heading, reading and label faces, size scale | `inc/ce-fonts.php` |
+| Links & Tooltips | Crosslinks, links to other sites, murtadd.org counterparts, glossary tooltips, search addresses | `inc/ce-crosslinks.php`, `inc/ce-contextual-links.php`, `inc/ce-murtadd-counterparts.php`, `inc/ce-search-permalinks.php` |
+| Media | Lightbox, automatic Pexels lead images (off, needs a key), image import | `inc/ce-media.php`, `inc/ce-media-auto.php` |
+| Quiz & Journeys | Quiz switch, answers per question, cards per row | `page-quiz.php`, `inc/ce-journey-template.php` |
+| Engagement | Votes, resonance, home search, archive page size, reading progress bar | `inc/ce-engagement.php`, `inc/ce-reading-progress.php` |
+| Analytics | Opt-in tracking, scroll and search events, retention | `inc/ce-analytics.php` |
+| Performance | Parallax, font preloading, the 410 Gone path list | `inc/ce-gone.php` |
+| Security | `ce_sec_xmlrpc_off`, `ce_sec_app_passwords_off`, `ce_sec_rest_lock`, `ce_sec_spam_gate`, `ce_sec_gone`, login screen design, scan and clean-up tools | `inc/ce-security.php`, `inc/ce-login.php` |
+| Tools & Sync | Content sync, batch diagnostics, error pages | `inc/ce-content-sync.php`, `inc/ce-error-pages.php` |
+
+The analytics report sits under CE Analytics in the admin menu.
+
+---
+
+## Hooks, filters and constants
+
+Filters the theme provides:
+
+| Filter | Effect |
+|---|---|
+| `ce_contextual_links_enabled`, `ce_contextual_links_map`, `ce_contextual_links_post_types` | Switch links to other sites off for one post, change the shared phrase map, choose the post types |
+| `ce_dev_paths` | The paths the live-server clean-up removes |
+| `ce_image_sitemap_enabled` | Whether `/image-sitemap.xml` is served (off while an SEO plugin is active) |
+| `ce_login_plugin_active` | Whether a login plugin owns the login screen |
+| `ce_murtadd_base_url` | The murtadd.org base address of the quiz's "You are not alone" links (`page-quiz.php`) |
+| `ce_media_auto_banned_words`, `ce_media_auto_sensitive_words` | Words that keep an automatic image off an article |
+| `ce_rpb_applies` | Whether the reading progress bar shows on a view |
+| `ce_search_reserved_bases` | Words the search base may not take |
+| `ce_sec_rest_allow` | REST route prefixes that may write with non-cookie authentication, for example `/jetpack/` |
+| `ce_sec_sister_themes` | Theme folders that keep the shared xmlrpc.php section, so a switch between them leaves it alone |
+| `ce_unlist_enabled` | False turns the unlist feature off |
+
+`grep -n "add_action\|add_filter" inc/*.php functions.php` lists every hook used.
+
+Constants for `wp-config.php`, each optional:
+
+| Constant | Effect |
+|---|---|
+| `CE_SECURITY_LOCK` | `false` lifts the three Security locks (XML-RPC, application passwords, REST writes) without changing the options |
+| `CE_KEEP_DEV_FILES` | `true` keeps the development files on a live server. A `local` or `development` `WP_ENVIRONMENT_TYPE` keeps them too |
+| `CE_BLOCK_DIRECT_FILES` | `false` leaves the "Compelling Evidence: block direct file access" section out of `.htaccess` |
+| `CE_SPAM_THRESHOLD` | Spam score at which a post is held (default 3) |
+| `CE_TITLE_SITE`, `CE_TITLE_SEP`, `CE_TITLE_MAX` | The title builder's site name, separator and limit (Compelling Evidence, `|`, 59) |
+
+Fixed in code: `CE_SITE_KEY` (`ce`), `CE_ERR_MARKER`, `CE_STATIC_ERRORS` (`compelling-evidence-errors`), `CE_SEC_FILES_MARKER`, `CE_PARENT_TESTED_VERSION` (1.5), `CE_MEDIA_AUTO_PER_RUN` (5) and the `CE_SEC_*` option names.
+
+---
+
+## Security
+
+- Upload guard: see the boot sequence.
+- REST users: visitors who are not logged in get no `/wp/v2/users` routes and no `?author=N` lookup (`ce_sec_hide_user_routes()`, `ce_sec_block_author_query()`).
+- XML-RPC is off while `ce_sec_xmlrpc_off` is on (the default); a correct password sent through it is refused even when it is back on. Application passwords are off, and an authenticated REST write without a valid browser session and nonce is refused (`ce_sec_rest_guard()`). Anonymous requests are left to each route's own permission check.
+- The spam gate holds a post that reads as gambling spam as Pending; seeded content is marked and exempt. Removed spam answers 410 Gone, and `inc/ce-gone.php` answers 410 for the path prefixes listed on the Performance tab.
+- The theme folder's `.htaccess` refuses every dot entry but `.well-known`, every theme PHP file, the `tests`, `bin`, `tools` and `doc` folders, and every Markdown file. It works with mod_rewrite (`RewriteOptions Inherit`), mod_alias, neither (`FilesMatch`), and on Apache 2.4 with `<If>`. `tests/`, `bin/`, `tools/` and `doc/` carry their own deny file.
+- The live-server clean-up (`inc/ce-housekeeping.php`) removes `.claude`, `tests`, `bin`, `tools`, `doc` and every entry that starts with `.git` on activation, on the first admin page and on the first front-end request of a version, under a lock it renews while it works.
+
+### Root .htaccess sections
+
+On Apache the theme keeps two sections in the site's `.htaccess` through `insert_with_markers()`, synced on the first request of a version and from the admin. A theme switch removes both. When the switch finds another request holding the lock, the removal waits for that request, which takes out the direct-file section and keeps the shared xmlrpc.php section if the new theme is one that writes the same block (`ce_sec_sister_themes`).
+
+```
+# BEGIN Block xmlrpc.php
+<Files xmlrpc.php>
+<IfModule mod_authz_core.c>
+Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+Order Deny,Allow
+Deny from all
+</IfModule>
+</Files>
+# END Block xmlrpc.php
+```
+
+It follows the XML-RPC switch. The marker is shared, so a switch to another theme that writes the same block (`ce_sec_sister_themes`) never writes it twice.
+
+The direct-file section, for a site at the domain root with WordPress in the same folder:
+
+```
+# BEGIN Compelling Evidence: block direct file access
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule (^|/)\.(git|claude) - [F]
+RewriteRule ^wp-content/themes/compelling-evidence/(tests|bin|tools|doc)(/|$) - [F]
+RewriteRule ^wp-includes/(?!(js/tinymce/wp-tinymce|ms-files)\.php$).+\.php(/|$) - [F]
+RewriteRule ^wp-admin/includes/.+\.php(/|$) - [F]
+RewriteRule ^(wp-config\.php|wp-settings\.php|wp-config-sample\.php|wp-admin/install\.php|readme\.html)(/|$) - [F]
+RewriteRule ^wp-content/themes/.+\.php(/|$) - [F]
+</IfModule>
+# END Compelling Evidence: block direct file access
+```
+
+The rules carry the site's own folder prefixes, and add a `wp-config.php` rule for the folder above WordPress when WordPress sits in a subfolder. When `wp-config.php` sits above a folder the rules cannot reach, the Security tab says so.
+
+### Nginx
+
+Nginx ignores `.htaccess`, so neither section is written and the theme folder's file does nothing. The locks, the upload guard and the clean-up still work in PHP. Add the equivalents to the server block, ahead of the `location ~ \.php$` block:
+
+```
+location ~ /\.(?!well-known/) { deny all; }
+location = /xmlrpc.php { deny all; }
+location ~ ^/wp-content/themes/compelling-evidence/(tests|bin|tools|doc)/ { deny all; }
+location ~* ^/wp-content/themes/compelling-evidence/.+\.md$ { deny all; }
+location ~ ^/wp-includes/(?!(js/tinymce/wp-tinymce|ms-files)\.php$).+\.php { deny all; }
+location ~ ^/wp-admin/includes/.+\.php { deny all; }
+location ~ (^|/)wp-config\.php$ { deny all; }
+location ~ ^/(wp-settings|wp-config-sample)\.php { deny all; }
+location ~ ^/(wp-admin/install\.php|readme\.html) { deny all; }
+location ~ ^/wp-content/themes/.+\.php { deny all; }
+error_page 403 /wp-content/compelling-evidence-errors/403.html;
+error_page 500 /wp-content/compelling-evidence-errors/500.html;
+error_page 502 /wp-content/compelling-evidence-errors/502.html;
+error_page 503 /wp-content/compelling-evidence-errors/503.html;
+error_page 504 /wp-content/compelling-evidence-errors/504.html;
+```
+
+Nginx serves `error_page` for PHP's own 500 and 503 answers only with `fastcgi_intercept_errors on;` in the FastCGI location; without it those answers reach visitors as PHP sent them. Jetpack needs XML-RPC: leave out the `xmlrpc.php` line and also switch "Turn off XML-RPC" off on the Security tab, since the theme refuses XML-RPC in PHP too. Where the client logs in to XML-RPC, with a password or any other credential, switch the REST lock off as well, since `ce_sec_refuse_remote_password()` refuses every XML-RPC login while either switch is on. These rules do not follow the Security switches or `CE_SECURITY_LOCK`: to let XML-RPC through, take the `xmlrpc.php` line out by hand as well. The `wp-config.php` rule matches at any depth, so it also covers a `wp-config.php` in the folder above a WordPress that lives in a subfolder. Prefix the other paths when WordPress lives in a subfolder.
+
+---
+
+## Error pages
+
+WordPress reads three files from `wp-content` when it cannot build a page. The theme writes them on activation, again on an administrator's next admin page when one is missing or outdated, and at once with Install error pages on Tools & Sync, which shows each as not installed, installed, outdated, left behind by another theme or another file left alone. A copy another theme left behind (marked "Written by the ... theme; safe to delete") is replaced; a file without such a mark is never overwritten. On a single site, a theme switch deletes the files that carry the theme's marker, `Compelling Evidence error page drop-in`; on a network they stay (see Multisite).
+
+| File | Shown when | Status |
+|---|---|---|
+| `maintenance.php` | WordPress is updating | 503, `Retry-After: 600` |
+| `php-error.php` | a fatal PHP error | 500 |
+| `db-error.php` | the database cannot be reached | 503, `Retry-After: 600` |
+
+Static 403, 500, 502, 503 and 504 pages cover the errors the web server answers before WordPress starts. The theme writes a copy of each into `wp-content/compelling-evidence-errors/` with the site's name and home address, at the same times as the drop-ins, so the home link works when WordPress sits in a subfolder. `errors/` holds the copies for a site at the domain root; rebuild them with `php bin/build-error-pages.php`. Tools & Sync gives the lines for the site; at the domain root:
+
+```
+ErrorDocument 403 /wp-content/compelling-evidence-errors/403.html
+ErrorDocument 500 /wp-content/compelling-evidence-errors/500.html
+ErrorDocument 502 /wp-content/compelling-evidence-errors/502.html
+ErrorDocument 503 /wp-content/compelling-evidence-errors/503.html
+ErrorDocument 504 /wp-content/compelling-evidence-errors/504.html
+```
+
+Remove the `ErrorDocument` lines when you move to another theme.
+
+## Multisite
+
+Settings, articles, analytics and the Security records are per site. On a network:
+
+- Only the main site writes the drop-ins and the static copies, which every site shares, so they carry the main site's name and address. A subsite's Tools & Sync says so. A theme switch never removes them, since another site may still use the theme.
+- The lock in `inc/ce-lock.php` lives in the main site's options table, so every site that runs the theme shares one lock.
+- The root `.htaccess` is one file. A theme switch on any site removes the sections (the xmlrpc.php one can stay, as described under Root .htaccess sections) until another site's next sync writes them back.
+
+---
+
+## SEO and structured data
+
+- `inc/ce-seo.php` writes the meta description, canonical, Open Graph and Twitter tags and the title (`<page> | Compelling Evidence`, under 60 characters, checked by `tests/title-builder-test.php`). `inc/data/seo-titles.json` holds the short titles.
+- `inc/ce-schema.php` builds one JSON-LD graph per page: the page frame, Article, FAQPage (the site FAQ, each journey and the quiz, each with a visible FAQ from `inc/data/standalone-faq.json`), Quiz, LearningResource, QAPage, ItemList, ImageObject and Quotation nodes. `tests/schema-graph-test.php` checks 189 graphs. With Rank Math active the nodes join Rank Math's graph (`inc/ce-rankmath.php`).
+- The author in the structured data is fixed in `inc/ce-seo.php`, whatever the byline field holds.
+- `class-ce-feed-redirector.php` removes feed links and sends feed addresses to the matching page. `/image-sitemap.xml` lists article images while no SEO plugin is active.
+
+## Performance
+
+### Asset Loading Strategy
+
+| Asset | Condition | Size |
+|---|---|---|
+| `main.css` | All pages | 60.5 KiB |
+| `templates.css` | Non-front-page only | 42.4 KiB |
+| `ce-engagement.css` | `is_singular('ce_article')` only | |
+| `glossary-tooltip.css` + `.js` | Singular article, post or answered question (`ce_ctx_post_types()`) | |
+| `print.css` | All pages, media="print" | 5 KiB |
+| `journey.css` + `journey.js` | Journey pages, printed by `page-journey.php` | 12.8 + 19.1 KiB |
+| `journey-base.css` | Journey pages, last in the head | 2.1 KiB |
+| `quiz.css` + `quiz.js` | Quiz page, printed by `page-quiz.php` | 15.0 + 12.4 KiB |
+
+A journey page is built by `inc/ce-journey-template.php` from `journeys/data/<key>/` and the parts in `template-parts/journey/`; the template writes the same markers. The journey and quiz pages never call `wp_head()`, so `inc/ce-journey-assets.php` registers these files and prints them with `wp_print_styles()` and `wp_print_scripts()` where the HTML has a `<!-- ce:journey-css -->`, `<!-- ce:journey-js -->`, `<!-- ce:quiz-css -->` or `<!-- ce:quiz-js -->` marker. Each file's version is its modification time.
+
+### Font Preloading
+
+On front page only, two Arabic fonts are preloaded in `header.php`:
+- `kfgqpc-hafs-uthmanic-script.woff2` (105 KiB, a woff2 conversion of the original TTF, served by the owner's decision although its licence forbids modification; see `doc/ssot.md`), the LCP element font
+- `ce-hadith-400.woff2` (69 KiB)
+
+### Cache Strategy
+
+`Cache-Control: public, max-age=31536000, immutable` set via `send_headers` and `wp_headers` hooks for fonts and versioned CSS/JS. 30-day cache for images.
 
 ---
 
@@ -218,35 +345,6 @@ Single quotes in excerpts must be escaped as `\'`. Article titles with apostroph
 
 ---
 
-## Performance Architecture
-
-### Asset Loading Strategy
-
-| Asset | Condition | Size |
-|---|---|---|
-| `main.css` | All pages | 60.5 KiB |
-| `templates.css` | Non-front-page only | 42.4 KiB |
-| `ce-engagement.css` | `is_singular('ce_article')` only | — |
-| `glossary-tooltip.css` + `.js` | Singular article, post or answered question (`ce_ctx_post_types()`) | — |
-| `print.css` | All pages, media="print" | 5 KiB |
-| `journey.css` + `journey.js` | Journey pages, printed by `page-journey.php` | 12.8 + 19.1 KiB |
-| `journey-base.css` | Journey pages, last in the head | 2.1 KiB |
-| `quiz.css` + `quiz.js` | Quiz page, printed by `page-quiz.php` | 15.0 + 12.4 KiB |
-
-A journey page is built by `inc/ce-journey-template.php` from `journeys/data/<key>/` and the parts in `template-parts/journey/`; the template writes the same markers. The journey and quiz pages never call `wp_head()`, so `inc/ce-journey-assets.php` registers these files and prints them with `wp_print_styles()` and `wp_print_scripts()` where the HTML has a `<!-- ce:journey-css -->`, `<!-- ce:journey-js -->`, `<!-- ce:quiz-css -->` or `<!-- ce:quiz-js -->` marker. Each file's version is its modification time.
-
-### Font Preloading
-
-On front page only, two Arabic fonts are preloaded in `header.php`:
-- `kfgqpc-hafs-uthmanic-script.woff2` (105 KiB, a woff2 conversion of the original TTF, served by the owner's decision although its licence forbids modification; see `doc/ssot.md`) — LCP element font
-- `ce-hadith-400.woff2` (69 KiB)
-
-### Cache Strategy
-
-`Cache-Control: public, max-age=31536000, immutable` set via `send_headers` and `wp_headers` hooks for fonts and versioned CSS/JS. 30-day cache for images.
-
----
-
 ## Design System
 
 ### Colour Palette (CSS custom properties in `main.css :root`)
@@ -256,53 +354,13 @@ On front page only, two Arabic fonts are preloaded in `header.php`:
 --dark-2:  #1a0f38   /* Mid background */
 --dark-3:  #120b2e   /* Card/surface background */
 --light:   #f2eeff   /* Primary text */
---teal:    #0cd4e0   /* Accent — links, highlights */
+--teal:    #0cd4e0   /* Accent: links, highlights */
 --gold:    #f5c518   /* Conclusion screens only */
---purple:  #6b2fa0   /* Accent — secondary */
+--purple:  #6b2fa0   /* Accent: secondary */
 --muted:   rgba(245,240,255,0.68)  /* Secondary text */
 ```
 
 All 7 are overridable via Theme Options > Colors (injected as inline CSS at `wp_head`).
-
----
-
-## Error pages
-
-WordPress reads three files from `wp-content` when it cannot build a page. The theme writes them on activation (`after_switch_theme`), again on an administrator's next admin page when a file is missing or outdated (`admin_init`, `edit_theme_options`), and at once with **Install error pages** on CE Theme Options > Tools & Sync, which shows each as not installed, installed, outdated, left behind by another theme or another file left alone. A copy another theme left behind (marked "Written by the ... theme; safe to delete") is replaced. A file without such a mark is never overwritten. When another theme is activated (`switch_theme`), the theme deletes the files that carry its own marker, `Compelling Evidence error page drop-in`, except on a network, where `wp-content` is shared and another site may still use the theme, so the files stay.
-
-| File | Shown when | Status sent |
-|---|---|---|
-| `maintenance.php` | WordPress is updating | 503, `Retry-After: 600` |
-| `php-error.php` | a fatal PHP error | 500 |
-| `db-error.php` | the database cannot be reached | 503, `Retry-After: 600` |
-
-Static 403, 500, 502, 503 and 504 pages cover the errors the web server answers before WordPress starts. The theme writes a copy of each into `wp-content/compelling-evidence-errors/` with the site's own name and home address, at the same times as the drop-ins, so the home link works when WordPress sits in a subfolder. It removes them when another theme is activated, except on a network, where `wp-content` is shared and another site may still use the theme. On a network only the main site writes them, so they carry the main site's name and home address; one `.htaccess` serves every site. Remove the `ErrorDocument` lines when you move to another theme. Tools & Sync gives the `.htaccess` lines for the site; at the domain root they read:
-
-```
-ErrorDocument 403 /wp-content/compelling-evidence-errors/403.html
-ErrorDocument 500 /wp-content/compelling-evidence-errors/500.html
-ErrorDocument 502 /wp-content/compelling-evidence-errors/502.html
-ErrorDocument 503 /wp-content/compelling-evidence-errors/503.html
-ErrorDocument 504 /wp-content/compelling-evidence-errors/504.html
-```
-
-`errors/` in the theme holds the copies for a site at the domain root. Rebuild them with `php bin/build-error-pages.php` after changing `inc/ce-error-page-html.php`.
-
-## Theme Options Reference
-
-**Appearance > CE Theme Options** — 8 tabs:
-
-| Tab | Settings |
-|---|---|
-| General | Hero title, subtitle, Arabic verse, translation, footer text |
-| Colors | 7 color pickers (accent, teal, purple, gold, backgrounds) |
-| Typography | Heading font, reading font, label and eyebrow font, font scale |
-| Links & Tooltips | Crosslinks, sister-site links, extra phrases, excluded pages, glossary tooltips, search URLs |
-| Quiz & Journeys | Quiz enable/disable, max selections, progress badges |
-| Author & Identity | Byline, Person and Organization schema, site profiles, social icons (footer switch and profile URLs) |
-| Engagement | Voting, resonance, crosslinks, search toggles, reading progress bar (on/off, colour, height, position, post types) |
-| Analytics | Tracking enable/disable, retention days |
-| Performance | Parallax, font preloading, minification |
 
 ---
 
@@ -316,20 +374,3 @@ msgfmt languages/ms_MY.po -o languages/ms_MY.mo
 ```
 
 Journey translations: copy `journeys/data/[slug]/` to `journeys/ms-MY/data/[slug]/` and translate the text in `journey.json` and `screens/`, then copy `journeys/i18n/en.php` to `journeys/i18n/ms-MY.php` and translate the values. A hand-made `journeys/ms-MY/[slug]-journey.html` still works where no data folder exists. `page-journey.php` and `page-quiz.php` handle locale detection and fallback to English.
-
----
-
-## Documentation Files
-
-All theme documentation is located in `/doc/`:
-
-- `doc/readme.md` — Theme overview and quick start
-- `doc/changelog.md` — Version history and release notes
-- `doc/upgrading.md` — This file (migration instructions)
-- `doc/ssot.md` — Single Source of Truth (naming conventions, system design)
-
-The `readme.txt` file remains in the theme root for WordPress.org compliance.
-
----
-
-*Last updated: October 2026 (v2.6.43)*
