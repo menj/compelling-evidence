@@ -24,7 +24,7 @@ function wp_specialchars_decode( $s ) { return $s; }
 function wp_parse_url( $u, $c = -1 ) { return parse_url( $u, $c ); }
 function home_url( $p = '' ) { return $GLOBALS['err_home'] . $p; }
 $GLOBALS['err_home'] = 'https://example.test';
-function content_url( $p = '' ) { return 'https://example.test/wp-content' . $p; }
+function content_url( $p = '' ) { return $GLOBALS['err_home'] . '/wp-content' . $p; }
 function wp_mkdir_p( $d ) { return is_dir( $d ) || mkdir( $d, 0700, true ); }
 function untrailingslashit( $s ) { return rtrim( $s, '/' ); }
 function get_stylesheet_directory_uri() { return 'https://example.test/wp-content/themes/compelling-evidence'; }
@@ -97,7 +97,7 @@ $GLOBALS['err_home'] = 'https://example.test/blog';
 err_check( 'outdated' === ce_error_state( $err_st ) && ce_error_needs_install(), 'a subfolder home makes the static copies outdated' );
 ce_error_maybe_install();
 err_check( false !== strpos( (string) file_get_contents( "$err_tmp/$err_st" ), 'href="/blog/"' ), 'a subfolder install gets its own home link' );
-err_check( false !== strpos( ce_error_htaccess_snippet(), 'ErrorDocument 503 /wp-content/compelling-evidence-errors/503.html' ) && false !== strpos( ce_error_htaccess_snippet(), 'ErrorDocument 504 /wp-content/compelling-evidence-errors/504.html' ), '.htaccess lines point at the site copies' );
+err_check( false !== strpos( ce_error_htaccess_snippet(), 'ErrorDocument 503 /blog/wp-content/compelling-evidence-errors/503.html' ) && false !== strpos( ce_error_htaccess_snippet(), 'ErrorDocument 504 /blog/wp-content/compelling-evidence-errors/504.html' ), '.htaccess lines point at the site copies under the subfolder' );
 file_put_contents( "$err_tmp/compelling-evidence-errors/500.html", "<p>own</p>\n" );
 err_check( 'kept' === ce_error_install()['compelling-evidence-errors/500.html'], 'a static page the theme did not write is kept' );
 ce_error_remove();
@@ -105,6 +105,9 @@ err_check( 'missing' === ce_error_state( $err_st ) && file_exists( "$err_tmp/com
 unlink( "$err_tmp/compelling-evidence-errors/500.html" );
 rmdir( "$err_tmp/compelling-evidence-errors" );
 err_check( 'missing' === ce_error_state( 'maintenance.php' ) && 'missing' === ce_error_state( 'php-error.php' ) && "<?php // Somebody else's page\n" === file_get_contents( "$err_tmp/db-error.php" ), 'switching away removes only the theme\'s own files' );
+file_put_contents( "$err_tmp/maintenance.php", "<?php // someone else's, written after the check\n" );
+err_check( false === @link( __FILE__, "$err_tmp/maintenance.php" ), 'a hard link never replaces a file that exists' );
+unlink( "$err_tmp/maintenance.php" );
 foreach ( glob( "$err_tmp/*.tmp" ) as $err_left ) {
 	err_check( false, "temporary file left: $err_left" );
 }

@@ -276,7 +276,7 @@ WordPress reads three files from `wp-content` when it cannot build a page. The t
 | `php-error.php` | a fatal PHP error | 500 |
 | `db-error.php` | the database cannot be reached | 503, `Retry-After: 600` |
 
-Static 403, 500, 502, 503 and 504 pages cover the errors the web server answers before WordPress starts. The theme writes a copy of each into `wp-content/compelling-evidence-errors/` with the site's own name and home address, at the same times as the drop-ins, so the home link works when WordPress sits in a subfolder. It removes them when another theme is activated. Tools & Sync gives the `.htaccess` lines for the site; at the domain root they read:
+Static 403, 500, 502, 503 and 504 pages cover the errors the web server answers before WordPress starts. The theme writes a copy of each into `wp-content/compelling-evidence-errors/` with the site's own name and home address, at the same times as the drop-ins, so the home link works when WordPress sits in a subfolder. It removes them when another theme is activated, except on a network, where `wp-content` is shared and another site may still use the theme. On a network only the main site writes them, so they carry the main site's name and home address; one `.htaccess` serves every site. Remove the `ErrorDocument` lines when you move to another theme. Tools & Sync gives the `.htaccess` lines for the site; at the domain root they read:
 
 ```
 ErrorDocument 403 /wp-content/compelling-evidence-errors/403.html

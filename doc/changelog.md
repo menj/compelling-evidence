@@ -14,8 +14,12 @@ No feature removed and no public identifier renamed.
 - `CLAUDE.md` and `FARUQI.md` moved from the theme root to `.claude/CLAUDE.md` and `.claude/FARUQI.md`. `.gitattributes` export-ignores `/.claude` in place of the `CLAUDE.md` line, so `FARUQI.md`, which had no entry, no longer ships in `git archive` zips either.
 - The static 403, 500, 502, 503 and 504 pages now work when WordPress is installed in a subfolder. `ce_error_install()` also writes a copy of each into `wp-content/compelling-evidence-errors/` with the site's name and home address (`ce_error_static_files()`, `ce_error_file_source()`); the automatic install, the admin check, the status table and `ce_error_remove()` cover them like the drop-ins. `ce_error_htaccess_snippet()` points at that folder. `errors/` stays as the copy for a site at the domain root.
 
+### Fixed
+- `ce_error_install()` puts a new file in place with a hard link, which fails when a file has appeared since the check, and checks an existing file again just before the swap, so a file someone else wrote in the meantime is never replaced.
+- `doc/ssot.md` said the drop-ins were written only from the button; since 2.18.3 they are also written on activation and on an administrator's visit. `doc/readme.md` says what happens on a network.
+
 ### Added
-- `tests/error-pages-test.php` covers the static copies: written, refreshed for a subfolder home, a foreign file kept, removed on switch.
+- `tests/error-pages-test.php` covers the static copies: written, refreshed for a subfolder home with the `.htaccess` lines under `/blog/`, a foreign file kept, removed on switch.
 
 ## [2.18.3] - November 2026
 
