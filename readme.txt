@@ -6,8 +6,8 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.18.11
-Stable tag: 2.18.11
+Version: 2.18.12
+Stable tag: 2.18.12
 License: GNU General Public License v3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Template: twentytwentyfive
@@ -78,7 +78,7 @@ Upload the new zip under Appearance > Themes > Add New > Upload Theme and choose
 = Updating by FTP =
 
 1. Turn on hidden files in your FTP program. The theme carries files whose names begin with a dot, such as .htaccess, which keep its private files closed to visitors. In FileZilla: Server > Force showing hidden files.
-2. Upload the new compelling-evidence folder next to the old one under a temporary name, such as wp-content/themes/compelling-evidence-new. Send its .htaccess files first: the one at the top of the folder, then those in doc and tools, and those in bin and tests when your copy has them. On Apache they close the theme's private files to visitors while the rest arrives. Wait until every file has arrived.
+2. Upload the new compelling-evidence folder next to the old one under a temporary name, such as wp-content/themes/compelling-evidence-new. Send its .htaccess files first: the one at the top of the folder, then those in doc and tools, and those in bin and tests when your copy has them. On Apache they close the theme's private files to visitors while the rest arrives. On Nginx, which ignores them, add the server rules in doc/readme.md before the first FTP update. Wait until every file has arrived.
 3. Rename the old folder to compelling-evidence-old and, straight after, rename compelling-evidence-new to compelling-evidence. Between the two renames the site has no theme folder and its pages may fail for that moment, so do them one after the other and keep the admin closed until both are done.
 4. Load any admin page, check the site, then delete compelling-evidence-old.
 
@@ -155,6 +155,9 @@ CE Theme, Copyright 2026 MENJ. Licensed under the GNU GPL, version 3 or later; t
 * Article figures are not bundled. inc/articles/media.json lists each with its source page, creator and licence, and the credit prints under the figure.
 
 == Changelog ==
+
+= 2.18.12 - November 2026 =
+* The Nginx rules in the technical notes also cover the temporary folders of an FTP update, and the FTP steps say to add them first.
 
 = 2.18.11 - November 2026 =
 * The FTP update steps send the theme's .htaccess files first, so its private files stay closed while the rest uploads.
@@ -592,6 +595,9 @@ Uthmani Quran font replaced with KFGQPC HAFS version (608 glyphs). CE Hadith add
 For the full version history see doc/changelog.md in the theme zip.
 
 == Upgrade Notice ==
+
+= 2.18.12 =
+Documentation only. On Nginx, update the theme lines in the server block from doc/readme.md. As with every version, the first admin page rewrites the articles from the theme's files, so copy any edit made in WordPress into the theme's article files first.
 
 = 2.18.11 =
 Documentation only. As with every version, the first admin page rewrites the articles from the theme's files and trashes any published article the theme does not ship, so copy any edit made in WordPress into the theme's article files first.

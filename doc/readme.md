@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Version | 2.18.11 |
+| Version | 2.18.12 |
 | Licence | GNU GPL v3 or later; the full text is in `LICENSE` |
 | Parent | Twenty Twenty-Five, tested with 1.5 (`CE_PARENT_TESTED_VERSION`) |
 | Requires | WordPress 6.7 (tested to 7.1), PHP 8.0 (tested to 8.4) |
@@ -37,7 +37,7 @@ php bin/build-error-pages.php                        # rebuild errors/*.html fro
 node bin/quiz-sim.js                                 # quiz scoring simulation
 python3 bin/build-murtadd-counterparts.py            # rebuild inc/data/murtadd-counterparts.json
 python3 bin/build-quiz-murtadd-links.py              # rebuild inc/data/quiz-murtadd-links.json
-git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.11.zip v2.18.11   # after the release is committed and tagged
+git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.12.zip v2.18.12   # after the release is committed and tagged
 ```
 
 Every PHP script in `tests/` and `bin/` exits unless it runs from the command line. `.gitattributes` keeps `.gitattributes`, `.gitignore`, `.claude/`, `phpcs.xml.dist`, `bin/` and `tests/` out of the zip; `doc/` and `tools/` ship, and the live-server clean-up removes them.
@@ -238,8 +238,8 @@ Nginx ignores `.htaccess`, so neither section is written and the theme folder's 
 ```
 location ~ /\.(?!well-known/) { deny all; }
 location = /xmlrpc.php { deny all; }
-location ~ ^/wp-content/themes/compelling-evidence/(tests|bin|tools|doc)/ { deny all; }
-location ~* ^/wp-content/themes/compelling-evidence/.+\.md$ { deny all; }
+location ~ ^/wp-content/themes/compelling-evidence[^/]*/(tests|bin|tools|doc)/ { deny all; }
+location ~* ^/wp-content/themes/compelling-evidence[^/]*/.+\.md$ { deny all; }
 location ~ ^/wp-includes/(?!(js/tinymce/wp-tinymce|ms-files)\.php$).+\.php { deny all; }
 location ~ ^/wp-admin/includes/.+\.php { deny all; }
 location ~ (^|/)wp-config\.php$ { deny all; }
@@ -252,6 +252,8 @@ error_page 502 /wp-content/compelling-evidence-errors/502.html;
 error_page 503 /wp-content/compelling-evidence-errors/503.html;
 error_page 504 /wp-content/compelling-evidence-errors/504.html;
 ```
+
+The `compelling-evidence[^/]*` in the theme lines also covers the `compelling-evidence-new` and `compelling-evidence-old` folders of an FTP update, so add these rules before the first one.
 
 Nginx serves `error_page` for PHP's own 500 and 503 answers only with `fastcgi_intercept_errors on;` in the FastCGI location; without it those answers reach visitors as PHP sent them. Jetpack needs XML-RPC: leave out the `xmlrpc.php` line and also switch "Turn off XML-RPC" off on the Security tab, since the theme refuses XML-RPC in PHP too. Where the client logs in to XML-RPC, with a password or any other credential, switch the REST lock off as well, since `ce_sec_refuse_remote_password()` refuses every XML-RPC login while either switch is on. These rules do not follow the Security switches or `CE_SECURITY_LOCK`: to let XML-RPC through, take the `xmlrpc.php` line out by hand as well. The `wp-config.php` rule matches at any depth, so it also covers a `wp-config.php` in the folder above a WordPress that lives in a subfolder. Prefix the other paths when WordPress lives in a subfolder.
 

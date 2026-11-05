@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.18.12] - November 2026
+
+Documentation only. No code, setting or public identifier changes.
+
+### Changed
+- The Nginx theme lines in `doc/readme.md` match `compelling-evidence[^/]*`, so they also refuse the private paths of the `-new` and `-old` folders during an FTP update.
+- The FTP update steps in `readme.txt` and `doc/upgrading.md` tell Nginx sites to add those rules before the first FTP update.
+- `.claude/skills/theme-docs/SKILL.md` says to do the two renames straight after each other with the admin closed.
+
 ## [2.18.11] - November 2026
 
 Documentation only. No code, setting or public identifier changes.
