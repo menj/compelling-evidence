@@ -63,6 +63,7 @@ check( [ [ 'Ibn Kathīr, Tafsīr, 3:128. shamela', 'https://shamela.ws/book/8473
 $cites = ce_anatomy_reference_citations( $content );
 check( 2 === count( $cites ) && 'https://shamela.ws/book/8473/1393' === $cites[0]['url'] && ! isset( $cites[1]['url'] ), 'Sources become CreativeWork citations' );
 check( [] === ce_anatomy_references( '<h2>Notes</h2><ul><li>x</li></ul>' ), 'no Sources heading: no references' );
+check( 1 === count( ce_anatomy_references( "<!-- wp:heading -->\n<h2>Sources</h2>\n<!-- /wp:heading -->\n<!-- wp:list -->\n<ul><li>A, <em>B</em>.</li></ul>\n<!-- /wp:list -->" ) ), 'a Sources list in block markup is read' );
 
 $post               = new WP_Post();
 $post->post_content = $content;

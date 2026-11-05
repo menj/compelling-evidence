@@ -194,6 +194,8 @@ function ce_anatomy_passages( $content ) {
  * @return array List of array( text, url ).
  */
 function ce_anatomy_references( $content ) {
+    // Block comments sit between the heading and the list in editor markup.
+    $content = (string) preg_replace( '#<!--.*?-->#s', '', (string) $content );
     if ( ! preg_match( '#<h2[^>]*>\s*Sources\s*</h2>\s*<(ul|ol)[^>]*>(.*?)</\1>#is', (string) $content, $list ) ) {
         return [];
     }
@@ -217,7 +219,7 @@ function ce_anatomy_references( $content ) {
  * @return bool
  */
 function ce_anatomy_has_own_sources( $content ) {
-    return (bool) preg_match( '#<h2[^>]*>\s*Sources\s*</h2>#i', (string) $content );
+    return (bool) preg_match( '#<h2[^>]*>\s*Sources\s*</h2>#i', (string) preg_replace( '#<!--.*?-->#s', '', (string) $content ) );
 }
 
 /**
@@ -260,13 +262,15 @@ function ce_anatomy_passage_ids( $content ) {
     $page = max( 1, (int) get_query_var( 'page' ) );
     if ( $page > 1 ) {
         $before = array_slice( explode( '<!--nextpage-->', (string) $post->post_content ), 0, $page - 1 );
-        $n      = (int) preg_match_all( '#<div class="(?:quran|hadith)-citation"#', implode( '', $before ) );
+        $n      = (int) preg_match_all( '#<div class="(?:quran|hadith)-citation"[^>]*>#', implode( '', $before ) );
     }
     return (string) preg_replace_callback(
-        '#<div class="(quran|hadith)-citation">#',
+        '#<div class="(quran|hadith)-citation"([^>]*)>#',
         static function ( $m ) use ( &$n ) {
             ++$n;
-            return '<div class="' . $m[1] . '-citation" id="passage-' . $n . '">';
+            // The card's other attributes stay; one that already has an id is replaced by the passage id.
+            $rest = (string) preg_replace( '/\s+id\s*=\s*("[^"]*"|\'[^\']*\')/i', '', (string) $m[2] );
+            return '<div class="' . $m[1] . '-citation" id="passage-' . $n . '"' . $rest . '>';
         },
         (string) $content
     );
