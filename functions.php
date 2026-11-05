@@ -44,7 +44,8 @@ function ce_incomplete_theme( $what, $all = false ) {
 }
 
 // Every file loaded below, read from this file itself so the list cannot
-// drift from the requires. Each must be readable before any loads.
+// drift from the requires: each is loaded unconditionally, and each must be
+// readable before any loads.
 $ce_theme_files = preg_match_all( "#get_stylesheet_directory\\(\\) \\. '(/inc/[a-z0-9-]+\\.php)'#", (string) file_get_contents( __FILE__ ), $ce_theme_m ) ? array_unique( $ce_theme_m[1] ) : array(); // phpcs:ignore WordPress.WP.AlternativeFunctions
 foreach ( $ce_theme_files as $ce_theme_file ) {
     if ( ! is_readable( get_stylesheet_directory() . $ce_theme_file ) ) {
@@ -60,18 +61,12 @@ require_once get_stylesheet_directory() . '/inc/ce-gone.php';
 
 // ── SECURITY (remote-publishing lock, spam gate, clean-up; Security tab) ─────
 require_once get_stylesheet_directory() . '/inc/ce-security-detector.php';
-// The cross-request lock (2.18.7). Loaded only once it exists, so an FTP
-// upload that sends functions.php first does not fail on it; its callers
-// wait for it.
-if ( is_readable( get_stylesheet_directory() . '/inc/ce-lock.php' ) ) {
-    require_once get_stylesheet_directory() . '/inc/ce-lock.php';
-}
+// The cross-request lock (2.18.7). The upload guard above waits for it like
+// every other file.
+require_once get_stylesheet_directory() . '/inc/ce-lock.php';
 require_once get_stylesheet_directory() . '/inc/ce-security.php';
-// Loaded only once it exists, so an FTP upload that sends functions.php first
-// does not fail on it.
-if ( is_readable( get_stylesheet_directory() . '/inc/ce-housekeeping.php' ) ) {
-    require_once get_stylesheet_directory() . '/inc/ce-housekeeping.php';
-}
+// The production cleanup of the development files (2.18.6).
+require_once get_stylesheet_directory() . '/inc/ce-housekeeping.php';
 require_once get_stylesheet_directory() . '/inc/ce-engagement.php';
 
 // ── SEO & SCHEMA MARKUP (JSON-LD, OG tags, print CSS) ───────────────────────
