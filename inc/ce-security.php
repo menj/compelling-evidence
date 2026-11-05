@@ -263,7 +263,7 @@ function ce_sec_sync_htaccess( $force = false ) {
 		if ( '' === $token && 0 === $rounds ) {
 			// Another request is writing: leave the note it reads after it
 			// lets go, then try once more, in case it already has.
-			update_option( 'ce_sec_htaccess_dirty', time(), false );
+			ce_sec_note( 'ce_sec_htaccess_dirty', true );
 			$token = ce_sec_htaccess_lock();
 		}
 		if ( '' === $token ) {
@@ -272,7 +272,7 @@ function ce_sec_sync_htaccess( $force = false ) {
 		}
 		$writes = 0;
 		do {
-			delete_option( 'ce_sec_htaccess_dirty' );
+			ce_sec_note( 'ce_sec_htaccess_dirty', false );
 			// Another request may have changed the settings since this one
 			// read them: read them afresh before each write.
 			wp_cache_delete( 'alloptions', 'options' );
@@ -285,8 +285,8 @@ function ce_sec_sync_htaccess( $force = false ) {
 		// This theme's own section always goes. The "Block xmlrpc.php" one is
 		// shared with the sister themes: it stays when the theme switched to
 		// is one of them, which keeps it, and goes when it is not.
-		if ( '' !== ce_sec_option_raw( 'ce_sec_htaccess_remove' ) ) {
-			delete_option( 'ce_sec_htaccess_remove' );
+		if ( ce_sec_note( 'ce_sec_htaccess_remove' ) ) {
+			ce_sec_note( 'ce_sec_htaccess_remove', false );
 			$file = ce_sec_htaccess_file();
 			if ( '' !== $file ) {
 				insert_with_markers( $file, CE_SEC_FILES_MARKER, array() );
@@ -301,7 +301,7 @@ function ce_sec_sync_htaccess( $force = false ) {
 		++$rounds;
 		// A note left between the last check and the release is taken up
 		// here, by this request or by whichever one now holds the lock.
-	} while ( $rounds < 3 && ( ce_sec_htaccess_dirty() || '' !== ce_sec_option_raw( 'ce_sec_htaccess_remove' ) ) );
+	} while ( $rounds < 3 && ( ce_sec_htaccess_dirty() || ce_sec_note( 'ce_sec_htaccess_remove' ) ) );
 	// Three rounds and still a note: the next admin page load or request of
 	// a new version writes again, since the note stays until it is read.
 
@@ -333,12 +333,25 @@ function ce_sec_htaccess_lock() {
 
 /**
  * Whether another request asked for a sync while this one held the lock.
- * Read from the table, past this request's option cache.
+ * Read from the lock table, past this request's option cache.
  *
  * @return bool
  */
 function ce_sec_htaccess_dirty() {
-	return '' !== (string) ce_sec_option_raw( 'ce_sec_htaccess_dirty' );
+	return ce_sec_note( 'ce_sec_htaccess_dirty' );
+}
+
+/**
+ * A note between requests about the .htaccess sync, kept beside the lock
+ * (inc/ce-lock.php), so on a network a request on one site sees what a
+ * request on another left. False while the lock code has not arrived.
+ *
+ * @param string    $name Note name.
+ * @param bool|null $set  True sets it, false clears it, null only reads it.
+ * @return bool
+ */
+function ce_sec_note( $name, $set = null ) {
+	return function_exists( 'ce_lock_note' ) ? ce_lock_note( $name, $set ) : false;
 }
 
 /**
@@ -434,12 +447,12 @@ function ce_sec_remove_htaccess() {
 	if ( '' === $token ) {
 		// Another request is writing: leave the request it reads before it
 		// lets go, then try once more, in case it already has.
-		update_option( 'ce_sec_htaccess_remove', time(), false );
+		ce_sec_note( 'ce_sec_htaccess_remove', true );
 		$token = ce_sec_htaccess_lock();
 		if ( '' === $token ) {
 			return;
 		}
-		delete_option( 'ce_sec_htaccess_remove' );
+		ce_sec_note( 'ce_sec_htaccess_remove', false );
 	}
 	ce_sec_clear_htaccess();
 	ce_lock_release( 'ce_sec_htaccess_lock', $token );

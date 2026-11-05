@@ -55,20 +55,29 @@ $held = function () {
 };
 
 $a = ce_lock_take( 'ce_t', 60 );
-ce_check( '' !== $a && $held() === $a, 'the first taker gets the lock' );
+ce_check( '' !== $a && '|' . $a === substr( $held(), -strlen( '|' . $a ) ), 'the first taker gets the lock' );
 ce_check( '' === ce_lock_take( 'ce_t', 60 ), 'a fresh lock is refused' );
 ce_lock_release( 'ce_t', 'someone-else' );
-ce_check( $held() === $a, 'a release with another token leaves the lock alone' );
+ce_check( ce_lock_holds( 'ce_t', $a ), 'a release with another token leaves the lock alone' );
 
 $GLOBALS['wpdb']->query( "UPDATE wp_options SET option_value = '" . ( time() - 3600 ) . "|old' WHERE option_name = 'ce_t'" );
 $b = ce_lock_take( 'ce_t', 60 );
-ce_check( '' !== $b && $held() === $b, 'a stale lock is taken over' );
+ce_check( '' !== $b && ce_lock_holds( 'ce_t', $b ), 'a stale lock is taken over' );
 ce_check( '' === ce_lock_take( 'ce_t', 60 ), 'and only once' );
 ce_lock_release( 'ce_t', $a );
-ce_check( $held() === $b, 'the old holder cannot release the new holder\'s lock' );
+ce_check( ce_lock_holds( 'ce_t', $b ) && ! ce_lock_renew( 'ce_t', $a ), 'the old holder can neither release nor renew the new holder\'s lock' );
 ce_lock_release( 'ce_t', $b );
 ce_check( '' === $held(), 'the holder releases it' );
 ce_check( '' !== ce_lock_take( 'ce_t', 60 ), 'and it can be taken again' );
+
+// Renewal keeps a long-running holder from looking dead.
+$GLOBALS['wpdb']->query( "DELETE FROM wp_options WHERE option_name = 'ce_r'" );
+$r = ce_lock_take( 'ce_r', 60 );
+$GLOBALS['wpdb']->query( "UPDATE wp_options SET option_value = '" . ( time() - 3600 ) . "|" . $r . "' WHERE option_name = 'ce_r'" );
+ce_check( ce_lock_renew( 'ce_r', $r ) && '' === ce_lock_take( 'ce_r', 60 ), 'a renewed lock is not taken over' );
+
+// Notes.
+ce_check( ! ce_lock_note( 'ce_n' ) && ce_lock_note( 'ce_n', true ) && ce_lock_note( 'ce_n' ) && ! ce_lock_note( 'ce_n', false ) && ! ce_lock_note( 'ce_n' ), 'a note is set, read and cleared' );
 
 // Two requests, two connections: while one holds the lock the other is
 // refused, and it gets the lock once the first lets go.

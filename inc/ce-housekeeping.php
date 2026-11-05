@@ -66,6 +66,12 @@ function ce_keep_dev_files() {
  * @return bool
  */
 function ce_remove_path( $path, $root ) {
+	// Every 200 entries the cleanup renews its lock, so a long run over a
+	// large .git tree is never taken for a dead one.
+	static $seen = 0;
+	if ( 0 === ++$seen % 200 && ! empty( $GLOBALS['ce_dev_files_token'] ) && function_exists( 'ce_lock_renew' ) ) {
+		ce_lock_renew( 'ce_dev_files_lock', $GLOBALS['ce_dev_files_token'] );
+	}
 	$real_root = realpath( $root );
 	$real      = realpath( $path );
 
@@ -120,12 +126,13 @@ function ce_remove_dev_files( $root = '', $version = '' ) {
 	}
 
 	// One cleanup at a time, whichever hook started it (inc/ce-lock.php); a
-	// lock older than ten minutes is from a request that died, and is taken
-	// over. Until the lock code has arrived, nothing is deleted.
+	// lock not renewed for ten minutes is from a request that died, and is
+	// taken over. Until the lock code has arrived, nothing is deleted.
 	$token = function_exists( 'ce_lock_take' ) ? ce_lock_take( 'ce_dev_files_lock', 10 * MINUTE_IN_SECONDS ) : '';
 	if ( '' === $token ) {
 		return;
 	}
+	$GLOBALS['ce_dev_files_token'] = $token; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 
 	$left = array();
 
@@ -151,6 +158,7 @@ function ce_remove_dev_files( $root = '', $version = '' ) {
 	}
 
 	ce_lock_release( 'ce_dev_files_lock', $token );
+	unset( $GLOBALS['ce_dev_files_token'] );
 }
 // Both hooks pass arguments of their own (after_switch_theme the old
 // theme's name), so neither may reach the $root parameter.
