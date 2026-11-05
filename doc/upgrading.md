@@ -6,6 +6,12 @@ Only paths explicitly identified in development are documented here.
 
 ---
 
+## Upgrading to v2.18.3 from v2.18.2
+
+Replace the theme files and open any admin page as an administrator: the error pages are written then, with no button press. A copy another theme left in `wp-content` is replaced; a file without a theme's mark is left alone. Add the new `ErrorDocument 504` line from CE Theme Options > Tools & Sync to `.htaccess` if you use the static pages.
+
+---
+
 ## Upgrading to v2.18.2 from v2.18.1
 
 Replace the theme files and open any admin page: the version change runs the article sync, which carries the new sections of the article on salvation by works.

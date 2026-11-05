@@ -6,7 +6,7 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.18.2
+Version: 2.18.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Template: twentytwentyfive
@@ -121,6 +121,10 @@ CE Theme, Copyright 2026 MENJ. Licensed GPLv2 or later.
 * Article figures are not bundled. inc/articles/media.json lists each with its source page, creator and licence, and the credit prints under the figure.
 
 == Changelog ==
+
+= 2.18.3 - November 2026 =
+* The error pages are written when the theme is activated, with no button press, and removed when another theme is activated. Pages another theme left behind are replaced.
+* A 504 page for the web server, with its .htaccess line.
 
 = 2.18.2 - November 2026 =
 * The article on salvation by works answers three more claims: that the Prophet is in hell, what "I do not know what will be done with me" meant at the death of Uthman ibn Maz'un, and what assurance Islam gives a believer.
