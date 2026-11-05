@@ -47,15 +47,18 @@ function ce_gone_default_list(): array {
 
 /**
  * Adds default prefixes that are new since the list was last saved, once
- * each. A saved list keeps its own lines, and a default the owner deleted
+ * each, on the first request (admin or front end) that finds them unseen. A saved list keeps its own lines, and a default the owner deleted
  * after it was added is not brought back.
  */
 function ce_gone_merge_defaults() {
     $seen = get_option( 'ce_gone_defaults_seen', null );
-    $raw  = get_option( 'ce_gone_paths', null );
+    if ( $seen === ce_gone_default_list() ) {
+        return;
+    }
+    $raw = get_option( 'ce_gone_paths', null );
     if ( null === $raw ) {
         // Never saved: the defaults already apply.
-        update_option( 'ce_gone_defaults_seen', ce_gone_default_list(), false );
+        update_option( 'ce_gone_defaults_seen', ce_gone_default_list(), true );
         return;
     }
     // Before 2.18.6 nothing was recorded; the first three defaults were the list then.
@@ -70,9 +73,8 @@ function ce_gone_merge_defaults() {
     if ( $add ) {
         update_option( 'ce_gone_paths', rtrim( (string) $raw ) . "\n" . implode( "\n", $add ) );
     }
-    if ( $seen !== ce_gone_default_list() ) {
-        update_option( 'ce_gone_defaults_seen', ce_gone_default_list(), false );
-    }
+    // Autoloaded: the front end reads it on every request (ce_maybe_send_gone()).
+    update_option( 'ce_gone_defaults_seen', ce_gone_default_list(), true );
 }
 add_action( 'admin_init', 'ce_gone_merge_defaults' );
 
@@ -99,6 +101,10 @@ function ce_maybe_send_gone() {
     if ( get_option( 'ce_gone_enabled', '1' ) !== '1' ) return;
     if ( is_admin() || wp_doing_ajax() || wp_doing_cron() ) return;
     if ( defined( 'REST_REQUEST' ) || defined( 'WP_CLI' ) ) return;
+
+    // New defaults reach a saved list on the first request after an FTP
+    // update, not only on an admin visit.
+    ce_gone_merge_defaults();
 
     $uri  = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
     $path = strtolower( (string) wp_parse_url( $uri, PHP_URL_PATH ) );

@@ -268,7 +268,9 @@ add_action( 'admin_init', 'ce_sec_sync_htaccess' );
  * first request after the new files arrive.
  */
 function ce_sec_sync_htaccess_once() {
-	$version = (string) wp_get_theme()->get( 'Version' );
+	// The key carries the CE_BLOCK_DIRECT_FILES choice, so changing that
+	// constant takes effect on the next request too.
+	$version = (string) wp_get_theme()->get( 'Version' ) . ( ce_sec_files_block_on() ? '' : '-files-off' );
 	if ( get_option( 'ce_sec_htaccess_version' ) === $version || get_transient( 'ce_sec_htaccess_lock' ) ) {
 		return;
 	}
