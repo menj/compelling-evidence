@@ -23,6 +23,14 @@ function wp_strip_all_tags( $s ) { return strip_tags( (string) $s ); }
 function wpautop( $s ) { return '<p>' . $s . '</p>'; }
 function get_post_meta( $id, $key ) { return $GLOBALS['meta'][ $key ] ?? ''; }
 function get_post( $p = null ) { return $p; }
+$GLOBALS['qpage'] = 0;
+function get_query_var( $k ) { return 'page' === $k ? $GLOBALS['qpage'] : ''; }
+function esc_url( $u ) { return htmlspecialchars( (string) $u, ENT_QUOTES ); }
+function get_permalink() { return 'https://ce.test/articles/x/'; }
+function get_option( $k ) { return 'permalink_structure' === $k ? '/%postname%/' : ''; }
+function trailingslashit( $s ) { return rtrim( $s, '/' ) . '/'; }
+function user_trailingslashit( $s ) { return trailingslashit( $s ); }
+function add_query_arg( $k, $v, $u ) { return $u . '?' . $k . '=' . $v; }
 function post_password_required( $post ) { return '' !== $post->post_password; }
 class WP_Post {
 	public $ID            = 5;
@@ -63,6 +71,14 @@ check( false !== strpos( $section, '<h2 id="ce-sources-title">Passages quoted</h
 check( false !== strpos( $section, '<a href="#passage-1">Sūrat al-Māʾidah 5:48</a>' ) && false !== strpos( $section, '<a href="#passage-2">' ), 'each passage links to its card' );
 $post->post_content = '<p>x</p>' . substr( $content, 0, strpos( $content, '<h2>Sources' ) );
 check( false !== strpos( ce_anatomy_sources_section( $post ), '<h2 id="ce-sources-title">Sources</h2>' ), 'without one it is Sources' );
+$mk = function ( $r ) { return '<div class="quran-citation"><div class="quran-arabic">x</div><div class="quran-translation">t</div><div class="quran-ref">Q ' . $r . '</div></div>'; };
+$post->post_content = $mk( 1 ) . '<!--nextpage-->' . $mk( 2 ) . $mk( 3 );
+$GLOBALS['qpage']   = 2;
+$paged              = ce_anatomy_sources_section( $post );
+check( false !== strpos( $paged, 'href="https://ce.test/articles/x/#passage-1"' ) && false !== strpos( $paged, 'href="#passage-2"' ) && false !== strpos( $paged, 'href="#passage-3"' ), 'on page 2, a passage on page 1 links to page 1, its own passages to this page' );
+$GLOBALS['qpage']   = 1;
+check( false !== strpos( ce_anatomy_sources_section( $post ), 'href="https://ce.test/articles/x/2/#passage-2"' ), 'on page 1, a passage on page 2 links to page 2' );
+$GLOBALS['qpage']   = 0;
 $post->post_content = '<p>No cards.</p>';
 check( '' === ce_anatomy_sources_section( $post ), 'no cards: no section' );
 

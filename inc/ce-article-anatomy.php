@@ -274,6 +274,21 @@ function ce_anatomy_passage_ids( $content ) {
 add_filter( 'the_content', 'ce_anatomy_passage_ids', 20 );
 
 /**
+ * The address of page $page of a post split by <!--nextpage-->.
+ *
+ * @param WP_Post $post Post.
+ * @param int     $page Page number, from 1.
+ * @return string
+ */
+function ce_anatomy_page_url( $post, $page ) {
+    $url = (string) get_permalink( $post );
+    if ( $page < 2 ) {
+        return $url;
+    }
+    return get_option( 'permalink_structure' ) ? trailingslashit( $url ) . user_trailingslashit( (string) $page, 'single_paged' ) : add_query_arg( 'page', $page, $url );
+}
+
+/**
  * The sources section: the passages quoted, each linked to its card. When the
  * article has its own Sources list, that list stays where the author put it
  * and this section is headed "Passages quoted".
@@ -287,11 +302,20 @@ function ce_anatomy_sources_section( $post ) {
         return '';
     }
     $title = ce_anatomy_has_own_sources( $post->post_content ) ? __( 'Passages quoted', 'compelling-evidence' ) : __( 'Sources', 'compelling-evidence' );
-    $items = '';
+    // On a post split by <!--nextpage-->, a passage on another page is linked on that page.
+    $pages   = explode( '<!--nextpage-->', (string) $post->post_content );
+    $on_page = [];
+    foreach ( $pages as $k => $chunk ) {
+        $on_page = array_merge( $on_page, array_fill( 0, count( ce_anatomy_passages( $chunk ) ), $k + 1 ) );
+    }
+    $current = max( 1, (int) get_query_var( 'page' ) );
+    $items   = '';
     foreach ( $passages as $i => $p ) {
+        $page = $on_page[ $i ] ?? 1;
+        $href = ( count( $pages ) > 1 && $page !== $current ? ce_anatomy_page_url( $post, $page ) : '' ) . '#passage-' . ( $i + 1 );
         // The reference names the work, so no label is added: a card styled as
         // hadith can carry a commentary, and a label would misname it.
-        $items .= '<li><a href="#passage-' . ( $i + 1 ) . '">' . esc_html( $p[1] ) . '</a></li>';
+        $items .= '<li><a href="' . esc_url( $href ) . '">' . esc_html( $p[1] ) . '</a></li>';
     }
     return '<section class="ce-sources" aria-labelledby="ce-sources-title"><h2 id="ce-sources-title">' . esc_html( $title ) . '</h2><p class="ce-sources-note">' . esc_html__( 'Every passage this article quotes, in the order it appears. Each link goes to the passage in the text.', 'compelling-evidence' ) . '</p><ol class="ce-sources-list">' . $items . '</ol></section>';
 }
