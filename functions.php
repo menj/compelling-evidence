@@ -1277,3 +1277,107 @@ function ce_home_step( int $n ): string {
     /* translators: %d: step number on the home page. */
     return sprintf( __( 'Step %d', 'compelling-evidence' ), $n );
 }
+
+/**
+ * The lens a visitor asked for on the article archive, from ?orderby=.
+ *
+ * The home page's Top Questions and What's New cards open the archive with
+ * ?orderby=popular and ?orderby=date. The archive is otherwise grouped by
+ * topic in reading order, so these lenses print a short list above it.
+ *
+ * @since 2.18.5
+ *
+ * @return string 'popular', 'date' or '' for none.
+ */
+function ce_archive_lens(): string {
+    if ( ! is_post_type_archive( 'ce_article' ) || is_tax( 'ce_topic' ) ) {
+        return '';
+    }
+    // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only display choice.
+    $lens = isset( $_GET['orderby'] ) ? sanitize_key( wp_unslash( $_GET['orderby'] ) ) : '';
+    return in_array( $lens, [ 'popular', 'date' ], true ) ? $lens : '';
+}
+
+/**
+ * The posts for an archive lens.
+ *
+ * 'popular' reads the theme's own analytics: the articles with the most
+ * article_view events in the last 30 days, cached for an hour. When there
+ * are no figures yet it falls back to the first articles in reading order,
+ * and says so through $fallback. 'date' merges the newest articles with
+ * the newest published reader answers.
+ *
+ * @since 2.18.5
+ *
+ * @param string $lens     'popular' or 'date'.
+ * @param bool   $fallback Set to true when 'popular' had no figures to use.
+ * @param int    $limit    How many posts to return.
+ * @return WP_Post[]
+ */
+function ce_archive_lens_posts( string $lens, ?bool &$fallback = null, int $limit = 10 ): array {
+    $fallback = false;
+
+    if ( 'popular' === $lens ) {
+        $ids = get_transient( 'ce_lens_popular' );
+        if ( ! is_array( $ids ) ) {
+            $ids  = [];
+            $rows = function_exists( 'ce_analytics_top_items' ) ? ce_analytics_top_items( 'article_view', 'slug', 30, $limit * 3 ) : [];
+            foreach ( (array) $rows as $row ) {
+                $post = get_page_by_path( (string) ( $row->item ?? '' ), OBJECT, 'ce_article' );
+                if ( $post && 'publish' === $post->post_status ) {
+                    $ids[] = (int) $post->ID;
+                }
+                if ( count( $ids ) >= $limit ) {
+                    break;
+                }
+            }
+            set_transient( 'ce_lens_popular', $ids, HOUR_IN_SECONDS );
+        }
+        if ( $ids ) {
+            return get_posts( [
+                'post_type'      => 'ce_article',
+                'post_status'    => 'publish',
+                'post__in'       => $ids,
+                'orderby'        => 'post__in',
+                'posts_per_page' => $limit,
+            ] );
+        }
+        $fallback = true;
+        return get_posts( [
+            'post_type'      => 'ce_article',
+            'post_status'    => 'publish',
+            'orderby'        => 'menu_order',
+            'order'          => 'ASC',
+            'posts_per_page' => $limit,
+        ] );
+    }
+
+    if ( 'date' === $lens ) {
+        $articles = get_posts( [
+            'post_type'      => 'ce_article',
+            'post_status'    => 'publish',
+            'orderby'        => 'date',
+            'order'          => 'DESC',
+            'posts_per_page' => $limit,
+        ] );
+        $answers  = get_posts( [
+            'post_type'      => 'ce_question',
+            'post_status'    => 'publish',
+            'orderby'        => 'date',
+            'order'          => 'DESC',
+            'posts_per_page' => $limit,
+            'tax_query'      => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- small, capped list.
+                [
+                    'taxonomy' => 'ce_qstatus',
+                    'field'    => 'slug',
+                    'terms'    => 'published',
+                ],
+            ],
+        ] );
+        $posts = array_merge( $articles, $answers );
+        usort( $posts, static fn( $a, $b ) => strcmp( $b->post_date_gmt, $a->post_date_gmt ) );
+        return array_slice( $posts, 0, $limit );
+    }
+
+    return [];
+}

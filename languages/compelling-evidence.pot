@@ -2523,3 +2523,32 @@ msgstr ""
 #: inc/ce-theme-options.php:721
 msgid "On reader questions"
 msgstr ""
+
+#: archive-ce_article.php
+msgid "Newest first"
+msgstr ""
+
+#: archive-ce_article.php
+msgid "The latest articles and answered reader questions. The full collection follows, by topic."
+msgstr ""
+
+#: archive-ce_article.php
+msgid "Where to begin"
+msgstr ""
+
+#: archive-ce_article.php
+msgid "Reading figures are not in yet, so these follow the reading order. The full collection follows, by topic."
+msgstr ""
+
+#: archive-ce_article.php
+msgid "Most read this month"
+msgstr ""
+
+#: archive-ce_article.php
+msgid "The articles readers opened most in the last 30 days. The full collection follows, by topic."
+msgstr ""
+
+#. translators: %d: reading time in minutes.
+#: archive-ce_article.php
+msgid "%d min"
+msgstr ""

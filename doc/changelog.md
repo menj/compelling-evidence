@@ -18,6 +18,8 @@ No section or feature removed and no public identifier renamed.
 - `doc/ssot.md` section 29 sets out the arc. `doc/readme.md` and `doc/ssot.md` give the current version, which they still gave as 2.18.0.
 
 ### Fixed
+- The Top Questions card linked to `/articles?orderby=popular`, and the What's New card to `/articles`. The archive ignored the parameter and always lists articles by topic in reading order, so neither card showed what it promised. The archive now honours two lenses, set out by `ce_archive_lens()` and `ce_archive_lens_posts()`, as a short list (`.archive-lens`, `#lens`) above the topic sections, which stay as they were. `?orderby=popular` lists the 10 articles with the most `article_view` events in the theme's analytics over the last 30 days, cached for an hour (`ce_lens_popular`); until there are figures it lists the first 10 in reading order under the heading "Where to begin" and says why. `?orderby=date` lists the 10 newest articles and published reader answers together, each answer marked as one. What's New now links to `/articles/?orderby=date`.
+- The Malay catalogue had no entry for the new strings, so the step labels read half in English. `languages/ms_MY.po` and `ms_MY.mo` now carry them, and the lens strings too; the `.mo` keeps its 82 earlier entries.
 - `doc/readme.md` said the theme deletes its marked error files when another theme is activated. On a network it leaves them, because `ce_error_remove()` returns early there; the readme now says so.
 
 ### Tested

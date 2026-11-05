@@ -646,6 +646,8 @@ The orphan pass (trashing articles no longer in the JSON) runs only when the loa
 | 4 | `.quick-access` | Step 3 · Read Further | Where to go next: top questions, reader Q&A, what is new, and Ask a Question |
 | 5 | `.cta` (#contact) | Step 4 · Still Searching? | The reader's own next step: get in touch |
 
+The Top Questions and What's New cards open the article archive with `?orderby=popular` (most read in 30 days, from the theme's analytics) and `?orderby=date` (newest articles and answers). `ce_archive_lens()` reads the parameter and the archive prints that list above its topic sections.
+
 The step number comes from `ce_home_step()`, a translatable string of its own, so the section labels keep their translations. The quick-access cards have their own section heading (`.qa-head`, `h2`), and the card titles under it are `h3`.
 
 The order follows `.claude/FARUQI.md`: conviction is reached through evidence, so the questions and their answers come before the invitation, and the page ends by asking the reader to send the questions it has not answered.

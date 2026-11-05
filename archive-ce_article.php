@@ -66,6 +66,56 @@ $active_term = $is_filtered ? get_queried_object() : null;
     <span class="ah-count"><?php echo (int) $total_pub; ?> articles across <?php echo (int) count($term_map); ?> topics</span>
   </div>
 
+  <?php
+  // The lens asked for from the home page: most read (?orderby=popular) or
+  // newest first (?orderby=date). The topic sections follow unchanged (2.18.5).
+  $ce_lens = ce_archive_lens();
+  if ( $ce_lens ) :
+      $ce_lens_fallback = false;
+      $ce_lens_posts    = ce_archive_lens_posts( $ce_lens, $ce_lens_fallback );
+      if ( 'date' === $ce_lens ) {
+          $ce_lens_title = __( 'Newest first', 'compelling-evidence' );
+          $ce_lens_intro = __( 'The latest articles and answered reader questions. The full collection follows, by topic.', 'compelling-evidence' );
+      } elseif ( $ce_lens_fallback ) {
+          $ce_lens_title = __( 'Where to begin', 'compelling-evidence' );
+          $ce_lens_intro = __( 'Reading figures are not in yet, so these follow the reading order. The full collection follows, by topic.', 'compelling-evidence' );
+      } else {
+          $ce_lens_title = __( 'Most read this month', 'compelling-evidence' );
+          $ce_lens_intro = __( 'The articles readers opened most in the last 30 days. The full collection follows, by topic.', 'compelling-evidence' );
+      }
+      if ( $ce_lens_posts ) :
+  ?>
+  <section class="archive-lens" id="lens" aria-labelledby="lens-heading">
+    <h2 id="lens-heading" class="ts-name"><?php echo esc_html( $ce_lens_title ); ?></h2>
+    <p class="ts-desc"><?php echo esc_html( $ce_lens_intro ); ?></p>
+    <div class="ts-articles">
+      <?php foreach ( $ce_lens_posts as $ce_lens_i => $ce_lens_post ) :
+          $ce_lens_answer = 'ce_question' === $ce_lens_post->post_type;
+          $ce_lens_mins   = max( 1, (int) ceil( str_word_count( wp_strip_all_tags( $ce_lens_post->post_content ) ) / 200 ) );
+      ?>
+        <a href="<?php echo esc_url( get_permalink( $ce_lens_post ) ); ?>" class="ts-article">
+          <span class="ts-article-num"><?php echo (int) $ce_lens_i + 1; ?></span>
+          <div class="ts-article-body">
+            <div class="ts-article-title"><?php echo esc_html( get_the_title( $ce_lens_post ) ); ?></div>
+            <div class="ts-article-excerpt"><?php echo esc_html( ce_excerpt_chars( $ce_lens_post, 120 ) ); ?></div>
+          </div>
+          <span class="ts-article-meta"><?php
+          if ( 'date' === $ce_lens ) {
+              echo esc_html( ( $ce_lens_answer ? __( 'Answer', 'compelling-evidence' ) . ' · ' : '' ) . get_the_date( 'j M Y', $ce_lens_post ) );
+          } else {
+              /* translators: %d: reading time in minutes. */
+              echo esc_html( sprintf( __( '%d min', 'compelling-evidence' ), $ce_lens_mins ) );
+          }
+          ?></span>
+        </a>
+      <?php endforeach; ?>
+    </div>
+  </section>
+  <?php
+      endif;
+  endif;
+  ?>
+
   <?php /* Item 6 — Editorial framing for crawlers, AI overviews, and curious readers.
             ~250 words placing the collection in context: what it covers, the editorial
             method, and who it's for. Hidden on smaller viewports via CSS to preserve

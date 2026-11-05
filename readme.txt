@@ -124,6 +124,7 @@ CE Theme, Copyright 2026 MENJ. Licensed GPLv2 or later.
 
 = 2.18.5 - November 2026 =
 * The home page reads as one story in four steps: the key questions, your personalised path, where to go next, and the invitation to ask.
+* The Top Questions and What's New cards now open the article archive at a list of the most read or the newest articles and answers.
 
 = 2.18.4 - November 2026 =
 * The web server error pages work when WordPress sits in a subfolder. The theme writes a copy of each into wp-content/compelling-evidence-errors with the site's home address, and the .htaccess lines on Tools & Sync point there.

@@ -273,7 +273,7 @@
     <h2 id="qa-heading"><?php esc_html_e( 'Where to go next', 'compelling-evidence' ); ?></h2>
     <p><?php esc_html_e( 'Your path is one way in. These four open the rest of the site, and the last one takes a question of your own.', 'compelling-evidence' ); ?></p>
   </div>
-  <a href="<?php echo esc_url(home_url('/articles?orderby=popular')); ?>" class="qa-card qa-card--questions">
+  <a href="<?php echo esc_url(home_url( '/articles/?orderby=popular' )); ?>" class="qa-card qa-card--questions">
     <div class="qa-card-icon">
       <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
     </div>
@@ -291,7 +291,7 @@
     <span class="qa-card-cta"><?php esc_html_e( 'Read answers →', 'compelling-evidence' ); ?></span>
   </a>
 
-  <a href="<?php echo esc_url(home_url('/articles')); ?>" class="qa-card qa-card--new">
+  <a href="<?php echo esc_url( home_url( '/articles/?orderby=date' ) ); ?>" class="qa-card qa-card--new">
     <div class="qa-card-icon">
       <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
     </div>
