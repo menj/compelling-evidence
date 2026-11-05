@@ -143,14 +143,14 @@ function ce_get_organization_schema(): array {
     ];
 
     // Logo as a proper ImageObject — Google rich-result eligibility requires
-    // width/height. Falls back to the theme screenshot if the theme option
-    // hasn't been populated yet, preserving prior behaviour.
+    // width/height. Falls back to the 512px app icon, a square mark at the
+    // size the ImageObject declares, if the theme option is still empty.
     $logo_url    = trim( (string) get_option( 'ce_org_logo_url', '' ) );
     $logo_width  = absint( get_option( 'ce_org_logo_width',  512 ) );
     $logo_height = absint( get_option( 'ce_org_logo_height', 512 ) );
 
     if ( '' === $logo_url ) {
-        $logo_url    = get_stylesheet_directory_uri() . '/screenshot.png';
+        $logo_url    = get_stylesheet_directory_uri() . '/assets/images/icon-512.png';
         $logo_width  = 512;
         $logo_height = 512;
     }

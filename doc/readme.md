@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Version | 2.18.12 |
+| Version | 2.18.13 |
 | Licence | GNU GPL v3 or later; the full text is in `LICENSE` |
 | Parent | Twenty Twenty-Five, tested with 1.5 (`CE_PARENT_TESTED_VERSION`) |
 | Requires | WordPress 6.7 (tested to 7.1), PHP 8.0 (tested to 8.4) |
@@ -37,7 +37,7 @@ php bin/build-error-pages.php                        # rebuild errors/*.html fro
 node bin/quiz-sim.js                                 # quiz scoring simulation
 python3 bin/build-murtadd-counterparts.py            # rebuild inc/data/murtadd-counterparts.json
 python3 bin/build-quiz-murtadd-links.py              # rebuild inc/data/quiz-murtadd-links.json
-git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.12.zip v2.18.12   # after the release is committed and tagged
+git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.13.zip v2.18.13   # after the release is committed and tagged
 ```
 
 Every PHP script in `tests/` and `bin/` exits unless it runs from the command line. `.gitattributes` keeps `.gitattributes`, `.gitignore`, `.claude/`, `phpcs.xml.dist`, `bin/` and `tests/` out of the zip; `doc/` and `tools/` ship, and the live-server clean-up removes them.
@@ -280,6 +280,14 @@ ErrorDocument 504 /wp-content/compelling-evidence-errors/504.html
 ```
 
 Remove the `ErrorDocument` lines when you move to another theme.
+
+Every page carries the CE mark as its tab icon, as a `data:` address built from the page's own inline mark, so it needs no path and shows in a subfolder install and while WordPress is down.
+
+## Browser icons
+
+`ce_site_icon_url()` (`functions.php`) fills `get_site_icon_url()` with the theme's files while the owner has set no Site Icon, so WordPress prints the 32px, 192px, touch and tile tags on the site, the login screen and the admin. `ce_favicon_tags()` adds what WordPress does not print: `favicon.svg`, `favicon-16x16.png`, `favicon.ico`, `site.webmanifest` and `theme-color` #180d2e, on `header.php`, `login_head` and `admin_head`. WordPress prints its own tags in all three places. With a Site Icon set, the filter passes the owner's address through and `ce_favicon_tags()` prints nothing. The quiz and journey pages never call `wp_head()`, so `ce_standalone_assets()` prints `wp_site_icon()` and `ce_favicon_tags()` before their `</head>`.
+
+`/favicon.ico` reaches WordPress when no such file sits in the site root. `ce_serve_favicon()` answers it with `assets/images/favicon.ico` (16, 32, 48), `Cache-Control: public, max-age=86400` and an ETag, with a 304 on a match; `template_redirect` at priority 0 covers HEAD. With a Site Icon, WordPress redirects to it. The manifest is a static file with relative icon paths. The theme `.htaccess` refuses dot files, PHP, Markdown and the development folders only, and `tests/htaccess-files-test.php` checks the icon files stay open.
 
 ## Multisite
 

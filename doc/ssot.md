@@ -1,7 +1,7 @@
 # SSOT: Single Source of Truth
 ## Compelling Evidence theme: system design, naming conventions, configuration rules
 
-**Version:** 2.18.12  
+**Version:** 2.18.13  
 **Location:** `doc/ssot.md`
 
 This document is authoritative. When any other file conflicts with a rule stated here, this document is correct and the other file should be updated.
@@ -302,7 +302,7 @@ Main branch is `main`. Version tags follow semantic versioning prefixed with `v`
 
 Distribution zip is built with `git archive`, which honours the `export-ignore` lines in `.gitattributes` (`.claude/`, `bin/`, `tests/`, `phpcs.xml.dist`, `.gitattributes`, `.gitignore`):
 ```bash
-git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.12.zip HEAD
+git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.13.zip v2.18.13   # the release tag, as in doc/readme.md
 ```
 
 ---
@@ -685,6 +685,8 @@ Owner decisions, copied word for word from `.claude/CLAUDE.md`:
 - The journey and quiz pages carry FAQPage markup, with a visible FAQ section built from the same data. The owner decided this on 2026-11-03, reversing an earlier note the same day. Structured data still describes only what a page shows, so the questions must appear on the page.
 
 Article anatomy (since 2.18.10): a next step on these pages is only ever keep reading, check the sources, the quiz or a journey, or ask a question. No price, buy button or sales wording. The byline shows only when the Identity tab has an author name.
+
+Browser icons (since 2.18.13, at the owner's request of 2026-11-05: "make sure you have favicon too"): every icon is rendered from `assets/images/ce-icon.svg`. Until the owner sets a Site Icon, the theme serves its own set and answers `/favicon.ico`; a Site Icon set by the owner always wins (`ce_owner_site_icon()`).
 
 Contributor rules:
 

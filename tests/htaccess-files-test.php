@@ -136,7 +136,7 @@ ce_check( 2 === count( $ce_own ), "the theme's .htaccess has its 2 RedirectMatch
 foreach ( array( '.git/config', '.github/workflows/ci.yml', '.gitignore', '.claude/CLAUDE.md', '.env', '.vscode/settings.json', 'assets/.DS_Store', 'tests/unlist-test.php', 'bin/build-error-pages.php', 'functions.php', 'inc/ce-seo.php/x' ) as $ce_p ) {
 	ce_check( $ce_own_hit( '/wp-content/themes/compelling-evidence/' . $ce_p ), "theme .htaccess: 403 for $ce_p" );
 }
-foreach ( array( 'style.css', 'screenshot.png', 'assets/js/main.js', 'assets/css/main.css', 'journeys/quiz.html', 'journeys/data/agnostic/screens/conclusion.html', 'doc.css', '.well-known/x', 'assets/js/main.min.js' ) as $ce_p ) {
+foreach ( array( 'style.css', 'screenshot.png', 'assets/js/main.js', 'assets/css/main.css', 'journeys/quiz.html', 'journeys/data/agnostic/screens/conclusion.html', 'doc.css', '.well-known/x', 'assets/js/main.min.js', 'assets/images/favicon.ico', 'assets/images/favicon.svg', 'assets/images/site.webmanifest', 'assets/images/icon-maskable-512.png' ) as $ce_p ) {
 	ce_check( ! $ce_own_hit( '/wp-content/themes/compelling-evidence/' . $ce_p ), "theme .htaccess: open $ce_p" );
 }
 

@@ -112,6 +112,13 @@ function ce_standalone_assets( string $html, string $kind ): string {
         $preload .= '<link rel="preload" href="' . esc_url( $font_dir . $font ) . '" as="font" type="font/woff2" crossorigin>' . "\n";
     }
     $html = preg_replace( '/<head>/i', "<head>\n" . $preload, $html, 1 );
+    // The browser icons. These pages never call wp_head(), so print what it
+    // would: WordPress's Site Icon tags (the theme's own files until the
+    // owner sets one, through ce_site_icon_url()) and ce_favicon_tags().
+    ob_start();
+    wp_site_icon();
+    ce_favicon_tags();
+    $html = str_replace( '</head>', (string) ob_get_clean() . '</head>', $html );
     // The FAQ section's styles (inc/ce-standalone-faq.php), on both kinds.
     $html = str_replace( '</head>', ce_standalone_asset_tags( 'style', [ 'ce-standalone-faq' ] ) . '</head>', $html );
     if ( 'journey' === $kind ) {

@@ -1072,18 +1072,99 @@ if ( ! ce_is_rankmath_active() ) {
 // ── CE BRANDING: FAVICON + ADMIN ICON ────────────────────────────────────────
 
 /**
+ * Whether the owner has set a Site Icon under Appearance > Customize > Site
+ * Identity. ce_site_icon_url() fills get_site_icon_url() with the theme's
+ * icons, so has_site_icon() is always true here; this reads the setting.
+ */
+function ce_owner_site_icon() {
+    $id = (int) get_option( 'site_icon' );
+    return $id > 0 && false !== wp_get_attachment_image_url( $id, 'full' );
+}
+
+/**
  * Register favicon assets via WordPress site_icon filter as programmatic fallback.
- * The primary favicons are already in header.php <head>.
- * This ensures the WP admin also uses the CE icon.
+ * WordPress then prints its own icon tags (32, 192, 180 and 270) on the site and
+ * the login screen; ce_favicon_tags() adds the rest. A Site Icon set by the owner
+ * wins: its address passes through unchanged.
  */
 function ce_site_icon_url( $url, $size ) {
+    if ( ce_owner_site_icon() ) {
+        return $url;
+    }
     $icon_dir = get_stylesheet_directory_uri() . '/assets/images/';
+    if ( $size >= 270 ) return $icon_dir . 'icon-512.png';
+    if ( $size >= 192 ) return $icon_dir . 'icon-192.png';
     if ( $size >= 180 ) return $icon_dir . 'apple-touch-icon.png';
     if ( $size >= 96 )  return $icon_dir . 'favicon-96x96.png';
     if ( $size >= 32 )  return $icon_dir . 'favicon-32x32.png';
     return $icon_dir . 'favicon-16x16.png';
 }
 add_filter( 'get_site_icon_url', 'ce_site_icon_url', 10, 2 );
+
+/**
+ * The icon tags WordPress does not print, until the owner sets a Site Icon:
+ * the SVG icon, the 16px PNG, favicon.ico, the web app manifest and the theme
+ * colour. Called from header.php, and hooked on login_head and admin_head.
+ */
+function ce_favicon_tags() {
+    if ( ce_owner_site_icon() ) {
+        return;
+    }
+    $dir = get_stylesheet_directory_uri() . '/assets/images/';
+    echo '<link rel="icon" type="image/svg+xml" href="' . esc_url( $dir . 'favicon.svg' ) . '">' . "\n";
+    echo '<link rel="icon" type="image/png" sizes="16x16" href="' . esc_url( $dir . 'favicon-16x16.png' ) . '">' . "\n";
+    echo '<link rel="shortcut icon" href="' . esc_url( $dir . 'favicon.ico' ) . '">' . "\n";
+    echo '<link rel="manifest" href="' . esc_url( $dir . 'site.webmanifest' ) . '">' . "\n";
+    echo '<meta name="theme-color" content="#180d2e">' . "\n";
+}
+add_action( 'login_head', 'ce_favicon_tags' );
+add_action( 'admin_head', 'ce_favicon_tags' );
+
+/**
+ * Browsers and bots ask for /favicon.ico on their own. Until the owner sets a
+ * Site Icon, answer with the theme's file: a day's cache and an ETag, with a
+ * 304 while it is unchanged. Otherwise WordPress redirects to the Site Icon.
+ */
+function ce_serve_favicon() {
+    $file = get_stylesheet_directory() . '/assets/images/favicon.ico';
+    if ( ce_owner_site_icon() || ! is_readable( $file ) ) {
+        return;
+    }
+    $etag = '"' . md5_file( $file ) . '"';
+    header( 'Content-Type: image/x-icon' );
+    header( 'Cache-Control: public, max-age=86400' );
+    header( 'ETag: ' . $etag );
+    // If-None-Match may list several validators, weak ones (W/"...") or *.
+    $sent = array_map(
+        static function ( $v ) {
+            return preg_replace( '#^W/#', '', trim( $v ) );
+        },
+        explode( ',', wp_unslash( (string) ( $_SERVER['HTTP_IF_NONE_MATCH'] ?? '' ) ) ) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+    );
+    if ( in_array( '*', $sent, true ) || in_array( $etag, $sent, true ) ) {
+        status_header( 304 );
+        exit;
+    }
+    status_header( 200 );
+    header( 'Content-Length: ' . (string) filesize( $file ) );
+    // A HEAD request gets the headers alone.
+    if ( 'HEAD' !== ( $_SERVER['REQUEST_METHOD'] ?? 'GET' ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+        readfile( $file ); // phpcs:ignore WordPress.WP.AlternativeFunctions
+    }
+    exit;
+}
+add_action( 'do_faviconico', 'ce_serve_favicon', 5 );
+
+/**
+ * WordPress ends a HEAD request before do_favicon, with an empty HTML answer.
+ * template_redirect runs first, so HEAD gets the icon's headers too.
+ */
+function ce_favicon_head_request() {
+    if ( is_favicon() ) {
+        ce_serve_favicon();
+    }
+}
+add_action( 'template_redirect', 'ce_favicon_head_request', 0 );
 
 /**
  * Inject CE icon into WordPress admin:
