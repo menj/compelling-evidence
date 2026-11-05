@@ -115,8 +115,14 @@ function ce_remove_path( $path, $root ) {
 		ce_remove_path( $path . DIRECTORY_SEPARATOR . $item, $root );
 	}
 
-	// Lost the lock below: leave this folder, and every one above it, as it is.
+	// Lost the lock below, or while the last entry was going: leave this
+	// folder, and every one above it, as it is. The lease is renewed (and so
+	// checked) before every folder is removed.
 	if ( ! empty( $GLOBALS['ce_dev_files_lost'] ) ) {
+		return false;
+	}
+	if ( ! empty( $GLOBALS['ce_dev_files_token'] ) && defined( 'CE_LOCK_READY' ) && ! ce_lock_renew( 'ce_dev_files_lock', $GLOBALS['ce_dev_files_token'] ) ) {
+		$GLOBALS['ce_dev_files_lost'] = true; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 		return false;
 	}
 

@@ -278,6 +278,12 @@ function ce_sec_sync_htaccess( $force = false ) {
 			wp_cache_delete( 'alloptions', 'options' );
 			wp_cache_delete( 'notoptions', 'options' );
 			wp_cache_delete( 'ce_sec_xmlrpc_off', 'options' );
+			// Still this request's lock? A sync paused past the lock's minute
+			// may have lost it; it then writes nothing more and lets go of
+			// nothing that is not its own.
+			if ( ! ce_lock_renew( 'ce_sec_htaccess_lock', $token ) ) {
+				return false;
+			}
 			$ok = ce_sec_write_htaccess();
 			++$writes;
 		} while ( $writes < 3 && ce_sec_htaccess_dirty() );
