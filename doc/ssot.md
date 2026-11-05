@@ -302,7 +302,7 @@ Main branch is `main`. Version tags follow semantic versioning prefixed with `v`
 
 Distribution zip is built with `git archive`, which honours the `export-ignore` lines in `.gitattributes` (`.claude/`, `bin/`, `tests/`, `phpcs.xml.dist`, `.gitattributes`, `.gitignore`):
 ```bash
-git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.13.zip HEAD
+git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.13.zip v2.18.13   # the release tag, as in doc/readme.md
 ```
 
 ---
