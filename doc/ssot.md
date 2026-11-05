@@ -29,7 +29,7 @@ This document is authoritative. When any other file conflicts with a rule stated
 | `.htaccess` markers | `Block xmlrpc.php` (shared) and `Compelling Evidence: block direct file access` (`CE_SEC_FILES_MARKER`) |
 | Drop-in marker | `Compelling Evidence error page drop-in` (`CE_ERR_MARKER`); static copies in `wp-content/compelling-evidence-errors/` |
 | wp-config switches | `CE_SECURITY_LOCK` (false), `CE_KEEP_DEV_FILES` (true), `CE_BLOCK_DIRECT_FILES` (false) |
-| Served documents | None. The theme `.htaccess` refuses every Markdown file, and the live-server clean-up removes `doc/`. The Theme Options footer links `readme.txt` on GitHub |
+| Served documents | `readme.txt` at the theme root stays publicly reachable. No Markdown file is served: the theme `.htaccess` refuses every one, and the live-server clean-up removes `doc/`. The Theme Options footer links `readme.txt` on GitHub |
 
 ---
 

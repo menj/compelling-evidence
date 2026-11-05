@@ -28,6 +28,7 @@ A child theme for one site: 14 journeys, a weighted intake quiz, 143 articles in
 ```
 
 ```
+set -e                                               # stop at the first failure
 for t in tests/*.php; do php "$t" || exit 1; done   # PHP self-tests, WordPress stubbed
 node tests/analytics-path-test.js                    # the analytics page type and slug
 for f in functions.php inc/*.php; do php -l "$f" > /dev/null || exit 1; done
@@ -238,7 +239,8 @@ location ~ ^/wp-content/themes/compelling-evidence/(tests|bin|tools|doc)/ { deny
 location ~* ^/wp-content/themes/compelling-evidence/.+\.md$ { deny all; }
 location ~ ^/wp-includes/(?!(js/tinymce/wp-tinymce|ms-files)\.php$).+\.php { deny all; }
 location ~ ^/wp-admin/includes/.+\.php { deny all; }
-location ~ ^/(wp-config|wp-settings|wp-config-sample)\.php { deny all; }
+location ~ (^|/)wp-config\.php$ { deny all; }
+location ~ ^/(wp-settings|wp-config-sample)\.php { deny all; }
 location ~ ^/(wp-admin/install\.php|readme\.html) { deny all; }
 location ~ ^/wp-content/themes/.+\.php { deny all; }
 error_page 403 /wp-content/compelling-evidence-errors/403.html;
@@ -248,7 +250,7 @@ error_page 503 /wp-content/compelling-evidence-errors/503.html;
 error_page 504 /wp-content/compelling-evidence-errors/504.html;
 ```
 
-Nginx serves `error_page` for PHP's own 500 and 503 answers only with `fastcgi_intercept_errors on;` in the FastCGI location; without it those answers reach visitors as PHP sent them. Jetpack needs XML-RPC: leave out the `xmlrpc.php` line and also switch "Turn off XML-RPC" off on the Security tab, since the theme refuses XML-RPC in PHP too. Prefix the paths when WordPress lives in a subfolder, and when `wp-config.php` sits in the folder above WordPress, add a rule for it there as well, for example `location = /wp-config.php { deny all; }` above a WordPress in `/wp/`.
+Nginx serves `error_page` for PHP's own 500 and 503 answers only with `fastcgi_intercept_errors on;` in the FastCGI location; without it those answers reach visitors as PHP sent them. Jetpack needs XML-RPC: leave out the `xmlrpc.php` line and also switch "Turn off XML-RPC" off on the Security tab, since the theme refuses XML-RPC in PHP too. These rules do not follow the Security switches or `CE_SECURITY_LOCK`: to let XML-RPC through, take the `xmlrpc.php` line out by hand as well. The `wp-config.php` rule matches at any depth, so it also covers a `wp-config.php` in the folder above a WordPress that lives in a subfolder. Prefix the other paths when WordPress lives in a subfolder.
 
 ---
 

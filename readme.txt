@@ -113,11 +113,11 @@ The theme declares automatic-feed-links, and its feed redirector then removes th
 
 = Why did the theme delete .git, tests and doc from its folder? =
 
-They are development files, and a web server can hand them to anyone who asks. On a live server the theme removes them on activation and once per version, and the web server refuses them until then. A site where you work on the theme keeps them: set WP_ENVIRONMENT_TYPE to local or development in wp-config.php, or add define( 'CE_KEEP_DEV_FILES', true );. The documentation is in the theme zip and in the repository.
+They are development files, and a web server can hand them to anyone who asks. On a live server the theme removes them on activation and once per version. Until then Apache refuses them through the theme's .htaccess; Nginx does so only if the host has added the rules in doc/readme.md. A site where you work on the theme keeps them: set WP_ENVIRONMENT_TYPE to local or development in wp-config.php, or add define( 'CE_KEEP_DEV_FILES', true );. The documentation is in the theme zip and in the repository.
 
 = A tool I use stopped publishing after an update. =
 
-The Security tab turns off XML-RPC, application passwords and REST changes from outside a logged-in browser, because spam tools use them. Switch off the one your tool needs. In an emergency, define( 'CE_SECURITY_LOCK', false ); in wp-config.php lifts all three.
+The Security tab turns off XML-RPC, application passwords and REST changes from outside a logged-in browser, because spam tools use them. Switch off the one your tool needs. A tool that logs in to XML-RPC with a password needs both the XML-RPC switch and the REST switch off, since either one refuses password logins there. In an emergency, define( 'CE_SECURITY_LOCK', false ); in wp-config.php lifts all three.
 
 = What are the error pages? =
 

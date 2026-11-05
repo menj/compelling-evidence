@@ -17,7 +17,7 @@ This document describes the update steps, the notes for each version that needs 
 
 ## Upgrading to v2.18.9 from v2.18.8
 
-Documentation only. Replace the theme files; nothing else to do.
+Documentation only, with no change to the articles. As with every version, the first admin page runs the content sync: it writes every article from the JSON batches over the database copy and moves to the trash any published `ce_article` whose slug is not in them. An edit made to an article in WordPress is lost, so make it in the batch file instead (see Content Sync Behaviour on Upgrade).
 
 ---
 
