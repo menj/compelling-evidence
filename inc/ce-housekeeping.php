@@ -66,18 +66,25 @@ function ce_keep_dev_files() {
  * @return bool
  */
 function ce_remove_path( $path, $root ) {
-	// Every 200 entries the cleanup renews its lock, so a long run over a
-	// large .git tree is never taken for a dead one.
-	static $seen = 0;
+	// The cleanup renews its lock every 200 entries, and at least every 30
+	// seconds, so a long run over a large .git tree on a slow disk is never
+	// taken for a dead one, and a holder that lost its lock stops within
+	// 30 seconds.
+	static $seen = 0, $renewed = 0;
+	if ( ! $renewed ) {
+		$renewed = time();
+	}
 	// A holder that finds its lock gone (another request took it over after
 	// a long pause) stops at once and leaves the rest to that request.
 	if ( ! empty( $GLOBALS['ce_dev_files_lost'] ) ) {
 		return false;
 	}
-	if ( 0 === ++$seen % 200 && ! empty( $GLOBALS['ce_dev_files_token'] ) && defined( 'CE_LOCK_READY' )
-		&& ! ce_lock_renew( 'ce_dev_files_lock', $GLOBALS['ce_dev_files_token'] ) ) {
-		$GLOBALS['ce_dev_files_lost'] = true; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
-		return false;
+	if ( ( 0 === ++$seen % 200 || time() - $renewed >= 30 ) && ! empty( $GLOBALS['ce_dev_files_token'] ) && defined( 'CE_LOCK_READY' ) ) {
+		$renewed = time();
+		if ( ! ce_lock_renew( 'ce_dev_files_lock', $GLOBALS['ce_dev_files_token'] ) ) {
+			$GLOBALS['ce_dev_files_lost'] = true; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+			return false;
+		}
 	}
 	$real_root = realpath( $root );
 	$real      = realpath( $path );
@@ -106,6 +113,11 @@ function ce_remove_path( $path, $root ) {
 
 	foreach ( array_diff( $items, array( '.', '..' ) ) as $item ) {
 		ce_remove_path( $path . DIRECTORY_SEPARATOR . $item, $root );
+	}
+
+	// Lost the lock below: leave this folder, and every one above it, as it is.
+	if ( ! empty( $GLOBALS['ce_dev_files_lost'] ) ) {
+		return false;
 	}
 
 	return @rmdir( $path ); // phpcs:ignore WordPress.PHP.NoSilencedErrors, WordPress.WP.AlternativeFunctions

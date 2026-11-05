@@ -302,8 +302,13 @@ function ce_sec_sync_htaccess( $force = false ) {
 		// A note left between the last check and the release is taken up
 		// here, by this request or by whichever one now holds the lock.
 	} while ( $rounds < 3 && ( ce_sec_htaccess_dirty() || ce_sec_note( 'ce_sec_htaccess_remove' ) ) );
-	// Three rounds and still a note: the next admin page load or request of
-	// a new version writes again, since the note stays until it is read.
+	// Three rounds and still a note: not done. The note stays until it is
+	// read, the hourly throttle is lifted, and the caller records nothing,
+	// so the next admin page load or request writes again.
+	if ( ce_sec_htaccess_dirty() || ce_sec_note( 'ce_sec_htaccess_remove' ) ) {
+		delete_transient( 'ce_sec_htaccess_checked' );
+		return false;
+	}
 
 	return $ok;
 }
