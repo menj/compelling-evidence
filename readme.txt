@@ -6,10 +6,10 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.18.9
-Stable tag: 2.18.9
-License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Version: 2.18.10
+Stable tag: 2.18.10
+License: GNU General Public License v3 or later
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Template: twentytwentyfive
 Tags: custom-menu, custom-logo, featured-images, rtl-language-support, translation-ready
 
@@ -30,6 +30,7 @@ All fonts are self-hosted. With default settings the theme makes no request to a
 * 143 articles and their topic taxonomy (ce_topic), seeded from JSON batch files.
 * Reader questions (ce_question) with an Ask a Question form, spam honeypot and nonce.
 * A progress page driven by localStorage.
+* On each article: the published and updated dates, an "In short" box from the excerpt and the key points, the questions saved in the FAQ Items box shown as a FAQ, and a list of every Qur'an and hadith passage quoted, linked to its place.
 * Votes and resonance buttons under each article.
 * A glossary of Islamic and Arabic terms with tooltips, and automatic crosslinks to this site and to 6 other sites.
 * One schema.org graph per page (Article, FAQPage, Quiz, LearningResource, QAPage, ImageObject, Quotation and more).
@@ -107,6 +108,9 @@ Add the article to a batch file in inc/articles/, update manifest.json and its c
 
 Appearance > CE Theme Options > General. Change the verse, its number, translation and reference together.
 
+= How do I add key points or questions to an article? =
+Open the article and find the Key points box and the FAQ Items box below the text. Type one key point a line; they show in the "In short" box under the excerpt. Each FAQ item shows at the foot of the article as a question with its answer. Leave a box empty to show nothing.
+
 = Why are feed links missing from the page head? =
 
 The theme declares automatic-feed-links, and its feed redirector then removes the links and sends feed URLs to the matching page. The site publishes no feed on purpose.
@@ -135,7 +139,7 @@ With default settings the theme sets no cookie, stores nothing about visitors an
 
 == Resources ==
 
-CE Theme, Copyright 2026 MENJ. Licensed GPLv2 or later.
+CE Theme, Copyright 2026 MENJ. Licensed under the GNU GPL, version 3 or later; the full text is in the LICENSE file.
 
 * Parent theme: Twenty Twenty-Five, Automattic, GPLv2 or later.
 * Playfair Display, Copyright 2017 The Playfair Display Project Authors, SIL OFL 1.1. Source: Google Fonts. assets/fonts/licenses/Playfair-Display-OFL.txt
@@ -146,11 +150,19 @@ CE Theme, Copyright 2026 MENJ. Licensed GPLv2 or later.
 * CE Hadith (ce-hadith-*.woff2): Noto Naskh Arabic, The Noto Project Authors, SIL OFL 1.1. assets/fonts/licenses/Noto-Naskh-Arabic-CE-Hadith-OFL.txt
 * KFGQPC HAFS Uthmanic Script, King Fahd Glorious Quran Printing Complex, under its own free-distribution licence (assets/fonts/licenses/kfgqpc-hafs-uthmanic-script-LICENSE.txt). It is not GPL-compatible and forbids modification; the owner chose to ship a WOFF2 conversion. Used for Quran text only.
 * Sabon Next LT (sabon-next-lt-*.woff2), Monotype, a commercial licence held by the site owner. It is not GPL-compatible and may not be redistributed with the theme outside this site. It is an optional face in Typography; the default faces do not use it.
-* Images in assets/images and assets/diagrams (icons, favicons, the Al-Rahman calligraphy, diagrams) and screenshot.png: made for this site, GPLv2 or later.
+* Images in assets/images and assets/diagrams (icons, favicons, the Al-Rahman calligraphy, diagrams) and screenshot.png: made for this site, GPLv3 or later.
 * Social icons in assets/images/social (X, Facebook, YouTube, Instagram, TikTok, Threads, Bluesky, Mastodon, Telegram, WhatsApp): Minimalist Social Icons Pack 2.8, GPL. These ten come from CC0 sources; the pack's two CC BY 4.0 icons are not bundled. The brand marks belong to their owners.
 * Article figures are not bundled. inc/articles/media.json lists each with its source page, creator and licence, and the credit prints under the figure.
 
 == Changelog ==
+
+= 2.18.10 - November 2026 =
+* Articles and posts show when they were published and, when it differs, updated.
+* An "In short" box opens each article: the excerpt and the key points typed in the new Key points box.
+* The questions saved in the FAQ Items box now show at the foot of the article, and are marked up for search engines only then.
+* A sources list names every Qur'an and hadith passage the article quotes, each linked to its place. The article's own Sources list is read for search engines too.
+* Blog posts gain breadcrumbs.
+* The theme is now licensed under the GNU GPL, version 3 or later. The full text is in the LICENSE file.
 
 = 2.18.9 - November 2026 =
 * The documentation is up to date with the theme: how to update by FTP, every settings tab, the security switches, the error pages and the files the theme removes from a live server.
@@ -577,6 +589,9 @@ Uthmani Quran font replaced with KFGQPC HAFS version (608 glyphs). CE Hadith add
 For the full version history see doc/changelog.md in the theme zip.
 
 == Upgrade Notice ==
+
+= 2.18.10 =
+Questions saved in an article's FAQ Items box now show on the page. Check them before you update, since readers will see them.
 
 = 2.16.0 =
 Four plugin features are built in. Deactivate Reading Progress Bar, Unlist Posts & Pages and Pretty Search Permalinks once you have checked the theme settings; until then the theme leaves those jobs to the plugins.

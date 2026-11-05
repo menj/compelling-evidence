@@ -85,6 +85,7 @@ $reading_secs = $word_count * 0.3; // approx seconds for progress tracking
           </span>
           <span class="meta-sep">·</span>
           <span><?php echo number_format($word_count); ?> words</span>
+          <?php ce_anatomy_dates(); ?>
         </div>
       </div>
     </header>
@@ -92,6 +93,7 @@ $reading_secs = $word_count * 0.3; // approx seconds for progress tracking
     <!-- Content -->
     <div class="article-content-wrap">
       <div class="article-content" id="article-body">
+        <?php ce_anatomy_answer_box(); ?>
         <?php the_content(); ?>
         <?php
         wp_link_pages([
@@ -99,6 +101,8 @@ $reading_secs = $word_count * 0.3; // approx seconds for progress tracking
           'after'  => '</nav>',
         ]);
         ?>
+
+        <?php ce_anatomy_after_content(); ?>
 
         <?php ce_render_murtadd_counterparts(); ?>
 
@@ -114,7 +118,7 @@ $reading_secs = $word_count * 0.3; // approx seconds for progress tracking
       </div>
 
       <!-- Sidebar -->
-      <aside class="article-sidebar">
+      <div class="article-sidebar">
 
         <!-- Sticky group: stays in view for the whole article (TOC + reading progress) -->
         <div class="sidebar-sticky-track">
@@ -187,7 +191,7 @@ $reading_secs = $word_count * 0.3; // approx seconds for progress tracking
             <?php esc_html_e('Ask a Question', 'compelling-evidence'); ?>
           </a>
         </div>
-      </aside>
+      </div>
     </div>
 
   </article>

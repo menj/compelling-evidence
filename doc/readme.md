@@ -2,7 +2,8 @@
 
 | | |
 |---|---|
-| Version | 2.18.9 |
+| Version | 2.18.10 |
+| Licence | GNU GPL v3 or later; the full text is in `LICENSE` |
 | Parent | Twenty Twenty-Five, tested with 1.5 (`CE_PARENT_TESTED_VERSION`) |
 | Requires | WordPress 6.7 (tested to 7.1), PHP 8.0 (tested to 8.4) |
 | Hosting | Apache 2.4 with mod_rewrite for the managed `.htaccess` rules; Nginx works with the rules below added by hand. Multisite works with the limits below |
@@ -36,7 +37,7 @@ php bin/build-error-pages.php                        # rebuild errors/*.html fro
 node bin/quiz-sim.js                                 # quiz scoring simulation
 python3 bin/build-murtadd-counterparts.py            # rebuild inc/data/murtadd-counterparts.json
 python3 bin/build-quiz-murtadd-links.py              # rebuild inc/data/quiz-murtadd-links.json
-git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.9.zip v2.18.9   # after the release is committed and tagged
+git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.10.zip v2.18.10   # after the release is committed and tagged
 ```
 
 Every PHP script in `tests/` and `bin/` exits unless it runs from the command line. `.gitattributes` keeps `.gitattributes`, `.gitignore`, `.claude/`, `phpcs.xml.dist`, `bin/` and `tests/` out of the zip; `doc/` and `tools/` ship, and the live-server clean-up removes them.
@@ -53,7 +54,7 @@ A release bumps `Version` in `style.css` (the only version source; PHP reads it 
 
 1. `functions.php` reads its own `require_once` list and checks that every `inc/` file is readable before it loads any (`ce_incomplete_theme()`). A missing file stops the load.
 2. The files load inside `try`, so a half-written file (a `ParseError`) stops it too. Either way visitors get a 503 "Back shortly" page with `Retry-After: 300`, `no-store` and noindex; the log gets one line per problem every ten minutes. The login screen, AJAX, cron and the command line go on without it. `functions.php` cannot guard its own parse.
-3. The modules load in this order: ce-db, ce-gone, ce-security-detector, ce-lock, ce-security, ce-housekeeping, ce-engagement, ce-seo, ce-schema, ce-journey-assets, ce-journey-template, ce-standalone-faq, ce-aeo, ce-secondary-pages, ce-migration-2-2-0, ce-migration-2-2-74, ce-analytics, ce-parent-compat, ce-fonts, ce-icons, ce-404, ce-media, ce-image-sitemap, ce-media-auto, ce-search-permalinks, ce-social-icons, ce-reading-progress, ce-unlist, ce-plugin-compat, ce-login, ce-rankmath, ce-theme-options, ce-error-pages, class-ce-article-loader, class-ce-feed-redirector, ce-content-sync, ce-quran-text, ce-contextual-links, ce-crosslinks, ce-murtadd-counterparts, ce-glossary, ce-question-cpt.
+3. The modules load in this order: ce-db, ce-gone, ce-security-detector, ce-lock, ce-security, ce-housekeeping, ce-engagement, ce-seo, ce-schema, ce-journey-assets, ce-journey-template, ce-standalone-faq, ce-aeo, ce-article-anatomy, ce-secondary-pages, ce-migration-2-2-0, ce-migration-2-2-74, ce-analytics, ce-parent-compat, ce-fonts, ce-icons, ce-404, ce-media, ce-image-sitemap, ce-media-auto, ce-search-permalinks, ce-social-icons, ce-reading-progress, ce-unlist, ce-plugin-compat, ce-login, ce-rankmath, ce-theme-options, ce-error-pages, class-ce-article-loader, class-ce-feed-redirector, ce-content-sync, ce-quran-text, ce-contextual-links, ce-crosslinks, ce-murtadd-counterparts, ce-glossary, ce-question-cpt.
 4. On `init` (priority 99) the first request of a new version runs the dev-file clean-up and the `.htaccess` sync, each under the lock in `inc/ce-lock.php`. On `admin_init` the content sync and the one-time page and migration modules run.
 
 ### File map
@@ -292,6 +293,7 @@ Settings, articles, analytics and the Security records are per site. On a networ
 
 - `inc/ce-seo.php` writes the meta description, canonical, Open Graph and Twitter tags and the title (`<page> | Compelling Evidence`, under 60 characters, checked by `tests/title-builder-test.php`). `inc/data/seo-titles.json` holds the short titles.
 - `inc/ce-schema.php` builds one JSON-LD graph per page: the page frame, Article, FAQPage (the site FAQ, each journey and the quiz, each with a visible FAQ from `inc/data/standalone-faq.json`), Quiz, LearningResource, QAPage, ItemList, ImageObject and Quotation nodes. `tests/schema-graph-test.php` checks 189 graphs. With Rank Math active the nodes join Rank Math's graph (`inc/ce-rankmath.php`).
+- An article's own FAQPage comes from its FAQ Items (`_ce_faq_items`) and is emitted only while `ce_anatomy_faq_shows()` says the FAQ shows on the page (`inc/ce-article-anatomy.php`). Its own Sources list joins the Article `citation`.
 - The author in the structured data is fixed in `inc/ce-seo.php`, whatever the byline field holds.
 - `class-ce-feed-redirector.php` removes feed links and sends feed addresses to the matching page. `/image-sitemap.xml` lists article images while no SEO plugin is active.
 

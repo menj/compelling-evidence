@@ -428,7 +428,7 @@ function ce_render_resonance( ?int $post_id = null ) {
     $cls       = $responded ? ' ce-resonated' : '';
     ?>
     <div class="ce-resonance<?php echo esc_attr( $cls ); ?>" data-post-id="<?php echo (int) $post_id; ?>">
-        <h4 class="ce-resonance-title">Did this article help?</h4>
+        <h3 class="ce-resonance-title">Did this article help?</h3>
         <?php if ( $responded ) : ?>
             <p class="ce-resonance-thanks">Thank you for your feedback.</p>
             <div class="ce-resonance-results">

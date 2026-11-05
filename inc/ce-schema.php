@@ -287,6 +287,9 @@ function ce_schema_page_nodes( array $base ): array {
                 '@type'       => 'SpeakableSpecification',
                 'cssSelector' => [ '.article-title', '.article-content > p:first-of-type' ],
             ];
+            if ( function_exists( 'ce_anatomy_answer_shows' ) && ce_anatomy_answer_shows( ce_anatomy_post() ) ) {
+                $page['speakable']['cssSelector'][] = '.ce-answer';
+            }
         }
         if ( ( $n['@type'] ?? '' ) === 'BreadcrumbList' && isset( $n['@id'] ) ) {
             $page['breadcrumb'] = ce_schema_ref( $n['@id'] );
@@ -1287,6 +1290,12 @@ function ce_schema_article_details( array &$article, WP_Post $post ): array {
     if ( $scripture['cited'] ) {
         $extra               = array_merge( $extra, $scripture['nodes'] );
         $article['citation'] = array_map( 'ce_schema_ref', $scripture['cited'] );
+    }
+
+    // The article's own Sources list, as shown on the page (2.18.10).
+    $references = function_exists( 'ce_anatomy_reference_citations' ) ? ce_anatomy_reference_citations( $content ) : [];
+    if ( $references ) {
+        $article['citation'] = array_merge( (array) ( $article['citation'] ?? [] ), $references );
     }
 
     $terms = ce_schema_glossary_mentions( $content );

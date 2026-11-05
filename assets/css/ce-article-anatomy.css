@@ -1,0 +1,67 @@
+/**
+ * Article anatomy (inc/ce-article-anatomy.php): the dates in the meta row,
+ * "In short", the visible FAQ and the sources list. Built on the theme's own
+ * tokens (main.css :root) and the look of the hadith cards.
+ */
+
+/* Dates beside the reading time. */
+.article-meta .meta-date time { font-variant-numeric: tabular-nums; }
+
+/* "In short". */
+.ce-answer {
+  margin: 0 0 2.2rem;
+  padding: 1.3rem 1.6rem;
+  background: rgba(12,212,224,0.045);
+  border: 1px solid rgba(12,212,224,0.18);
+  border-inline-start: 3px solid var(--teal, #0cd4e0);
+  border-radius: 14px;
+}
+.article-content .ce-answer-title {
+  margin: 0 0 0.6rem;
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--teal, #0cd4e0);
+}
+.article-content .ce-answer-summary { margin: 0 0 0.6rem; }
+.article-content .ce-answer-points { margin: 0; padding-inline-start: 1.2rem; }
+.article-content .ce-answer-points li { margin: 0.3rem 0 0; }
+
+/* Questions readers ask: the FAQ Items, shown. */
+.ce-faq { margin: 3rem 0 0; }
+.ce-faq-item {
+  margin: 0 0 0.8rem;
+  padding: 0.9rem 1.2rem;
+  border: 1px solid rgba(245,240,255,0.14);
+  border-radius: 12px;
+  background: rgba(245,240,255,0.03);
+}
+.ce-faq-item > summary {
+  cursor: pointer;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  color: var(--white, #f5f0ff);
+}
+.ce-faq-item > summary:focus-visible { outline: 2px solid var(--teal, #0cd4e0); outline-offset: 3px; border-radius: 4px; }
+.ce-faq-item[open] > summary { margin-bottom: 0.6rem; }
+.ce-faq-answer p:last-child { margin-bottom: 0; }
+
+/* Sources: every passage quoted, linked to its card. */
+.ce-sources {
+  margin: 3rem 0 0;
+  padding: 1.4rem 1.6rem;
+  border: 1px solid rgba(245,240,255,0.14);
+  border-radius: 14px;
+}
+.article-content .ce-sources h2 { margin-top: 0; }
+.article-content .ce-sources-note { font-family: var(--font-ui); font-size: 0.85rem; color: var(--muted); }
+.article-content .ce-sources-list { margin: 0; padding-inline-start: 1.6rem; font-family: var(--font-ui); font-size: 0.9rem; }
+.article-content .ce-sources-list li { margin: 0.35rem 0 0; }
+.article-content .ce-sources-list a { color: var(--white, #f5f0ff); text-decoration: underline; text-decoration-color: var(--teal, #0cd4e0); text-underline-offset: 0.2em; }
+:is(.quran-citation, .hadith-citation)[id] { scroll-margin-top: calc(var(--nav-h, 72px) + 1.5rem); }
+:is(.quran-citation, .hadith-citation):target { box-shadow: 0 0 0 2px var(--teal, #0cd4e0); }
+
+/* The hadith reference under each card, readable at its small size (axe color-contrast). */
+.hadith-ref, .hadith-ref em { color: rgba(12,212,224,0.9); }

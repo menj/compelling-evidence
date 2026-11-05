@@ -24,8 +24,10 @@
   var list = document.getElementById('ce-toc-list');
   if (!body || !toc || !list) return;
 
-  var headings = body.querySelectorAll('h2');
-  if (headings.length < 2) return;
+  // The "In short" box is no section of the article. The list shows from
+  // three sections up, as on the other themes.
+  var headings = body.querySelectorAll('h2:not(.ce-answer-title)');
+  if (headings.length < 3) return;
 
   var reduceMotion = window.matchMedia &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;

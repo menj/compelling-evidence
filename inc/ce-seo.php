@@ -667,9 +667,18 @@ function ce_schema_nodes(): array {
         $schemas[] = $article;
         $schemas   = array_merge( $schemas, $more );
 
-        // Per-article FAQPage removed in 2.6.31: the _ce_faq_items answers are
-        // stored in meta but never shown on the page, and structured data must
-        // describe visible content.
+        // Per-article FAQPage, back in 2.18.10 by the owner's decision of
+        // 2026-11-03: the _ce_faq_items answers now show on the page
+        // (ce_anatomy_faq_section()), so the markup describes what the reader
+        // sees. Without visible questions there is no FAQPage.
+        if ( function_exists( 'ce_anatomy_faq_shows' ) && ce_anatomy_faq_shows() && function_exists( 'ce_aeo_get_faq_schema' ) ) {
+            $faq = ce_aeo_get_faq_schema( get_post() );
+            if ( $faq ) {
+                unset( $faq['@context'] );
+                $faq['isPartOf'] = ce_schema_ref( ce_schema_id( $url, 'webpage' ) );
+                $schemas[]       = $faq;
+            }
+        }
 
         // ── BreadcrumbList ──
         $breadcrumbs = [
