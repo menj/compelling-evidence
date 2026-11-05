@@ -89,7 +89,7 @@ Replace the theme files. Nothing is written to `wp-content` until an administrat
 
 ## Upgrading to v2.7.1 from v2.7.0
 
-**After deploying:** load any admin page once. On Apache, with "Turn off XML-RPC" on, the theme adds a `# BEGIN Block xmlrpc.php` section to `.htaccess`; if another of the seven themes already wrote it, it is left as it is. If the Security tab says the file could not be written, ask the host to deny xmlrpc.php at the server. Switching "Turn off XML-RPC" off, or switching to a theme outside the sister themes, removes the section. Step 7 of the 2.7.0 checklist is now done by the theme on Apache.
+**After deploying:** load any admin page once. On Apache, with "Turn off XML-RPC" on, the theme adds a `# BEGIN Block xmlrpc.php` section to `.htaccess`; if another of the seven themes already wrote it, it is left as it is. If the Security tab says the file could not be written, ask the host to deny xmlrpc.php at the server. Switching "Turn off XML-RPC" off, or switching to a theme outside the seven themes, removes the section. Step 7 of the 2.7.0 checklist is now done by the theme on Apache.
 
 ---
 
