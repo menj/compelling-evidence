@@ -594,7 +594,7 @@ For the full version history see doc/changelog.md in the theme zip.
 == Upgrade Notice ==
 
 = 2.18.11 =
-Documentation only. Nothing needs doing.
+Documentation only. As with every version, the first admin page rewrites the articles from the theme's files and trashes any published article the theme does not ship, so copy any edit made in WordPress into the theme's article files first.
 
 = 2.18.10 =
 Questions saved in an article's FAQ Items box now show on the page. Check them before you update, since readers will see them.
