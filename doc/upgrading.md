@@ -6,6 +6,10 @@ Only paths explicitly identified in development are documented here.
 
 ---
 
+## Upgrading to v2.18.4 from v2.18.3
+
+Replace the theme files and open any admin page as an administrator. The theme writes its static error pages into `wp-content/compelling-evidence-errors/`. If `.htaccess` has `ErrorDocument` lines that point at `/wp-content/themes/compelling-evidence/errors/`, replace them with the lines on CE Theme Options > Tools & Sync. The old lines still work for a site at the domain root.
+
 ## Upgrading to v2.18.3 from v2.18.2
 
 Replace the theme files and open any admin page as an administrator: the error pages are written then, with no button press. A copy another theme left in `wp-content` is replaced; a file without a theme's mark is left alone. Add the new `ErrorDocument 504` line from CE Theme Options > Tools & Sync to `.htaccess` if you use the static pages.

@@ -46,6 +46,52 @@ function ce_error_dropins() {
 	);
 }
 
+/** The folder in wp-content that holds the site's copies of the static pages. */
+const CE_STATIC_ERRORS = 'compelling-evidence-errors';
+
+/**
+ * The site's copies of the static pages for the web server, relative to
+ * wp-content => status code. errors/ in the theme assumes a site at the
+ * domain root; these carry the site's own home address, so they also work
+ * when WordPress sits in a subfolder.
+ *
+ * @return array<string,string>
+ */
+function ce_error_static_files() {
+	$out = array();
+	foreach ( array( '403', '500', '502', '503', '504' ) as $code ) {
+		$out[ CE_STATIC_ERRORS . '/' . $code . '.html' ] = $code;
+	}
+	return $out;
+}
+
+/**
+ * Every file the theme writes into wp-content: the drop-ins, then the static
+ * copies. File => page kind.
+ *
+ * @return array<string,string>
+ */
+function ce_error_files() {
+	return array_merge( ce_error_dropins(), ce_error_static_files() );
+}
+
+/**
+ * The text of any file the theme writes into wp-content.
+ *
+ * @param string $name A key of ce_error_files().
+ * @return string
+ */
+function ce_error_file_source( $name ) {
+	$static = ce_error_static_files();
+	if ( ! isset( $static[ $name ] ) ) {
+		return ce_error_dropin_source( ce_error_dropins()[ $name ] );
+	}
+	$site = wp_specialchars_decode( (string) get_bloginfo( 'name' ), ENT_QUOTES );
+	$home = (string) wp_parse_url( home_url( '/' ), PHP_URL_PATH );
+	return '<!-- ' . CE_ERR_MARKER . ' (' . $static[ $name ] . ') ' . (string) wp_get_theme()->get( 'Version' ) . ". Written by the CE theme; safe to delete. -->\n"
+		. ce_error_page_html( $static[ $name ], '' !== $site ? $site : 'Compelling Evidence', '' !== $home ? $home : '/' ) . "\n";
+}
+
 /**
  * The source of one drop-in.
  *
@@ -109,7 +155,7 @@ function ce_error_state( $name, $dir = '' ) {
 	if ( ! ce_error_is_ours( $path ) ) {
 		return 'foreign';
 	}
-	return (string) file_get_contents( $path ) === ce_error_dropin_source( ce_error_dropins()[ $name ] ) ? 'installed' : 'outdated'; // phpcs:ignore WordPress.WP.AlternativeFunctions
+	return (string) file_get_contents( $path ) === ce_error_file_source( $name ) ? 'installed' : 'outdated'; // phpcs:ignore WordPress.WP.AlternativeFunctions
 }
 
 /**
@@ -123,17 +169,32 @@ function ce_error_state( $name, $dir = '' ) {
 function ce_error_install( $dir = '' ) {
 	$dir    = rtrim( '' !== $dir ? $dir : WP_CONTENT_DIR, '/' );
 	$result = array();
-	foreach ( ce_error_dropins() as $name => $kind ) {
+	foreach ( array_keys( ce_error_files() ) as $name ) {
 		$state = ce_error_state( $name, $dir );
 		if ( 'foreign' === $state || 'installed' === $state ) {
 			$result[ $name ] = 'foreign' === $state ? 'kept' : 'unchanged';
 			continue;
 		}
 		$target = $dir . '/' . $name;
+		if ( ! is_dir( dirname( $target ) ) ) {
+			wp_mkdir_p( dirname( $target ) );
+		}
 		// A temporary name, then a rename, so WordPress never reads half a file.
 		$tmp = $target . '.' . uniqid( 'err-', true ) . '.tmp';
-		if ( false !== @file_put_contents( $tmp, ce_error_dropin_source( $kind ) ) && @rename( $tmp, $target ) ) { // phpcs:ignore WordPress.WP.AlternativeFunctions, WordPress.PHP.NoSilencedErrors
+		$wrote = false !== @file_put_contents( $tmp, ce_error_file_source( $name ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions, WordPress.PHP.NoSilencedErrors
+		if ( $wrote && 'missing' === $state ) {
+			// A hard link fails when a file has appeared since the check, so a
+			// file someone else wrote in the meantime is never replaced.
+			$wrote = @link( $tmp, $target ) || ( ! file_exists( $target ) && @rename( $tmp, $target ) ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+		} elseif ( $wrote ) {
+			// Ours or another theme's: check again just before the swap.
+			$wrote = in_array( ce_error_state( $name, $dir ), array( 'outdated', 'theme' ), true ) && @rename( $tmp, $target ); // phpcs:ignore WordPress.WP.AlternativeFunctions, WordPress.PHP.NoSilencedErrors
+		}
+		if ( $wrote ) {
 			$result[ $name ] = 'written';
+			if ( file_exists( $tmp ) ) {
+				@unlink( $tmp ); // phpcs:ignore WordPress.WP.AlternativeFunctions, WordPress.PHP.NoSilencedErrors
+			}
 		} else {
 			$result[ $name ] = 'failed';
 			if ( file_exists( $tmp ) ) {
@@ -164,7 +225,7 @@ function ce_error_needs_install() {
 	if ( get_option( 'ce_error_pages_fingerprint' ) !== ce_error_fingerprint() ) {
 		return true;
 	}
-	foreach ( array_keys( ce_error_dropins() ) as $name ) {
+	foreach ( array_keys( ce_error_files() ) as $name ) {
 		// Missing, another theme's leftover, or a copy of the theme's own that
 		// differs from what it would write now (edited or half restored).
 		if ( in_array( ce_error_state( $name ), array( 'missing', 'theme', 'outdated' ), true ) ) {
@@ -217,11 +278,14 @@ function ce_error_remove() {
 	if ( is_multisite() ) {
 		return;
 	}
-	foreach ( array_keys( ce_error_dropins() ) as $name ) {
+	foreach ( array_keys( ce_error_files() ) as $name ) {
 		$path = WP_CONTENT_DIR . '/' . $name;
 		if ( ce_error_is_ours( $path ) ) {
 			wp_delete_file( $path );
 		}
+	}
+	if ( is_dir( WP_CONTENT_DIR . '/' . CE_STATIC_ERRORS ) ) {
+		@rmdir( WP_CONTENT_DIR . '/' . CE_STATIC_ERRORS ); // phpcs:ignore WordPress.WP.AlternativeFunctions, WordPress.PHP.NoSilencedErrors -- only when empty.
 	}
 	delete_option( 'ce_error_pages_fingerprint' );
 }
@@ -256,12 +320,13 @@ function ce_handle_install_error_pages() {
 add_action( 'admin_post_ce_install_error_pages', 'ce_handle_install_error_pages' );
 
 /**
- * The lines for .htaccess that point the web server at the static pages.
+ * The lines for .htaccess that point the web server at the site's copies of
+ * the static pages in wp-content/compelling-evidence-errors/.
  *
  * @return string
  */
 function ce_error_htaccess_snippet() {
-	$base  = untrailingslashit( (string) wp_parse_url( get_stylesheet_directory_uri(), PHP_URL_PATH ) ) . '/errors/';
+	$base  = untrailingslashit( (string) wp_parse_url( content_url( '/' ), PHP_URL_PATH ) ) . '/' . CE_STATIC_ERRORS . '/';
 	$lines = array( '# CE: pages for the errors the web server answers before WordPress runs' );
 	foreach ( array( 403, 500, 502, 503, 504 ) as $code ) {
 		$lines[] = 'ErrorDocument ' . $code . ' ' . $base . $code . '.html';
@@ -289,6 +354,10 @@ function ce_render_error_pages_section() {
 		'php-error.php'   => __( 'a fatal PHP error stops a page (500)', 'compelling-evidence' ),
 		'db-error.php'    => __( 'the database cannot be reached (503, Retry-After)', 'compelling-evidence' ),
 	);
+	foreach ( ce_error_static_files() as $name => $code ) {
+		/* translators: %s: HTTP status code */
+		$when[ $name ] = sprintf( __( 'the web server answers %s, through the .htaccess lines below', 'compelling-evidence' ), $code );
+	}
 	$words  = array(
 		'written'   => __( 'written', 'compelling-evidence' ),
 		'unchanged' => __( 'already current', 'compelling-evidence' ),
@@ -327,7 +396,7 @@ function ce_render_error_pages_section() {
 		<?php submit_button( __( 'Install error pages', 'compelling-evidence' ), 'secondary', 'submit', false ); ?>
 	</form>
 	<?php endif; ?>
-	<p><?php esc_html_e( 'For errors the web server answers before WordPress starts, static pages are in the errors folder of the theme. Add these lines to .htaccess to use them:', 'compelling-evidence' ); ?></p>
+	<p><?php esc_html_e( 'For errors the web server answers before WordPress starts, the theme writes the static pages above into wp-content/compelling-evidence-errors, with this site’s home address. Add these lines to .htaccess to use them:', 'compelling-evidence' ); ?></p>
 	<textarea readonly rows="6" class="large-text code" aria-label="<?php esc_attr_e( '.htaccess lines', 'compelling-evidence' ); ?>"><?php echo esc_textarea( ce_error_htaccess_snippet() ); ?></textarea>
 	</div>
 	<?php
