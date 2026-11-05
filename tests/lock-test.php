@@ -18,9 +18,11 @@ define( 'ABSPATH', __DIR__ . '/' );
 class CE_Test_Wpdb {
 	public $options = 'wp_options';
 	private $db;
-	public function __construct() {
-		$this->db = new PDO( 'sqlite::memory:' );
-		$this->db->exec( 'CREATE TABLE wp_options (option_name TEXT PRIMARY KEY, option_value TEXT, autoload TEXT)' );
+	public function __construct( $file ) {
+		// Each instance is its own connection to the same database file, as
+		// two web requests are.
+		$this->db = new PDO( 'sqlite:' . $file );
+		$this->db->exec( 'CREATE TABLE IF NOT EXISTS wp_options (option_name TEXT PRIMARY KEY, option_value TEXT, autoload TEXT)' );
 	}
 	public function prepare( $sql, ...$args ) {
 		$db = $this->db;
@@ -34,7 +36,10 @@ class CE_Test_Wpdb {
 		return false === $v ? null : $v;
 	}
 }
-$GLOBALS['wpdb'] = new CE_Test_Wpdb();
+$ce_db_file     = tempnam( sys_get_temp_dir(), 'ce-lock-' );
+$ce_request_a   = new CE_Test_Wpdb( $ce_db_file );
+$ce_request_b   = new CE_Test_Wpdb( $ce_db_file );
+$GLOBALS['wpdb'] = $ce_request_a;
 function wp_generate_password( $n ) { return bin2hex( random_bytes( (int) ( $n / 2 ) ) ); }
 function wp_cache_delete() { return true; }
 require dirname( __DIR__ ) . '/inc/ce-lock.php';
@@ -64,6 +69,19 @@ ce_check( $held() === $b, 'the old holder cannot release the new holder\'s lock'
 ce_lock_release( 'ce_t', $b );
 ce_check( '' === $held(), 'the holder releases it' );
 ce_check( '' !== ce_lock_take( 'ce_t', 60 ), 'and it can be taken again' );
+
+// Two requests, two connections: while one holds the lock the other is
+// refused, and it gets the lock once the first lets go.
+$GLOBALS['wpdb'] = $ce_request_a;
+$GLOBALS['wpdb']->query( "DELETE FROM wp_options WHERE option_name = 'ce_t2'" );
+$first = ce_lock_take( 'ce_t2', 60 );
+$GLOBALS['wpdb'] = $ce_request_b;
+ce_check( '' !== $first && '' === ce_lock_take( 'ce_t2', 60 ), 'a second connection is refused while the first holds the lock' );
+$GLOBALS['wpdb'] = $ce_request_a;
+ce_lock_release( 'ce_t2', $first );
+$GLOBALS['wpdb'] = $ce_request_b;
+ce_check( '' !== ce_lock_take( 'ce_t2', 60 ), 'the second connection gets it after the release' );
+@unlink( $ce_db_file ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
 
 echo $ce_fail ? "$ce_fail failed\n" : "all passed\n";
 exit( $ce_fail ? 1 : 0 );

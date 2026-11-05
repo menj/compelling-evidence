@@ -174,5 +174,9 @@ foreach ( array( 'tests', 'bin', 'tools' ) as $ce_d ) {
 	ce_check( false !== strpos( $ce_ht, 'Require all denied' ) && false !== strpos( $ce_ht, 'Deny from all' ), "$ce_d/.htaccess refuses everything, on Apache 2.4 and 2.2" );
 }
 
+// Without mod_alias and mod_rewrite: the <If> on the request path refuses dot folders.
+$ce_if = preg_match( '/<If "%\\{REQUEST_URI\\} =~ m#(.+)#">/', (string) file_get_contents( dirname( __DIR__ ) . '/.htaccess' ), $ce_mm ) ? $ce_mm[1] : '';
+ce_check( '' !== $ce_if && 1 === preg_match( '#' . $ce_if . '#', '/wp-content/themes/x/.git/config' ) && 0 === preg_match( '#' . $ce_if . '#', '/wp-content/themes/x/.well-known/a' ) && 0 === preg_match( '#' . $ce_if . '#', '/wp-content/themes/x/assets/css/a.min.css' ), 'without mod_alias and mod_rewrite, the <If> refuses .git/config and leaves .well-known and assets open' );
+
 echo $ce_fail ? "$ce_fail failed\n" : "all passed\n";
 exit( $ce_fail ? 1 : 0 );

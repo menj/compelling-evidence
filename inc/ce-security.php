@@ -343,6 +343,14 @@ function ce_sec_write_htaccess() {
 		update_option( 'ce_security_htaccess', 'unavailable', false );
 		return false;
 	}
+	// A request that started before a theme switch must not write this
+	// theme's section back after the switch took it out: the stored theme,
+	// read past this request's cache, decides.
+	$active = ce_sec_option_raw( 'stylesheet' );
+	if ( '' !== $active && $active !== get_option( 'stylesheet' ) && ! has_filter( 'pre_option_stylesheet' ) ) {
+		insert_with_markers( $file, CE_SEC_FILES_MARKER, array() );
+		return false;
+	}
 	$want    = ce_sec_on( 'ce_sec_xmlrpc_off' );
 	$current = function_exists( 'extract_from_markers' ) ? extract_from_markers( $file, 'Block xmlrpc.php' ) : array();
 	$ok      = true;
