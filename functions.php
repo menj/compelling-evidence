@@ -1334,13 +1334,18 @@ function ce_archive_lens_posts( string $lens, ?bool &$fallback = null, int $limi
             set_transient( 'ce_lens_popular', $ids, HOUR_IN_SECONDS );
         }
         if ( $ids ) {
-            return get_posts( [
+            $posts = get_posts( [
                 'post_type'      => 'ce_article',
                 'post_status'    => 'publish',
                 'post__in'       => $ids,
                 'orderby'        => 'post__in',
                 'posts_per_page' => $limit,
             ] );
+            // The cached IDs can all have been unpublished or unlisted since;
+            // the reading order then stands in, as it does with no figures.
+            if ( $posts ) {
+                return $posts;
+            }
         }
         $fallback = true;
         return get_posts( [

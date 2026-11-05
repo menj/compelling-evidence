@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.18.6] - November 2026
+
+No section or feature removed and no public identifier renamed.
+
+### Fixed
+- axe reported a moderate `region` item on every page: the featured strip (`#featured-strip`, "Read first") in `header.php` sat outside any landmark. It is now a `nav` element named "Read first" (`aria-label`, translated as "Baca dahulu" in `ms_MY`). Its id, classes, links and the hide-on-scroll script are unchanged.
+- `ce_archive_lens_posts()` returned an empty list for `?orderby=popular` when every cached article ID had since been unpublished or unlisted, so the lens printed nothing for up to an hour. It now falls back to the reading order under "Where to begin", as it does when there are no figures.
+
+### Tested
+- axe (WCAG 2.0 to 2.2 A and AA, and best practices) on the home page at 1280 and 375 pixels: the `region` item before the change, no violations after.
+
 ## [2.18.5] - November 2026
 
 No section or feature removed and no public identifier renamed.
