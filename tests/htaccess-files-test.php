@@ -133,10 +133,10 @@ $ce_own_hit = function ( $uri ) use ( $ce_own ) {
 	return false;
 };
 ce_check( 2 === count( $ce_own ), "the theme's .htaccess has its 2 RedirectMatch lines" );
-foreach ( array( '.git/config', '.github/workflows/ci.yml', '.gitignore', '.claude/CLAUDE.md', 'tests/unlist-test.php', 'bin/build-error-pages.php', 'functions.php', 'inc/ce-seo.php/x' ) as $ce_p ) {
+foreach ( array( '.git/config', '.github/workflows/ci.yml', '.gitignore', '.claude/CLAUDE.md', '.env', '.vscode/settings.json', 'assets/.DS_Store', 'tests/unlist-test.php', 'bin/build-error-pages.php', 'functions.php', 'inc/ce-seo.php/x' ) as $ce_p ) {
 	ce_check( $ce_own_hit( '/wp-content/themes/compelling-evidence/' . $ce_p ), "theme .htaccess: 403 for $ce_p" );
 }
-foreach ( array( 'style.css', 'screenshot.png', 'assets/js/main.js', 'assets/css/main.css', 'journeys/quiz.html', 'journeys/data/agnostic/screens/conclusion.html', 'doc/readme.md' ) as $ce_p ) {
+foreach ( array( 'style.css', 'screenshot.png', 'assets/js/main.js', 'assets/css/main.css', 'journeys/quiz.html', 'journeys/data/agnostic/screens/conclusion.html', 'doc/readme.md', '.well-known/x', 'assets/js/main.min.js' ) as $ce_p ) {
 	ce_check( ! $ce_own_hit( '/wp-content/themes/compelling-evidence/' . $ce_p ), "theme .htaccess: open $ce_p" );
 }
 

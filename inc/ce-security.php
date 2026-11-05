@@ -277,10 +277,15 @@ function ce_sec_sync_htaccess( $force = false ) {
 			++$writes;
 		} while ( $writes < 3 && ce_sec_htaccess_dirty() );
 		// A theme switch that found the lock taken asked for the sections to go.
+		// Only this theme's own section goes then. The "Block xmlrpc.php" one
+		// is shared with the sister themes, and the theme switched to may
+		// already have written it again; other notes are left as they are.
 		if ( '' !== ce_sec_option_raw( 'ce_sec_htaccess_remove' ) ) {
 			delete_option( 'ce_sec_htaccess_remove' );
-			delete_option( 'ce_sec_htaccess_dirty' );
-			ce_sec_clear_htaccess();
+			$file = ce_sec_htaccess_file();
+			if ( '' !== $file ) {
+				insert_with_markers( $file, CE_SEC_FILES_MARKER, array() );
+			}
 			ce_lock_release( 'ce_sec_htaccess_lock', $token );
 			return false;
 		}

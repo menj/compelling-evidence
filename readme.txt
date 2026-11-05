@@ -123,6 +123,7 @@ CE Theme, Copyright 2026 MENJ. Licensed GPLv2 or later.
 == Changelog ==
 
 = 2.18.7 - November 2026 =
+* A theme caught half uploaded shows a short "Back shortly" page (503) instead of an error.
 * The theme folder refuses its development files and PHP files before WordPress starts, and wp-config.php is refused too.
 * The live-server cleanup takes a proper lock and costs no database query on page views.
 

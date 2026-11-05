@@ -30,9 +30,21 @@ Require all denied
 </IfModule>
 
 <IfModule mod_alias.c>
-# .git, .github, .githooks, .gitattributes, .gitignore and .claude, wherever
-# they sit in the theme.
-RedirectMatch 403 /\.(git|claude)
+# Every file and folder whose name begins with a dot, wherever it sits in
+# the theme: .git, .github, .gitignore, .claude, .vscode, .env, this file and
+# the like. .well-known stays open.
+RedirectMatch 403 /\.(?!well-known(/|$))[^/]+(/|$)
 # No PHP file in the theme serves a page of its own.
 RedirectMatch 403 \.php(/|$)
 </IfModule>
+
+# Dot files, also without mod_alias.
+<FilesMatch "^\.">
+<IfModule mod_authz_core.c>
+Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+Order allow,deny
+Deny from all
+</IfModule>
+</FilesMatch>
