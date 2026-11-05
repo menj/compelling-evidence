@@ -6,4 +6,4 @@ Read `.claude/FARUQI.md` first. It sets out the Faruqian core, al-tawḥīd as I
 
 - The journey and quiz pages carry FAQPage markup, with a visible FAQ section built from the same data. The owner decided this on 2026-11-03, reversing an earlier note the same day. Structured data still describes only what a page shows, so the questions must appear on the page.
 
-Keep the five base documents to `.claude/skills/theme-docs/SKILL.md` on every change.
+Keep the five base documents to `.claude/skills/theme-docs/SKILL.md` whenever a change affects what they describe.
