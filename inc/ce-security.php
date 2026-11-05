@@ -328,7 +328,7 @@ function ce_sec_is_sister_theme( $stylesheet ) {
  *                has not arrived yet.
  */
 function ce_sec_htaccess_lock() {
-	return function_exists( 'ce_lock_take' ) ? ce_lock_take( 'ce_sec_htaccess_lock', MINUTE_IN_SECONDS ) : '';
+	return defined( 'CE_LOCK_READY' ) ? ce_lock_take( 'ce_sec_htaccess_lock', MINUTE_IN_SECONDS ) : '';
 }
 
 /**
@@ -351,7 +351,7 @@ function ce_sec_htaccess_dirty() {
  * @return bool
  */
 function ce_sec_note( $name, $set = null ) {
-	return function_exists( 'ce_lock_note' ) ? ce_lock_note( $name, $set ) : false;
+	return defined( 'CE_LOCK_READY' ) ? ce_lock_note( $name, $set ) : false;
 }
 
 /**

@@ -155,3 +155,7 @@ function ce_lock_insert( $name, $value ) {
 	wp_cache_delete( 'notoptions', 'options' );
 	return 1 === (int) $rows;
 }
+
+// The last line: an upload cut off anywhere above leaves this undefined, and
+// the callers, which check it, leave the lock (and what it guards) alone.
+define( 'CE_LOCK_READY', true );

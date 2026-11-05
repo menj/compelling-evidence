@@ -74,7 +74,7 @@ function ce_remove_path( $path, $root ) {
 	if ( ! empty( $GLOBALS['ce_dev_files_lost'] ) ) {
 		return false;
 	}
-	if ( 0 === ++$seen % 200 && ! empty( $GLOBALS['ce_dev_files_token'] ) && function_exists( 'ce_lock_renew' )
+	if ( 0 === ++$seen % 200 && ! empty( $GLOBALS['ce_dev_files_token'] ) && defined( 'CE_LOCK_READY' )
 		&& ! ce_lock_renew( 'ce_dev_files_lock', $GLOBALS['ce_dev_files_token'] ) ) {
 		$GLOBALS['ce_dev_files_lost'] = true; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 		return false;
@@ -135,7 +135,7 @@ function ce_remove_dev_files( $root = '', $version = '' ) {
 	// One cleanup at a time, whichever hook started it (inc/ce-lock.php); a
 	// lock not renewed for ten minutes is from a request that died, and is
 	// taken over. Until the lock code has arrived, nothing is deleted.
-	$token = function_exists( 'ce_lock_take' ) ? ce_lock_take( 'ce_dev_files_lock', 10 * MINUTE_IN_SECONDS ) : '';
+	$token = defined( 'CE_LOCK_READY' ) ? ce_lock_take( 'ce_dev_files_lock', 10 * MINUTE_IN_SECONDS ) : '';
 	if ( '' === $token ) {
 		return;
 	}

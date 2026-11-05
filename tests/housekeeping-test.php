@@ -30,6 +30,7 @@ $GLOBALS['ce_env'] = 'local';
 function add_action() {}
 function apply_filters( $h, $v ) { return 'ce_dev_paths' === $h ? array_merge( $v, $GLOBALS['ce_extra'] ?? array() ) : $v; }
 function set_transient( $k, $v, $t = 0 ) { $GLOBALS['ce_t'][ $k ] = $v; return true; }
+define( 'CE_LOCK_READY', true );
 // inc/ce-lock.php is tested on its own (tests/lock-test.php); here the same
 // rules over the option stub: a fresh lock is refused, a stale one taken over.
 function add_option( $k, $v, $d = '', $a = true ) { if ( isset( $GLOBALS['ce_o'][ $k ] ) ) { return false; } $GLOBALS['ce_o'][ $k ] = $v; return true; }
