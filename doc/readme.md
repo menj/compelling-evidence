@@ -185,7 +185,7 @@ Fixed in code: `CE_SITE_KEY` (`ce`), `CE_ERR_MARKER`, `CE_STATIC_ERRORS` (`compe
 
 - Upload guard: see the boot sequence.
 - REST users: visitors who are not logged in get no `/wp/v2/users` routes and no `?author=N` lookup (`ce_sec_hide_user_routes()`, `ce_sec_block_author_query()`).
-- XML-RPC is off while `ce_sec_xmlrpc_off` is on (the default); a correct password sent through it is refused even when it is back on. Application passwords are off, and REST writes need a logged-in browser with a nonce.
+- XML-RPC is off while `ce_sec_xmlrpc_off` is on (the default); a correct password sent through it is refused even when it is back on. Application passwords are off, and an authenticated REST write without a valid browser session and nonce is refused (`ce_sec_rest_guard()`). Anonymous requests are left to each route's own permission check.
 - The spam gate holds a post that reads as gambling spam as Pending; seeded content is marked and exempt. Removed spam answers 410 Gone, and `inc/ce-gone.php` answers 410 for the path prefixes listed on the Performance tab.
 - The theme folder's `.htaccess` refuses every dot entry but `.well-known`, every theme PHP file, the `tests`, `bin`, `tools` and `doc` folders, and every Markdown file. It works with mod_rewrite (`RewriteOptions Inherit`), mod_alias, neither (`FilesMatch`), and on Apache 2.4 with `<If>`. `tests/`, `bin/`, `tools/` and `doc/` carry their own deny file.
 - The live-server clean-up (`inc/ce-housekeeping.php`) removes `.claude`, `tests`, `bin`, `tools`, `doc` and every entry that starts with `.git` on activation, on the first admin page and on the first front-end request of a version, under a lock it renews while it works.
@@ -250,7 +250,7 @@ error_page 503 /wp-content/compelling-evidence-errors/503.html;
 error_page 504 /wp-content/compelling-evidence-errors/504.html;
 ```
 
-Nginx serves `error_page` for PHP's own 500 and 503 answers only with `fastcgi_intercept_errors on;` in the FastCGI location; without it those answers reach visitors as PHP sent them. Jetpack needs XML-RPC: leave out the `xmlrpc.php` line and also switch "Turn off XML-RPC" off on the Security tab, since the theme refuses XML-RPC in PHP too. These rules do not follow the Security switches or `CE_SECURITY_LOCK`: to let XML-RPC through, take the `xmlrpc.php` line out by hand as well. The `wp-config.php` rule matches at any depth, so it also covers a `wp-config.php` in the folder above a WordPress that lives in a subfolder. Prefix the other paths when WordPress lives in a subfolder.
+Nginx serves `error_page` for PHP's own 500 and 503 answers only with `fastcgi_intercept_errors on;` in the FastCGI location; without it those answers reach visitors as PHP sent them. Jetpack needs XML-RPC: leave out the `xmlrpc.php` line and also switch "Turn off XML-RPC" off on the Security tab, since the theme refuses XML-RPC in PHP too. Where the client logs in to XML-RPC with a password, switch the REST lock off as well, since `ce_sec_refuse_remote_password()` refuses those logins while either switch is on. These rules do not follow the Security switches or `CE_SECURITY_LOCK`: to let XML-RPC through, take the `xmlrpc.php` line out by hand as well. The `wp-config.php` rule matches at any depth, so it also covers a `wp-config.php` in the folder above a WordPress that lives in a subfolder. Prefix the other paths when WordPress lives in a subfolder.
 
 ---
 

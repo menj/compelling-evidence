@@ -81,7 +81,7 @@ Upload the new zip under Appearance > Themes > Add New > Upload Theme and choose
 3. Rename the old folder to compelling-evidence-old and, straight after, rename compelling-evidence-new to compelling-evidence. Between the two renames the site has no theme folder and its pages may fail for that moment, so do them one after the other and keep the admin closed until both are done.
 4. Load any admin page, check the site, then delete compelling-evidence-old.
 
-If you upload straight over the live folder and the copy stops halfway, leaving a file missing or broken, visitors see a short "Back shortly" page with a 503 status instead of an error, and you can still log in. Upload the missing files and the site returns. That page comes from functions.php, so it cannot help while functions.php itself is missing or half written, or in the moment between the two renames above. A file cut short at a point where it still reads as valid code also slips past it. The temporary-folder method avoids those cases.
+If you upload straight over the live folder and the copy stops halfway, leaving one of the theme's PHP files missing or broken, visitors see a short "Back shortly" page with a 503 status instead of an error, and you can still log in. Upload the missing files and the site returns. That page comes from functions.php, so it cannot help while functions.php itself is missing or half written, or in the moment between the two renames above. It checks the PHP files only: a missing stylesheet, font or data file, or a PHP file cut short at a point where it still reads as valid code, slips past it. The temporary-folder method avoids those cases.
 
 Never upload a fresh copy of WordPress itself over the site without keeping wp-config.php. That file holds the database details; without it WordPress opens its installer to anyone who visits.
 
@@ -117,7 +117,7 @@ They are development files, and a web server can hand them to anyone who asks. O
 
 = A tool I use stopped publishing after an update. =
 
-The Security tab turns off XML-RPC, application passwords and REST changes from outside a logged-in browser, because spam tools use them. Switch off the one your tool needs. A tool that logs in to XML-RPC with a password needs both the XML-RPC switch and the REST switch off, since either one refuses password logins there. In an emergency, define( 'CE_SECURITY_LOCK', false ); in wp-config.php lifts all three.
+The Security tab turns off XML-RPC, application passwords and REST changes from outside a logged-in browser, because spam tools use them. Switch off the one your tool needs. Password logins sent through XML-RPC are refused while either the XML-RPC switch or the REST switch is on (the REST switch guards that route too), so a tool that logs in to XML-RPC with a password needs both off. A tool that writes through the REST API needs only the REST switch off. In an emergency, define( 'CE_SECURITY_LOCK', false ); in wp-config.php lifts all three.
 
 = What are the error pages? =
 
