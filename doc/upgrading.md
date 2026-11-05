@@ -8,12 +8,16 @@ This document describes the update steps, the notes for each version that needs 
 ## Updating an existing site
 
 1. Back up the database.
-2. Upload the new zip under Appearance > Themes > Add New > Upload Theme and choose "Replace active with uploaded". Do not switch to another theme first: a switch removes the error pages and the two `.htaccess` sections. By FTP instead: turn on hidden files so the `.htaccess` files go up, upload the folder into `wp-content/themes/` as `compelling-evidence-new`, its `.htaccess` files first (the theme folder's, then those in `doc/`, `tools/`, `bin/` and `tests/` when the copy has them), then rename `compelling-evidence` to `compelling-evidence-old` and, straight after, `compelling-evidence-new` to `compelling-evidence`, with the admin closed in between. Never upload WordPress itself without keeping `wp-config.php`.
+2. Upload the new zip under Appearance > Themes > Add New > Upload Theme and choose "Replace active with uploaded". Do not switch to another theme first: a switch removes the error pages and the two `.htaccess` sections. By FTP instead: turn on hidden files so the `.htaccess` files go up, upload the folder into `wp-content/themes/` as `compelling-evidence-new`, its `.htaccess` files first (the theme folder's, then those in `doc/`, `tools/`, `bin/` and `tests/` when the copy has them; on Nginx, add the server rules in `doc/readme.md` first), then rename `compelling-evidence` to `compelling-evidence-old` and, straight after, `compelling-evidence-new` to `compelling-evidence`, with the admin closed in between. Never upload WordPress itself without keeping `wp-config.php`.
 3. Load any admin page. The version change runs the content sync, and the theme writes its error pages, its `.htaccess` sections and its run-once pages.
 4. Check `/articles/` and `/journeys/`, then delete `compelling-evidence-old`.
 5. Read the note below for the version you are moving to.
 
 ---
+
+## Upgrading to v2.18.12 from v2.18.11
+
+Documentation only, with no change to the articles. On Nginx, replace the two theme lines in the server block with those in `doc/readme.md`, which also cover the `-new` and `-old` folders of an FTP update. As with every version, the first admin page runs the content sync, so make any article edit in the batch file instead (see Content Sync Behaviour on Upgrade).
 
 ## Upgrading to v2.18.11 from v2.18.10
 
