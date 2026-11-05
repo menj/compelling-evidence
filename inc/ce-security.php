@@ -188,6 +188,23 @@ function ce_sec_files_htaccess_lines( $home = '' ) {
 }
 
 /**
+ * Whether wp-config.php sits in the folder above WordPress while the
+ * .htaccess the theme writes is WordPress's own folder: the rules there
+ * cannot reach the folder above, so the Security tab says so.
+ *
+ * @return bool
+ */
+function ce_sec_parent_config_uncovered() {
+	if ( ! function_exists( 'get_home_path' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+	}
+	$parent = dirname( untrailingslashit( wp_normalize_path( ABSPATH ) ) );
+	return '' === ce_sec_rewrite_prefix( ABSPATH, get_home_path() )
+		&& ! file_exists( ABSPATH . 'wp-config.php' )
+		&& file_exists( $parent . '/wp-config.php' );
+}
+
+/**
  * Whether the direct-access block is wanted. On by default; defining
  * CE_BLOCK_DIRECT_FILES false in wp-config.php leaves it out.
  *
@@ -1629,6 +1646,9 @@ function ce_sec_render_tools() {
 			<p class="ce-field-desc"><?php esc_html_e( 'The web server also refuses xmlrpc.php: the theme keeps a "Block xmlrpc.php" section in .htaccess and repairs it if it goes missing.', 'compelling-evidence' ); ?></p>
 		<?php elseif ( 'unavailable' === $ce_sec_ht && ce_sec_on( 'ce_sec_xmlrpc_off' ) ) : ?>
 			<div class="notice notice-warning inline"><p><?php esc_html_e( 'The theme could not write .htaccess (the server is not Apache, or the file is read-only). WordPress still refuses xmlrpc.php; ask the host to deny it at the server as well.', 'compelling-evidence' ); ?></p></div>
+		<?php endif; ?>
+		<?php if ( ce_sec_parent_config_uncovered() ) : ?>
+			<div class="notice notice-warning inline"><p><?php esc_html_e( 'wp-config.php sits in the folder above WordPress, outside the folder whose .htaccess the theme writes, so the theme cannot refuse direct requests for it. Ask the host to deny wp-config.php at the server, or move the file into the WordPress folder.', 'compelling-evidence' ); ?></p></div>
 		<?php endif; ?>
 		<?php if ( 'written' === get_option( 'ce_security_htaccess_files', '' ) ) : ?>
 			<p class="ce-field-desc"><?php esc_html_e( 'The web server also refuses direct requests for PHP files in wp-includes, wp-admin/includes and the themes folder, the installer and version files, .git and .claude, and the theme\'s tests, bin and tools folders: the theme keeps a "Compelling Evidence: block direct file access" section in .htaccess. Define CE_BLOCK_DIRECT_FILES as false in wp-config.php to leave it out.', 'compelling-evidence' ); ?></p>
