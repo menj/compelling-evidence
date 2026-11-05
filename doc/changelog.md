@@ -11,11 +11,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 No section or feature removed and no public identifier renamed. These carry over the fixes the review of the sister theme's same code found after 2.18.6 was merged.
 
 ### Security
-- The theme folder carries its own `.htaccess`, which Apache reads before WordPress starts. In 2.18.6 the site-level rules and the cleanup ran only inside WordPress, so a direct request for a static file such as `.git/config` could arrive first. With `mod_alias` the new file answers 403 for `.git*` and `.claude` anywhere in the theme, for the `tests`, `bin` and `tools` folders, and for any PHP file in the theme. Styles, scripts, fonts, images and journey files are untouched.
+- The theme folder carries its own `.htaccess`, which Apache reads before WordPress starts. In 2.18.6 the site-level rules and the cleanup ran only inside WordPress, so a direct request for a static file such as `.git/config` could arrive first. With `mod_alias` the new file answers 403 for `.git*` and `.claude` anywhere in the theme and for any PHP file in the theme. `tests/` and `bin/` carry an `.htaccess` of their own that refuses every request into them (`Require all denied`, with the Apache 2.2 form), so the rule holds whatever the theme folder's address. Styles, scripts, fonts, images and journey files are untouched.
 - `wp-config.php` joins the refused core files, in the core folder and in the folder above it, where WordPress also looks.
 
 ### Fixed
-- The dev-file cleanup and the front-end `.htaccess` sync took their locks with a transient check, which two requests could pass together. Both now take an `add_option()` lock, which only one request can insert, and a stale lock is taken over. Every entry point to the cleanup respects the lock.
+- The dev-file cleanup and the front-end `.htaccess` sync took their locks with a transient check, which two requests could pass together. Both now take an `add_option()` lock, which only one request can insert, and a stale lock is taken over. Every entry point to the cleanup respects the lock. The `.htaccess` lock sits inside `ce_sec_sync_htaccess()`, so admin page loads, theme switches and settings changes take it too; a sync that finds it taken leaves a note, and the holder writes once more before letting go, so a change made meanwhile is not lost.
 - The two completion records, `ce_dev_files_removed` and `ce_sec_htaccess_version`, are autoloaded, and the front end reads the record before anything else. In 2.18.6 they cost a database query on every page view.
 
 ### Tested

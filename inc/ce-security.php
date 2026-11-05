@@ -234,6 +234,72 @@ function ce_sec_sync_htaccess( $force = false ) {
 		return false;
 	}
 	set_transient( 'ce_sec_htaccess_checked', 1, HOUR_IN_SECONDS );
+
+	// One writer at a time, whichever hook started it: admin_init, a theme
+	// switch, a settings change or the first request of a new version. A
+	// sync that finds the lock taken leaves a note, and the holder runs once
+	// more before it lets go, so a change made meanwhile is not lost.
+	if ( ! ce_sec_htaccess_lock() ) {
+		update_option( 'ce_sec_htaccess_dirty', time(), false );
+		return false;
+	}
+	$runs = 0;
+	do {
+		delete_option( 'ce_sec_htaccess_dirty' );
+		$ok = ce_sec_write_htaccess();
+		++$runs;
+	} while ( $runs < 3 && ce_sec_htaccess_dirty() );
+	delete_option( 'ce_sec_htaccess_lock' );
+
+	return $ok;
+}
+
+/**
+ * Takes the .htaccess lock. add_option() inserts a unique row, so only one
+ * request can take it; a lock older than a minute is from a request that
+ * died, and is taken over. (insert_with_markers() also locks the file
+ * itself while it writes.)
+ *
+ * @return bool
+ */
+function ce_sec_htaccess_lock() {
+	if ( add_option( 'ce_sec_htaccess_lock', time(), '', false ) ) {
+		return true;
+	}
+	if ( time() - (int) ce_sec_option_raw( 'ce_sec_htaccess_lock' ) < MINUTE_IN_SECONDS ) {
+		return false;
+	}
+	delete_option( 'ce_sec_htaccess_lock' );
+	return (bool) add_option( 'ce_sec_htaccess_lock', time(), '', false );
+}
+
+/**
+ * Whether another request asked for a sync while this one held the lock.
+ * Read from the table, past this request's option cache.
+ *
+ * @return bool
+ */
+function ce_sec_htaccess_dirty() {
+	return '' !== (string) ce_sec_option_raw( 'ce_sec_htaccess_dirty' );
+}
+
+/**
+ * An option's value straight from the table ('' when absent).
+ *
+ * @param string $name Option name.
+ * @return string
+ */
+function ce_sec_option_raw( $name ) {
+	global $wpdb;
+	return (string) $wpdb->get_var( $wpdb->prepare( "SELECT option_value FROM {$wpdb->options} WHERE option_name = %s", $name ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+}
+
+/**
+ * Writes both .htaccess sections as the settings want them.
+ *
+ * @return bool Whether both sections are now as wanted.
+ */
+function ce_sec_write_htaccess() {
 	$file = ce_sec_htaccess_file();
 	if ( '' === $file ) {
 		update_option( 'ce_security_htaccess', 'unavailable', false );
@@ -279,18 +345,6 @@ function ce_sec_sync_htaccess_once() {
 	if ( get_option( 'ce_sec_htaccess_version' ) === $version || get_transient( 'ce_sec_htaccess_retry' ) ) {
 		return;
 	}
-	// add_option() inserts a unique row, so only one request takes the lock;
-	// one older than a minute is from a request that died. (insert_with_markers()
-	// also locks the file itself while it writes.)
-	if ( ! add_option( 'ce_sec_htaccess_lock', time(), '', false ) ) {
-		if ( time() - (int) get_option( 'ce_sec_htaccess_lock' ) < MINUTE_IN_SECONDS ) {
-			return;
-		}
-		delete_option( 'ce_sec_htaccess_lock' );
-		if ( ! add_option( 'ce_sec_htaccess_lock', time(), '', false ) ) {
-			return;
-		}
-	}
 	// Recorded only once the sections are written, or where no .htaccess
 	// applies (not Apache); a failed write is tried again a minute later.
 	if ( ce_sec_sync_htaccess( true ) || empty( $GLOBALS['is_apache'] ) ) {
@@ -298,7 +352,6 @@ function ce_sec_sync_htaccess_once() {
 	} else {
 		set_transient( 'ce_sec_htaccess_retry', 1, MINUTE_IN_SECONDS );
 	}
-	delete_option( 'ce_sec_htaccess_lock' );
 }
 add_action( 'init', 'ce_sec_sync_htaccess_once', 99 );
 add_action( 'after_switch_theme', function () { ce_sec_sync_htaccess( true ); } );
@@ -310,10 +363,16 @@ add_action( 'update_option_ce_sec_xmlrpc_off', function () { ce_sec_sync_htacces
  * themes. A sister theme writes the same block back on its first admin load.
  */
 function ce_sec_remove_htaccess() {
-	$file = ce_sec_htaccess_file();
+	// The theme is going, so the sections go even if another request holds
+	// the lock; the lock is only released if this call took it.
+	$locked = ce_sec_htaccess_lock();
+	$file   = ce_sec_htaccess_file();
 	if ( '' !== $file ) {
 		insert_with_markers( $file, 'Block xmlrpc.php', array() );
 		insert_with_markers( $file, CE_SEC_FILES_MARKER, array() );
+	}
+	if ( $locked ) {
+		delete_option( 'ce_sec_htaccess_lock' );
 	}
 	delete_transient( 'ce_sec_htaccess_checked' );
 }

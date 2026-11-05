@@ -132,12 +132,18 @@ $ce_own_hit = function ( $uri ) use ( $ce_own ) {
 	}
 	return false;
 };
-ce_check( 3 === count( $ce_own ), "the theme's .htaccess has its 3 RedirectMatch lines" );
-foreach ( array( '.git/config', '.github/workflows/ci.yml', '.gitignore', '.claude/CLAUDE.md', 'tests/unlist-test.php', 'bin/build-error-pages.php', 'tools/x.py', 'functions.php', 'inc/ce-seo.php/x' ) as $ce_p ) {
+ce_check( 2 === count( $ce_own ), "the theme's .htaccess has its 2 RedirectMatch lines" );
+foreach ( array( '.git/config', '.github/workflows/ci.yml', '.gitignore', '.claude/CLAUDE.md', 'tests/unlist-test.php', 'bin/build-error-pages.php', 'functions.php', 'inc/ce-seo.php/x' ) as $ce_p ) {
 	ce_check( $ce_own_hit( '/wp-content/themes/compelling-evidence/' . $ce_p ), "theme .htaccess: 403 for $ce_p" );
 }
 foreach ( array( 'style.css', 'screenshot.png', 'assets/js/main.js', 'assets/css/main.css', 'journeys/quiz.html', 'journeys/data/agnostic/screens/conclusion.html', 'doc/readme.md' ) as $ce_p ) {
 	ce_check( ! $ce_own_hit( '/wp-content/themes/compelling-evidence/' . $ce_p ), "theme .htaccess: open $ce_p" );
+}
+
+// tests/ and bin/ refuse every request into them, whatever the theme's address.
+foreach ( array( 'tests', 'bin' ) as $ce_d ) {
+	$ce_ht = (string) @file_get_contents( dirname( __DIR__ ) . "/$ce_d/.htaccess" ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+	ce_check( false !== strpos( $ce_ht, 'Require all denied' ) && false !== strpos( $ce_ht, 'Deny from all' ), "$ce_d/.htaccess refuses everything, on Apache 2.4 and 2.2" );
 }
 
 echo $ce_fail ? "$ce_fail failed\n" : "all passed\n";
