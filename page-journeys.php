@@ -18,7 +18,7 @@ get_header();
     <span class="jy-hero-eyebrow">14 Paths · One Question</span>
     <h1><?php echo wp_kses( __( 'Where you start<br>is <em>everything.</em>', 'compelling-evidence' ), [ 'br' => [], 'em' => [] ] ); ?></h1>
     <p class="jy-hero-sub"><?php esc_html_e( 'Each path is written for a specific intellectual and emotional starting point. The argument, the tone, the texture — all calibrated for where you actually stand. Not a generic introduction. A case written for you.', 'compelling-evidence' ); ?></p>
-    <a href="<?php echo esc_url(home_url('/quiz')); ?>" class="jy-hero-cta">
+    <a href="<?php echo esc_url(home_url( '/quiz/' )); ?>" class="jy-hero-cta">
       Find my path — 2 minutes
       <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
@@ -148,7 +148,7 @@ get_header();
   <div class="jy-bottom-cta" style="margin-left:auto;margin-right:auto;max-width:640px;padding:2.8rem 2rem;text-align:center;">
     <h2><?php esc_html_e( 'Not sure which path is yours?', 'compelling-evidence' ); ?></h2>
     <p><?php esc_html_e( 'Ten questions. No wrong answers. Two minutes. The quiz routes you to the path that matches where you actually stand — not a generic introduction, but an argument built for your specific starting point.', 'compelling-evidence' ); ?></p>
-    <a href="<?php echo esc_url(home_url('/quiz')); ?>" class="jy-hero-cta">
+    <a href="<?php echo esc_url(home_url( '/quiz/' )); ?>" class="jy-hero-cta">
       Take the quiz
       <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>

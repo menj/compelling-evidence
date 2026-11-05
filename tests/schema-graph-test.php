@@ -1,4 +1,8 @@
 <?php
+if ( 'cli' !== PHP_SAPI ) {
+	exit;
+}
+
 if ( ! function_exists( 'array_is_list' ) ) {
 	function array_is_list( array $a ): bool {
 		return [] === $a || array_keys( $a ) === range( 0, count( $a ) - 1 );

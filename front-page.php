@@ -253,11 +253,11 @@
       <p class="je-sub"><?php esc_html_e( 'Not a generic introduction — an argument written for someone exactly like you. Ten questions. Two minutes.', 'compelling-evidence' ); ?></p>
       <div id="je-stats" class="je-stats" style="display:none;"></div>
       <div class="je-actions">
-        <a href="<?php echo esc_url( home_url('/quiz') ); ?>" class="btn-journey-cta" id="ce-quiz-btn">
+        <a href="<?php echo esc_url( home_url( '/quiz/' ) ); ?>" class="btn-journey-cta" id="ce-quiz-btn">
           Find my path
           <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
-        <a href="<?php echo esc_url( home_url('/journeys') ); ?>" class="je-browse">
+        <a href="<?php echo esc_url( home_url( '/journeys/' ) ); ?>" class="je-browse">
           Browse all 14 paths →
         </a>
       </div>
@@ -282,7 +282,7 @@
     <span class="qa-card-cta"><?php esc_html_e( 'Browse questions →', 'compelling-evidence' ); ?></span>
   </a>
 
-  <a href="<?php echo esc_url(home_url('/qa')); ?>" class="qa-card qa-card--qa">
+  <a href="<?php echo esc_url(home_url( '/qa/' )); ?>" class="qa-card qa-card--qa">
     <div class="qa-card-icon">
       <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></svg>
     </div>
@@ -300,7 +300,7 @@
     <span class="qa-card-cta"><?php esc_html_e( 'See latest →', 'compelling-evidence' ); ?></span>
   </a>
 
-  <a href="<?php echo esc_url(home_url('/ask-a-question')); ?>" class="qa-card qa-card--ask">
+  <a href="<?php echo esc_url(home_url( '/ask-a-question/' )); ?>" class="qa-card qa-card--ask">
     <div class="qa-card-icon">
       <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M12 7v6M9 10h6"/></svg>
     </div>
@@ -319,7 +319,7 @@
     <h2><?php echo wp_kses( __( 'Want to ask <span>more questions?</span>', 'compelling-evidence' ), [ 'span' => [] ] ); ?></h2>
     <p><?php esc_html_e( 'Whether you are a convinced atheist, an agnostic, a scientist, a sceptic, or someone carrying doubts you have never voiced — this is for you. Every question deserves a serious answer, not a rehearsed one.', 'compelling-evidence' ); ?></p>
     <div class="cta-buttons">
-      <a href="<?php echo esc_url(home_url('/contact-compelling-evidence')); ?>" class="btn-primary"><?php esc_html_e( 'Get In Touch', 'compelling-evidence' ); ?></a>
+      <a href="<?php echo esc_url(home_url( '/contact-compelling-evidence/' )); ?>" class="btn-primary"><?php esc_html_e( 'Get In Touch', 'compelling-evidence' ); ?></a>
       <a href="#articles" class="btn-ghost"><?php esc_html_e( 'Browse Topics', 'compelling-evidence' ); ?></a>
     </div>
   </div>

@@ -3,6 +3,10 @@
  * Stub test of the title builder (inc/ce-seo.php, inc/ce-rankmath.php).
  * Run: php tests/title-builder-test.php
  */
+
+if ( 'cli' !== PHP_SAPI ) {
+	exit;
+}
 define( 'ABSPATH', '/' );
 $ROOT = dirname( __DIR__ );
 function add_action(...$a) {} function add_filter(...$a) {} function remove_action(...$a) {} function remove_filter(...$a) {}

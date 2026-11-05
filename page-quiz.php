@@ -16,8 +16,8 @@ if ( ! file_exists( $quiz_file ) ) {
       <h1 class="not-found-title"><?php esc_html_e( 'Quiz not available', 'compelling-evidence' ); ?></h1>
       <p class="not-found-sub"><?php esc_html_e( 'The quiz could not be loaded. Browse all journey paths directly or read the articles.', 'compelling-evidence' ); ?></p>
       <div class="not-found-actions">
-        <a href="<?php echo esc_url(home_url('/journeys')); ?>" class="not-found-btn not-found-btn--primary"><?php esc_html_e( 'Browse all paths', 'compelling-evidence' ); ?></a>
-        <a href="<?php echo esc_url(home_url('/articles')); ?>" class="not-found-btn not-found-btn--secondary"><?php esc_html_e( 'Read articles', 'compelling-evidence' ); ?></a>
+        <a href="<?php echo esc_url(home_url( '/journeys/' )); ?>" class="not-found-btn not-found-btn--primary"><?php esc_html_e( 'Browse all paths', 'compelling-evidence' ); ?></a>
+        <a href="<?php echo esc_url(home_url( '/articles/' )); ?>" class="not-found-btn not-found-btn--secondary"><?php esc_html_e( 'Read articles', 'compelling-evidence' ); ?></a>
       </div>
     </section>
     <?php

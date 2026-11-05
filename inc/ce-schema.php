@@ -502,7 +502,7 @@ function ce_faq_sections(): array {
             'Is this a dawah site?' =>
                 'It is a site that presents the case for Islam — honestly, using evidence, and at full intellectual strength. If that constitutes dawah, then yes. But it does not use emotional manipulation, fear tactics, or social pressure. Every argument is built to survive scrutiny, not to bypass it.',
             'Why should I trust this site?' =>
-                'You shouldn\'t — not on trust. The site asks you to evaluate the arguments on their merits. Every claim is sourced. Every major objection is presented at full strength before being addressed. The <a href="/editorial-policy">editorial policy</a> commits to intellectual honesty, and you are invited to hold the site to that standard.',
+                'You shouldn\'t — not on trust. The site asks you to evaluate the arguments on their merits. Every claim is sourced. Every major objection is presented at full strength before being addressed. The <a href="/editorial-policy/">editorial policy</a> commits to intellectual honesty, and you are invited to hold the site to that standard.',
             'Is this site trying to convert me?' =>
                 'The site presents the strongest case it can for Islam. What you do with that case is your decision. No article ends with a conversion pitch. No page collects your data for follow-up. The site respects your autonomy — because Islam itself requires that faith be freely chosen to have any value.',
         ],
@@ -515,7 +515,7 @@ function ce_faq_sections(): array {
             'What are journeys?' =>
                 'Each journey is a curated sequence of articles ordered for a specific persona. A classical atheist starts with cosmological arguments. A questioning Muslim starts with doubt and inner struggle. The content is the same 100 articles — the sequencing is different.',
             'Can I read articles without taking the quiz?' =>
-                'Absolutely. The <a href="/articles">articles page</a> gives you full access to all 100 articles, organised by topic. The quiz is a starting point, not a gate.',
+                'Absolutely. The <a href="/articles/">articles page</a> gives you full access to all 100 articles, organised by topic. The quiz is a starting point, not a gate.',
             'How many personas are there?' =>
                 'Fourteen — covering the full spectrum from hard atheism through agnosticism, deism, and spiritual seeking to the questioning Muslim and the committed Muslim.',
         ],
@@ -535,11 +535,11 @@ function ce_faq_sections(): array {
             'Does this site use cookies?' =>
                 'The site uses essential cookies for basic functionality. It does not use tracking cookies, advertising cookies, or third-party analytics that follow you across the web.',
             'Is my data collected or shared?' =>
-                'Quiz and journey progress are stored locally in your browser — never on our servers. If you submit a question through the <a href="/ask-a-question">Ask a Question</a> page, we receive only what you voluntarily provide. We do not sell, share, or monetise any data.',
+                'Quiz and journey progress are stored locally in your browser — never on our servers. If you submit a question through the <a href="/ask-a-question/">Ask a Question</a> page, we receive only what you voluntarily provide. We do not sell, share, or monetise any data.',
             'How do I contact the site?' =>
-                'Use the <a href="/contact-compelling-evidence">contact page</a> or the <a href="/ask-a-question">Ask a Question</a> form. We read every submission.',
+                'Use the <a href="/contact-compelling-evidence/">contact page</a> or the <a href="/ask-a-question/">Ask a Question</a> form. We read every submission.',
             'Can I share or reprint articles?' =>
-                'You may share links freely. For reprinting or republication, please <a href="/contact-compelling-evidence">contact us</a> first.',
+                'You may share links freely. For reprinting or republication, please <a href="/contact-compelling-evidence/">contact us</a> first.',
         ],
     ];
 }

@@ -8,6 +8,10 @@
  * stylesheet hook, and every title tag: "<screen> | Compelling Evidence",
  * under 60 characters.
  */
+
+if ( 'cli' !== PHP_SAPI ) {
+	exit;
+}
 define( 'ABSPATH', '/' );
 $ROOT = dirname( __DIR__ );
 $GLOBALS['opt']     = [];

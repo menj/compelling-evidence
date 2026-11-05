@@ -577,7 +577,7 @@ $active_term = $is_filtered ? get_queried_object() : null;
 
   <div class="archive-footer">
     <p><?php esc_html_e('These arguments are developed in full in the personalised journey paths — tailored to where you actually are.', 'compelling-evidence'); ?></p>
-    <a href="<?php echo esc_url(home_url('/quiz')); ?>" class="btn-teal">
+    <a href="<?php echo esc_url(home_url( '/quiz/' )); ?>" class="btn-teal">
       <?php esc_html_e('Find my path', 'compelling-evidence'); ?>
       <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>

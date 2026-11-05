@@ -53,8 +53,8 @@ $ce_recent = new WP_Query( [
 
   <div class="not-found-actions">
     <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="not-found-btn not-found-btn--primary"><?php esc_html_e( 'Go home', 'compelling-evidence' ); ?></a>
-    <a href="<?php echo esc_url( home_url( '/quiz' ) ); ?>" class="not-found-btn not-found-btn--secondary"><?php esc_html_e( 'Find your path', 'compelling-evidence' ); ?></a>
-    <a href="<?php echo esc_url( home_url( '/articles' ) ); ?>" class="not-found-btn not-found-btn--ghost"><?php esc_html_e( 'Browse articles', 'compelling-evidence' ); ?></a>
+    <a href="<?php echo esc_url( home_url( '/quiz/' ) ); ?>" class="not-found-btn not-found-btn--secondary"><?php esc_html_e( 'Find your path', 'compelling-evidence' ); ?></a>
+    <a href="<?php echo esc_url( home_url( '/articles/' ) ); ?>" class="not-found-btn not-found-btn--ghost"><?php esc_html_e( 'Browse articles', 'compelling-evidence' ); ?></a>
   </div>
 
   <div class="not-found-search" role="search">

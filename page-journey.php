@@ -44,9 +44,9 @@ if ( '' === $html ) {
         doesn't exist — but 14 others do. Take the quiz to find yours, or browse all paths.
       </p>
       <div class="not-found-actions">
-        <a href="<?php echo esc_url(home_url('/quiz')); ?>" class="not-found-btn not-found-btn--primary"><?php esc_html_e( 'Take the quiz', 'compelling-evidence' ); ?></a>
-        <a href="<?php echo esc_url(home_url('/journeys')); ?>" class="not-found-btn not-found-btn--secondary"><?php esc_html_e( 'Browse all paths', 'compelling-evidence' ); ?></a>
-        <a href="<?php echo esc_url(home_url('/articles')); ?>" class="not-found-btn not-found-btn--ghost"><?php esc_html_e( 'Read articles', 'compelling-evidence' ); ?></a>
+        <a href="<?php echo esc_url(home_url( '/quiz/' )); ?>" class="not-found-btn not-found-btn--primary"><?php esc_html_e( 'Take the quiz', 'compelling-evidence' ); ?></a>
+        <a href="<?php echo esc_url(home_url( '/journeys/' )); ?>" class="not-found-btn not-found-btn--secondary"><?php esc_html_e( 'Browse all paths', 'compelling-evidence' ); ?></a>
+        <a href="<?php echo esc_url(home_url( '/articles/' )); ?>" class="not-found-btn not-found-btn--ghost"><?php esc_html_e( 'Read articles', 'compelling-evidence' ); ?></a>
       </div>
     </section>
     <?php

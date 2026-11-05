@@ -14,8 +14,22 @@ No section or feature removed and no public identifier renamed.
 - axe reported a moderate `region` item on every page: the featured strip (`#featured-strip`, "Read first") in `header.php` sat outside any landmark. It is now a `nav` element named "Read first" (`aria-label`, translated as "Baca dahulu" in `ms_MY`). Its id, classes, links and the hide-on-scroll script are unchanged.
 - `ce_archive_lens_posts()` returned an empty list for `?orderby=popular` when every cached article ID had since been unpublished or unlisted, so the lens printed nothing for up to an hour. It now falls back to the reading order under "Where to begin", as it does when there are no figures.
 
+### Security
+- Development files go from a live theme folder. On 4 November 2026 the FTP upload carried `.git` (503 files) to the live site. The new `inc/ce-housekeeping.php` deletes every `.git*` entry, `.claude`, `tests`, `bin` and `tools` on activation and once per version, except while `wp_get_environment_type()` is `local` or `development` or `CE_KEEP_DEV_FILES` is true. `functions.php` loads the file only once it exists, so an upload that sends `functions.php` first does not fail on it. `tests/housekeeping-test.php` covers the environments, the constant, a symbolic link and the once-per-version record.
+- A second `.htaccess` section, "Compelling Evidence: block direct file access", sits beside "Block xmlrpc.php" and goes on a theme switch. Under `<IfModule mod_rewrite.c>` it answers 403 for any path segment that starts with `.git` or `.claude`, the theme's `tests`, `bin` and `tools`, PHP files in `wp-includes` (except `js/tinymce/wp-tinymce.php` and `ms-files.php`), `wp-admin/includes` and the themes folder, `wp-settings.php`, `wp-config-sample.php`, `wp-admin/install.php` and `readme.html`. From 17 October to 4 November those requests gave 77 of the site's 83 HTTP 500s. The rules carry the site's own folder prefixes. `CE_BLOCK_DIRECT_FILES` false leaves the section out. `tests/htaccess-files-test.php` checks the lines and runs them over the paths that must stay open: the admin, `admin-ajax.php`, `wp-cron.php`, `wp-login.php`, the REST API and the editor's assets.
+- Every PHP file in `tests/` and `bin/` exits unless it runs from the command line.
+- `/wp-json/wp/v2/users` listed the site's accounts to anyone. A visitor who is not logged in now gets no `/wp/v2/users` routes (404), and `?author=N` gives a 404 where WordPress redirected to the author's address and so named the login. Logged-in editors keep both.
+
+### Fixed
+- The footer linked `/privacy-policy`, which 404s. Both links now use `get_privacy_policy_url()` and are left out when no privacy page is published.
+- `/sitemap.xml` and `/sitemaps.xml` answered 404 with Rank Math active. They now redirect (301) to the sitemap index in use: `/sitemap_index.xml` with Rank Math's sitemap module, otherwise `/wp-sitemap.xml`.
+- Retired URLs: the previous owner's shop paths `/f/`, `/etc/`, `/guide/knowledge/`, `/odr/`, `/ctg/`, `/mbr/` and `/iqr/` join the 410 defaults. `ce_gone_merge_defaults()` appends a new default once to a saved list, so live sites get them too, and a default the owner deletes stays deleted.
+- Links to `/articles`, `/journeys`, `/quiz` and the other pages had no trailing slash, so each click or crawl cost a 301 (418 in the logs). Every `home_url()` page link in the templates, the journey screens and the FAQ answers now ends in a slash.
+
 ### Tested
 - axe (WCAG 2.0 to 2.2 A and AA, and best practices) on the home page at 1280 and 375 pixels: the `region` item before the change, no violations after.
+- On the scratch site: `/wp-json/wp/v2/users`, `?rest_route=/wp/v2/users` and `?author=1` give 404 to a visitor, and `/wp/v2/users` gives 200 to an administrator. `/sitemaps.xml` gives a 301 to `/wp-sitemap.xml`, and `/f/x` gives 410. The home page footer links the privacy page at its own address.
+- `php tests/*.php`: all 9 pass.
 
 ## [2.18.5] - November 2026
 

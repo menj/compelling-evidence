@@ -59,18 +59,18 @@
     'items_wrap'     => '<ul id="%1$s" class="%2$s">%3$s</ul>',
     'fallback_cb'    => function() { ?>
       <ul id="ce-nav-links" class="nav-links">
-        <li><a href="<?php echo esc_url(home_url('/journeys')); ?>"><?php esc_html_e('Journeys', 'compelling-evidence'); ?></a></li>
-        <li><a href="<?php echo esc_url(home_url('/articles')); ?>"><?php esc_html_e('Articles', 'compelling-evidence'); ?></a></li>
-        <li><a href="<?php echo esc_url(home_url('/qa')); ?>"><?php esc_html_e('Q&amp;A', 'compelling-evidence'); ?></a></li>
-        <li><a href="<?php echo esc_url(home_url('/ask-a-question')); ?>"><?php esc_html_e('Ask a Question', 'compelling-evidence'); ?></a></li>
-        <li><a href="<?php echo esc_url(home_url('/faq')); ?>"><?php esc_html_e('FAQ', 'compelling-evidence'); ?></a></li>
+        <li><a href="<?php echo esc_url(home_url( '/journeys/' )); ?>"><?php esc_html_e('Journeys', 'compelling-evidence'); ?></a></li>
+        <li><a href="<?php echo esc_url(home_url( '/articles/' )); ?>"><?php esc_html_e('Articles', 'compelling-evidence'); ?></a></li>
+        <li><a href="<?php echo esc_url(home_url( '/qa/' )); ?>"><?php esc_html_e('Q&amp;A', 'compelling-evidence'); ?></a></li>
+        <li><a href="<?php echo esc_url(home_url( '/ask-a-question/' )); ?>"><?php esc_html_e('Ask a Question', 'compelling-evidence'); ?></a></li>
+        <li><a href="<?php echo esc_url(home_url( '/faq/' )); ?>"><?php esc_html_e('FAQ', 'compelling-evidence'); ?></a></li>
       </ul>
     <?php },
   ]);
   ?>
 
   <div class="nav-actions">
-    <a href="<?php echo esc_url(home_url('/my-progress')); ?>" id="ce-nav-progress-btn" class="nav-progress-link" title="<?php esc_attr_e('My Progress', 'compelling-evidence'); ?>" style="display:none;">
+    <a href="<?php echo esc_url(home_url( '/my-progress/' )); ?>" id="ce-nav-progress-btn" class="nav-progress-link" title="<?php esc_attr_e('My Progress', 'compelling-evidence'); ?>" style="display:none;">
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
     </a>
     <a href="#" class="nav-random" id="ce-random-btn" title="<?php esc_attr_e( 'Random article', 'compelling-evidence' ); ?>">

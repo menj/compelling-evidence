@@ -6,6 +6,10 @@
  * @package compelling-evidence
  */
 
+if ( 'cli' !== PHP_SAPI ) {
+	exit;
+}
+
 define( 'ABSPATH', dirname( __DIR__ ) . '/' );
 require dirname( __DIR__ ) . '/inc/ce-error-page-html.php';
 

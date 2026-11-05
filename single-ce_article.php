@@ -34,7 +34,7 @@ $reading_secs = $word_count * 0.3; // approx seconds for progress tracking
         <nav class="ce-breadcrumbs" aria-label="<?php esc_attr_e( 'Breadcrumb', 'compelling-evidence' ); ?>">
           <ol>
             <li><a href="<?php echo esc_url(home_url('/')); ?>"><?php esc_html_e( 'Home', 'compelling-evidence' ); ?></a></li>
-            <li><a href="<?php echo esc_url(home_url('/articles')); ?>"><?php esc_html_e( 'Articles', 'compelling-evidence' ); ?></a></li>
+            <li><a href="<?php echo esc_url(home_url( '/articles/' )); ?>"><?php esc_html_e( 'Articles', 'compelling-evidence' ); ?></a></li>
             <?php if ($topic_name && $topic_link) : ?>
               <li><a href="<?php echo esc_url($topic_link); ?>"><?php echo esc_html($topic_name); ?></a></li>
             <?php endif; ?>
@@ -183,7 +183,7 @@ $reading_secs = $word_count * 0.3; // approx seconds for progress tracking
 
         <div class="sidebar-cta">
           <p><?php esc_html_e('Have a question that\'s not covered here?', 'compelling-evidence'); ?></p>
-          <a href="<?php echo esc_url(home_url('/ask-a-question')); ?>" class="btn-primary">
+          <a href="<?php echo esc_url(home_url( '/ask-a-question/' )); ?>" class="btn-primary">
             <?php esc_html_e('Ask a Question', 'compelling-evidence'); ?>
           </a>
         </div>
@@ -307,7 +307,7 @@ $reading_secs = $word_count * 0.3; // approx seconds for progress tracking
           body.innerHTML =
             '<p style="font-size:0.8rem;color:rgba(242,238,255,0.5);margin-bottom:0.8rem;line-height:1.5;">' + name + ' — finished</p>' +
             '<a href="' + href + '" style="display:inline-flex;align-items:center;gap:0.4rem;font-size:0.8rem;color:var(--teal,#0cd4e0);border-bottom:1px solid rgba(12,212,224,0.2);padding-bottom:1px;text-decoration:none;">Revisit journey →</a>' +
-            '<div style="margin-top:0.8rem;"><a href="/journeys" style="font-size:0.75rem;color:rgba(242,238,255,0.3);text-decoration:none;">Browse all 14 paths →</a></div>';
+            '<div style="margin-top:0.8rem;"><a href="/journeys/" style="font-size:0.75rem;color:rgba(242,238,255,0.3);text-decoration:none;">Browse all 14 paths →</a></div>';
         } else if (savedScreen && savedScreen !== 'horizon') {
           title.textContent = 'Resume your journey';
           body.innerHTML =

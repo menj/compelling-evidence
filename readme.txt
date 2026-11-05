@@ -125,6 +125,9 @@ CE Theme, Copyright 2026 MENJ. Licensed GPLv2 or later.
 = 2.18.6 - November 2026 =
 * The Read first strip under the header is a navigation landmark named "Read first", so screen readers can find it and axe passes.
 * The most read list falls back to the reading order when none of its cached articles can still be shown.
+* On a live server the theme deletes its development files (.git, .claude, tests, bin, tools), and the web server refuses direct requests for them and for core PHP files that never serve a page.
+* Visitors who are not logged in can no longer list the site's user accounts.
+* /sitemap.xml and /sitemaps.xml lead to the sitemap, the footer's privacy link follows the privacy page set in WordPress, more retired shop addresses answer 410, and links to the main sections end in a slash.
 
 = 2.18.5 - November 2026 =
 * The home page reads as one story in four steps: the key questions, your personalised path, where to go next, and the invitation to ask.
