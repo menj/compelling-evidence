@@ -222,16 +222,17 @@ function ce_sec_htaccess_file() {
  * hour, so a lost or overwritten .htaccess is repaired without any action.
  *
  * @param bool $force Skip the hourly throttle.
+ * @return bool Whether both sections are now as wanted.
  */
 function ce_sec_sync_htaccess( $force = false ) {
 	if ( ! $force && get_transient( 'ce_sec_htaccess_checked' ) ) {
-		return;
+		return false;
 	}
 	set_transient( 'ce_sec_htaccess_checked', 1, HOUR_IN_SECONDS );
 	$file = ce_sec_htaccess_file();
 	if ( '' === $file ) {
 		update_option( 'ce_security_htaccess', 'unavailable', false );
-		return;
+		return false;
 	}
 	$want    = ce_sec_on( 'ce_sec_xmlrpc_off' );
 	$current = function_exists( 'extract_from_markers' ) ? extract_from_markers( $file, 'Block xmlrpc.php' ) : array();
@@ -255,6 +256,8 @@ function ce_sec_sync_htaccess( $force = false ) {
 		$ok_files = true === insert_with_markers( $file, CE_SEC_FILES_MARKER, $want_files );
 	}
 	update_option( 'ce_security_htaccess_files', $ok_files ? ( $want_files ? 'written' : 'off' ) : 'unavailable', false );
+
+	return $ok && $ok_files;
 }
 add_action( 'admin_init', 'ce_sec_sync_htaccess' );
 
@@ -270,8 +273,11 @@ function ce_sec_sync_htaccess_once() {
 		return;
 	}
 	set_transient( 'ce_sec_htaccess_lock', 1, MINUTE_IN_SECONDS );
-	ce_sec_sync_htaccess( true );
-	update_option( 'ce_sec_htaccess_version', $version, false );
+	// Recorded only once the sections are written, or where no .htaccess
+	// applies (not Apache); a failed write is tried again a minute later.
+	if ( ce_sec_sync_htaccess( true ) || empty( $GLOBALS['is_apache'] ) ) {
+		update_option( 'ce_sec_htaccess_version', $version, false );
+	}
 }
 add_action( 'init', 'ce_sec_sync_htaccess_once', 99 );
 add_action( 'after_switch_theme', function () { ce_sec_sync_htaccess( true ); } );
