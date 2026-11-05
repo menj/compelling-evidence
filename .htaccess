@@ -20,6 +20,15 @@ RewriteOptions Inherit
 RewriteRule ^(tests|bin|tools)(/|$) - [F]
 </IfModule>
 
+# Without mod_rewrite, Apache 2.4 tests the file's own path instead.
+<IfModule !mod_rewrite.c>
+<IfModule mod_authz_core.c>
+<If "%{REQUEST_FILENAME} =~ m#/themes/[^/]+/(tests|bin|tools)(/|$)#">
+Require all denied
+</If>
+</IfModule>
+</IfModule>
+
 <IfModule mod_alias.c>
 # .git, .github, .githooks, .gitattributes, .gitignore and .claude, wherever
 # they sit in the theme.

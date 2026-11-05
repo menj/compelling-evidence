@@ -164,6 +164,10 @@ foreach ( array( 'assets/js/main.js', 'toolsmith.css', 'journeys/quiz.html', 'as
 	ce_check( ! $ce_rw_hit( $ce_p ), "theme .htaccess rewrite: open $ce_p" );
 }
 
+// Without mod_rewrite: the <If> on the file's own path.
+$ce_if = preg_match( '/<If "%\{REQUEST_FILENAME\} =~ m#(.+)#">/', (string) file_get_contents( dirname( __DIR__ ) . '/.htaccess' ), $ce_m ) ? $ce_m[1] : '';
+ce_check( '' !== $ce_if && 1 === preg_match( '#' . $ce_if . '#', '/home/site/public_html/wp-content/themes/compelling-evidence/tools/build.py' ) && 0 === preg_match( '#' . $ce_if . '#', '/home/site/public_html/wp-content/themes/compelling-evidence/assets/js/main.js' ), 'without mod_rewrite, tools/ is refused by its file path and assets stay open' );
+
 // tests/ and bin/ refuse every request into them, whatever the theme's address.
 foreach ( array( 'tests', 'bin' ) as $ce_d ) {
 	$ce_ht = (string) @file_get_contents( dirname( __DIR__ ) . "/$ce_d/.htaccess" ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
