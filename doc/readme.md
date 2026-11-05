@@ -257,7 +257,7 @@ Nginx serves `error_page` for PHP's own 500 and 503 answers only with `fastcgi_i
 
 ## Error pages
 
-WordPress reads three files from `wp-content` when it cannot build a page. The theme writes them on activation, again on an administrator's next admin page when one is missing or outdated, and at once with Install error pages on Tools & Sync, which shows each as not installed, installed, outdated, left behind by another theme or another file left alone. A copy another theme left behind (marked "Written by the ... theme; safe to delete") is replaced; a file without such a mark is never overwritten. A theme switch deletes the files that carry the theme's marker, `Compelling Evidence error page drop-in`.
+WordPress reads three files from `wp-content` when it cannot build a page. The theme writes them on activation, again on an administrator's next admin page when one is missing or outdated, and at once with Install error pages on Tools & Sync, which shows each as not installed, installed, outdated, left behind by another theme or another file left alone. A copy another theme left behind (marked "Written by the ... theme; safe to delete") is replaced; a file without such a mark is never overwritten. On a single site, a theme switch deletes the files that carry the theme's marker, `Compelling Evidence error page drop-in`; on a network they stay (see Multisite).
 
 | File | Shown when | Status |
 |---|---|---|
