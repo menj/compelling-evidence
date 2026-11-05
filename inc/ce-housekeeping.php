@@ -119,6 +119,19 @@ function ce_remove_dev_files( $root = '', $version = '' ) {
 		return;
 	}
 
+	// One cleanup at a time, whichever hook started it. add_option() inserts
+	// a unique row, so only one request can take the lock; a lock older than
+	// ten minutes is left from a request that died, and is taken over.
+	if ( ! add_option( 'ce_dev_files_lock', time(), '', false ) ) {
+		if ( time() - (int) get_option( 'ce_dev_files_lock' ) < 10 * MINUTE_IN_SECONDS ) {
+			return;
+		}
+		delete_option( 'ce_dev_files_lock' );
+		if ( ! add_option( 'ce_dev_files_lock', time(), '', false ) ) {
+			return;
+		}
+	}
+
 	$left = array();
 
 	foreach ( ce_dev_paths( $root ) as $rel ) {
@@ -138,10 +151,11 @@ function ce_remove_dev_files( $root = '', $version = '' ) {
 	// front end, and on every admin page load.
 	if ( $left ) {
 		set_transient( 'ce_dev_files_retry', $left, HOUR_IN_SECONDS );
-		return;
+	} else {
+		update_option( 'ce_dev_files_removed', $version, true ); // Autoloaded: the front end reads it on every request.
 	}
 
-	update_option( 'ce_dev_files_removed', $version, false );
+	delete_option( 'ce_dev_files_lock' );
 }
 // Both hooks pass arguments of their own (after_switch_theme the old
 // theme's name), so neither may reach the $root parameter.
@@ -154,14 +168,14 @@ add_action( 'admin_init', 'ce_remove_dev_files_hook', 10, 0 );
 /**
  * The same, on the first front-end request after an FTP update: such an
  * update fires no switch hook, and the site may see no admin visit for
- * days. A one-minute lock keeps two requests from deleting at once.
+ * days. ce_remove_dev_files() takes the lock that keeps two requests from
+ * deleting at once.
  */
 function ce_remove_dev_files_front() {
-	if ( is_admin() || ce_keep_dev_files() || get_transient( 'ce_dev_files_lock' ) || get_transient( 'ce_dev_files_retry' ) || get_option( 'ce_dev_files_removed' ) === (string) wp_get_theme()->get( 'Version' ) ) {
+	// The autoloaded record first, so a finished cleanup costs no query.
+	if ( is_admin() || get_option( 'ce_dev_files_removed' ) === (string) wp_get_theme()->get( 'Version' ) || ce_keep_dev_files() || get_transient( 'ce_dev_files_retry' ) ) {
 		return;
 	}
-	set_transient( 'ce_dev_files_lock', 1, MINUTE_IN_SECONDS );
 	ce_remove_dev_files();
-	delete_transient( 'ce_dev_files_lock' );
 }
 add_action( 'init', 'ce_remove_dev_files_front', 99 );

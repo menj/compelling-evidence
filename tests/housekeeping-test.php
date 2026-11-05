@@ -30,7 +30,10 @@ $GLOBALS['ce_env'] = 'local';
 function add_action() {}
 function apply_filters( $h, $v ) { return 'ce_dev_paths' === $h ? array_merge( $v, $GLOBALS['ce_extra'] ?? array() ) : $v; }
 function set_transient( $k, $v, $t = 0 ) { $GLOBALS['ce_t'][ $k ] = $v; return true; }
+function add_option( $k, $v, $d = '', $a = true ) { if ( isset( $GLOBALS['ce_o'][ $k ] ) ) { return false; } $GLOBALS['ce_o'][ $k ] = $v; return true; }
+function delete_option( $k ) { unset( $GLOBALS['ce_o'][ $k ] ); return true; }
 define( 'HOUR_IN_SECONDS', 3600 );
+define( 'MINUTE_IN_SECONDS', 60 );
 function get_option( $k, $d = false ) { return $GLOBALS['ce_o'][ $k ] ?? $d; }
 function update_option( $k, $v ) { $GLOBALS['ce_o'][ $k ] = $v; return true; }
 function wp_get_environment_type() { return $GLOBALS['ce_env']; }
@@ -76,7 +79,12 @@ if ( 'keep' === $ce_case ) {
 		ce_check( 8 === count( ce_left( $ce_root ) ) && false === get_option( 'ce_dev_files_removed' ), "a $e environment keeps every file" );
 	}
 	$GLOBALS['ce_env'] = 'production';
+	add_option( 'ce_dev_files_lock', time() );
 	ce_remove_dev_files( $ce_root, '9.9.9' );
+	ce_check( 8 === count( ce_left( $ce_root ) ) && false === get_option( 'ce_dev_files_removed' ), 'a fresh lock held by another request: nothing is deleted' );
+	$GLOBALS['ce_o']['ce_dev_files_lock'] = time() - 3600;
+	ce_remove_dev_files( $ce_root, '9.9.9' );
+	ce_check( false === get_option( 'ce_dev_files_lock' ), 'a stale lock is taken over, and released after the run' );
 	ce_check( array() === ce_left( $ce_root ) && $ce_theme() && '9.9.9' === get_option( 'ce_dev_files_removed' ), 'production removes the .git* entries, .claude, tests, bin and tools, and keeps the theme' );
 	ce_check( is_file( "$ce_outside/precious" ), 'a symbolic link is removed without touching its target' );
 	mkdir( "$ce_root/tests" );

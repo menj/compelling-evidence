@@ -173,7 +173,12 @@ function ce_sec_files_htaccess_lines( $home = '' ) {
 		// with either one appended as path info is still refused.
 		$rules[] = 'RewriteRule ^' . $core . 'wp-includes/(?!(js/tinymce/wp-tinymce|ms-files)\.php$).+\.php(/|$) - [F]';
 		$rules[] = 'RewriteRule ^' . $core . 'wp-admin/includes/.+\.php(/|$) - [F]';
-		$rules[] = 'RewriteRule ^' . $core . '(wp-settings\.php|wp-config-sample\.php|wp-admin/install\.php|readme\.html)(/|$) - [F]';
+		$rules[] = 'RewriteRule ^' . $core . '(wp-config\.php|wp-settings\.php|wp-config-sample\.php|wp-admin/install\.php|readme\.html)(/|$) - [F]';
+		// WordPress also reads wp-config.php from the folder above its own.
+		$parent = '' === $core ? null : ce_sec_rewrite_prefix( dirname( untrailingslashit( wp_normalize_path( ABSPATH ) ) ), $home );
+		if ( null !== $parent ) {
+			$rules[] = 'RewriteRule ^' . $parent . 'wp-config\.php(/|$) - [F]';
+		}
 	}
 	if ( null !== $themes && '' !== $themes ) {
 		$rules[] = 'RewriteRule ^' . $themes . '.+\.php(/|$) - [F]';
@@ -271,15 +276,29 @@ function ce_sec_sync_htaccess_once() {
 	// The key carries the CE_BLOCK_DIRECT_FILES choice, so changing that
 	// constant takes effect on the next request too.
 	$version = (string) wp_get_theme()->get( 'Version' ) . ( ce_sec_files_block_on() ? '' : '-files-off' );
-	if ( get_option( 'ce_sec_htaccess_version' ) === $version || get_transient( 'ce_sec_htaccess_lock' ) ) {
+	if ( get_option( 'ce_sec_htaccess_version' ) === $version || get_transient( 'ce_sec_htaccess_retry' ) ) {
 		return;
 	}
-	set_transient( 'ce_sec_htaccess_lock', 1, MINUTE_IN_SECONDS );
+	// add_option() inserts a unique row, so only one request takes the lock;
+	// one older than a minute is from a request that died. (insert_with_markers()
+	// also locks the file itself while it writes.)
+	if ( ! add_option( 'ce_sec_htaccess_lock', time(), '', false ) ) {
+		if ( time() - (int) get_option( 'ce_sec_htaccess_lock' ) < MINUTE_IN_SECONDS ) {
+			return;
+		}
+		delete_option( 'ce_sec_htaccess_lock' );
+		if ( ! add_option( 'ce_sec_htaccess_lock', time(), '', false ) ) {
+			return;
+		}
+	}
 	// Recorded only once the sections are written, or where no .htaccess
 	// applies (not Apache); a failed write is tried again a minute later.
 	if ( ce_sec_sync_htaccess( true ) || empty( $GLOBALS['is_apache'] ) ) {
-		update_option( 'ce_sec_htaccess_version', $version, false );
+		update_option( 'ce_sec_htaccess_version', $version, true ); // Autoloaded: read on every request.
+	} else {
+		set_transient( 'ce_sec_htaccess_retry', 1, MINUTE_IN_SECONDS );
 	}
+	delete_option( 'ce_sec_htaccess_lock' );
 }
 add_action( 'init', 'ce_sec_sync_htaccess_once', 99 );
 add_action( 'after_switch_theme', function () { ce_sec_sync_htaccess( true ); } );
