@@ -12,6 +12,12 @@ require_once get_stylesheet_directory() . '/inc/ce-gone.php';
 
 // ── SECURITY (remote-publishing lock, spam gate, clean-up; Security tab) ─────
 require_once get_stylesheet_directory() . '/inc/ce-security-detector.php';
+// The cross-request lock (2.18.7). Loaded only once it exists, so an FTP
+// upload that sends functions.php first does not fail on it; its callers
+// wait for it.
+if ( is_readable( get_stylesheet_directory() . '/inc/ce-lock.php' ) ) {
+    require_once get_stylesheet_directory() . '/inc/ce-lock.php';
+}
 require_once get_stylesheet_directory() . '/inc/ce-security.php';
 // Loaded only once it exists, so an FTP upload that sends functions.php first
 // does not fail on it.

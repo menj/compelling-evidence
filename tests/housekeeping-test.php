@@ -30,8 +30,11 @@ $GLOBALS['ce_env'] = 'local';
 function add_action() {}
 function apply_filters( $h, $v ) { return 'ce_dev_paths' === $h ? array_merge( $v, $GLOBALS['ce_extra'] ?? array() ) : $v; }
 function set_transient( $k, $v, $t = 0 ) { $GLOBALS['ce_t'][ $k ] = $v; return true; }
+// inc/ce-lock.php is tested on its own (tests/lock-test.php); here the same
+// rules over the option stub: a fresh lock is refused, a stale one taken over.
 function add_option( $k, $v, $d = '', $a = true ) { if ( isset( $GLOBALS['ce_o'][ $k ] ) ) { return false; } $GLOBALS['ce_o'][ $k ] = $v; return true; }
-function delete_option( $k ) { unset( $GLOBALS['ce_o'][ $k ] ); return true; }
+function ce_lock_take( $k, $ttl ) { if ( isset( $GLOBALS['ce_o'][ $k ] ) && time() - (int) $GLOBALS['ce_o'][ $k ] < $ttl ) { return ''; } $GLOBALS['ce_o'][ $k ] = time() . '|t'; return $GLOBALS['ce_o'][ $k ]; }
+function ce_lock_release( $k, $token ) { if ( ( $GLOBALS['ce_o'][ $k ] ?? null ) === $token ) { unset( $GLOBALS['ce_o'][ $k ] ); } }
 define( 'HOUR_IN_SECONDS', 3600 );
 define( 'MINUTE_IN_SECONDS', 60 );
 function get_option( $k, $d = false ) { return $GLOBALS['ce_o'][ $k ] ?? $d; }

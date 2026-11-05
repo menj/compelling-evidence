@@ -119,17 +119,12 @@ function ce_remove_dev_files( $root = '', $version = '' ) {
 		return;
 	}
 
-	// One cleanup at a time, whichever hook started it. add_option() inserts
-	// a unique row, so only one request can take the lock; a lock older than
-	// ten minutes is left from a request that died, and is taken over.
-	if ( ! add_option( 'ce_dev_files_lock', time(), '', false ) ) {
-		if ( time() - (int) get_option( 'ce_dev_files_lock' ) < 10 * MINUTE_IN_SECONDS ) {
-			return;
-		}
-		delete_option( 'ce_dev_files_lock' );
-		if ( ! add_option( 'ce_dev_files_lock', time(), '', false ) ) {
-			return;
-		}
+	// One cleanup at a time, whichever hook started it (inc/ce-lock.php); a
+	// lock older than ten minutes is from a request that died, and is taken
+	// over. Until the lock code has arrived, nothing is deleted.
+	$token = function_exists( 'ce_lock_take' ) ? ce_lock_take( 'ce_dev_files_lock', 10 * MINUTE_IN_SECONDS ) : '';
+	if ( '' === $token ) {
+		return;
 	}
 
 	$left = array();
@@ -155,7 +150,7 @@ function ce_remove_dev_files( $root = '', $version = '' ) {
 		update_option( 'ce_dev_files_removed', $version, true ); // Autoloaded: the front end reads it on every request.
 	}
 
-	delete_option( 'ce_dev_files_lock' );
+	ce_lock_release( 'ce_dev_files_lock', $token );
 }
 // Both hooks pass arguments of their own (after_switch_theme the old
 // theme's name), so neither may reach the $root parameter.

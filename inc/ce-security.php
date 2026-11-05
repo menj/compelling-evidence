@@ -239,7 +239,8 @@ function ce_sec_sync_htaccess( $force = false ) {
 	// switch, a settings change or the first request of a new version. A
 	// sync that finds the lock taken leaves a note, and the holder runs once
 	// more before it lets go, so a change made meanwhile is not lost.
-	if ( ! ce_sec_htaccess_lock() ) {
+	$token = ce_sec_htaccess_lock();
+	if ( '' === $token ) {
 		update_option( 'ce_sec_htaccess_dirty', time(), false );
 		return false;
 	}
@@ -249,28 +250,26 @@ function ce_sec_sync_htaccess( $force = false ) {
 		$ok = ce_sec_write_htaccess();
 		++$runs;
 	} while ( $runs < 3 && ce_sec_htaccess_dirty() );
-	delete_option( 'ce_sec_htaccess_lock' );
+	// A theme switch that found the lock taken asked for the sections to go.
+	if ( '' !== ce_sec_option_raw( 'ce_sec_htaccess_remove' ) ) {
+		ce_sec_clear_htaccess();
+		delete_option( 'ce_sec_htaccess_remove' );
+		$ok = false;
+	}
+	ce_lock_release( 'ce_sec_htaccess_lock', $token );
 
 	return $ok;
 }
 
 /**
- * Takes the .htaccess lock. add_option() inserts a unique row, so only one
- * request can take it; a lock older than a minute is from a request that
- * died, and is taken over. (insert_with_markers() also locks the file
- * itself while it writes.)
+ * Takes the .htaccess lock (inc/ce-lock.php); a lock older than a minute is
+ * from a request that died, and is taken over.
  *
- * @return bool
+ * @return string The holder's token, or '' when it is taken or the lock code
+ *                has not arrived yet.
  */
 function ce_sec_htaccess_lock() {
-	if ( add_option( 'ce_sec_htaccess_lock', time(), '', false ) ) {
-		return true;
-	}
-	if ( time() - (int) ce_sec_option_raw( 'ce_sec_htaccess_lock' ) < MINUTE_IN_SECONDS ) {
-		return false;
-	}
-	delete_option( 'ce_sec_htaccess_lock' );
-	return (bool) add_option( 'ce_sec_htaccess_lock', time(), '', false );
+	return function_exists( 'ce_lock_take' ) ? ce_lock_take( 'ce_sec_htaccess_lock', MINUTE_IN_SECONDS ) : '';
 }
 
 /**
@@ -363,18 +362,27 @@ add_action( 'update_option_ce_sec_xmlrpc_off', function () { ce_sec_sync_htacces
  * themes. A sister theme writes the same block back on its first admin load.
  */
 function ce_sec_remove_htaccess() {
-	// The theme is going, so the sections go even if another request holds
-	// the lock; the lock is only released if this call took it.
-	$locked = ce_sec_htaccess_lock();
-	$file   = ce_sec_htaccess_file();
+	delete_transient( 'ce_sec_htaccess_checked' );
+	$token = ce_sec_htaccess_lock();
+	if ( '' === $token ) {
+		// Another request is writing: it removes the sections before it
+		// lets go of the lock.
+		update_option( 'ce_sec_htaccess_remove', time(), false );
+		return;
+	}
+	ce_sec_clear_htaccess();
+	ce_lock_release( 'ce_sec_htaccess_lock', $token );
+}
+
+/**
+ * Takes both of this theme's sections out of .htaccess.
+ */
+function ce_sec_clear_htaccess() {
+	$file = ce_sec_htaccess_file();
 	if ( '' !== $file ) {
 		insert_with_markers( $file, 'Block xmlrpc.php', array() );
 		insert_with_markers( $file, CE_SEC_FILES_MARKER, array() );
 	}
-	if ( $locked ) {
-		delete_option( 'ce_sec_htaccess_lock' );
-	}
-	delete_transient( 'ce_sec_htaccess_checked' );
 }
 add_action( 'switch_theme', 'ce_sec_remove_htaccess' );
 
