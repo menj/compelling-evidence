@@ -1,23 +1,23 @@
 <?php
 /**
- * Compelling Evidence — Contextual links to the sister sites
+ * Compelling Evidence — Contextual links to the other sites
  *
  * The first mention of a phrase in an article's running text links to the
  * inner page that treats it, on this site (through the unified engine in
- * ce-crosslinks.php) or on one of the six sister sites (this pass).
+ * ce-crosslinks.php) or on one of the six other sites (this pass).
  *
  * The phrase map is inc/data/network-links.json, a shared file kept
  * identical in all seven themes. Each phrase belongs to exactly one page
- * across the network; this site's entries feed ce_get_crosslink_phrases(),
+ * across the seven sites; this site's entries feed ce_get_crosslink_phrases(),
  * every other site's entries feed this pass.
  *
- * Rules for sister links: whole phrase, first mention, each address once a
+ * Rules for links to the other sites: whole phrase, first mention, each address once a
  * page, at most one added link per paragraph or list item (a paragraph that
  * already carries a crosslink or a glossary tooltip gets none), never inside
  * headings, links, quotations, citations, Quran or hadith blocks, figures,
  * tables or any Arabic, Hebrew, Greek or Syriac text.
  *
- * Configurable via Theme Options → Links & Tooltips → Sister-Site Links.
+ * Configurable via Theme Options → Links & Tooltips → Links to the Other Sites.
  *
  * @since 2.6.39
  */
@@ -63,7 +63,7 @@ function ce_ctx_lower( $text ) {
 }
 
 /**
- * The shared network map, decoded once a request.
+ * The shared phrase map, decoded once a request.
  *
  * @return array{sites:array<string,string>,links:array<int,array{site:string,path:string,phrases:string[]}>}
  */
@@ -81,7 +81,7 @@ function ce_ctx_network_map() {
 }
 
 /**
- * Hosts of the sister sites (this site excluded), keyed by host.
+ * Hosts of the other sites (this site excluded), keyed by host.
  *
  * @return array<string,string> host => site key
  */
@@ -97,7 +97,7 @@ function ce_ctx_sister_hosts() {
 
 /**
  * Admin lines from the Links & Tooltips tab: "phrase | /articles/slug/" for
- * this site, "phrase | https://sister/path/" for a sister site. Lines to any
+ * this site, "phrase | https://other.example/path/" for another site. Lines to any
  * other host or any other local path are ignored.
  *
  * @return array{own:array<string,string>,sister:array<string,array{phrase:string,url:string}>}
@@ -161,7 +161,7 @@ function ce_ctx_own_map_phrases() {
 }
 
 /**
- * Lower-cased phrases the shared map gives to a sister site.
+ * Lower-cased phrases the shared map gives to another site.
  *
  * @return array<string,true>
  */
@@ -177,7 +177,7 @@ function ce_ctx_sister_owned_phrases() {
 }
 
 /**
- * Sister links, keyed by lower-cased phrase. Admin lines first, so they win;
+ * Links to the other sites, keyed by lower-cased phrase. Admin lines first, so they win;
  * a phrase this site keeps (admin line or custom phrase option) never goes out.
  *
  * @return array<string,array{phrase:string,url:string}>
@@ -211,7 +211,7 @@ function ce_ctx_sister_links() {
 /**
  * One phrase as a pattern fragment: quoted, with every apostrophe form
  * (straight, curly, or the entity wptexturize writes) matching any other.
- * Shared by the sister pass and the unified engine.
+ * Shared by the other-sites pass and the unified engine.
  *
  * @param string $phrase Phrase.
  * @return string
@@ -227,7 +227,7 @@ function ce_ctx_phrase_alt( $phrase ) {
 }
 
 /**
- * The sister phrases as one or more patterns, longest phrase first. One
+ * The phrases for the other sites as one or more patterns, longest phrase first. One
  * pattern normally; when the list is too large for PCRE to compile (many
  * extra phrases on the settings tab), it is split until each part compiles,
  * and a phrase that cannot compile alone is dropped.
@@ -263,11 +263,11 @@ function ce_ctx_sister_patterns() {
 }
 
 /**
- * The sister link for a matched phrase. Without mbstring, ce_ctx_lower()
+ * The other-site link for a matched phrase. Without mbstring, ce_ctx_lower()
  * lowers ASCII only, so a match in accented capitals ("IBN ISḤĀQ") misses
  * its key and is compared phrase by phrase instead.
  *
- * @param array  $links Sister links keyed by lower-cased phrase.
+ * @param array  $links Links to the other sites keyed by lower-cased phrase.
  * @param string $text  Matched text.
  * @return string Address, or '' when none.
  */
@@ -369,7 +369,7 @@ function ce_ctx_in_disabled_topic( $post_id ) {
 
 
 /* ═══════════════════════════════════════════════════════════════════════
-   SISTER-SITE PASS
+   OTHER-SITES PASS
    ═══════════════════════════════════════════════════════════════════════ */
 
 /**
@@ -400,7 +400,7 @@ add_filter( 'the_content', 'ce_sister_link_filter', 21 );
  * The text walk, separate from the guards so it can be tested alone.
  *
  * @param string $content Rendered content.
- * @param int    $max     Sister links on the page, at most.
+ * @param int    $max     Links to the other sites on the page, at most.
  * @param string $here    The current page's address.
  */
 function ce_ctx_apply_sister_links( $content, $max, $here ) {

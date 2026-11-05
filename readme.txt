@@ -6,8 +6,8 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.18.13
-Stable tag: 2.18.13
+Version: 2.18.14
+Stable tag: 2.18.14
 License: GNU General Public License v3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Template: twentytwentyfive
@@ -127,6 +127,10 @@ The Security tab turns off XML-RPC, application passwords and REST changes from 
 
 WordPress shows a plain screen when it is updating, when PHP fails or when the database is down. The theme replaces those three screens with its own, and ships pages for the errors your web server answers itself (403, 500, 502, 503 and 504). Tools & Sync shows whether each is installed and gives the lines for .htaccess.
 
+= My site is in a subfolder. Where does the browser icon go? =
+
+Browsers ask for /favicon.ico at the top of the domain, such as example.com/favicon.ico, even when the site lives in example.com/blog/. WordPress never sees that request, so put a copy of the theme's favicon.ico in the domain root folder. The icon tags in each page cover the pages either way. If you have set a Site Icon, put that icon there as favicon.ico instead.
+
 == Privacy ==
 
 With default settings the theme sets no cookie, stores nothing about visitors and loads nothing from another server.
@@ -155,6 +159,10 @@ CE Theme, Copyright 2026 MENJ. Licensed under the GNU GPL, version 3 or later; t
 * Article figures are not bundled. inc/articles/media.json lists each with its source page, creator and licence, and the credit prints under the figure.
 
 == Changelog ==
+
+= 2.18.14 - November 2026 =
+* The settings and the readme speak of the other sites in plain words. Links to them stay.
+* The readme says where the browser icon goes on a site in a subfolder: a copy of favicon.ico in the domain root.
 
 = 2.18.13 - November 2026 =
 * The browser icon set is complete: favicon.ico at 16, 32 and 48px, 192px, 512px and maskable icons and a web app manifest, all from the CE mark. The site answers /favicon.ico with the icon, and the error pages show it in the tab.
@@ -599,6 +607,9 @@ Uthmani Quran font replaced with KFGQPC HAFS version (608 glyphs). CE Hadith add
 For the full version history see doc/changelog.md in the theme zip.
 
 == Upgrade Notice ==
+
+= 2.18.14 =
+Replace the theme files. On a site in a subfolder, also put a copy of assets/images/favicon.ico in the domain root folder (or, with a Site Icon set, that icon as favicon.ico); otherwise nothing to do.
 
 = 2.18.13 =
 Replace the theme files. A Site Icon you set now wins over the theme's icons. As with every version, the first admin page rewrites the articles from the theme's files.

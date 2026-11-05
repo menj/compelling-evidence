@@ -973,7 +973,7 @@ msgid "Links & Tooltips"
 msgstr ""
 
 #: inc/ce-theme-options.php:143
-msgid "Automatic links inside article and answer text: crosslinks to this site, links to the sister sites, murtadd.org counterparts and glossary tooltips. Drag a slider to set a limit; the number beside it is the value that will be saved. Links never go into headings, quotations, Quran or hadith blocks."
+msgid "Automatic links inside article and answer text: crosslinks to this site, links to the other sites, murtadd.org counterparts and glossary tooltips. Drag a slider to set a limit; the number beside it is the value that will be saved. Links never go into headings, quotations, Quran or hadith blocks."
 msgstr ""
 
 #: inc/ce-theme-options.php:144
@@ -1717,19 +1717,19 @@ msgid "Comma-separated topic slugs (e.g. \"the-bigger-picture,the-inner-journey\
 msgstr ""
 
 #: inc/ce-theme-options.php:690
-msgid "Link to the sister sites"
+msgid "Link to the other sites"
 msgstr ""
 
 #: inc/ce-theme-options.php:690
-msgid "Sister-Site Links"
+msgid "Links to the Other Sites"
 msgstr ""
 
 #: inc/ce-theme-options.php:691
-msgid "The first mention of a phrase another site in the network treats (Abrahamic Religions, Best of Islam, The Injil, Apostle of Doom, Murtadd, Lailatulqadar) links to that inner page. Phrases come from inc/data/network-links.json, the same file in all seven themes. Never in headings, quotations, Quran or hadith blocks, figures or tables; one added link a paragraph; never in a paragraph that already has a crosslink or tooltip."
+msgid "The first mention of a phrase another of the seven sites treats (Abrahamic Religions, Best of Islam, The Injil, Apostle of Doom, Murtadd, Lailatulqadar) links to that inner page. Phrases come from inc/data/network-links.json, the same file in all seven themes. Never in headings, quotations, Quran or hadith blocks, figures or tables; one added link a paragraph; never in a paragraph that already has a crosslink or tooltip."
 msgstr ""
 
 #: inc/ce-theme-options.php:692
-msgid "Maximum sister-site links per article"
+msgid "Maximum links to other sites per article"
 msgstr ""
 
 #: inc/ce-theme-options.php:693
@@ -1749,7 +1749,7 @@ msgid "Extra phrases"
 msgstr ""
 
 #: inc/ce-theme-options.php:697
-msgid "One per line: phrase | /articles/slug/ for this site, or phrase | https://injil.help/paul/james/ for a sister site. These win over the shared map. Other addresses are ignored."
+msgid "One per line: phrase | /articles/slug/ for this site, or phrase | https://injil.help/paul/james/ for another site. These win over the shared map. Other addresses are ignored."
 msgstr ""
 
 #: inc/ce-theme-options.php:698
@@ -1757,7 +1757,7 @@ msgid "Pages without crosslinks"
 msgstr ""
 
 #: inc/ce-theme-options.php:699
-msgid "Article or question slugs, one per line. These get neither internal nor sister-site links; glossary tooltips are unaffected."
+msgid "Article or question slugs, one per line. These get neither internal nor other-site links; glossary tooltips are unaffected."
 msgstr ""
 
 #: inc/ce-theme-options.php:700
