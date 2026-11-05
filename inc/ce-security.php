@@ -141,7 +141,7 @@ function ce_sec_rewrite_prefix( $path, $home ) {
 /**
  * mod_rewrite lines that refuse direct requests for files that never serve
  * a page: any path segment that starts with .git or .claude, this theme's
- * tests, bin and tools folders, PHP files in wp-includes, wp-admin/includes
+ * tests, bin, tools and doc folders, PHP files in wp-includes, wp-admin/includes
  * and the themes folder, and core files that only reveal the version or run
  * the installer. Each answers 403.
  *
@@ -166,7 +166,7 @@ function ce_sec_files_htaccess_lines( $home = '' ) {
 
 	$rules = array( 'RewriteRule (^|/)\.(git|claude) - [F]' );
 	if ( null !== $theme && '' !== $theme ) {
-		$rules[] = 'RewriteRule ^' . $theme . '(tests|bin|tools)(/|$) - [F]';
+		$rules[] = 'RewriteRule ^' . $theme . '(tests|bin|tools|doc)(/|$) - [F]';
 	}
 	if ( null !== $core ) {
 		// The two exceptions are exact paths after the prefix; a PHP file
@@ -1708,7 +1708,7 @@ function ce_sec_render_tools() {
 			<div class="notice notice-warning inline"><p><?php esc_html_e( 'wp-config.php sits in the folder above WordPress, outside the folder whose .htaccess the theme writes, so the theme cannot refuse direct requests for it. Ask the host to deny wp-config.php at the server, or move the file into the WordPress folder.', 'compelling-evidence' ); ?></p></div>
 		<?php endif; ?>
 		<?php if ( 'written' === get_option( 'ce_security_htaccess_files', '' ) ) : ?>
-			<p class="ce-field-desc"><?php esc_html_e( 'The web server also refuses direct requests for PHP files in wp-includes, wp-admin/includes and the themes folder, the installer and version files, .git and .claude, and the theme\'s tests, bin and tools folders: the theme keeps a "Compelling Evidence: block direct file access" section in .htaccess. Define CE_BLOCK_DIRECT_FILES as false in wp-config.php to leave it out.', 'compelling-evidence' ); ?></p>
+			<p class="ce-field-desc"><?php esc_html_e( 'The web server also refuses direct requests for PHP files in wp-includes, wp-admin/includes and the themes folder, the installer and version files, .git and .claude, and the theme\'s tests, bin, tools and doc folders: the theme keeps a "Compelling Evidence: block direct file access" section in .htaccess. Define CE_BLOCK_DIRECT_FILES as false in wp-config.php to leave it out.', 'compelling-evidence' ); ?></p>
 		<?php endif; ?>
 
 		<h3 class="ce-section-title"><?php esc_html_e( 'Clean up spam', 'compelling-evidence' ); ?></h3>
