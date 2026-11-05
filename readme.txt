@@ -129,7 +129,7 @@ WordPress shows a plain screen when it is updating, when PHP fails or when the d
 
 = My site is in a subfolder. Where does the browser icon go? =
 
-Browsers ask for /favicon.ico at the top of the domain, such as example.com/favicon.ico, even when the site lives in example.com/blog/. WordPress never sees that request, so put a copy of the theme's favicon.ico in the domain root folder. The icon tags in each page cover the pages either way.
+Browsers ask for /favicon.ico at the top of the domain, such as example.com/favicon.ico, even when the site lives in example.com/blog/. WordPress never sees that request, so put a copy of the theme's favicon.ico in the domain root folder. The icon tags in each page cover the pages either way. If you have set a Site Icon, put that icon there as favicon.ico instead.
 
 == Privacy ==
 
@@ -609,7 +609,7 @@ For the full version history see doc/changelog.md in the theme zip.
 == Upgrade Notice ==
 
 = 2.18.14 =
-Replace the theme files. On a site in a subfolder, also put a copy of assets/images/favicon.ico in the domain root folder; otherwise nothing to do.
+Replace the theme files. On a site in a subfolder, also put a copy of assets/images/favicon.ico in the domain root folder (or, with a Site Icon set, that icon as favicon.ico); otherwise nothing to do.
 
 = 2.18.13 =
 Replace the theme files. A Site Icon you set now wins over the theme's icons. As with every version, the first admin page rewrites the articles from the theme's files.

@@ -17,7 +17,7 @@ This document describes the update steps, the notes for each version that needs 
 
 ## Upgrading to v2.18.14 from v2.18.13
 
-Replace the theme files. Nothing else changes. On a site in a subfolder, put a copy of `assets/images/favicon.ico` in the domain root, since browsers ask for `/favicon.ico` there.
+Replace the theme files. Nothing else changes. On a site in a subfolder, put a copy of `assets/images/favicon.ico` in the domain root (or, with a Site Icon set, that icon as `favicon.ico`), since browsers ask for `/favicon.ico` there.
 
 ## Upgrading to v2.18.13 from v2.18.12
 
@@ -89,7 +89,7 @@ Replace the theme files. Nothing is written to `wp-content` until an administrat
 
 ## Upgrading to v2.7.1 from v2.7.0
 
-**After deploying:** load any admin page once. On Apache, with "Turn off XML-RPC" on, the theme adds a `# BEGIN Block xmlrpc.php` section to `.htaccess`; if a sister theme already wrote it, it is left as it is. If the Security tab says the file could not be written, ask the host to deny xmlrpc.php at the server. Switching "Turn off XML-RPC" off, or switching to a theme outside the sister themes, removes the section. Step 7 of the 2.7.0 checklist is now done by the theme on Apache.
+**After deploying:** load any admin page once. On Apache, with "Turn off XML-RPC" on, the theme adds a `# BEGIN Block xmlrpc.php` section to `.htaccess`; if another of the seven themes already wrote it, it is left as it is. If the Security tab says the file could not be written, ask the host to deny xmlrpc.php at the server. Switching "Turn off XML-RPC" off, or switching to a theme outside the sister themes, removes the section. Step 7 of the 2.7.0 checklist is now done by the theme on Apache.
 
 ---
 
@@ -97,7 +97,7 @@ Replace the theme files. Nothing is written to `wp-content` until an administrat
 
 **After deploying:** load any admin page once (the version change runs the content sync). The new Security tab under Appearance > CE Theme Options is on by default: XML-RPC, application passwords and REST writes from outside the browser stop at once.
 
-After the October 2026 attack on the sister site, the owner checklist:
+After the October 2026 attack on another of the sites, the owner checklist:
 
 1. Change the password of every administrator to a long random one used nowhere else, then Log Out Everywhere Else (Users > Profile), or press "Log out all sessions" on the Security tab.
 2. Create a new administrator whose name is not the site name, log in as it, and delete the old account, attributing its content to the new one.
@@ -131,7 +131,7 @@ WPS Hide Login keeps guarding the login address; nothing here changes it. If a l
 
 ## Upgrading to v2.6.39 from v2.6.38
 
-**After deploying:** nothing to run. Sister-site links are on by default (three per article); turn them off or change the cap under Theme Options → Links & Tooltips → Sister-Site Links. When the shared map changes, copy `inc/data/network-links.json` to all seven themes.
+**After deploying:** nothing to run. Links to the other sites are on by default (three per article); turn them off or change the cap under Theme Options → Links & Tooltips → Links to the Other Sites. When the shared map changes, copy `inc/data/network-links.json` to all seven themes.
 
 ---
 
