@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.18.11] - November 2026
+
+Documentation only. No code, setting or public identifier changes.
+
+### Changed
+- The FTP update steps in `readme.txt`, `doc/upgrading.md` and `doc/readme.md` upload the new folder into `wp-content/themes/` under a temporary name with its `.htaccess` files first, then rename it into place.
+- `.claude/skills/theme-docs/SKILL.md` carries the same rule: stage inside `wp-content/themes/`, deny files first, then rename.
+
 ## [2.18.10] - November 2026
 
 The article anatomy for `single-ce_article.php` and `single.php`. No section or feature removed and no public identifier renamed.

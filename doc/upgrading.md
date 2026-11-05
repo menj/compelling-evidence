@@ -8,12 +8,16 @@ This document describes the update steps, the notes for each version that needs 
 ## Updating an existing site
 
 1. Back up the database.
-2. Upload the new zip under Appearance > Themes > Add New > Upload Theme and choose "Replace active with uploaded". Do not switch to another theme first: a switch removes the error pages and the two `.htaccess` sections. By FTP instead: turn on hidden files so the `.htaccess` files go up, upload the folder as `compelling-evidence-new`, then rename `compelling-evidence` to `compelling-evidence-old` and, straight after, `compelling-evidence-new` to `compelling-evidence`, with the admin closed in between. Never upload WordPress itself without keeping `wp-config.php`.
+2. Upload the new zip under Appearance > Themes > Add New > Upload Theme and choose "Replace active with uploaded". Do not switch to another theme first: a switch removes the error pages and the two `.htaccess` sections. By FTP instead: turn on hidden files so the `.htaccess` files go up, upload the folder into `wp-content/themes/` as `compelling-evidence-new`, its `.htaccess` files first (the theme folder's, then those in `doc/`, `tools/`, `bin/` and `tests/` when the copy has them), then rename `compelling-evidence` to `compelling-evidence-old` and, straight after, `compelling-evidence-new` to `compelling-evidence`, with the admin closed in between. Never upload WordPress itself without keeping `wp-config.php`.
 3. Load any admin page. The version change runs the content sync, and the theme writes its error pages, its `.htaccess` sections and its run-once pages.
 4. Check `/articles/` and `/journeys/`, then delete `compelling-evidence-old`.
 5. Read the note below for the version you are moving to.
 
 ---
+
+## Upgrading to v2.18.11 from v2.18.10
+
+Documentation only, with no change to the articles: the FTP steps send the `.htaccess` files first. As with every version, the first admin page runs the content sync: it writes every article from the JSON batches over the database copy and moves to the trash any published `ce_article` whose slug is not in them. An edit made to an article in WordPress is lost, so make it in the batch file instead (see Content Sync Behaviour on Upgrade).
 
 ## Upgrading to v2.18.10 from v2.18.9
 
