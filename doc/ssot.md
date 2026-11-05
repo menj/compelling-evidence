@@ -1,8 +1,8 @@
-# SSOT — Single Source of Truth
-## Compelling Evidence Theme — System Design, Naming Conventions, Configuration Rules
+# SSOT: Single Source of Truth
+## Compelling Evidence theme: system design, naming conventions, configuration rules
 
-**Version:** 2.18.8  
-**Location:** `/doc/SSOT.md`
+**Version:** 2.18.9  
+**Location:** `doc/ssot.md`
 
 This document is authoritative. When any other file conflicts with a rule stated here, this document is correct and the other file should be updated.
 
@@ -23,6 +23,13 @@ This document is authoritative. When any other file conflicts with a rule stated
 | WP minimum | 6.7 (Twenty Twenty-Five 1.5 requires it) |
 | Parent version tested | Twenty Twenty-Five 1.5 (`CE_PARENT_TESTED_VERSION`) |
 | PHP minimum | 8.0 |
+| Author for schema | Mohd Elfie Nieshaem Juferi, https://menj.bio, fixed in `inc/ce-seo.php` whatever the byline field holds |
+| Settings screen | Appearance > CE Theme Options (`themes.php?page=ce-theme-options`), 12 tabs; one `ce_*` option per setting |
+| Content | 143 articles in 9 batches (`inc/articles/`, manifest 2.8.4), 11 topics, 14 journeys, 93 glossary terms |
+| `.htaccess` markers | `Block xmlrpc.php` (shared) and `Compelling Evidence: block direct file access` (`CE_SEC_FILES_MARKER`) |
+| Drop-in marker | `Compelling Evidence error page drop-in` (`CE_ERR_MARKER`); static copies in `wp-content/compelling-evidence-errors/` |
+| wp-config switches | `CE_SECURITY_LOCK` (false), `CE_KEEP_DEV_FILES` (true), `CE_BLOCK_DIRECT_FILES` (false) |
+| Served documents | None. The theme `.htaccess` refuses every Markdown file, and the live-server clean-up removes `doc/`. The Theme Options footer links `readme.txt` on GitHub |
 
 ---
 
@@ -189,23 +196,23 @@ topic using a hardcoded canonical array, then sorts within each topic by
 (pre-v2.3.6) grouped order numbers in tight ranges per topic — orders 1–14 for
 Does God Exist?, 15–22 for The Problem of Evil, and so on. The v2.3.6
 redistribution that balanced batches to exactly 24 articles each broke that
-contiguity. As of v2.6.2 the actual ranges are:
+contiguity. As of v2.18.9 (manifest 2.8.4) the actual ranges are:
 
 | # | Topic | Count | Order range (non-contiguous) |
 |---|---|---|---|
-| 1 | Does God Exist? | 12 | 1–97 |
-| 2 | The Problem of Evil | 9 | 9–101 |
-| 3 | Ethics Without God? | 5 | 6–59 |
-| 4 | Science & Evidence | 11 | 5–99 |
-| 5 | The Quran & Its Sources | 22 | 14–114 |
-| 6 | History, Context & Comparison | 10 | 16–107 |
-| 7 | Divine Justice & Fairness | 5 | 28–120 |
-| 8 | Islamic Practice & Ritual | 6 | 104–116 |
-| 9 | Rights & Freedom | 12 | 29–119 |
-| 10 | The Inner Journey | 17 | 30–100 |
-| 11 | Revelation & Meaning | 11 | 17–98 |
+| 1 | Does God Exist? | 12 | 1 to 97 |
+| 2 | The Problem of Evil | 9 | 9 to 101 |
+| 3 | Ethics Without God? | 5 | 6 to 59 |
+| 4 | Science & Evidence | 11 | 5 to 99 |
+| 5 | The Quran & Its Sources | 30 | 14 to 141 |
+| 6 | History, Context & Comparison | 15 | 16 to 142 |
+| 7 | Divine Justice & Fairness | 7 | 28 to 127 |
+| 8 | Islamic Practice & Ritual | 8 | 104 to 116 |
+| 9 | Rights & Freedom | 17 | 29 to 138 |
+| 10 | The Inner Journey | 17 | 30 to 100 |
+| 11 | Revelation & Meaning | 12 | 17 to 143 |
 
-**Total: 131 articles.** Reading-sequence ordering on `/articles/` is therefore
+**Total: 143 articles.** Reading-sequence ordering on `/articles/` is therefore
 determined by the archive template's canonical topic array (groups), then by
 `menu_order` within each topic (intra-group sequence). The `'order'` key in
 batch JSON is only meaningful relative to other articles of the same topic.
@@ -280,7 +287,9 @@ When incrementing the version in `style.css`:
 6. [ ] Update `readme.txt` version header and changelog section
 7. [ ] Update the batch checksums in `manifest.json` if batch files changed (SHA-256 of the bytes on disk)
 8. [ ] Test content sync fires on next admin page load
-9. [ ] Verify all 131 articles re-sync correctly
+9. [ ] Verify all 143 articles re-sync correctly
+10. [ ] Run `for t in tests/*.php; do php "$t" || exit 1; done` and `node tests/analytics-path-test.js`
+11. [ ] Update `Stable tag` in `readme.txt` with the version, and add a note to `doc/upgrading.md` when the owner must act
 
 ---
 
@@ -290,10 +299,9 @@ Main branch is `main`. Version tags follow semantic versioning prefixed with `v`
 - `v2.2.78`
 - `v2.3.0`
 
-Distribution zip is built from a clean checkout:
+Distribution zip is built with `git archive`, which honours the `export-ignore` lines in `.gitattributes` (`.claude/`, `bin/`, `tests/`, `phpcs.xml.dist`, `.gitattributes`, `.gitignore`):
 ```bash
-git checkout v2.3.0
-zip -r compelling-evidence.zip compelling-evidence -x "*.git*" -x "*.DS_Store"
+git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.9.zip HEAD
 ```
 
 ---
@@ -405,7 +413,7 @@ All templates must pass these checks:
 
 ---
 
-## 15. Crosslink Engine Ground Rules
+## 16. Crosslink Engine Ground Rules
 
 The unified crosslink + tooltip engine (`ce-crosslinks.php`) enforces these rules hardcoded:
 
@@ -585,7 +593,7 @@ Reference documents: Google's SEO Starter Guide and Google's list of structured 
 
 **Links and tooltips** never enter figures, diagrams or tables (`ce-crosslinks.php` skips those elements).
 
-**Coverage.** All 131 articles open with a lead figure placed after the first paragraph; batch 007 also carries diagrams and tables. Registry: 131 images (124 Pexels, 7 Wikimedia Commons).
+**Coverage, measured at 2.6.33.** All 131 articles of the time open with a lead figure placed after the first paragraph; batch 007 also carries diagrams and tables. Registry: 131 images (124 Pexels, 7 Wikimedia Commons).
 
 **Featured images.** A registry entry's `featured_for` names the article whose featured image it becomes on import (cards, Open Graph, Article schema). An editor's own featured image is never replaced. `ce_media_assign_featured()` backfills once per registry change.
 
@@ -626,7 +634,7 @@ Reference documents: Google's SEO Starter Guide and Google's list of structured 
 
 **Content analysis.** Rank Math scores editor text. `assets/js/ce-rankmath-admin.js` hooks `rank_math_content` and, while the editor text matches the saved article, gives the analysis the published article body (figures, links, lead image), then calls `rankMathEditor.refresh('content')`. `rank_math/metabox/post/values` declares the theme's table of contents (`assessor.hasTOCPlugin`) for articles with two or more H2 headings.
 
-**Scores (Rank Math 1.0.279, all 131 articles, analysed in the block editor).** With the Content AI module off: 90 to 95. With it on: 85 to 90, because its 5 points are earned only by using Rank Math's paid Content AI. Points still lost by design: content length (articles are 650 to 1,700 words; Rank Math wants 2,500), number in title, and on some titles the sentiment or power-word tests. Two slugs exceed Rank Math's URL length; slugs are not changed.
+**Scores (Rank Math 1.0.279, all 131 articles of the time, analysed in the block editor).** With the Content AI module off: 90 to 95. With it on: 85 to 90, because its 5 points are earned only by using Rank Math's paid Content AI. Points still lost by design: content length (articles are 650 to 1,700 words; Rank Math wants 2,500), number in title, and on some titles the sentiment or power-word tests. Two slugs exceed Rank Math's URL length; slugs are not changed.
 
 **Images.** Each article now has three in-body figures (lead, middle, late), plus the featured image: 393 registered images. Rank Math's media test needs four images (counting the featured image) for full marks.
 
@@ -664,3 +672,18 @@ The owner uploads the theme over FTP, and on 4 November 2026 the upload carried 
 - **Users.** A visitor who is not logged in gets no `/wp/v2/users` routes and a 404 for `?author=N` (`ce_sec_hide_user_routes()`, `ce_sec_block_author_query()`). The users sitemap has been off since 2.11.0.
 - **Sitemap aliases.** `/sitemap.xml` and `/sitemaps.xml` answer 301 with the index in use: Rank Math's `/sitemap_index.xml` when its sitemap module is on, otherwise `/wp-sitemap.xml` (`ce_sitemap_alias_redirect()`).
 - **Links.** Theme links to pages end in a slash (`/articles/`, `/journeys/`, `/quiz/` and the rest), so they no longer cost a 301 each. The footer's Privacy Policy link comes from `get_privacy_policy_url()` and is left out when no privacy page is published.
+
+## 31. Owner decisions and contributor rules
+
+Owner decisions, copied word for word from `.claude/CLAUDE.md`:
+
+- The journey and quiz pages carry FAQPage markup, with a visible FAQ section built from the same data. The owner decided this on 2026-11-03, reversing an earlier note the same day. Structured data still describes only what a page shows, so the questions must appear on the page.
+
+Contributor rules:
+
+- Read `.claude/FARUQI.md` first. Every page, excerpt and design choice answers to it.
+- Every title reads `<page> | Compelling Evidence` and stays under 60 characters (`CE_TITLE_MAX`, 59; `tests/title-builder-test.php`). A page whose own title is too long gets a short one in `inc/data/seo-titles.json`.
+- English prose follows the anti-AI writing style: no contractions, no em dashes, no banned words, no negative parallelisms, short paragraphs.
+- Links to other sites are cross-links. Public text, `readme.txt` included, never calls those sites related, sister sites or a network.
+- Article text changes in the JSON batches only, with the manifest checksum updated; an edit in WordPress is overwritten by the next sync.
+- A release follows the checklist in section 10.

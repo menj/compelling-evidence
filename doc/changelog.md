@@ -1,10 +1,24 @@
-# Changelog — Compelling Evidence Theme
+# Changelog: Compelling Evidence theme
 
 All notable changes to this theme are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
+
+## [2.18.9] - November 2026
+
+Documentation release. No code, setting or address changed beyond the version.
+
+### Changed
+- `readme.txt` gains a `Stable tag`, update steps by the dashboard and by FTP (show hidden files, upload to a temporary folder and rename it into place, never upload WordPress without `wp-config.php`), the error pages on Tools & Sync, and three questions on the development files, the Security locks and the error pages. Its public text no longer calls the linked sites sister sites or a network, and its version headings lose their em dashes.
+- `doc/readme.md` is rewritten for developers and hosts: requirements and hosting, the build, test and release commands, the boot sequence and load order, a complete file map, the content model, every settings tab with its code, the filters and constants, the security layers, both root `.htaccess` sections with their Nginx equivalents, error pages, multisite, and SEO.
+- `doc/ssot.md` gains identity facts (schema author, settings screen, content counts, markers, switches, served documents), the owner decision from `.claude/CLAUDE.md` word for word, and contributor rules. The version checklist names the tests and `Stable tag`, and the zip is built with `git archive`.
+- `doc/upgrading.md` replaces its general procedure, which switched to another theme and deleted the folder, with update steps that keep the error pages and `.htaccess` sections in place; adds notes for 2.18.5 to 2.18.9; and gains a roadmap.
+- This changelog gains the entries for 2.13.0 and 2.14.0, which were only in `readme.txt`.
+
+### Fixed
+- Stale facts in the documentation: 143 articles (the files said 131), 93 glossary terms (85), twelve settings tabs (8), JSON batches as the article source (five PHP files), the topic counts and order ranges, the lowercase document names in `doc/`, and a Quick Start step that merged a `.htaccess-performance` file the theme no longer ships.
 
 ## [2.18.8] - November 2026
 
@@ -213,6 +227,34 @@ Upgrade to the owner's theme rules of 4 November 2026. No feature removed and no
 
 ### Fixed
 - `REQUEST_URI` unslashed and sanitised before parsing in two redirects; `wp_safe_redirect()` for the journey, feed and analytics purge redirects.
+
+## [2.14.0] - November 2026
+
+A mobile and accessibility pass, done to two owner briefs of 4 November 2026: the mobile-first audit and the WCAG 2.2 AA policy. Pages were measured at 9 widths from 320px to 1280px with axe-core. No page scrolled sideways before or after.
+
+### Fixed
+- Small labels, counts and excerpts on the purple and dark grounds reach 4.5:1. They sat between 1.3:1 and 4.4:1 on the article index, search, articles, the journey list and every journey chapter. Same hues, higher alpha, so the colours shift a little on desktop as well.
+- The journey Continue button had no styles and stood 23px high. It matches the site's teal button at 44px. The closing links on each journey are no longer browser blue.
+- The menu button is 44px square and names the menu it opens (`aria-controls`). Mobile menu links, footer links, topic filters and the hero chips are 44px high below 1025px. The home search field uses 16px text, so iOS stops zooming into it.
+- The vote buttons under articles have names (Helpful, Not helpful). Collapsed FAQ answers and the hidden scroll hint on the home page no longer take keyboard focus. The current chapter dot carries `aria-current`.
+- Every page starts with a Skip to content link, which moves keyboard focus into the content (each `main` element takes `tabindex="-1"`). The journeys had no `main` landmark; the chapters and the FAQ sit inside one.
+- Anchor jumps stop below the fixed header and the featured strip. `main.js` sets the offset from their real height, so it shrinks when the strip hides on scroll.
+- On phones, a focused quiz option clears the sticky Back and Next bar.
+- The journeys and the quiz preload Playfair Display 900 and DM Sans 400. The heading reflowed when they arrived (layout shift up to 0.4 at 768px).
+
+---
+
+## [2.13.0] - November 2026
+
+### Added
+- The 14 journey pages and the quiz end with a short FAQ section, 4 or 5 questions each, in native `details` and `summary` elements. Styles are in `assets/css/standalone-faq.css` and use each page's own colours.
+- Each of those pages carries a FAQPage built from the same file as the visible section, `inc/data/standalone-faq.json`. It joins the page's one graph by `@id`. The standalone pass no longer strips FAQPage, and the old FAQPage nodes in four `journey.json` files are gone.
+
+### Changed
+- The site FAQ says what the quiz records: a start, the suggested path and mode on completion, and how far you got if you leave early. The answers stay in the browser.
+- `tests/schema-graph-test.php` requires one FAQPage on every journey and on the quiz, and checks that each question and answer appears in the page's visible HTML.
+
+---
 
 ## [2.12.0] - November 2026
 

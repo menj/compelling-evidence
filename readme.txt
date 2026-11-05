@@ -6,19 +6,20 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.18.8
+Version: 2.18.9
+Stable tag: 2.18.9
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Template: twentytwentyfive
 Tags: custom-menu, custom-logo, featured-images, rtl-language-support, translation-ready
 
-Child theme of Twenty Twenty-Five for compelling-evidence.com: 14 journeys, a persona quiz and 131 articles on God, evidence and Islam.
+Child theme of Twenty Twenty-Five for compelling-evidence.com: 14 journeys, a persona quiz and 143 articles on God, evidence and Islam.
 
 == Description ==
 
 CE Theme runs one site, compelling-evidence.com. It is a child of Twenty Twenty-Five and is not built as a general-purpose theme.
 
-A reader takes a 10-question quiz, gets routed to 1 of 14 journeys written for a starting point (atheist, agnostic, scientist, sceptic and so on), and reads on into 131 articles in 11 topics. Everything the theme needs (articles, topics, pages) ships inside it and syncs to the database on activation.
+A reader takes a 10-question quiz, gets routed to 1 of 14 journeys written for a starting point (atheist, agnostic, scientist, sceptic and so on), and reads on into 143 articles in 11 topics. Everything the theme needs (articles, topics, pages) ships inside it and syncs to the database on activation.
 
 All fonts are self-hosted. With default settings the theme makes no request to another server from a visitor's browser, sets no cookie and tracks nothing.
 
@@ -26,11 +27,11 @@ All fonts are self-hosted. With default settings the theme makes no request to a
 
 * 14 journeys, each a stand-alone page with saved progress, a visible FAQ and FAQPage markup.
 * A persona quiz in three modes (quick, standard, full) with weighted scoring; it also carries a visible FAQ and FAQPage markup.
-* 131 articles and their topic taxonomy (ce_topic), seeded from JSON batch files.
+* 143 articles and their topic taxonomy (ce_topic), seeded from JSON batch files.
 * Reader questions (ce_question) with an Ask a Question form, spam honeypot and nonce.
 * A progress page driven by localStorage.
 * Votes and resonance buttons under each article.
-* A glossary of Islamic and Arabic terms with tooltips, and automatic crosslinks to this site and the 6 sister sites.
+* A glossary of Islamic and Arabic terms with tooltips, and automatic crosslinks to this site and to 6 other sites.
 * One schema.org graph per page (Article, FAQPage, Quiz, LearningResource, QAPage, ImageObject, Quotation and more).
 * A built-in lightbox, figure credits and import of registered images into the Media Library.
 * Security switches: XML-RPC off, application passwords off, REST changes only from a logged-in browser, and a gambling-spam gate.
@@ -47,14 +48,14 @@ Open Appearance > CE Theme Options. Each tab opens with a short note on what it 
 * Author & Identity: author name, bio, profiles and logo for the byline and the schema.
 * Colors: 7 brand colours in a picker grid. A colour left at its default prints nothing.
 * Typography: click a card to pick the heading, reading and label faces; pick a size scale.
-* Links & Tooltips: crosslinks, sister-site links, murtadd.org counterparts and glossary tooltips. Sliders show the value they will save.
+* Links & Tooltips: crosslinks, links to other sites, murtadd.org counterparts and glossary tooltips. Sliders show the value they will save.
 * Media: lightbox, automatic Pexels lead images (off by default, needs your own key) and image import.
 * Quiz & Journeys: quiz on or off, answers per question, cards per row.
 * Engagement: votes, resonance, home page search, archive page size.
 * Analytics: the opt-in switch, scroll and search tracking, retention.
 * Performance: parallax, font preloading, the 410 Gone list for retired paths.
-* Security: the remote-publishing switches, the spam gate, and the spam scan, password and session tools.
-* Tools & Sync: run the article sync by hand and check the batch files.
+* Security: the remote-publishing switches, the spam gate, the login screen design, and the spam scan, password and session tools.
+* Tools & Sync: run the article sync by hand, check the batch files, and install the error pages, with the lines to paste into .htaccess.
 
 The analytics report is under CE Analytics in the admin menu.
 
@@ -66,6 +67,23 @@ The analytics report is under CE Analytics in the admin menu.
 4. Go to Settings > Permalinks and click Save Changes.
 5. Go to Settings > Reading and pick a static front page if you want one. The theme follows that setting.
 6. Check that /articles/ lists the topics and /journeys/ lists 14 paths.
+
+To install by FTP, turn on hidden files in your FTP program, upload the compelling-evidence folder to wp-content/themes/, then activate it under Appearance > Themes and carry on from step 3.
+
+= Updating from the dashboard =
+
+Upload the new zip under Appearance > Themes > Add New > Upload Theme and choose "Replace active with uploaded". Do not switch to another theme first: a switch takes the theme's error pages and its .htaccess sections away. Then load any admin page. The version change runs the article sync, and the theme writes its error pages and .htaccess sections again.
+
+= Updating by FTP =
+
+1. Turn on hidden files in your FTP program. The theme carries files whose names begin with a dot, such as .htaccess, which keep its private files closed to visitors. In FileZilla: Server > Force showing hidden files.
+2. Upload the new compelling-evidence folder next to the old one under a temporary name, such as wp-content/themes/compelling-evidence-new. Wait until every file has arrived.
+3. Rename the old folder to compelling-evidence-old and, straight after, rename compelling-evidence-new to compelling-evidence. Between the two renames the site has no theme folder, so do them one after the other and keep the admin closed until both are done.
+4. Load any admin page, check the site, then delete compelling-evidence-old.
+
+If you upload straight over the live folder and the copy stops halfway, visitors see a short "Back shortly" page with a 503 status instead of an error, and you can still log in. Upload the missing files and the site returns. That page comes from functions.php, so it cannot help while functions.php itself is missing or half written, or in the moment between the two renames above. The temporary-folder method avoids those cases.
+
+Never upload a fresh copy of WordPress itself over the site without keeping wp-config.php. That file holds the database details; without it WordPress opens its installer to anyone who visits.
 
 == Frequently Asked Questions ==
 
@@ -92,6 +110,18 @@ Appearance > CE Theme Options > General. Change the verse, its number, translati
 = Why are feed links missing from the page head? =
 
 The theme declares automatic-feed-links, and its feed redirector then removes the links and sends feed URLs to the matching page. The site publishes no feed on purpose.
+
+= Why did the theme delete .git, tests and doc from its folder? =
+
+They are development files, and a web server can hand them to anyone who asks. On a live server the theme removes them on activation and once per version, and the web server refuses them until then. A site where you work on the theme keeps them: set WP_ENVIRONMENT_TYPE to local or development in wp-config.php, or add define( 'CE_KEEP_DEV_FILES', true );. The documentation is in the theme zip and in the repository.
+
+= A tool I use stopped publishing after an update. =
+
+The Security tab turns off XML-RPC, application passwords and REST changes from outside a logged-in browser, because spam tools use them. Switch off the one your tool needs. In an emergency, define( 'CE_SECURITY_LOCK', false ); in wp-config.php lifts all three.
+
+= What are the error pages? =
+
+WordPress shows a plain screen when it is updating, when PHP fails or when the database is down. The theme replaces those three screens with its own, and ships pages for the errors your web server answers itself (403, 500, 502, 503 and 504). Tools & Sync shows whether each is installed and gives the lines for .htaccess.
 
 == Privacy ==
 
@@ -121,6 +151,9 @@ CE Theme, Copyright 2026 MENJ. Licensed GPLv2 or later.
 * Article figures are not bundled. inc/articles/media.json lists each with its source page, creator and licence, and the credit prints under the figure.
 
 == Changelog ==
+
+= 2.18.9 - November 2026 =
+* The documentation is up to date with the theme: how to update by FTP, every settings tab, the security switches, the error pages and the files the theme removes from a live server.
 
 = 2.18.8 - November 2026 =
 * The footer column headings are level 2, so the 404 page has no skipped heading level.
@@ -224,7 +257,7 @@ CE Theme, Copyright 2026 MENJ. Licensed GPLv2 or later.
 * Reader-question pages print their Article markup in the theme graph, so Rank Math pages carry one Article. No schema type was removed.
 
 = 2.10.1 - November 2026 =
-* Links to the sister sites follow their new addresses, which carry no verse numbers, counts or years.
+* Links to other sites follow their new addresses, which carry no verse numbers, counts or years.
 
 = 2.10.0 - November 2026 =
 * The quiz has three depths. Quick asks 5 questions, Standard 10 and Full 15. You choose on the start screen, and a Quick result can carry on into Standard with your answers kept.
@@ -287,7 +320,7 @@ See doc/changelog.md.
 
 = 2.7.1 - November 2026 =
 "Turn off XML-RPC" now also blocks xmlrpc.php in .htaccess on Apache (a "Block xmlrpc.php" section
-shared with the sister themes), repairs it hourly from the admin and removes it when switched off or
+under a shared marker), repairs it hourly from the admin and removes it when switched off or
 when the theme is switched. Refused XML-RPC requests are counted with one small row write each. See
 doc/upgrading.md.
 
@@ -297,7 +330,7 @@ on abrahamic-religions.com: XML-RPC off, application passwords off, REST writes 
 browser session, gambling spam and remote publishing held as Pending, a spam scan that moves
 spam to the trash, 410 Gone for removed spam, reports and a security log. See doc/upgrading.md.
 
-= 2.6.43 — October 2026 =
+= 2.6.43 - October 2026 =
 Content review fixes: author credits restored on the journey pages (C.S. Lewis, Alvin Plantinga,
 Sam Harris), hadith references and gradings corrected against shamela.ws, Quran blocks show their
 full verse ranges, the hidden-treasure saying is presented as having no chain, the FAQ describes
@@ -307,70 +340,70 @@ Articles that murtadd.org entries name as their counterpart end with a "Read thi
 card (data in inc/data/murtadd-counterparts.json, built by bin/build-murtadd-counterparts.py;
 switch in CE Theme Options → Links & Tooltips).
 
-= 2.6.42 — October 2026 =
+= 2.6.42 - October 2026 =
 The Quran face is served as a woff2 conversion (105 KiB, from 291 KiB) in place of the original
 TTF, by the owner's decision, accepting that the font's licence forbids modifying it.
-Review fixes: disabled topics hold for answered questions, one sister link per list item,
+Review fixes: disabled topics hold for answered questions, one outside link per list item,
 glossary tooltips load on answered questions, and the hero ayah number follows Theme Options.
 
-= 2.6.41 — October 2026 =
+= 2.6.41 - October 2026 =
 Quranic verse text is fitted to the KFGQPC encoding as it renders (sukun, the rounded zero, and
 one ayah-number medallion in place of brackets round a medallion). Stored text is unchanged.
 
-= 2.6.40 — October 2026 =
+= 2.6.40 - October 2026 =
 Quranic verses, and only Quranic verses, are set in the original KFGQPC HAFS Uthmanic Script
 TTF, distributed unmodified under its licence. It replaces the subset uthmani-quran.woff2.
 Hadith and other Arabic keep CE Hadith.
 
-= 2.6.39 — October 2026 =
-Contextual links across the network: the first mention of a phrase another of the seven sites
+= 2.6.39 - October 2026 =
+Contextual links to other sites: the first mention of a phrase another site
 treats now links to that inner page, alongside the existing links to this site's own articles.
-One shared phrase map, inc/data/network-links.json, identical in all seven themes. Answered
+One shared phrase map, inc/data/network-links.json. Answered
 questions get crosslinks too. Theme Options styles move to their own stylesheet.
 
-= 2.6.38 — October 2026 =
+= 2.6.38 - October 2026 =
 Content release: five new articles (batch 009, 142 in total) on the Prophet's marriages, alleged
 Quran contradictions, Dhul-Qarnayn and the muddy spring, the selective use of hadith, and the
 crucifixion; six existing articles gain sections answering the specific forms of each objection.
 
-= 2.6.37 — October 2026 =
+= 2.6.37 - October 2026 =
 Content release: six new articles (batch 008, 137 in total) answering the strongest recurring
 charges in Christian polemic: Haman and Esther, the moon god claim, the first revelation and the
 possession charge, the killing of critics, Jesus as Word of God, and Muhammad in the Bible.
 
-= 2.6.36 — October 2026 =
+= 2.6.36 - October 2026 =
 Rank Math integration and content compliance. Rank Math owns titles, descriptions, canonicals and
 schema; the theme fills only empty values. Every article gets a focus keyword, SEO title and
 description in Rank Math's empty fields, two more images, shorter paragraphs and keyword-bearing
 captions. Tested with Rank Math 1.0.279: all 131 articles score 90 to 95 with the Content AI
 module off. Fixes a content-sync fault that could trash every article in a batch.
 
-= 2.6.35 — September 2026 =
+= 2.6.35 - September 2026 =
 Automatic lead images. Every hour, new articles without an image get a Pexels photograph chosen
 from their title, checked against the site's image rules, imported, credited and published as the
 lead figure and featured image. Registered images also import on the same schedule, so deploys
 need no clicks. Theme Options → Media lists each automatic choice with Replace and Remove.
 
-= 2.6.34 — September 2026 =
+= 2.6.34 - September 2026 =
 Every one of the 131 articles now opens with a licensed lead image (124 from Pexels, 7 from
 Wikimedia Commons), each with caption and credit, and uses it as its featured image on cards and
 in social shares. Photographers are linked in the credit line. Import runs 20 images per click.
 
-= 2.6.33 — September 2026 =
+= 2.6.33 - September 2026 =
 Article media: figures with licensed images (Wikimedia Commons, Pexels, Flickr) and automatic credit
 lines, inline SVG diagrams in the theme's colours, responsive tables, and a native lightbox that
 replaces the Lightbox2 plugin. Pretty search URLs built in (replaces Pretty Search Permalinks).
 Contact Form 7 forms take the theme's design and load their scripts only on pages with a form.
 The eight articles of batch 007 gain figures, diagrams and tables. New Media tab in Theme Options.
 
-= 2.6.32 — September 2026 =
+= 2.6.32 - September 2026 =
 Code-standards pass. PHP 8.0 to 8.4 compatibility and the WordPress security, database and
 deprecation sniffs now pass with no errors. Output is escaped where it is printed, form and
 server input is unslashed and sanitised, custom-table queries use the %i identifier
 placeholder, deprecated and dead code removed. Verified on WordPress 7.1.2 with WP_DEBUG on.
 Adds phpcs.xml.dist.
 
-= 2.6.31 — September 2026 =
+= 2.6.31 - September 2026 =
 Search guidelines pass against Google's SEO Starter Guide and its list of supported structured
 data. Removed markup Google does not support or that described content not on the page
 (front-page and per-article FAQPage, QAPage on single-answer questions, table-of-contents
@@ -379,7 +412,7 @@ ItemList, Speakable, the retired sitelinks SearchAction). Meta descriptions for 
 Math is active. Topic pages get their own heading; journey pages get a correct canonical and one
 h1; duplicate placeholder pages redirect to their topic; robots.txt no longer blocks /wp-includes/.
 
-= 2.6.30 — September 2026 =
+= 2.6.30 - September 2026 =
 Desktop, tablet and mobile pass, tested on a local WordPress 7.1.2 install with all 131
 articles at six widths (1440 to 360px). Journey pages now collapse to one column on phones
 (the stylesheet that should have done this, journey-base.css, never existed). The closed
@@ -388,52 +421,52 @@ contents and reading progress in view for the whole article, and the progress ba
 under the header on every screen size. Larger tap targets and a 12px minimum text size on
 phones.
 
-= 2.6.29 — September 2026 =
+= 2.6.29 - September 2026 =
 New 404 page: "Exhibit 404 · Evidence not found". Opens on one of twelve excuses, each a joke
 on an argument the site takes seriously, linking to the article that treats it properly.
 "Hear another excuse" cycles them. Recent articles listed below the search.
 
-= 2.6.28 — September 2026 =
+= 2.6.28 - September 2026 =
 Parent-theme compatibility with Twenty Twenty-Five 1.5. CE's PHP templates now always render
 on the front end (the parent's block templates had priority for index, home, single, page,
 search, archive and 404). theme.json maps the parent's colour and font presets onto CE's design,
 so anything left unstyled inherits CE's look. Minimum WordPress raised to 6.7 to match the parent.
 
-= 2.6.27 — September 2026 =
+= 2.6.27 - September 2026 =
 Table of contents fixed: links now scroll to their section, the current section is
 highlighted, and #section-N deep links work. The TOC script moves out of the templates into
 assets/js/ce-toc.js. Smooth scrolling now respects the reduced-motion preference.
 
-= 2.6.26 — September 2026 =
+= 2.6.26 - September 2026 =
 Homepage design fixes. Quick-access card titles now use the heading style (the CSS targeted
 h3 while the markup used h2). Card text, links and icons meet contrast targets. Article cards
 without a featured image show a topic line icon on a 16:9 panel in place of emoji.
 
-= 2.6.25 — September 2026 =
+= 2.6.25 - September 2026 =
 Theme identity: name changed to CE Theme, Theme URI set to the GitHub repository
 (https://github.com/menj/compelling-evidence), author set to MENJ (https://menj.blog). Folder name and
 text domain stay compelling-evidence.
 
-= 2.6.24 — September 2026 =
+= 2.6.24 - September 2026 =
 Adds Sabon Next LT (licensed) as a heading and reading option, in regular, italic, bold and
 bold italic. Sabon lacks the dotted consonants and ʿ ʾ used in transliteration; those six
 characters and their capitals are drawn from EB Garamond, scaled to Sabon's proportions.
 
-= 2.6.23 — September 2026 =
+= 2.6.23 - September 2026 =
 Typography release. Adds EB Garamond (variable, 400-800, roman and italic) as a heading and
 reading option and Special Elite as an optional typewriter face for labels and eyebrows. New
 inc/ce-fonts.php assigns families to roles through CSS custom properties. The Heading Font and
 Reading Body Font settings, which were saved but never applied, now take effect, and the
 Preload critical fonts setting is now honoured.
 
-= 2.6.22 — September 2026 =
+= 2.6.22 - September 2026 =
 Content release. Eight new articles (batch-007.json, total 131) answering claims from recent
 Christian and ex-Muslim critique: the Islamic Dilemma, Quran 9:5 and 9:29, terrorism data,
 the Quran and the Jews, Quran 4:34, divine love, salvation by mercy, and Muslim citizenship in
 Western democracies. Nine new glossary terms (93 total), 18 new cross-link phrases, and the new
 slugs placed in the /articles/ subcategory map.
 
-= 2.6.21 — September 2026 =
+= 2.6.21 - September 2026 =
 Stability release. Custom tables are now created with a plain CREATE TABLE IF NOT EXISTS
 query (new inc/ce-db.php) instead of dbDelta(), so the theme no longer requires
 wp-admin/includes/upgrade.php or schema.php. Engagement table check moved from front-end
@@ -441,14 +474,14 @@ init to admin_init. Question-status terms are seeded once in admin (flag: ce_qst
 instead of on every request. New inc/ce-gone.php answers retired spam URL prefixes with a
 410 Gone at init, configurable under Theme Options → Performance → Retired URLs.
 
-= 2.6.10 — April 2026 =
+= 2.6.10 - April 2026 =
 Architectural change: ~650-word "What this site is" mission section migrated off the
 front page and onto the About page. Front page now flows hero → quick-access cards →
 articles. New one-time upgrade hook (ce_update_about_page_v2, flag: ce_about_v2_updated)
 refreshes the existing About page content on existing installs via wp_update_post.
 See doc/upgrading.md for details on opting out.
 
-= 2.6.0 through 2.6.9 — April 2026 =
+= 2.6.0 through 2.6.9 - April 2026 =
 Progressive corpus-wide editorial overhaul (Phase 1 + Phase 2.1 through 2.6). 58 of 123
 articles deep-edited across seven topics now complete: Islamic Practice & Ritual (6),
 Divine Justice & Fairness (5), Ethics Without God (5), The Problem of Evil (9), Does God
@@ -458,71 +491,71 @@ reduction (typically from 20-30 per article down to 2-5), Quran/hadith citation
 strengthening (many articles previously had zero or insufficient citations), and 6+
 minute reading time minimum. See doc/changelog.md for per-article detail.
 
-= 2.5.1 — April 2026 =
+= 2.5.1 - April 2026 =
 Logic Over Faith content: 3 new articles + 3 expansions.
 
-= 2.5.0 — April 2026 =
-Bug fixes: term_exists cache miss recovery added to both sync branches — topic assignments
+= 2.5.0 - April 2026 =
+Bug fixes: term_exists cache miss recovery added to both sync branches; topic assignments
 now complete correctly on Redis/Memcached hosts. Manual sync button ($force_run=true)
 bypasses object cache reliably. articles-data-5.php backup topics corrected (6 articles
 restored to Islamic Practice & Ritual). manifest.json version field corrected.
 
-= 2.4.9 — April 2026 =
+= 2.4.9 - April 2026 =
 Feed suppression (CE_Feed_Redirector): 301 redirects all feed URLs, removes
 autodiscovery links, appends robots.txt Disallow rules, sends noindex header.
 Q&A page CSS restored (dropped in 2.4.8). Q&A topic sidebar in canonical order.
 
-= 2.4.8 — April 2026 =
+= 2.4.8 - April 2026 =
 Content sync fixes (ce-content-sync.php). Windsurf workflow file added.
 
-= 2.4.0 — April 2026 =
+= 2.4.0 - April 2026 =
 Critical fix: manual sync button was setting the version key, silently blocking the automatic
 admin_init sync on every subsequent page load. ce_manual_content_sync() rewritten to clear
-the version key and delegate to ce_sync_article_content() — one sync implementation for both
+the version key and delegate to ce_sync_article_content(), one sync implementation for both
 code paths. ce_fallback_sync() removed.
 
-= 2.3.8 — April 2026 =
+= 2.3.8 - April 2026 =
 Bug fix: coming-back-after-leaving missing from /articles/ (was not listed in Inner Journey
 subcategory slug array). Stale topic descriptions for retired categories removed from archive.
 
-= 2.3.7 — April 2026 =
+= 2.3.7 - April 2026 =
 Bug fixes: retired topics (Islamic Beliefs & Practice, Rights, Freedoms & Hard Questions) now
-deleted on sync. Slug rename handled in place — no more duplicate articles. Orphan detection
+deleted on sync. Slug rename handled in place, so no more duplicate articles. Orphan detection
 added: ce_article posts not in JSON are automatically trashed. Topic migration map extended
 to cover v2.3.6 retired categories.
 
-= 2.3.6 — April 2026 =
+= 2.3.6 - April 2026 =
 Favicons and CE admin icon added (self-hosted SVG + PNG set). Category consolidation:
 Islamic Beliefs & Practice and Rights, Freedoms & Hard Questions retired; articles
 reassigned to 10 canonical topics. Article slug renamed: if-god-answers-prayer → 
 does-god-answer-prayer. All 5 batches redistributed to exactly 24 articles each.
 
-= 2.3.5 — April 2026 =
+= 2.3.5 - April 2026 =
 Security: Removed publicly accessible diagnose.php (no auth, leaked server paths). Replaced
 with inline Article Data Diagnostics panel in Theme Options → Tools & Sync, gated by
 manage_options. Panel shows per-batch checksum verification, loader health, and sync key status.
 
-= 2.3.4 — April 2026 =
+= 2.3.4 - April 2026 =
 Bug fixes: manifest.json checksums were stale causing content sync to never fire and articles
 to appear empty. build-articles.php checksum logic fixed (was computing hash before embedding
 meta.checksum, producing a permanently mismatched manifest on every build run). Batch collision
 fixed: articles-data-6.php now maps to batch-006 instead of overwriting batch-005.
 
-= 2.3.3 — April 2026 =
-Topic migration map added to sync and theme options import — deprecated topic names remapped to
+= 2.3.3 - April 2026 =
+Topic migration map added to sync and theme options import: deprecated topic names remapped to
 current categories, preventing orphaned articles. Archive page updated with current topic names.
 
-= 2.3.1 — April 2026 =
+= 2.3.1 - April 2026 =
 Category restructure: 12 canonical topics replacing 10. New categories: Divine Justice &
 Fairness, Islamic Beliefs & Practice, Rights, Freedoms & Hard Questions, Revelation & Meaning.
 New article: Why Would God Create Enemies? (order 120). Auto-topic creation and cleanup in sync.
 
-= 2.3.0 — April 2026 =
+= 2.3.0 - April 2026 =
 Security: JSON article storage replaces PHP data files (no code execution risk). SHA256
 checksums verify integrity. CE_Article_Loader class with tamper detection. Q&A custom post
 type. Content sync safeguards (lock, time/memory limits, completeness check).
 
-= 2.2.78 — April 2026 =
+= 2.2.78 - April 2026 =
 17 new articles (orders 102-119). 16 articles expanded to 700+ words. divine-hiddenness
 rewritten (340w to 1,108w). Glossary: 53 to 85 terms. Crosslinks: 197 mappings, zero orphans.
 Performance: LCP font preload, conditional templates.css, Cache-Control headers, GTM defer,
@@ -541,7 +574,7 @@ non-Quranic text. Theme Options introduced (7 tabs).
 = 2.2.75 =
 Uthmani Quran font replaced with KFGQPC HAFS version (608 glyphs). CE Hadith added.
 
-For full version history see CHANGELOG.md.
+For the full version history see doc/changelog.md in the theme zip.
 
 == Upgrade Notice ==
 
@@ -564,4 +597,4 @@ No manual steps required.
 
 = 2.2.78 =
 Content sync runs automatically on first admin page load. No manual DB changes required.
-Upgrading from below 2.2.0: run the category migration — see UPGRADING.md.
+Upgrading from below 2.2.0: run the category migration. See doc/upgrading.md.
