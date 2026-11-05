@@ -158,6 +158,7 @@ Filters the theme provides:
 | `ce_dev_paths` | The paths the live-server clean-up removes |
 | `ce_image_sitemap_enabled` | Whether `/image-sitemap.xml` is served (off while an SEO plugin is active) |
 | `ce_login_plugin_active` | Whether a login plugin owns the login screen |
+| `ce_murtadd_base_url` | The murtadd.org base address of the quiz's "You are not alone" links (`page-quiz.php`) |
 | `ce_media_auto_banned_words`, `ce_media_auto_sensitive_words` | Words that keep an automatic image off an article |
 | `ce_rpb_applies` | Whether the reading progress bar shows on a view |
 | `ce_search_reserved_bases` | Words the search base may not take |

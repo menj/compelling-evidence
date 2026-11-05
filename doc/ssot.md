@@ -548,9 +548,11 @@ Reference documents: Google's SEO Starter Guide and Google's list of structured 
 - Glossary terms the article links to are `mentions`, by `@id`, of the DefinedTerm on /glossary/.
 - /faq/: FAQPage. /glossary/: DefinedTermSet with every DefinedTerm. Reader questions in the "published" status: QAPage with a Question, and an Answer only when the page shows one, plus the Article node. Topic pages: CollectionPage with an ItemList of their articles in page order. Ask a Question and Contact: ContactPage. About: AboutPage. Search: SearchResultsPage.
 - Quiz: Quiz with every Question and its options as suggestedAnswer. The quiz has no right answers and the page reveals none, so no question has an acceptedAnswer.
-- Journeys: the nodes in each `journey.json` (Article, BreadcrumbList, WebPage with speakable, FAQPage) and a LearningResource whose steps are the chapters in reading order, each with the articles it points to.
+- Journeys: the nodes in each `journey.json` (Article, BreadcrumbList, WebPage with speakable) and a LearningResource whose steps are the chapters in reading order, each with the articles it points to.
 
-**Left out.** FAQPage blocks on journey pages, because those questions are not shown on the page; `ce_standalone_html_seo()` removes them at serve time. Course, ClaimReview and anything on the progress page, which holds only one reader's own state.
+**FAQPage on journeys and the quiz (since 2.13.0).** Each journey and the quiz carry one FAQPage built from `inc/data/standalone-faq.json`, the same file as the visible FAQ section at the foot of the page (section 31, owner decision of 2026-11-03). The old FAQPage nodes in `journey.json` are gone, and `tests/schema-graph-test.php` checks that every question appears on the page.
+
+**Left out.** Course, ClaimReview and anything on the progress page, which holds only one reader's own state.
 
 **Meta descriptions.** Every indexable page type has one, at most 130 characters including a call to action (`ce_meta_description_with_cta()`), unique per page. Topic pages use the term description or a count-based sentence; the old placeholder "Compelling Evidence article topic" is ignored. Search results and 404s carry none.
 

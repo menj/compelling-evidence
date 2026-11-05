@@ -117,7 +117,7 @@ They are development files, and a web server can hand them to anyone who asks. O
 
 = A tool I use stopped publishing after an update. =
 
-The Security tab turns off XML-RPC, application passwords and REST changes from outside a logged-in browser, because spam tools use them. Switch off the one your tool needs. Password logins sent through XML-RPC are refused while either the XML-RPC switch or the REST switch is on (the REST switch guards that route too), so a tool that logs in to XML-RPC with a password needs both off. A tool that writes through the REST API needs only the REST switch off. In an emergency, define( 'CE_SECURITY_LOCK', false ); in wp-config.php lifts all three.
+The Security tab turns off XML-RPC, application passwords and REST changes from outside a logged-in browser, because spam tools use them. Switch off the one your tool needs. Password logins sent through XML-RPC are refused while either the XML-RPC switch or the REST switch is on (the REST switch guards that route too), so a tool that logs in to XML-RPC with a password needs both off. A tool that writes through the REST API with an application password needs both the REST switch and the application-password switch off; one that uses a logged-in browser session needs neither. In an emergency, define( 'CE_SECURITY_LOCK', false ); in wp-config.php lifts all three.
 
 = What are the error pages? =
 
