@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.18.14] - November 2026
+
+The theme speaks of "the other sites" in its settings and readme, and the docs name the subfolder favicon step. No feature removed and no public identifier renamed.
+
+### Changed
+- The Links & Tooltips tab (section "Links to the Other Sites", the two switches' labels and descriptions), the tab summary, `readme.txt`, `languages/compelling-evidence.pot` and the code comments say "the other sites". The `ce_sister_links_*` option names and the `ce-ctx-link--sister` class keep their names.
+- `readme.txt` and `doc/readme.md` say that a site in a subfolder needs a copy of `favicon.ico` at the domain root, because browsers ask for it there and WordPress never sees the request.
+
 ## [2.18.13] - November 2026
 
 The browser icon set is complete. No feature removed.

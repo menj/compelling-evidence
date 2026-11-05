@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * Phrase => article slug for this site: the curated list below, then this
  * site's entries from the shared network map (inc/data/network-links.json).
- * A phrase the shared map gives to a sister site leaves this list and is
+ * A phrase the shared map gives to another site leaves this list and is
  * linked there by ce-contextual-links.php. The custom phrase option and the
  * admin lines on the Links & Tooltips tab come last, so they win.
  */
@@ -566,7 +566,7 @@ function ce_crosslink_meta_box_html( $post ) {
     ?>
     <label style="display:block;margin-bottom:0.5rem;">
         <input type="checkbox" name="ce_disable_crosslinks" value="1" <?php checked( $disable_cl, '1' ); ?>>
-        Disable crosslinks (this site and sister sites)
+        Disable crosslinks (this site and the other sites)
     </label>
     <label style="display:block;">
         <input type="checkbox" name="ce_disable_tooltips" value="1" <?php checked( $disable_tt, '1' ); ?>>
