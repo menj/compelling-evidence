@@ -239,24 +239,41 @@ function ce_sec_sync_htaccess( $force = false ) {
 	// switch, a settings change or the first request of a new version. A
 	// sync that finds the lock taken leaves a note, and the holder runs once
 	// more before it lets go, so a change made meanwhile is not lost.
-	$token = ce_sec_htaccess_lock();
-	if ( '' === $token ) {
-		update_option( 'ce_sec_htaccess_dirty', time(), false );
-		return false;
-	}
-	$runs = 0;
+	$ok     = false;
+	$rounds = 0;
 	do {
-		delete_option( 'ce_sec_htaccess_dirty' );
-		$ok = ce_sec_write_htaccess();
-		++$runs;
-	} while ( $runs < 3 && ce_sec_htaccess_dirty() );
-	// A theme switch that found the lock taken asked for the sections to go.
-	if ( '' !== ce_sec_option_raw( 'ce_sec_htaccess_remove' ) ) {
-		ce_sec_clear_htaccess();
-		delete_option( 'ce_sec_htaccess_remove' );
-		$ok = false;
-	}
-	ce_lock_release( 'ce_sec_htaccess_lock', $token );
+		$token = ce_sec_htaccess_lock();
+		if ( '' === $token && 0 === $rounds ) {
+			// Another request is writing: leave the note it reads after it
+			// lets go, then try once more, in case it already has.
+			update_option( 'ce_sec_htaccess_dirty', time(), false );
+			$token = ce_sec_htaccess_lock();
+		}
+		if ( '' === $token ) {
+			// The holder reads the note (still there) before it stops.
+			return $ok;
+		}
+		$writes = 0;
+		do {
+			delete_option( 'ce_sec_htaccess_dirty' );
+			$ok = ce_sec_write_htaccess();
+			++$writes;
+		} while ( $writes < 3 && ce_sec_htaccess_dirty() );
+		// A theme switch that found the lock taken asked for the sections to go.
+		if ( '' !== ce_sec_option_raw( 'ce_sec_htaccess_remove' ) ) {
+			delete_option( 'ce_sec_htaccess_remove' );
+			delete_option( 'ce_sec_htaccess_dirty' );
+			ce_sec_clear_htaccess();
+			ce_lock_release( 'ce_sec_htaccess_lock', $token );
+			return false;
+		}
+		ce_lock_release( 'ce_sec_htaccess_lock', $token );
+		++$rounds;
+		// A note left between the last check and the release is taken up
+		// here, by this request or by whichever one now holds the lock.
+	} while ( $rounds < 3 && ( ce_sec_htaccess_dirty() || '' !== ce_sec_option_raw( 'ce_sec_htaccess_remove' ) ) );
+	// Three rounds and still a note: the next admin page load or request of
+	// a new version writes again, since the note stays until it is read.
 
 	return $ok;
 }
@@ -365,10 +382,14 @@ function ce_sec_remove_htaccess() {
 	delete_transient( 'ce_sec_htaccess_checked' );
 	$token = ce_sec_htaccess_lock();
 	if ( '' === $token ) {
-		// Another request is writing: it removes the sections before it
-		// lets go of the lock.
+		// Another request is writing: leave the request it reads before it
+		// lets go, then try once more, in case it already has.
 		update_option( 'ce_sec_htaccess_remove', time(), false );
-		return;
+		$token = ce_sec_htaccess_lock();
+		if ( '' === $token ) {
+			return;
+		}
+		delete_option( 'ce_sec_htaccess_remove' );
 	}
 	ce_sec_clear_htaccess();
 	ce_lock_release( 'ce_sec_htaccess_lock', $token );

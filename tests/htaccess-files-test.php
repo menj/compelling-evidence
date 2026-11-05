@@ -140,6 +140,30 @@ foreach ( array( 'style.css', 'screenshot.png', 'assets/js/main.js', 'assets/css
 	ce_check( ! $ce_own_hit( '/wp-content/themes/compelling-evidence/' . $ce_p ), "theme .htaccess: open $ce_p" );
 }
 
+// The theme .htaccess's own RewriteRule, matched against the path below the
+// theme folder as mod_rewrite does in an .htaccess.
+$ce_rw = array();
+foreach ( file( dirname( __DIR__ ) . '/.htaccess', FILE_IGNORE_NEW_LINES ) as $ce_line ) {
+	if ( preg_match( '/^RewriteRule (\S+) - \[F\]$/', $ce_line, $ce_m ) ) {
+		$ce_rw[] = $ce_m[1];
+	}
+}
+$ce_rw_hit = function ( $rel ) use ( $ce_rw ) {
+	foreach ( $ce_rw as $p ) {
+		if ( preg_match( '#' . $p . '#', $rel ) ) {
+			return true;
+		}
+	}
+	return false;
+};
+ce_check( 1 === count( $ce_rw ), "the theme's .htaccess has its RewriteRule" );
+foreach ( array( 'tools/build.py', 'tools/', 'tools', 'bin/quiz-sim.js', 'tests/lock-test.php' ) as $ce_p ) {
+	ce_check( $ce_rw_hit( $ce_p ), "theme .htaccess rewrite: 403 for $ce_p" );
+}
+foreach ( array( 'assets/js/main.js', 'toolsmith.css', 'journeys/quiz.html', 'assets/tools/x.js' ) as $ce_p ) {
+	ce_check( ! $ce_rw_hit( $ce_p ), "theme .htaccess rewrite: open $ce_p" );
+}
+
 // tests/ and bin/ refuse every request into them, whatever the theme's address.
 foreach ( array( 'tests', 'bin' ) as $ce_d ) {
 	$ce_ht = (string) @file_get_contents( dirname( __DIR__ ) . "/$ce_d/.htaccess" ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
