@@ -15,6 +15,10 @@ This document describes the update steps, the notes for each version that needs 
 
 ---
 
+## Upgrading to v2.18.15 from v2.18.14
+
+Replace the theme files. The new article `why-people-leave-honour-fate-home` arrives with the content sync on the first admin page load. After changing murtadd.org pages, rebuild `inc/data/quiz-murtadd-links.json` and `inc/data/murtadd-counterparts.json` with `bin/build-quiz-murtadd-links.py` and `bin/build-murtadd-counterparts.py` and murtadd's seed data on disk.
+
 ## Upgrading to v2.18.14 from v2.18.13
 
 Replace the theme files. Nothing else changes. On a site in a subfolder, put a copy of `assets/images/favicon.ico` in the domain root (or, with a Site Icon set, that icon as `favicon.ico`), since browsers ask for `/favicon.ico` there.

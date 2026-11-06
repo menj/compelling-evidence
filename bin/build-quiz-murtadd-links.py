@@ -32,6 +32,11 @@ PICKS = {
     "text": ["doubts/the-hadith-about-leaving", "doubts/verses-that-were-cancelled"],
     "law": ["doubts/what-the-law-says-in-malaysia", "guides/leaving-and-the-law"],
     "hurt": ["doubts/i-was-hurt-and-nobody-helped", "doubts/hurt-by-a-religious-teacher"],
+    # Each of these pairs with the article READ_W shows for the same answer
+    # (journeys/quiz.html): the murtadd page names it in its ce_slug field.
+    "honour": ["doubts/i-cannot-bear-to-disappoint-my-parents", "doubts/married-off-without-consent"],
+    "fate": ["doubts/if-it-was-all-written"],
+    "home": ["doubts/i-was-hurt-and-nobody-helped", "doubts/quran-wife-beating-verse"],
     "prayer": ["doubts/i-stopped-praying-and-feel-guilty", "doubts/doubting-through-ramadan"],
     "online": ["doubts/websites-confirmed-my-doubts", "guides/is-islam-false"],
     "default-muslim-doubts": ["guides/is-islam-false", "doubts/websites-confirmed-my-doubts"],

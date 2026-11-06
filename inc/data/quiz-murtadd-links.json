@@ -21,6 +21,17 @@
       "doubts/i-was-hurt-and-nobody-helped",
       "doubts/hurt-by-a-religious-teacher"
     ],
+    "honour": [
+      "doubts/i-cannot-bear-to-disappoint-my-parents",
+      "doubts/married-off-without-consent"
+    ],
+    "fate": [
+      "doubts/if-it-was-all-written"
+    ],
+    "home": [
+      "doubts/i-was-hurt-and-nobody-helped",
+      "doubts/quran-wife-beating-verse"
+    ],
     "prayer": [
       "doubts/i-stopped-praying-and-feel-guilty",
       "doubts/doubting-through-ramadan"
@@ -51,6 +62,10 @@
       "title": "Hurt by a religious teacher",
       "path": "/doubts/hurt-by-a-religious-teacher/"
     },
+    "doubts/i-cannot-bear-to-disappoint-my-parents": {
+      "title": "Disappointing my parents",
+      "path": "/doubts/i-cannot-bear-to-disappoint-my-parents/"
+    },
     "doubts/i-stopped-praying-and-feel-guilty": {
       "title": "The guilt of not praying",
       "path": "/doubts/i-stopped-praying-and-feel-guilty/"
@@ -63,13 +78,25 @@
       "title": "I was hurt and nobody helped",
       "path": "/doubts/i-was-hurt-and-nobody-helped/"
     },
+    "doubts/if-it-was-all-written": {
+      "title": "If it was all written",
+      "path": "/doubts/if-it-was-all-written/"
+    },
     "doubts/leaving-would-cost-me-my-family": {
       "title": "The cost to my family",
       "path": "/doubts/leaving-would-cost-me-my-family/"
     },
+    "doubts/married-off-without-consent": {
+      "title": "Married off without consent",
+      "path": "/doubts/married-off-without-consent/"
+    },
     "doubts/my-spouse-does-not-know": {
       "title": "My spouse does not know",
       "path": "/doubts/my-spouse-does-not-know/"
+    },
+    "doubts/quran-wife-beating-verse": {
+      "title": "Qur'an 4:34",
+      "path": "/doubts/quran-wife-beating-verse/"
     },
     "doubts/the-hadith-about-leaving": {
       "title": "The hadith about leaving",

@@ -114,6 +114,7 @@ input[type=radio],input[type=checkbox]{accent-color:var(--accent);width:18px;hei
 .res-links{list-style:none;display:grid;gap:0.5rem;}
 .res-link{display:block;padding:0.7rem 0;color:var(--accent);text-decoration:none;border-bottom:1px solid var(--line);}
 .res-link:hover{text-decoration:underline;}
+.res-safety{border-left:3px solid var(--brand-red);padding-left:1rem;}
 .res-small{font-size:0.9rem;color:var(--muted);margin-bottom:0.5rem;}
 .res-tools{display:flex;flex-wrap:wrap;gap:0.6rem;align-items:center;border-top:1px solid var(--line);padding-top:1.5rem;}
 .res-status{font-size:0.85rem;color:var(--dimmed);}

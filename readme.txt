@@ -6,8 +6,8 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.18.14
-Stable tag: 2.18.14
+Version: 2.18.15
+Stable tag: 2.18.15
 License: GNU General Public License v3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Template: twentytwentyfive
@@ -160,6 +160,12 @@ CE Theme, Copyright 2026 MENJ. Licensed under the GNU GPL, version 3 or later; t
 
 == Changelog ==
 
+= 2.18.15 - November 2026 =
+* The quiz meets more of the reasons people give for doubting or leaving. Two new answers: how women and girls are treated, and whether choice is free if God already knows everything.
+* The last question for a Questioning Muslim or an Ex-Believer gains three answers: family honour and control, whether my choices were ever free, and harshness or fear at home. The answer picks articles on this site, such as the pieces on honour, free will, Quran 4:34 and leaving Islam, and never changes the path.
+* New article: Why People Leave: Honour, Fate and Fear at Home. It weighs three questions that recur across accounts of leaving Islam, links the matching articles here and the matching pages on murtadd.org, and names no person or source.
+* A short safety note appears on the result when someone says there is fear or harshness at home.
+
 = 2.18.14 - November 2026 =
 * The settings and the readme speak of the other sites in plain words. Links to them stay.
 * The readme says where the browser icon goes on a site in a subfolder: a copy of favicon.ico in the domain root.
@@ -294,7 +300,7 @@ CE Theme, Copyright 2026 MENJ. Licensed under the GNU GPL, version 3 or later; t
 * Every question has a "Not sure, or rather not say" option. A skipped question counts for nothing, and scores are divided by the questions you answered, so the 3 modes sit on one scale.
 * The questions are rewritten in a gentler voice and asked easiest first. Each one shows a short topic label. Q4 gains "Nothing really; my questions lie elsewhere" for a believer with no complaint.
 * "How does faith sit in your life right now?" takes one answer only. A visitor who said they are a practising or doubting Muslim no longer lands on the Ex-Believer path, which now rises only on "It used to matter a great deal, and now it does not".
-* When the answers point to the Questioning Muslim or the Ex-Believer, Standard and Full ask one more question: what weighs on you most. It leaves the path alone and picks 2 or 3 murtadd.org pages for a "You are not alone" list. bin/build-quiz-murtadd-links.py builds the list from murtadd's seed data and fails on any slug that does not exist.
+* When the answers point to the Questioning Muslim or the Ex-Believer, Standard and Full ask one more question: what weighs on you most. It leaves the path alone and picks 2 or 3 murtadd.org pages for a "You are not alone" list, and up to 3 articles on this site for "Read next" (honour, free will, violence at home, the law). bin/build-quiz-murtadd-links.py builds the list from murtadd's seed data and fails on any slug that does not exist.
 * /quiz/?from=murtadd opens on Quick with a short welcome.
 * The result shows the closest path, 2 near paths as links, a note on how the match works, and share, retake and "Try another path". The percentage bars are gone.
 * Analytics get quiz_start with the mode and quiz_complete with the path and mode. The quiz no longer sends an event per answer.
@@ -607,6 +613,9 @@ Uthmani Quran font replaced with KFGQPC HAFS version (608 glyphs). CE Hadith add
 For the full version history see doc/changelog.md in the theme zip.
 
 == Upgrade Notice ==
+
+= 2.18.15 =
+Replace the theme files. Nothing else to do. One new article arrives with the first admin page load; the quiz has new answers and a new reading list.
 
 = 2.18.14 =
 Replace the theme files. On a site in a subfolder, also put a copy of assets/images/favicon.ico in the domain root folder (or, with a Site Icon set, that icon as favicon.ico); otherwise nothing to do.

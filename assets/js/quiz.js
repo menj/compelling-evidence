@@ -15,6 +15,7 @@
  *
  * @since 2.8.6
  * @since 2.10.0 Modes, skip option, native inputs, murtadd follow-up.
+ * @since 2.18.15 Follow-up answers pick articles on this site (READ_W); safety note.
  */
 (function (root) {
   'use strict';
@@ -161,6 +162,20 @@
     return keys.slice(0, 3).map(function (k) { return { url: M.base + M.items[k].path, title: M.items[k].title }; });
   }
 
+  /**
+   * The "Read next" list: articles picked by the follow-up answer come first
+   * (READ_W), then the path's own reading (READ_NEXT). No repeats, three at most.
+   */
+  function readNext(persona, answers) {
+    var w = (answers.w || [])[0], out = [], seen = {};
+    function add(list) {
+      (list || []).forEach(function (l) { if (!seen[l[0]]) { seen[l[0]] = 1; out.push(l); } });
+    }
+    if (w && w !== SKIP && root.READ_W) add(root.READ_W[w]);
+    add((root.READ_NEXT || {})[persona]);
+    return out.slice(0, 3);
+  }
+
   /** True when at least one main question has an answer other than skip. */
   function hasUsable(answers) {
     return Object.keys(answers).some(function (id) {
@@ -168,7 +183,7 @@
     });
   }
 
-  root.CEQuiz = { calcScores: calcScores, rank: rank, murtaddPicks: murtaddPicks, hasUsable: hasUsable, SKIP: SKIP };
+  root.CEQuiz = { calcScores: calcScores, rank: rank, murtaddPicks: murtaddPicks, readNext: readNext, hasUsable: hasUsable, SKIP: SKIP };
   if (typeof document === 'undefined') return;
 
   /* ---------- page ---------- */
@@ -357,7 +372,7 @@
     var open = $('res-open');
     open.textContent = 'Browse all paths';
     open.href = $('res-journeys').href;
-    ['res-also', 'res-read', 'res-murtadd'].forEach(function (b) { $(b).hidden = true; });
+    ['res-also', 'res-read', 'res-murtadd', 'res-safety'].forEach(function (b) { $(b).hidden = true; });
     var more = $('res-more');
     more.hidden = false;
     more.textContent = 'Answer a few questions';
@@ -389,8 +404,9 @@
     $('res-desc').textContent = P[primary].desc;
     $('res-open').href = P[primary].file;
     fill('res-also', 'res-also-items', also.map(function (p) { return li(P[p].file, P[p].name); }));
-    fill('res-read', 'res-read-items', (root.READ_NEXT[primary] || []).map(function (l) { return li(l[0], l[1], /^https?:/.test(l[0])); }));
+    fill('res-read', 'res-read-items', readNext(primary, state.answers).map(function (l) { return li(l[0], l[1], /^https?:/.test(l[0])); }));
     fill('res-murtadd', 'res-murtadd-items', murtaddPicks(primary, state.answers).map(function (m) { return li(m.url, m.title, true); }));
+    $('res-safety').hidden = (state.answers.w || [])[0] !== 'home';
     var more = $('res-more');
     more.hidden = state.mode !== 'quick';
     more.dataset.action = 'continue';
