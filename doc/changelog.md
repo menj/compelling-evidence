@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.18.15] - November 2026
+
+The quiz meets more of the reasons people give for doubting or leaving, and the follow-up answer now picks articles on this site and the murtadd.org pages that pair with them. One new article; no existing article text changed and no public identifier renamed.
+
+### Added
+- Q4 option `H` ("How women and girls are treated, or what is expected of them") and Q10 option `H` ("If God already knows everything, how is my choice free?"), scored in `SCORING` (`4H`, `10H`) towards the Questioning Muslim and the Ex-Believer. In `bin/quiz-sim.js` (200,000 runs) no path moves by more than 1.6 points in any mode, and every path is still reachable.
+- Follow-up (`w`) answers `honour`, `fate` and `home`, set in `journeys/quiz.html`.
+- `READ_W` in `journeys/quiz.html` and `readNext()` in `assets/js/quiz.js`: the follow-up answer puts up to 3 articles on this site ahead of the path's own reading (`honour`, `fate`, `home` and `law`). No repeats. Every slug is checked against the article batches.
+- A "If you are not safe" note on the result (`#res-safety`, `.res-safety` in `assets/css/quiz.css`), shown only for the `home` answer.
+- A quiz FAQ entry on why the quiz asks about family, free will or life at home (`inc/data/standalone-faq.json`; the visible FAQ and the FAQPage node share it).
+- `honour`, `fate` and `home` in `PICKS` of `bin/build-quiz-murtadd-links.py` and in `inc/data/quiz-murtadd-links.json`, rebuilt from murtadd's seed data. Each pair matches the article `READ_W` shows for the same answer, because the murtadd page names it in `ce_slug`: `i-cannot-bear-to-disappoint-my-parents` and `married-off-without-consent` (honour), `if-it-was-all-written` (free-will-predestination), `i-was-hurt-and-nobody-helped` and `quran-wife-beating-verse` (home).
+- New article `why-people-leave-honour-fate-home` (batch-010, order 144, topic The Inner Journey, 144 articles in all). It weighs three questions that recur across accounts of leaving Islam: family honour, free will and fear at home. It is anonymous aggregate material only: no person, family, place, book or quotation is named or used. Quran verses are cited by reference. The hadith (al-Bukhari 5136, 5138) are taken from the cited text of the murtadd.org page that carries them, and have not been checked against a hadith collection from this session. Links to six articles here and four murtadd.org pages. `manifest.json` gains the batch and its checksum, and `seo.json` its entry.
+- `inc/data/murtadd-counterparts.json` rebuilt from murtadd 1.55.12's seed data: the new article lists two murtadd.org doubts (`i-cannot-bear-to-disappoint-my-parents`, `the-community-let-me-down-as-a-convert`), which carry its slug in `ce_slug`. 38 articles, 74 links. The links go live when murtadd 1.55.12 is deployed. `inc/data/network-links.json` is byte-identical in both themes.
+
 ## [2.18.14] - November 2026
 
 The theme speaks of "the other sites" in its settings and readme, and the docs name the subfolder favicon step. No feature removed and no public identifier renamed.

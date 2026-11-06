@@ -1,7 +1,7 @@
 {
   "version": "2.8.4",
   "generated": "2026-09-27T09:00:00+00:00",
-  "total_articles": 143,
+  "total_articles": 144,
   "batches": [
     {
       "file": "batch-001.json",
@@ -47,6 +47,11 @@
       "file": "batch-009.json",
       "checksum": "c0104feb5ff84165f161282ae7443681ce3be017e324d7e514c69c6e2f91cb43",
       "articles": 6
+    },
+    {
+      "file": "batch-010.json",
+      "checksum": "c321766d6f63ab688269eee8ad9fa274d44a15dc45c590ffa9b4d02da70b32e9",
+      "articles": 1
     }
   ],
   "checksum": "999e2458bc31e354a33072e0cf8a2cbad82712ccc09f6e4fd10115eb91cc958b"

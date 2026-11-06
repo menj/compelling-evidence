@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Version | 2.18.14 |
+| Version | 2.18.15 |
 | Licence | GNU GPL v3 or later; the full text is in `LICENSE` |
 | Parent | Twenty Twenty-Five, tested with 1.5 (`CE_PARENT_TESTED_VERSION`) |
 | Requires | WordPress 6.7 (tested to 7.1), PHP 8.0 (tested to 8.4) |
@@ -11,7 +11,7 @@
 | Repository | https://github.com/menj/compelling-evidence |
 | Text domain | `compelling-evidence` |
 
-A child theme for one site: 14 journeys, a weighted intake quiz, 143 articles in 11 topics, reader questions, a glossary, first-party analytics (off by default) and an engagement suite. It is not a general-purpose theme.
+A child theme for one site: 14 journeys, a weighted intake quiz, 144 articles in 11 topics, reader questions, a glossary, first-party analytics (off by default) and an engagement suite. It is not a general-purpose theme.
 
 `readme.txt` is for site owners. This file is for developers and hosts. `doc/ssot.md` holds the fixed facts and wins on matters of fact; `doc/changelog.md` is the history and `doc/upgrading.md` the upgrade notes and roadmap.
 
@@ -37,7 +37,7 @@ php bin/build-error-pages.php                        # rebuild errors/*.html fro
 node bin/quiz-sim.js                                 # quiz scoring simulation
 python3 bin/build-murtadd-counterparts.py            # rebuild inc/data/murtadd-counterparts.json
 python3 bin/build-quiz-murtadd-links.py              # rebuild inc/data/quiz-murtadd-links.json
-git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.14.zip v2.18.14   # after the release is committed and tagged
+git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.15.zip v2.18.15   # after the release is committed and tagged
 ```
 
 Every PHP script in `tests/` and `bin/` exits unless it runs from the command line. `.gitattributes` keeps `.gitattributes`, `.gitignore`, `.claude/`, `phpcs.xml.dist`, `bin/` and `tests/` out of the zip; `doc/` and `tools/` ship, and the live-server clean-up removes them.
@@ -71,7 +71,7 @@ compelling-evidence/
 ├── page-faq.php, page-glossary.php, page-ask-a-question.php
 ├── sitemap.xml                Pointer to /wp-sitemap.xml
 ├── inc/                       43 modules (load order above)
-├── inc/articles/              batch-001.json to batch-009.json (143 articles), manifest.json
+├── inc/articles/              batch-001.json to batch-010.json (144 articles), manifest.json
 │                              (SHA-256 per batch), media.json (figure credits), seo.json
 ├── inc/data/                  seed-pages.json, network-links.json, murtadd-counterparts.json,
 │                              quiz-murtadd-links.json, standalone-faq.json, seo-titles.json,
@@ -112,7 +112,7 @@ compelling-evidence/
 | 10 | The Inner Journey | `the-inner-journey` | 17 |
 | 11 | Revelation & Meaning | `revelation-meaning` | 12 |
 
-Total: 143 articles (manifest 2.8.4).
+Total: 144 articles (manifest 2.8.4).
 
 ### Run-once modules on `admin_init`
 
