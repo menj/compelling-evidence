@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.18.17] - November 2026
+
+The quiz follow-up routes to the hard texts. No article text changed, no scoring changed, no feature removed and no public identifier renamed.
+
+### Added
+- Follow-up (`w`) answers `war` ("Verses on fighting, slavery or people of other faiths"), `women` ("Rules on women: inheritance, testimony or polygamy") `prophet` ("The Prophet's marriages or conduct") and `hell` ("Being told good people of other faiths will burn"), in `journeys/quiz.html`. They answer questions that recur across accounts of leaving Islam, which the follow-up had no answer for. The two scored questions and `SCORING` are untouched, so the path distribution stands.
+- `READ_W` entries for the four, and for the existing `text` answer, which had none: `war` (`sword-verse-jizya`, `slavery-in-islamic-sources`, `muhammad-and-warfare`), `women` (`women-in-islam`, `hijab-male-control-or-divine-command`), `prophet` (`aisha-age-marriage`, `prophet-marriages-zaynab-safiyyah-mariyah`), `hell` (`do-good-non-muslims-go-to-hell`, `why-hellfire`) and `text` (`meccan-medinan-abrogation`, `hadith-reliability`).
+- `war`, `women`, `prophet` and `hell` in `PICKS` of `bin/build-quiz-murtadd-links.py`, with the matching murtadd pages (`islam-and-violence`, `captives-and-slavery`, `womens-testimony-half`, `the-inheritance-shares`, `the-age-of-aisha`, `polygamy-and-the-condition`, `good-friends-were-never-muslim`, `are-all-non-muslims-damned`), checked against murtadd's seed data. `inc/data/quiz-murtadd-links.json` is rebuilt: 24 pages, up from 18.
+
+### Changed
+- `readNext()` in `assets/js/quiz.js` takes at most two articles from the follow-up answer, so one slot of the three always shows the path's own reading. Before, an answer with three entries (such as `war`) filled the list and hid the path's reading. The first two entries of each `READ_W` list are the ones shown.
+- The quiz FAQ entry on why the quiz asks about family, free will or life at home also names the texts and rulings people find hardest (`inc/data/standalone-faq.json`; the visible FAQ and the FAQPage node share it).
+- The material behind this release is used as anonymous patterns only. No person, family, place, book or quotation is named or used, and the polemical framing of any source is not adopted: the site answers the questions and does not repeat the charges against a community.
+
 ## [2.18.16] - November 2026
 
 The counterpart data follows murtadd 1.56.2. No feature removed and no public identifier renamed. No article text changed.

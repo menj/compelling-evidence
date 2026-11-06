@@ -32,6 +32,22 @@
       "doubts/i-was-hurt-and-nobody-helped",
       "doubts/quran-wife-beating-verse"
     ],
+    "war": [
+      "doubts/islam-and-violence",
+      "rebuttals/captives-and-slavery"
+    ],
+    "women": [
+      "doubts/womens-testimony-half",
+      "rebuttals/the-inheritance-shares"
+    ],
+    "prophet": [
+      "rebuttals/the-age-of-aisha",
+      "rebuttals/polygamy-and-the-condition"
+    ],
+    "hell": [
+      "doubts/good-friends-were-never-muslim",
+      "rebuttals/are-all-non-muslims-damned"
+    ],
     "prayer": [
       "doubts/i-stopped-praying-and-feel-guilty",
       "doubts/doubting-through-ramadan"
@@ -58,6 +74,10 @@
       "title": "Doubting through Ramadan",
       "path": "/doubts/doubting-through-ramadan/"
     },
+    "doubts/good-friends-were-never-muslim": {
+      "title": "Friends, and hell",
+      "path": "/doubts/good-friends-were-never-muslim/"
+    },
     "doubts/hurt-by-a-religious-teacher": {
       "title": "Hurt by a religious teacher",
       "path": "/doubts/hurt-by-a-religious-teacher/"
@@ -81,6 +101,10 @@
     "doubts/if-it-was-all-written": {
       "title": "If it was all written",
       "path": "/doubts/if-it-was-all-written/"
+    },
+    "doubts/islam-and-violence": {
+      "title": "Violence and terrorism",
+      "path": "/doubts/islam-and-violence/"
     },
     "doubts/leaving-would-cost-me-my-family": {
       "title": "The cost to my family",
@@ -114,6 +138,10 @@
       "title": "What the law says in Malaysia",
       "path": "/doubts/what-the-law-says-in-malaysia/"
     },
+    "doubts/womens-testimony-half": {
+      "title": "Women as witnesses",
+      "path": "/doubts/womens-testimony-half/"
+    },
     "guides/is-islam-false": {
       "title": "Is Islam False? A Fair Guide for Doubters",
       "path": "/guides/is-islam-false/"
@@ -125,6 +153,26 @@
     "guides/supporting-someone-who-doubts": {
       "title": "Supporting Someone Who Doubts: For Families",
       "path": "/guides/supporting-someone-who-doubts/"
+    },
+    "rebuttals/are-all-non-muslims-damned": {
+      "title": "Are all non-Muslims damned",
+      "path": "/rebuttals/are-all-non-muslims-damned/"
+    },
+    "rebuttals/captives-and-slavery": {
+      "title": "Captives and slavery",
+      "path": "/rebuttals/captives-and-slavery/"
+    },
+    "rebuttals/polygamy-and-the-condition": {
+      "title": "Polygamy and the condition",
+      "path": "/rebuttals/polygamy-and-the-condition/"
+    },
+    "rebuttals/the-age-of-aisha": {
+      "title": "The age of Aisha",
+      "path": "/rebuttals/the-age-of-aisha/"
+    },
+    "rebuttals/the-inheritance-shares": {
+      "title": "The inheritance shares",
+      "path": "/rebuttals/the-inheritance-shares/"
     }
   }
 }
