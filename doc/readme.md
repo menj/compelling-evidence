@@ -109,7 +109,7 @@ compelling-evidence/
 | 7 | Divine Justice & Fairness | `divine-justice-fairness` | 7 |
 | 8 | Islamic Practice & Ritual | `islamic-practice-ritual` | 8 |
 | 9 | Rights & Freedom | `rights-freedom` | 17 |
-| 10 | The Inner Journey | `the-inner-journey` | 17 |
+| 10 | The Inner Journey | `the-inner-journey` | 18 |
 | 11 | Revelation & Meaning | `revelation-meaning` | 12 |
 
 Total: 144 articles (manifest 2.8.4).

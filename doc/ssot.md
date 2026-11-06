@@ -197,7 +197,7 @@ topic using a hardcoded canonical array, then sorts within each topic by
 (pre-v2.3.6) grouped order numbers in tight ranges per topic — orders 1–14 for
 Does God Exist?, 15–22 for The Problem of Evil, and so on. The v2.3.6
 redistribution that balanced batches to exactly 24 articles each broke that
-contiguity. As of v2.18.9 (manifest 2.8.4) the actual ranges are:
+contiguity. As of v2.18.15 (manifest 2.8.4) the actual ranges are:
 
 | # | Topic | Count | Order range (non-contiguous) |
 |---|---|---|---|
