@@ -6,8 +6,8 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.18.16
-Stable tag: 2.18.16
+Version: 2.18.17
+Stable tag: 2.18.17
 License: GNU General Public License v3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Template: twentytwentyfive
@@ -159,6 +159,9 @@ CE Theme, Copyright 2026 MENJ. Licensed under the GNU GPL, version 3 or later; t
 * Article figures are not bundled. inc/articles/media.json lists each with its source page, creator and licence, and the credit prints under the figure.
 
 == Changelog ==
+
+= 2.18.17 - November 2026 =
+* The last quiz question, for a Questioning Muslim or an Ex-Believer, gains four answers that many people give for doubting or leaving: verses on fighting, slavery or people of other faiths; rules on women, such as inheritance, testimony and polygamy; the Prophet's marriages or conduct; and being told good people of other faiths will burn. Each picks the matching articles here and the matching pages on murtadd.org. "A verse or hadith" now picks articles too. The answer never changes the path.
 
 = 2.18.16 - November 2026 =
 * Articles on women, honour and the hijab now link to the matching new pages on murtadd.org: eight answers, four to doubts and four rebuttals, on violence at home, honour, the mosque and a wife's right to end a marriage.
@@ -616,6 +619,9 @@ Uthmani Quran font replaced with KFGQPC HAFS version (608 glyphs). CE Hadith add
 For the full version history see doc/changelog.md in the theme zip.
 
 == Upgrade Notice ==
+
+= 2.18.17 =
+Replace the theme files. Nothing else to do.
 
 = 2.18.16 =
 Replace the theme files. Nothing else to do.

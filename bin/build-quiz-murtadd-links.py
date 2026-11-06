@@ -37,6 +37,11 @@ PICKS = {
     "honour": ["doubts/i-cannot-bear-to-disappoint-my-parents", "doubts/married-off-without-consent"],
     "fate": ["doubts/if-it-was-all-written"],
     "home": ["doubts/i-was-hurt-and-nobody-helped", "doubts/quran-wife-beating-verse"],
+    # Hard texts and the Prophet's life: each pairs with the article READ_W shows.
+    "war": ["doubts/islam-and-violence", "rebuttals/captives-and-slavery"],
+    "women": ["doubts/womens-testimony-half", "rebuttals/the-inheritance-shares"],
+    "prophet": ["rebuttals/the-age-of-aisha", "rebuttals/polygamy-and-the-condition"],
+    "hell": ["doubts/good-friends-were-never-muslim", "rebuttals/are-all-non-muslims-damned"],
     "prayer": ["doubts/i-stopped-praying-and-feel-guilty", "doubts/doubting-through-ramadan"],
     "online": ["doubts/websites-confirmed-my-doubts", "guides/is-islam-false"],
     "default-muslim-doubts": ["guides/is-islam-false", "doubts/websites-confirmed-my-doubts"],
