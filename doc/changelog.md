@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.18.16] - November 2026
+
+The counterpart data follows murtadd 1.56.2. No feature removed and no public identifier renamed. No article text changed.
+
+### Changed
+- `inc/data/murtadd-counterparts.json` rebuilt with `bin/build-murtadd-counterparts.py` from murtadd's merged `main` (6132ed0): 38 articles, 82 links, up from 74. The eight new links point to the 1.56.0 doubts and rebuttals on violence at home, honour, the women's space at the mosque and a wife's right to end a marriage, under their reworded 1.56.2 titles.
+- `inc/data/quiz-murtadd-links.json` rebuilt from the same data: no change.
+
 ## [2.18.15] - November 2026
 
 The quiz meets more of the reasons people give for doubting or leaving, and the follow-up answer now picks articles on this site and the murtadd.org pages that pair with them. One new article; no existing article text changed and no public identifier renamed.
