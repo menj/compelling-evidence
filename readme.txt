@@ -161,7 +161,7 @@ CE Theme, Copyright 2026 MENJ. Licensed under the GNU GPL, version 3 or later; t
 == Changelog ==
 
 = 2.18.16 - November 2026 =
-* Articles on women, honour and the hijab now link to the matching new pages on murtadd.org: seven answers to doubts and rebuttals on violence at home, honour, the mosque and a wife's right to end a marriage.
+* Articles on women, honour and the hijab now link to the matching new pages on murtadd.org: eight answers, four to doubts and four rebuttals, on violence at home, honour, the mosque and a wife's right to end a marriage.
 
 = 2.18.15 - November 2026 =
 * The quiz meets more of the reasons people give for doubting or leaving. Two new answers: how women and girls are treated, and whether choice is free if God already knows everything.

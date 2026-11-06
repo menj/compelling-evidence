@@ -17,7 +17,7 @@ This document describes the update steps, the notes for each version that needs 
 
 ## Upgrading to v2.18.16 from v2.18.15
 
-Replace the theme files. Nothing else changes. The new links go live with murtadd 1.56.2; a murtadd site that has not yet created its 1.56.0 entries shows them once it does.
+Replace the theme files. Nothing else changes. The new links point to murtadd.org pages that exist only after that site has created its 1.56.0 entries. Deploy murtadd 1.56.2 and run Appearance, Theme Options, Setup, Create anything missing there first, or straight after; until then the eight links lead to missing pages.
 
 ## Upgrading to v2.18.15 from v2.18.14
 
