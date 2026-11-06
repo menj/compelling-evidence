@@ -16,6 +16,7 @@
  * @since 2.8.6
  * @since 2.10.0 Modes, skip option, native inputs, murtadd follow-up.
  * @since 2.18.15 Follow-up answers pick articles on this site (READ_W); safety note.
+ * @since 2.18.17 The follow-up supplies two articles at most, so the path's own reading still shows.
  */
 (function (root) {
   'use strict';
@@ -164,14 +165,14 @@
 
   /**
    * The "Read next" list: articles picked by the follow-up answer come first
-   * (READ_W), then the path's own reading (READ_NEXT). No repeats, three at most.
+   * (READ_W, two at most, so one slot is left for the path), then the path's own reading (READ_NEXT). No repeats, three in all.
    */
   function readNext(persona, answers) {
     var w = (answers.w || [])[0], out = [], seen = {};
     function add(list) {
       (list || []).forEach(function (l) { if (!seen[l[0]]) { seen[l[0]] = 1; out.push(l); } });
     }
-    if (w && w !== SKIP && root.READ_W) add(root.READ_W[w]);
+    if (w && w !== SKIP && root.READ_W) add((root.READ_W[w] || []).slice(0, 2));
     add((root.READ_NEXT || {})[persona]);
     return out.slice(0, 3);
   }

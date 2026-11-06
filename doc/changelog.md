@@ -16,6 +16,7 @@ The quiz follow-up routes to the hard texts. No article text changed, no scoring
 - `war`, `women`, `prophet` and `hell` in `PICKS` of `bin/build-quiz-murtadd-links.py`, with the matching murtadd pages (`islam-and-violence`, `captives-and-slavery`, `womens-testimony-half`, `the-inheritance-shares`, `the-age-of-aisha`, `polygamy-and-the-condition`, `good-friends-were-never-muslim`, `are-all-non-muslims-damned`), checked against murtadd's seed data. `inc/data/quiz-murtadd-links.json` is rebuilt: 24 pages, up from 18.
 
 ### Changed
+- `readNext()` in `assets/js/quiz.js` takes at most two articles from the follow-up answer, so one slot of the three always shows the path's own reading. Before, an answer with three entries (such as `war`) filled the list and hid the path's reading. The first two entries of each `READ_W` list are the ones shown.
 - The quiz FAQ entry on why the quiz asks about family, free will or life at home also names the texts and rulings people find hardest (`inc/data/standalone-faq.json`; the visible FAQ and the FAQPage node share it).
 - The material behind this release is used as anonymous patterns only. No person, family, place, book or quotation is named or used, and the polemical framing of any source is not adopted: the site answers the questions and does not repeat the charges against a community.
 
