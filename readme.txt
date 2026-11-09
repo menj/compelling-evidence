@@ -6,8 +6,8 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.18.20
-Stable tag: 2.18.20
+Version: 2.18.21
+Stable tag: 2.18.21
 License: GNU General Public License v3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Template: twentytwentyfive
@@ -159,6 +159,11 @@ CE Theme, Copyright 2026 MENJ. Licensed under the GNU GPL, version 3 or later; t
 * Article figures are not bundled. inc/articles/media.json lists each with its source page, creator and licence, and the credit prints under the figure.
 
 == Changelog ==
+
+= 2.18.21 - November 2026 =
+* A new section on how the New Testament was gathered, in the article on the Islamic dilemma, with three questions and answers shown on the page.
+* A new article on the Old Testament lists of the Jewish, Catholic, Protestant, Orthodox and Ethiopian traditions. Its questions show on the page, and the page carries the matching FAQPage markup.
+* Articles in the bundled files can now carry a `faq` list, which the content sync saves as the article's FAQ items.
 
 = 2.18.20 - November 2026 =
 * Theme Options: the sticky Save bar no longer covers a field you tab to.
@@ -632,6 +637,9 @@ Uthmani Quran font replaced with KFGQPC HAFS version (608 glyphs). CE Hadith add
 For the full version history see doc/changelog.md in the theme zip.
 
 == Upgrade Notice ==
+
+= 2.18.21 =
+Replace the theme files. Nothing else to do. The content sync adds the new article on the next admin page load.
 
 = 2.18.20 =
 Replace the theme files. Nothing else to do.

@@ -236,6 +236,19 @@ class CE_Article_Loader {
             }
         }
         
+        // Optional visible FAQ: question and answer pairs. The sync saves them
+        // as _ce_faq_items, which the article then shows and marks up as FAQPage.
+        $faq = [];
+        if ( isset( $article['faq'] ) && is_array( $article['faq'] ) ) {
+            foreach ( $article['faq'] as $row ) {
+                $q = is_array( $row ) ? trim( sanitize_text_field( (string) ( $row['q'] ?? '' ) ) ) : '';
+                $a = is_array( $row ) ? trim( sanitize_textarea_field( (string) ( $row['a'] ?? '' ) ) ) : '';
+                if ( '' !== $q && '' !== $a ) {
+                    $faq[] = [ 'q' => $q, 'a' => $a ];
+                }
+            }
+        }
+
         // Sanitize all fields
         return [
             'slug'    => sanitize_title( $article['slug'] ),
@@ -244,6 +257,7 @@ class CE_Article_Loader {
             'order'   => (int) $article['order'],
             'excerpt' => wp_kses_post( $article['excerpt'] ),
             'content' => wp_kses_post( $article['content'] ),
+            'faq'     => $faq,
         ];
     }
     

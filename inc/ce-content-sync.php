@@ -31,7 +31,27 @@ function ce_sync_mark_seeded( $post_id, $slug ) {
 }
 
 /**
- * Fingerprint of what the sync writes: the text, the title and the excerpt.
+ * Save an article's visible FAQ pairs, when its bundled entry has them. The
+ * article then shows them and carries FAQPage markup for the same questions.
+ *
+ * @param int   $post_id Article ID.
+ * @param array $article Bundled article.
+ */
+function ce_sync_save_faq( $post_id, array $article ) {
+    if ( ! empty( $article['faq'] ) && is_array( $article['faq'] ) ) {
+        update_post_meta( $post_id, '_ce_faq_items', $article['faq'] );
+        update_post_meta( $post_id, '_ce_faq_bundled', 1 );
+    } elseif ( get_post_meta( $post_id, '_ce_faq_bundled', true ) ) {
+        // The bundle carried a FAQ for this article before and no longer does.
+        // FAQ items an editor added to an article that never had a bundled
+        // FAQ are left alone.
+        delete_post_meta( $post_id, '_ce_faq_items' );
+        delete_post_meta( $post_id, '_ce_faq_bundled' );
+    }
+}
+
+/**
+ * Fingerprint of what the sync writes: the text, the title, the excerpt and the FAQ items.
  *
  * @param int $post_id Article ID.
  * @return string
@@ -40,7 +60,8 @@ function ce_sync_seed_hash( $post_id ) {
     return md5(
         (string) get_post_field( 'post_content', $post_id ) . "\0" .
         (string) get_post_field( 'post_title', $post_id ) . "\0" .
-        (string) get_post_field( 'post_excerpt', $post_id )
+        (string) get_post_field( 'post_excerpt', $post_id ) . "\0" .
+        (string) wp_json_encode( get_post_meta( $post_id, '_ce_faq_items', true ) )
     );
 }
 
@@ -353,6 +374,7 @@ function ce_sync_article_content( bool $force_run = false ) {
                 $failed++;
             } else {
                 $synced++;
+                ce_sync_save_faq( $existing[0]->ID, $article );
                 ce_sync_mark_seeded( $existing[0]->ID, $article['slug'] );
                 
                 // Update topic if it has changed (with migration support for retired topics)
@@ -453,6 +475,7 @@ function ce_sync_article_content( bool $force_run = false ) {
                 continue;
             }
 
+            ce_sync_save_faq( $post_id, $article );
             ce_sync_mark_seeded( $post_id, $article['slug'] );
 
             // Assign topic

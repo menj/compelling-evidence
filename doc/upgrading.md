@@ -15,6 +15,15 @@ This document describes the update steps, the notes for each version that needs 
 
 ---
 
+## Upgrading to v2.18.21 from v2.18.20
+
+Replace the theme files. The sync creates `which-old-testament-islamic-dilemma` on the next admin page load and rewrites the New Testament section of `islamic-dilemma-quran-and-bible`.
+
+Open items for the owner:
+- Every modern citation in the two articles needs a check against the book: Metzger, Bruce, Tov, Barton, Beckwith and Sundberg.
+- The statement that later scholars doubt a closed Alexandrian canon rests on Sundberg and needs a reader who has the book.
+- Davidson's page numbers are the printed pages of the Gutenberg eBook 30132 text.
+
 ## Upgrading to v2.18.20 from v2.18.19
 
 Replace the theme files. Nothing else to do.

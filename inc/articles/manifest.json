@@ -1,7 +1,7 @@
 {
   "version": "2.8.4",
   "generated": "2026-09-27T09:00:00+00:00",
-  "total_articles": 144,
+  "total_articles": 145,
   "batches": [
     {
       "file": "batch-001.json",
@@ -35,7 +35,7 @@
     },
     {
       "file": "batch-007.json",
-      "checksum": "0d1ee92704bb0c74f0181cf0a11f653cb617b4684fad7ecda8c20c540cfff577",
+      "checksum": "8553a22bb1241014758fee8a3d95428c06304488cb7693e8e0ee640bbe7426e1",
       "articles": 8
     },
     {
@@ -50,8 +50,8 @@
     },
     {
       "file": "batch-010.json",
-      "checksum": "8e3e2407bbd47b44480de2f1513813954efc3cdab71534ece47f7a63318ef5a6",
-      "articles": 1
+      "checksum": "378a4b843df67b96158a07e0f6cdf5fba63f6bff29fd0c25e68bf3fc41ea726b",
+      "articles": 2
     }
   ],
   "checksum": "999e2458bc31e354a33072e0cf8a2cbad82712ccc09f6e4fd10115eb91cc958b"
