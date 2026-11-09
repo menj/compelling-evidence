@@ -15,6 +15,16 @@ This document describes the update steps, the notes for each version that needs 
 
 ---
 
+## Upgrading to v2.18.22 from v2.18.21
+
+Replace the theme files. Nothing else to do.
+
+What changed for you: an article you edited is no longer overwritten when a batch changes. Open Theme Options, Tools to see the articles that have a newer bundled text, with a diff. Choose "Take the bundled text" or "Keep mine" for each. An article the sync cannot prove you left alone (no recorded fingerprint) is listed the same way. Edits made in WordPress now stay.
+
+To retire an article behind a replacement, add a pair to `inc/data/supersedes.json`, for example `{ "ce_article": { "old-slug": "new-slug" } }`, or use the `ce_supersedes` filter. The map ships empty.
+
+Manifests: `inc/articles/manifest.json` is the live one, read by `CE_Article_Loader`. `inc/articles/manifest-clean.json` (version 2.3.5, five batches) is read by no code; it can be deleted when you like.
+
 ## Upgrading to v2.18.21 from v2.18.20
 
 Replace the theme files. The sync creates `which-old-testament-islamic-dilemma` on the next admin page load and rewrites the New Testament section of `islamic-dilemma-quran-and-bible`.

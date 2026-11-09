@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.18.22] - November 2026
+
+The content sync follows the bundle, safely. No feature removed, no option key renamed.
+
+### Changed
+- The sync updates an article it created only while the owner has not edited it. An article with no fingerprint record counts as edited. A post that is not a `ce_article` is left alone. Before, every bundled slug was overwritten once per version.
+- An article in the Trash that the sync created is not created again.
+- Removals stop when a batch fails its checksum, the bundle lists more than 10 percent fewer articles than at the last good sync, or the loader reports errors.
+- The sync runs when the theme version, a batch checksum, the supersedes map or the guard state changes.
+- The redirect and the hiding for a superseded article stand behind the same guards as its removal. A slug-only rename of an untouched article applies even when its text is unchanged. Taking the bundled text also clears a bundled FAQ the bundle dropped. The 404 redirect needs a trashed article the sync created. A loader error at the last sync holds the redirect and the hiding like a failed checksum. The automatic and manual runs respect a running sync's lock.
+
+### Added
+- `inc/ce-sync-review.php`: fingerprints (`_ce_seed_hash`, `_ce_seed_bfp`), the review card on Theme Options, Tools (dry run, diff, Take the bundled text, Keep mine, run now, a log of the last 100 changes), the `supersedes` map with a 301 at any address, hiding through the unlist module and the Trash, and the `CE_DISABLE_CONTENT_SYNC` switch.
+- `inc/data/supersedes.json`, empty.
+- `tests/sync-review-test.php`.
+
 ## [2.18.21] - November 2026
 
 Canon sections. No feature removed, no identifier renamed.

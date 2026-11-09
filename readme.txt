@@ -6,8 +6,8 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.18.21
-Stable tag: 2.18.21
+Version: 2.18.22
+Stable tag: 2.18.22
 License: GNU General Public License v3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Template: twentytwentyfive
@@ -159,6 +159,13 @@ CE Theme, Copyright 2026 MENJ. Licensed under the GNU GPL, version 3 or later; t
 * Article figures are not bundled. inc/articles/media.json lists each with its source page, creator and licence, and the credit prints under the figure.
 
 == Changelog ==
+
+= 2.18.22 - November 2026 =
+* The content sync follows the bundle, safely. An article you edited is never overwritten. Tools lists it with a diff, and you take the bundled text or keep your own.
+* An article the bundle drops goes to the Trash if you have not edited it, and nothing is ever deleted.
+* A replacement map retires an old article behind a 301, hides it from lists and search, and moves it to the Trash. It ships empty.
+* Tools has a dry-run card, a log of the last 100 changes and a run button. CE_DISABLE_CONTENT_SYNC switches it all off.
+* A corrected batch reaches the site without a version bump.
 
 = 2.18.21 - November 2026 =
 * A new section on how the New Testament was gathered, in the article on the Islamic dilemma, with three questions and answers shown on the page.
@@ -637,6 +644,9 @@ Uthmani Quran font replaced with KFGQPC HAFS version (608 glyphs). CE Hadith add
 For the full version history see doc/changelog.md in the theme zip.
 
 == Upgrade Notice ==
+
+= 2.18.22 =
+Replace the theme files. Open Theme Options, Tools: articles you edited are listed there with a diff.
 
 = 2.18.21 =
 Replace the theme files. Nothing else to do. The content sync adds the new article on the next admin page load.

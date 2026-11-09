@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Version | 2.18.21 |
+| Version | 2.18.22 |
 | Licence | GNU GPL v3 or later; the full text is in `LICENSE` |
 | Parent | Twenty Twenty-Five, tested with 1.5 (`CE_PARENT_TESTED_VERSION`) |
 | Requires | WordPress 6.7 (tested to 7.1), PHP 8.0 (tested to 8.4) |
@@ -37,7 +37,7 @@ php bin/build-error-pages.php                        # rebuild errors/*.html fro
 node bin/quiz-sim.js                                 # quiz scoring simulation
 python3 bin/build-murtadd-counterparts.py            # rebuild inc/data/murtadd-counterparts.json
 python3 bin/build-quiz-murtadd-links.py              # rebuild inc/data/quiz-murtadd-links.json
-git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.21.zip v2.18.21   # after the release is committed and tagged
+git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.22.zip v2.18.22   # after the release is committed and tagged
 ```
 
 Every PHP script in `tests/` and `bin/` exits unless it runs from the command line. `.gitattributes` keeps `.gitattributes`, `.gitignore`, `.claude/`, `phpcs.xml.dist`, `bin/` and `tests/` out of the zip; `doc/` and `tools/` ship, and the live-server clean-up removes them.
@@ -96,7 +96,7 @@ compelling-evidence/
 - `ce_article`: public, archive at `/articles/`, supports title, editor, excerpt, thumbnail and page attributes; `menu_order` orders articles within a topic.
 - `ce_topic`: flat taxonomy on `ce_article` and `post`, 11 terms in canonical order (`doc/ssot.md`, section 5). Never rename a slug.
 - `ce_question`: reader questions from Ask a Question, held as pending posts; an answered one gets a QAPage.
-- Articles live in the JSON batches. `inc/ce-content-sync.php` writes them to the database once per version (`ce_content_sync_{version}` option, `ce_content_sync_lock`), so the database copy is a cache and an edit made in WordPress is overwritten by the next sync.
+- Articles live in the JSON batches. `inc/ce-content-sync.php` writes them to the database when the version or a batch checksum changes (`ce_sync_fp`, `ce_content_sync_lock`). An article you edited is never overwritten; `inc/ce-sync-review.php` lists it under Tools with a diff, and a `supersedes` map retires an old article behind a 301.
 
 | # | Topic | Slug | Articles |
 |---|---|---|---|
@@ -118,7 +118,7 @@ Total: 145 articles (manifest 2.8.4).
 
 | File | Option flag | Runs when |
 |---|---|---|
-| `ce-content-sync.php` | `ce_content_sync_{version}` | The version changes |
+| `ce-content-sync.php`, `ce-sync-review.php` | `ce_content_sync_{version}`, `ce_sync_fp` | The version, a batch checksum, the supersedes map or the guard state changes |
 | `ce-migration-2-2-0.php` | `ce_category_migration_2_2_0` | The flag is absent |
 | `ce-migration-2-2-74.php` | `ce_migration_2_2_74` | The flag is absent |
 | `ce-secondary-pages.php` | `ce_secondary_pages_created`, `ce_v2_pages_created`, `ce_about_v2_updated` | Each flag is absent |
