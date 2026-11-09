@@ -7,7 +7,7 @@ Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
 Version: 2.18.18
-Stable tag: 2.18.18
+Stable tag: 2.18.19
 License: GNU General Public License v3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Template: twentytwentyfive
@@ -159,6 +159,11 @@ CE Theme, Copyright 2026 MENJ. Licensed under the GNU GPL, version 3 or later; t
 * Article figures are not bundled. inc/articles/media.json lists each with its source page, creator and licence, and the credit prints under the figure.
 
 == Changelog ==
+
+= 2.18.19 - November 2026 =
+* Accessibility pass to WCAG 2.2 AA. Form fields have a visible edge, a clear focus ring and a readable placeholder, and the consent box on the Ask a question page is 24 pixels.
+* Fix: the content sync no longer trashes an article that is not in the bundle but was made or edited by the site owner. It trashes only articles the sync itself wrote and that still match what it wrote.
+* New check: `tests/axe-check.js` runs axe-core on the main templates.
 
 = 2.18.18 - November 2026 =
 * Phones: long titles and links wrap instead of running past the screen edge, the search fields fit a 320 pixel screen and do not make the phone zoom when tapped, small links are easier to tap, and the quiz option boxes are larger.
@@ -624,6 +629,9 @@ Uthmani Quran font replaced with KFGQPC HAFS version (608 glyphs). CE Hadith add
 For the full version history see doc/changelog.md in the theme zip.
 
 == Upgrade Notice ==
+
+= 2.18.19 =
+Replace the theme files. Nothing else to do. Articles you made yourself are safe from the content sync.
 
 = 2.18.18 =
 Replace the theme files. Nothing else to do.

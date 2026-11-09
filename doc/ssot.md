@@ -1,7 +1,7 @@
 # SSOT: Single Source of Truth
 ## Compelling Evidence theme: system design, naming conventions, configuration rules
 
-**Version:** 2.18.18  
+**Version:** 2.18.19  
 **Location:** `doc/ssot.md`
 
 This document is authoritative. When any other file conflicts with a rule stated here, this document is correct and the other file should be updated.
@@ -302,7 +302,7 @@ Main branch is `main`. Version tags follow semantic versioning prefixed with `v`
 
 Distribution zip is built with `git archive`, which honours the `export-ignore` lines in `.gitattributes` (`.claude/`, `bin/`, `tests/`, `phpcs.xml.dist`, `.gitattributes`, `.gitignore`):
 ```bash
-git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.18.zip v2.18.18   # the release tag, as in doc/readme.md
+git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.19.zip v2.18.19   # the release tag, as in doc/readme.md
 ```
 
 ---
@@ -646,6 +646,12 @@ Reference documents: Google's SEO Starter Guide and Google's list of structured 
 ## 28. Content Sync Safety (since 2.6.36)
 
 The orphan pass (trashing articles no longer in the JSON) runs only when the loader reports no errors. Before 2.6.36, one batch failing its checksum removed that batch from the article list and the orphan pass trashed every article in it. After editing any batch file, recompute its checksum in `manifest.json`.
+
+Since 2.18.19 the pass also trashes only posts the sync wrote: each article the sync creates or updates carries `_ce_seed_key` (its bundled slug) and `_ce_seed_hash` (the md5 of the text, title and excerpt it wrote). An article without the key, or whose text, title or excerpt no longer matches the hash, is kept and logged in debug mode.
+
+## 28a. Accessibility (since 2.18.19)
+
+The theme meets WCAG 2.2 AA. Form fields take `--field-edge` and `--focus-ring` from `assets/css/main.css`, so an edge reads at 3:1 and the focus ring never relies on a border tint. `tests/axe-check.js` runs axe-core on the main templates and exits 1 on a serious or critical violation. A release does not ship with one.
 
 ## 29. Home Page Arc (since 2.18.5)
 

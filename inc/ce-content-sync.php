@@ -16,6 +16,35 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
+ * Record that the content sync wrote this article, and what it wrote.
+ *
+ * The orphan pass trashes only posts that carry this record and whose text
+ * still matches it. An article an owner made, or edited after the sync wrote
+ * it, has no record or a different one and is never trashed.
+ *
+ * @param int    $post_id Article ID.
+ * @param string $slug    The bundled slug the article was written from.
+ */
+function ce_sync_mark_seeded( $post_id, $slug ) {
+    update_post_meta( $post_id, '_ce_seed_key', sanitize_title( $slug ) );
+    update_post_meta( $post_id, '_ce_seed_hash', ce_sync_seed_hash( $post_id ) );
+}
+
+/**
+ * Fingerprint of what the sync writes: the text, the title and the excerpt.
+ *
+ * @param int $post_id Article ID.
+ * @return string
+ */
+function ce_sync_seed_hash( $post_id ) {
+    return md5(
+        (string) get_post_field( 'post_content', $post_id ) . "\0" .
+        (string) get_post_field( 'post_title', $post_id ) . "\0" .
+        (string) get_post_field( 'post_excerpt', $post_id )
+    );
+}
+
+/**
  * Topic migration map for retired/restructured categories
  * Articles assigned to old topics will be migrated to new topics during sync
  */
@@ -324,6 +353,7 @@ function ce_sync_article_content( bool $force_run = false ) {
                 $failed++;
             } else {
                 $synced++;
+                ce_sync_mark_seeded( $existing[0]->ID, $article['slug'] );
                 
                 // Update topic if it has changed (with migration support for retired topics)
                 $topic_name = $article['topic'] ?? '';
@@ -423,6 +453,8 @@ function ce_sync_article_content( bool $force_run = false ) {
                 continue;
             }
 
+            ce_sync_mark_seeded( $post_id, $article['slug'] );
+
             // Assign topic
             if ( $topic_id ) {
                 wp_set_object_terms( $post_id, [$topic_id], 'ce_topic' );
@@ -446,11 +478,15 @@ function ce_sync_article_content( bool $force_run = false ) {
         error_log( 'CE: Orphan check skipped — the article loader reported errors, so the JSON set may be incomplete.' );
     }
 
+    // Only posts the sync itself wrote carry _ce_seed_key (2.18.19). An
+    // article an owner made is never a candidate.
     $orphans = ! $orphan_pass_allowed ? [] : get_posts([
         'post_type'      => 'ce_article',
         'post_status'    => 'publish',
         'posts_per_page' => -1,
         'fields'         => 'ids',
+        'meta_key'       => '_ce_seed_key',
+        'meta_compare'   => 'EXISTS',
     ]);
     
     $orphans_trashed = 0;
@@ -460,6 +496,14 @@ function ce_sync_article_content( bool $force_run = false ) {
     foreach ( $orphans as $orphan_id ) {
         $orphan_slug = get_post_field( 'post_name', $orphan_id );
         if ( ! in_array( $orphan_slug, $valid_slugs, true ) ) {
+            // An article edited since the sync wrote it stays.
+            $written = (string) get_post_meta( $orphan_id, '_ce_seed_hash', true );
+            if ( '' === $written || ce_sync_seed_hash( $orphan_id ) !== $written ) {
+                if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+                    error_log( 'CE: Kept edited article that is not in the bundle: ' . $orphan_slug );
+                }
+                continue;
+            }
             wp_trash_post( $orphan_id );
             $orphans_trashed++;
             if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
