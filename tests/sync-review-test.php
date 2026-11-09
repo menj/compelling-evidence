@@ -55,6 +55,8 @@ ce_check( '' !== ce_sync_guard( false, false, 145, 145 ), 'a failed checksum sto
 ce_check( '' !== ce_sync_guard( false, true, 100, 145 ), 'a drop of more than 10 percent stops removals' );
 ce_check( '' === ce_sync_guard( false, true, 132, 145 ), 'a drop of under 10 percent is allowed' );
 ce_check( '' === ce_sync_guard( false, true, 5, 0 ), 'the first sync has no prior count' );
+ce_check( '' !== ce_sync_guard( false, true, 130, 145 ), 'a drop of 10.3 percent is stopped, with no rounding' );
+ce_check( '' === ce_sync_guard( false, true, 131, 145 ), 'a drop of exactly 9.7 percent is allowed' );
 
 echo $fail ? "\n$fail check(s) failed\n" : "\nAll checks passed\n";
 exit( $fail ? 1 : 0 );

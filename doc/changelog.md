@@ -15,6 +15,7 @@ The content sync follows the bundle, safely. No feature removed, no option key r
 - An article in the Trash that the sync created is not created again.
 - Removals stop when a batch fails its checksum, the bundle lists more than 10 percent fewer articles than at the last good sync, or the loader reports errors.
 - The sync runs when the theme version, a batch checksum, the supersedes map or the guard state changes.
+- The redirect and the hiding for a superseded article stand behind the same guards as its removal. A slug-only rename of an untouched article applies even when its text is unchanged. Taking the bundled text also clears a bundled FAQ the bundle dropped.
 
 ### Added
 - `inc/ce-sync-review.php`: fingerprints (`_ce_seed_hash`, `_ce_seed_bfp`), the review card on Theme Options, Tools (dry run, diff, Take the bundled text, Keep mine, run now, a log of the last 100 changes), the `supersedes` map with a 301 at any address, hiding through the unlist module and the Trash, and the `CE_DISABLE_CONTENT_SYNC` switch.

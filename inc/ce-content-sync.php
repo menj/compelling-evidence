@@ -372,8 +372,13 @@ function ce_sync_article_content( bool $force_run = false ) {
             }
             $ce_action = ce_sync_decide( ce_sync_bundle_fp( $article ), $ce_state['stored'], $ce_state['recorded'], $ce_state['bfp'], $ce_state['ack'] );
             if ( 'current' === $ce_action ) {
-                if ( $ce_state['stored'] === ce_sync_bundle_fp( $article ) && ( ! $ce_marked || '' === $ce_state['bfp'] ) ) {
-                    ce_sync_mark_seeded( $existing[0]->ID, $article['slug'], $article ); // Equal to the bundle: proof enough to record it.
+                // Nothing to write. A slug-only rename of an untouched article still applies, so the
+                // orphan pass does not take its old slug for a dropped article.
+                if ( $was_renamed && $ce_marked && $existing[0]->post_name !== $article['slug'] ) {
+                    wp_update_post( [ 'ID' => $existing[0]->ID, 'post_name' => $article['slug'] ] );
+                    ce_sync_mark_seeded( $existing[0]->ID, $article['slug'], $article );
+                } elseif ( $ce_marked && '' === $ce_state['bfp'] && $ce_state['stored'] === ce_sync_bundle_fp( $article ) ) {
+                    ce_sync_mark_seeded( $existing[0]->ID, $article['slug'], $article ); // Ours and equal to the bundle: record its fingerprint.
                 }
                 continue;
             }

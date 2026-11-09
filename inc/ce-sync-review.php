@@ -129,7 +129,7 @@ function ce_sync_guard( bool $disabled, bool $intact, int $count_now, int $count
 	if ( ! $intact ) {
 		return 'a batch file is missing or fails its checksum';
 	}
-	if ( $count_prior > 0 && $count_now < (int) floor( $count_prior * 0.9 ) ) {
+	if ( $count_prior > 0 && $count_now * 10 < $count_prior * 9 ) {
 		return 'the bundle lists more than 10 percent fewer articles than at the last good sync';
 	}
 	return '';
@@ -277,7 +277,9 @@ function ce_superseded_pairs(): array {
 	if ( $busy ) {
 		return []; // The queries below fire pre_get_posts, which asks the unlist module, which asks here.
 	}
-	$map = ce_sync_disabled() ? [] : ce_supersedes();
+	// The redirect and the hiding stand behind the same guards as the removal they lead to: while a batch fails
+	// its checksum or the count fell by more than 10 percent, the old article stays visible.
+	$map = ( ce_sync_disabled() || '' !== ce_sync_removal_block() ) ? [] : ce_supersedes();
 	if ( ! $map ) {
 		$cache = [];
 		return $cache;
@@ -383,10 +385,7 @@ function ce_sync_write( $post, array $article ): bool {
 	if ( is_wp_error( $done ) || ! $done ) {
 		return false;
 	}
-	if ( ! empty( $article['faq'] ) ) {
-		update_post_meta( $post->ID, '_ce_faq_items', $article['faq'] );
-		update_post_meta( $post->ID, '_ce_faq_bundled', 1 );
-	}
+	ce_sync_save_faq( $post->ID, $article ); // Saves the bundled FAQ, or clears one the bundle dropped.
 	ce_sync_mark_seeded( $post->ID, $article['slug'], $article );
 	return true;
 }
