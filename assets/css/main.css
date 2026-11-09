@@ -2357,3 +2357,25 @@ main, .ce-footer, .ce-nav { overflow-wrap: break-word; }
   .card-title a, .card-link, .footer-bottom-links a, .je-browse { display: inline-block; padding-block: 0.35em; }
   .footer-cta { display: inline-block; padding-block: 0.3em; }
 }
+
+/* ── WCAG 2.2 AA (2.18.19) ────────────────────────────────────────────────
+   Form fields: an edge at 3:1 or better (1.4.11), a placeholder at 4.5:1
+   (1.4.3), a focus ring that does not rely on a border tint (2.4.7), a
+   consent box of 24 pixels (2.5.8), and text colours that read on the card
+   (1.4.3). The tokens sit here so every form takes them. */
+:root {
+  --field-edge: rgba(200,170,255,0.6);
+  --accent-text: #f06a7c;
+  --focus-ring: #f2eeff;
+}
+.form-group label span { color: var(--accent-text); }
+.form-group--check .checkbox-label span { color: inherit; }
+.form-group input,
+.form-group select,
+.form-group textarea { border-color: var(--field-edge); }
+.form-group input::placeholder,
+.form-group textarea::placeholder { color: rgba(245,240,255,0.6); }
+.form-group input:focus-visible,
+.form-group select:focus-visible,
+.form-group textarea:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.form-group--check input[type="checkbox"] { width: 24px; height: 24px; }

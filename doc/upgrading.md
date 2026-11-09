@@ -15,6 +15,23 @@ This document describes the update steps, the notes for each version that needs 
 
 ---
 
+## Upgrading to v2.18.19 from v2.18.18
+
+Replace the theme files. Nothing else to do.
+
+The content sync changed. Before, the orphan pass trashed any published article that was not in the bundled JSON. Now it trashes only an article it wrote itself (`_ce_seed_key`) whose text has not changed since (`_ce_seed_hash`). Articles written by an earlier version carry no record until the next sync touches them, so they stay until their slug appears in the bundle, and the sync never trashes them. An orphan left over from an old slug rename is now kept; trash it by hand.
+
+Accessibility issue register (WCAG 2.2 AA; axe-core on 11 templates at 375 and 1280 pixels, a keyboard walk and a target-size probe):
+
+| Id | Severity | Criterion | Where | Status |
+|---|---|---|---|---|
+| A11Y-1 | Major | 1.4.3 | Consent text 4.2:1 on the Ask a question page | Fixed |
+| A11Y-2 | Major | 1.4.11 | Form field edge 1.3:1 | Fixed |
+| A11Y-3 | Major | 2.4.7 | Form fields showed focus by a border tint only | Fixed |
+| A11Y-4 | Minor | 1.4.3 | Placeholder at 2.4:1 | Fixed |
+| A11Y-5 | Minor | 2.5.8 | Consent box 18 pixels | Fixed |
+| A11Y-6 | Manual | Various | Screen reader smoke test | Open: needs a person with NVDA or VoiceOver |
+
 ## Upgrading to v2.18.18 from v2.18.17
 
 Replace the theme files. Nothing else changes.
