@@ -54,7 +54,7 @@
   <div class="hero-search-wrap">
     <div class="hero-search" role="search">
       <input
-        type="search"
+        type="search" enterkeyhint="search"
         id="ce-search-input"
         placeholder="<?php esc_attr_e( 'Search a question or topic…', 'compelling-evidence' ); ?>"
         aria-label="<?php esc_attr_e( 'Search topics', 'compelling-evidence' ); ?>"

@@ -55,6 +55,7 @@ ksort( $grouped );
     <?php foreach ( $grouped as $letter => $letter_terms ) : ?>
       <section class="glossary-group" id="letter-<?php echo esc_attr( $letter ); ?>">
         <h2 class="glossary-letter"><?php echo esc_html( $letter ); ?></h2>
+        <dl class="glossary-list">
         <?php foreach ( $letter_terms as $t ) : ?>
           <div class="glossary-entry" id="term-<?php echo esc_attr( sanitize_title( $t['term'] ) ); ?>">
             <dt class="glossary-term">
@@ -66,6 +67,7 @@ ksort( $grouped );
             <dd class="glossary-def"><?php echo wp_kses_post( $t['def_long'] ?? $t['def'] ); ?></dd>
           </div>
         <?php endforeach; ?>
+        </dl>
       </section>
     <?php endforeach; ?>
 

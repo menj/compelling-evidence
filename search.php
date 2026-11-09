@@ -53,7 +53,7 @@ $results = new WP_Query($args);
     <!-- Search form -->
     <form role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>" class="search-bar-wrap">
       <input
-        type="search"
+        type="search" enterkeyhint="search"
         class="search-bar-input"
         placeholder="<?php esc_attr_e('Search a question or topic…', 'compelling-evidence'); ?>"
         value="<?php echo esc_attr($search_term); ?>"

@@ -59,7 +59,7 @@ $ce_recent = new WP_Query( [
 
   <div class="not-found-search" role="search">
     <form method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>">
-      <input type="search" name="s" placeholder="<?php esc_attr_e( 'Search a question or topic…', 'compelling-evidence' ); ?>" aria-label="<?php esc_attr_e( 'Search', 'compelling-evidence' ); ?>" autocomplete="off">
+      <input type="search" enterkeyhint="search" name="s" placeholder="<?php esc_attr_e( 'Search a question or topic…', 'compelling-evidence' ); ?>" aria-label="<?php esc_attr_e( 'Search', 'compelling-evidence' ); ?>" autocomplete="off">
       <button type="submit"><?php esc_html_e( 'Search', 'compelling-evidence' ); ?></button>
     </form>
   </div>

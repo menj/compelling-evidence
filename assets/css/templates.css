@@ -567,7 +567,7 @@
 .glossary-arabic {
   font-family: 'CE Hadith', serif;
   font-size: 1.15rem; font-weight: 400;
-  color: rgba(212,168,255,0.6);
+  color: rgba(212,168,255,0.85);
 }
 
 .glossary-def {
@@ -709,7 +709,7 @@
   margin: 0 auto;
   padding: 0 2rem 6rem;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
   gap: 1rem;
 }
 
@@ -1205,7 +1205,7 @@
   margin-bottom: 0.6rem;
 }
 .search-empty p {
-  color: rgba(242,238,255,0.4);
+  color: rgba(242,238,255,0.7);
   font-size: 0.9rem;
   margin-bottom: 2rem;
   max-width: 420px;
@@ -1224,7 +1224,7 @@
   padding: 0.4rem 1rem;
   border-radius: 50px;
   border: 1px solid rgba(107,47,160,0.25);
-  color: rgba(242,238,255,0.5);
+  color: rgba(242,238,255,0.78);
   font-size: 0.8rem;
   text-decoration: none;
   transition: all 0.15s;
@@ -1232,7 +1232,7 @@
 }
 .search-suggestion-pill:hover {
   border-color: rgba(12,212,224,0.3);
-  color: rgba(12,212,224,0.8);
+  color: rgb(12,212,224);
   background: rgba(12,212,224,0.05);
 }
 .search-cta-row {
@@ -1260,7 +1260,7 @@
   padding: 0.75rem 1.6rem;
   border-radius: 50px;
   border: 1px solid rgba(107,47,160,0.25);
-  color: rgba(242,238,255,0.5);
+  color: rgba(242,238,255,0.78);
   font-size: 0.85rem;
   text-decoration: none;
   transition: all 0.15s;
@@ -1781,7 +1781,8 @@
   opacity: 0.5;
   flex-shrink: 0;
 }
-.qa-empty h3 {
+.qa-empty h3,
+.qa-empty h2 {
   font-family: var(--font-heading);
   font-size: 1.6rem;
   font-weight: 700;
@@ -1821,7 +1822,7 @@
   align-items: center;
   gap: 0.6rem;
   padding: 0.55rem 0.5rem;
-  color: rgba(242,238,255,0.65);
+  color: rgb(242,238,255);
   text-decoration: none;
   font-size: 0.875rem;
   line-height: 1.45;

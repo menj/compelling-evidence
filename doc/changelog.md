@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.18.18] - November 2026
+
+Mobile-first audit at 320, 360, 375, 390, 414, 480, 768, 1024 and 1280 pixels on 19 page types. No article text changed, no feature removed and no public identifier renamed.
+
+### Fixed
+- Long titles, links and excerpts no longer widen the page. Before, a long article title pushed the page 408 to 2,674 pixels past the screen at every width, and the Ask a question sidebar did the same from 768 pixels up. After, nothing overflows at any of the nine widths (`main.css`).
+- The home and 404 search fields shrink to fit a 320 pixel screen, and use 16 pixel text on phones so iOS does not zoom when they are tapped. They ask the keyboard for a Search key.
+- Links in cards, the footer and the home journey strip, and the quiz mode boxes (now 24 pixels), meet the WCAG 2.2 target size.
+- The glossary entries sit inside a `<dl>`, which fixes 186 axe `dlitem` errors. The unanswered-questions heading and the Ask a question sidebar headings are `h2`, which fixes the heading order.
+- Colour contrast: the glossary Arabic, the empty-search text, the suggestion pills, the Browse all articles button and the question topic list are brighter.
+- The topic grid minimum is `min(300px, 100%)`.
+
 ## [2.18.17] - November 2026
 
 The quiz follow-up routes to the hard texts. No article text changed, no scoring changed, no feature removed and no public identifier renamed.
