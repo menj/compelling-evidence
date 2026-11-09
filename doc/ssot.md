@@ -1,7 +1,7 @@
 # SSOT: Single Source of Truth
 ## Compelling Evidence theme: system design, naming conventions, configuration rules
 
-**Version:** 2.18.21  
+**Version:** 2.18.22  
 **Location:** `doc/ssot.md`
 
 This document is authoritative. When any other file conflicts with a rule stated here, this document is correct and the other file should be updated.
@@ -83,7 +83,7 @@ inc/articles/
 └── batch-005.json            # 24 articles (including order 120, added v2.3.1)
 ```
 
-**The WordPress database is a cache.** `ce-content-sync.php` overwrites `post_content` and `post_excerpt` in `wp_posts` on every version bump. Do not edit articles in the WordPress editor with the expectation that edits will persist across upgrades.
+**The WordPress database follows the bundle, safely (since 2.18.22).** `ce-content-sync.php` updates an article the sync created while you have not edited it. An article you edited is never overwritten: it is listed under Tools with a diff, and you take the bundled text or keep your own. See section 28c.
 
 **Security Features:**
 
@@ -302,7 +302,7 @@ Main branch is `main`. Version tags follow semantic versioning prefixed with `v`
 
 Distribution zip is built with `git archive`, which honours the `export-ignore` lines in `.gitattributes` (`.claude/`, `bin/`, `tests/`, `phpcs.xml.dist`, `.gitattributes`, `.gitignore`):
 ```bash
-git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.21.zip v2.18.21   # the release tag, as in doc/readme.md
+git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.22.zip v2.18.22   # the release tag, as in doc/readme.md
 ```
 
 ---
@@ -649,7 +649,21 @@ The orphan pass (trashing articles no longer in the JSON) runs only when the loa
 
 Since 2.18.19 the pass also trashes only posts the sync wrote: each article the sync creates or updates carries `_ce_seed_key` (its bundled slug) and `_ce_seed_hash` (the md5 of the text, title, excerpt and FAQ items it wrote). An article without the key, or whose text, title or excerpt no longer matches the hash, is kept and logged in debug mode.
 
-## 28b. Visible FAQ from the bundled files (since 2.18.21)
+## 28c. Bundled articles follow the bundle (since 2.18.22)
+
+`inc/ce-sync-review.php` decides what the content sync may touch. The sync records two fingerprints when it writes an article: `_ce_seed_hash` (the text, title, excerpt and FAQ items it wrote, as stored) and `_ce_seed_bfp` (the fingerprint of the bundled entry). An article counts as edited when its stored text differs from `_ce_seed_hash`, or when no record exists.
+
+| Event | Untouched article | Edited article, or no record |
+|---|---|---|
+| The bundle text changes | Takes the new text, logged | Stays. Listed under Tools with a diff: Take the bundled text, or Keep mine |
+| The bundle drops it | Moved to the Trash | Stays, listed |
+| A `supersedes` pair names it as old, and the new one is published | 301 to the new article at any address, hidden from lists, search, feeds and sitemaps, noindex, then moved to the Trash | Stays, listed |
+
+Only posts that carry `_ce_seed_key` are ever trashed, and nothing is deleted. A bundled article in the Trash is not created again. `inc/data/supersedes.json` is `{ "ce_article": { "old-slug": "new-slug" } }` and ships empty; the `ce_supersedes` filter can add pairs. The Tools tab has a dry-run card, a log of the last 100 changes and a "Run the review sync now" button. `CE_DISABLE_CONTENT_SYNC` in `wp-config.php` switches off updates, removals, the redirect and the hiding; the button handlers check it straight after the nonce. Removals also stop when a batch fails its checksum or the bundle lists more than 10 percent fewer articles than at the last good sync.
+
+The sync runs when the theme version, a batch checksum, the supersedes map or the guard state changes, so a corrected batch needs no version bump. `inc/articles/manifest.json` is the live manifest. `manifest-clean.json` (version 2.3.5, five batches) is read by no code.
+
+## 28b. Visible FAQ from the bundled files (since 2.18.22)
 
 A bundled article may carry `faq`, a list of `{q, a}` pairs. The loader sanitises them, the sync saves them as `_ce_faq_items`, and `ce_anatomy_faq_section()` shows them under the text. The FAQPage markup is built from the same meta, so it describes only what the page shows (the owner's decision of 2026-11-03).
 
@@ -704,5 +718,5 @@ Contributor rules:
 - Every title reads `<page> | Compelling Evidence` and stays under 60 characters (`CE_TITLE_MAX`, 59; `tests/title-builder-test.php`). A page whose own title is too long gets a short one in `inc/data/seo-titles.json`.
 - English prose follows the anti-AI writing style: no contractions, no em dashes, no banned words, no negative parallelisms, short paragraphs.
 - Links to other sites are cross-links. Public text, `readme.txt` included, never calls those sites related, sister sites or a network.
-- Article text changes in the JSON batches only, with the manifest checksum updated; an edit in WordPress is overwritten by the next sync.
+- Article text changes in the JSON batches, with the manifest checksum updated. An edit in WordPress stays; the owner reviews the bundled change under Tools (section 28c).
 - A release follows the checklist in section 10.

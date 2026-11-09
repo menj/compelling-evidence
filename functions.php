@@ -117,6 +117,7 @@ require_once get_stylesheet_directory() . '/inc/class-ce-article-loader.php';
 require_once get_stylesheet_directory() . '/inc/class-ce-feed-redirector.php';
 
 // ── CONTENT SYNC (updates existing articles from data files) ─────────────────
+require_once get_stylesheet_directory() . '/inc/ce-sync-review.php';
 require_once get_stylesheet_directory() . '/inc/ce-content-sync.php';
 
 // ── QURANIC VERSE TEXT (fitted to the KFGQPC face) ───────────────────────────

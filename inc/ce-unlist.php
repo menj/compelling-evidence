@@ -55,7 +55,9 @@ function ce_unlist_clean( $ids ): array {
  */
 function ce_unlisted_ids(): array {
 	ce_unlist_sync_legacy();
-	return ce_unlist_clean( get_option( 'ce_unlisted_posts', [] ) );
+	$ids = ce_unlist_clean( get_option( 'ce_unlisted_posts', [] ) );
+	// Articles the bundle replaced are hidden the same way while their 301 stands (ce-sync-review.php).
+	return function_exists( 'ce_superseded_ids' ) ? ce_unlist_clean( array_merge( $ids, ce_superseded_ids() ) ) : $ids;
 }
 
 function ce_is_unlisted( $post_id ): bool {

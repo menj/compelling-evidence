@@ -597,6 +597,8 @@ function ce_options_page() {
                     <?php endif; ?>
                 </form>
 
+                <?php if ( 'tools' === $key && $key === $active && function_exists( 'ce_render_content_sync_card' ) ) { ce_render_content_sync_card(); } // The card sits outside every other form. ?>
+
                 <?php if ( 'tools' === $key && $key === $active && function_exists( 'ce_render_error_pages_section' ) ) : ?>
                     <div class="ce-theme-opts-card">
                         <div class="ce-theme-opts-card__body ce-theme-opts-card__body--prose">
@@ -964,6 +966,11 @@ function ce_manual_content_sync(): array {
 
     if ( ! current_user_can( 'manage_options' ) ) {
         $result['error'] = 'Insufficient permissions.';
+        return $result;
+    }
+
+    if ( function_exists( 'ce_sync_disabled' ) && ce_sync_disabled() ) {
+        $result['error'] = 'The content sync is switched off by CE_DISABLE_CONTENT_SYNC.';
         return $result;
     }
 

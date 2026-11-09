@@ -22,12 +22,17 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * still matches it. An article an owner made, or edited after the sync wrote
  * it, has no record or a different one and is never trashed.
  *
- * @param int    $post_id Article ID.
- * @param string $slug    The bundled slug the article was written from.
+ * @param int        $post_id Article ID.
+ * @param string     $slug    The bundled slug the article was written from.
+ * @param array|null $article The bundled entry, to record its fingerprint.
  */
-function ce_sync_mark_seeded( $post_id, $slug ) {
+function ce_sync_mark_seeded( $post_id, $slug, $article = null ) {
     update_post_meta( $post_id, '_ce_seed_key', sanitize_title( $slug ) );
     update_post_meta( $post_id, '_ce_seed_hash', ce_sync_seed_hash( $post_id ) );
+    if ( is_array( $article ) && function_exists( 'ce_sync_bundle_fp' ) ) {
+        update_post_meta( $post_id, '_ce_seed_bfp', ce_sync_bundle_fp( $article ) );
+    }
+    delete_post_meta( $post_id, '_ce_sync_ack' );
 }
 
 /**
@@ -209,6 +214,9 @@ function ce_ensure_topics_exist() {
  *                        for direct-URL access with manage_options capability.
  */
 function ce_sync_article_content( bool $force_run = false ) {
+    if ( function_exists( 'ce_sync_disabled' ) && ce_sync_disabled() ) {
+        return; // The kill switch comes first: nothing is written, created or trashed.
+    }
     $ce_seed_scope = function_exists( 'ce_sec_seeding_scope' ) ? ce_sec_seeding_scope() : null; // Theme seeding run: exempt from the spam gate.
     $theme_version = wp_get_theme()->get( 'Version' );
     $version_key   = 'ce_content_sync_' . str_replace( '.', '_', $theme_version );
@@ -350,6 +358,30 @@ function ce_sync_article_content( bool $force_run = false ) {
         }
 
         if ( ! empty( $existing ) ) {
+            // Only articles the sync created are its to update, and only while the owner has not edited
+            // them (2.18.22). An article with no record counts as edited; one that is not a ce_article is
+            // left alone.
+            if ( 'ce_article' !== $existing[0]->post_type ) {
+                continue;
+            }
+            $ce_marked = (bool) get_post_meta( $existing[0]->ID, '_ce_seed_key', true );
+            $ce_state  = ce_sync_state( $existing[0] );
+            if ( ! $ce_marked ) {
+                $ce_state['recorded'] = '';
+                $ce_state['bfp']      = '';
+            }
+            $ce_action = ce_sync_decide( ce_sync_bundle_fp( $article ), $ce_state['stored'], $ce_state['recorded'], $ce_state['bfp'], $ce_state['ack'] );
+            if ( 'current' === $ce_action ) {
+                if ( $ce_state['stored'] === ce_sync_bundle_fp( $article ) && ( ! $ce_marked || '' === $ce_state['bfp'] ) ) {
+                    ce_sync_mark_seeded( $existing[0]->ID, $article['slug'], $article ); // Equal to the bundle: proof enough to record it.
+                }
+                continue;
+            }
+            if ( 'update' !== $ce_action ) {
+                continue; // Edited by the owner: listed for review, never overwritten.
+            }
+            ce_sync_log( $article['slug'], 'updated to the bundled text' );
+
             // UPDATE existing article content
             $update = [ 'ID' => $existing[0]->ID ];
             
@@ -375,7 +407,7 @@ function ce_sync_article_content( bool $force_run = false ) {
             } else {
                 $synced++;
                 ce_sync_save_faq( $existing[0]->ID, $article );
-                ce_sync_mark_seeded( $existing[0]->ID, $article['slug'] );
+                ce_sync_mark_seeded( $existing[0]->ID, $article['slug'], $article );
                 
                 // Update topic if it has changed (with migration support for retired topics)
                 $topic_name = $article['topic'] ?? '';
@@ -421,6 +453,12 @@ function ce_sync_article_content( bool $force_run = false ) {
                 }
             }
         } else {
+            // A bundled article that is in the Trash (retired by a replacement, dropped by the owner or by
+            // an earlier sync) stays there: the sync records what it created and never brings it back.
+            $ce_trashed = get_posts( [ 'post_type' => 'ce_article', 'post_status' => 'trash', 'numberposts' => 1, 'fields' => 'ids', 'meta_key' => '_ce_seed_key', 'meta_value' => sanitize_title( $article['slug'] ) ] );
+            if ( $ce_trashed ) {
+                continue;
+            }
             // CREATE new article
             $topic_name = $article['topic'] ?? '';
             
@@ -476,7 +514,8 @@ function ce_sync_article_content( bool $force_run = false ) {
             }
 
             ce_sync_save_faq( $post_id, $article );
-            ce_sync_mark_seeded( $post_id, $article['slug'] );
+            ce_sync_mark_seeded( $post_id, $article['slug'], $article );
+            ce_sync_log( $article['slug'], 'created from the bundle' );
 
             // Assign topic
             if ( $topic_id ) {
@@ -496,9 +535,9 @@ function ce_sync_article_content( bool $force_run = false ) {
     // Safety (2.6.36): never trash anything when the article set is incomplete.
     // Before this guard, one batch failing its checksum dropped every article
     // in that batch from $articles, and the orphan pass then trashed them all.
-    $orphan_pass_allowed = ! $loader->has_errors();
+    $orphan_pass_allowed = ! $loader->has_errors() && '' === ce_sync_removal_block();
     if ( ! $orphan_pass_allowed ) {
-        error_log( 'CE: Orphan check skipped — the article loader reported errors, so the JSON set may be incomplete.' );
+        error_log( 'CE: Orphan check skipped — the loader reported errors or a removal guard stopped it (' . ce_sync_removal_block() . ').' );
     }
 
     // Only posts the sync itself wrote carry _ce_seed_key (2.18.19). An
@@ -528,6 +567,7 @@ function ce_sync_article_content( bool $force_run = false ) {
                 continue;
             }
             wp_trash_post( $orphan_id );
+            ce_sync_log( $orphan_slug, 'moved to the Trash, dropped from the bundle' );
             $orphans_trashed++;
             if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
                 error_log( 'CE: Trashed orphan article: ' . $orphan_slug );
