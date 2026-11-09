@@ -31,6 +31,19 @@ function ce_sync_mark_seeded( $post_id, $slug ) {
 }
 
 /**
+ * Save an article's visible FAQ pairs, when its bundled entry has them. The
+ * article then shows them and carries FAQPage markup for the same questions.
+ *
+ * @param int   $post_id Article ID.
+ * @param array $article Bundled article.
+ */
+function ce_sync_save_faq( $post_id, array $article ) {
+    if ( ! empty( $article['faq'] ) && is_array( $article['faq'] ) ) {
+        update_post_meta( $post_id, '_ce_faq_items', $article['faq'] );
+    }
+}
+
+/**
  * Fingerprint of what the sync writes: the text, the title and the excerpt.
  *
  * @param int $post_id Article ID.
@@ -354,6 +367,7 @@ function ce_sync_article_content( bool $force_run = false ) {
             } else {
                 $synced++;
                 ce_sync_mark_seeded( $existing[0]->ID, $article['slug'] );
+                ce_sync_save_faq( $existing[0]->ID, $article );
                 
                 // Update topic if it has changed (with migration support for retired topics)
                 $topic_name = $article['topic'] ?? '';
@@ -454,6 +468,7 @@ function ce_sync_article_content( bool $force_run = false ) {
             }
 
             ce_sync_mark_seeded( $post_id, $article['slug'] );
+            ce_sync_save_faq( $post_id, $article );
 
             // Assign topic
             if ( $topic_id ) {

@@ -1,7 +1,7 @@
 # SSOT: Single Source of Truth
 ## Compelling Evidence theme: system design, naming conventions, configuration rules
 
-**Version:** 2.18.20  
+**Version:** 2.18.21  
 **Location:** `doc/ssot.md`
 
 This document is authoritative. When any other file conflicts with a rule stated here, this document is correct and the other file should be updated.
@@ -26,7 +26,7 @@ This document is authoritative. When any other file conflicts with a rule stated
 | PHP minimum | 8.0 |
 | Author for schema | Mohd Elfie Nieshaem Juferi, https://menj.bio, fixed in `inc/ce-seo.php` whatever the byline field holds |
 | Settings screen | Appearance > CE Theme Options (`themes.php?page=ce-theme-options`), 12 tabs; one `ce_*` option per setting |
-| Content | 144 articles in 10 batches (`inc/articles/`, manifest 2.8.4), 11 topics, 14 journeys, 93 glossary terms |
+| Content | 145 articles in 10 batches (`inc/articles/`, manifest 2.8.4), 11 topics, 14 journeys, 93 glossary terms |
 | `.htaccess` markers | `Block xmlrpc.php` (shared) and `Compelling Evidence: block direct file access` (`CE_SEC_FILES_MARKER`) |
 | Drop-in marker | `Compelling Evidence error page drop-in` (`CE_ERR_MARKER`); static copies in `wp-content/compelling-evidence-errors/` |
 | wp-config switches | `CE_SECURITY_LOCK` (false), `CE_KEEP_DEV_FILES` (true), `CE_BLOCK_DIRECT_FILES` (false) |
@@ -205,7 +205,7 @@ contiguity. As of v2.18.15 (manifest 2.8.4) the actual ranges are:
 | 2 | The Problem of Evil | 9 | 9 to 101 |
 | 3 | Ethics Without God? | 5 | 6 to 59 |
 | 4 | Science & Evidence | 11 | 5 to 99 |
-| 5 | The Quran & Its Sources | 30 | 14 to 141 |
+| 5 | The Quran & Its Sources | 31 | 14 to 145 |
 | 6 | History, Context & Comparison | 15 | 16 to 142 |
 | 7 | Divine Justice & Fairness | 7 | 28 to 127 |
 | 8 | Islamic Practice & Ritual | 8 | 104 to 116 |
@@ -213,7 +213,7 @@ contiguity. As of v2.18.15 (manifest 2.8.4) the actual ranges are:
 | 10 | The Inner Journey | 18 | 30 to 144 |
 | 11 | Revelation & Meaning | 12 | 17 to 143 |
 
-**Total: 144 articles.** Reading-sequence ordering on `/articles/` is therefore
+**Total: 145 articles.** Reading-sequence ordering on `/articles/` is therefore
 determined by the archive template's canonical topic array (groups), then by
 `menu_order` within each topic (intra-group sequence). The `'order'` key in
 batch JSON is only meaningful relative to other articles of the same topic.
@@ -288,7 +288,7 @@ When incrementing the version in `style.css`:
 6. [ ] Update `readme.txt` version header and changelog section
 7. [ ] Update the batch checksums in `manifest.json` if batch files changed (SHA-256 of the bytes on disk)
 8. [ ] Test content sync fires on next admin page load
-9. [ ] Verify all 144 articles re-sync correctly
+9. [ ] Verify all 145 articles re-sync correctly
 10. [ ] Run `for t in tests/*.php; do php "$t" || exit 1; done` and `node tests/analytics-path-test.js`
 11. [ ] Update `Stable tag` in `readme.txt` with the version, and add a note to `doc/upgrading.md` when the owner must act
 
@@ -302,7 +302,7 @@ Main branch is `main`. Version tags follow semantic versioning prefixed with `v`
 
 Distribution zip is built with `git archive`, which honours the `export-ignore` lines in `.gitattributes` (`.claude/`, `bin/`, `tests/`, `phpcs.xml.dist`, `.gitattributes`, `.gitignore`):
 ```bash
-git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.20.zip v2.18.20   # the release tag, as in doc/readme.md
+git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.21.zip v2.18.21   # the release tag, as in doc/readme.md
 ```
 
 ---
@@ -648,6 +648,10 @@ Reference documents: Google's SEO Starter Guide and Google's list of structured 
 The orphan pass (trashing articles no longer in the JSON) runs only when the loader reports no errors. Before 2.6.36, one batch failing its checksum removed that batch from the article list and the orphan pass trashed every article in it. After editing any batch file, recompute its checksum in `manifest.json`.
 
 Since 2.18.19 the pass also trashes only posts the sync wrote: each article the sync creates or updates carries `_ce_seed_key` (its bundled slug) and `_ce_seed_hash` (the md5 of the text, title and excerpt it wrote). An article without the key, or whose text, title or excerpt no longer matches the hash, is kept and logged in debug mode.
+
+## 28b. Visible FAQ from the bundled files (since 2.18.21)
+
+A bundled article may carry `faq`, a list of `{q, a}` pairs. The loader sanitises them, the sync saves them as `_ce_faq_items`, and `ce_anatomy_faq_section()` shows them under the text. The FAQPage markup is built from the same meta, so it describes only what the page shows (the owner's decision of 2026-11-03).
 
 ## 28a. Accessibility (since 2.18.19)
 
