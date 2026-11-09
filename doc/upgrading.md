@@ -15,6 +15,10 @@ This document describes the update steps, the notes for each version that needs 
 
 ---
 
+## Upgrading to v2.18.20 from v2.18.19
+
+Replace the theme files. Nothing else to do.
+
 ## Upgrading to v2.18.19 from v2.18.18
 
 Replace the theme files. Nothing else to do.

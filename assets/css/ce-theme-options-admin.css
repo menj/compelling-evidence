@@ -383,3 +383,6 @@
 	.ce-theme-opts-switch__thumb,
 	.ce-theme-opts-choice__card { transition: none; }
 }
+
+/* The sticky save bar must not hide a focused field (WCAG 2.4.11). */
+html:has(.ce-theme-opts) { scroll-padding-bottom: 96px; }

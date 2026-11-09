@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.18.20] - November 2026
+
+Admin settings UI audited against the owner's design system. Presentation only.
+
+### Fixed
+- Scroll padding under the sticky Save bar, so a focused field is never hidden by it (2.4.11).
+
+The screen already met the other criteria: cards, no form tables, 12 keyboard-operable tabs, 30 toggle switches, labelled controls, no horizontal scroll at 782 or 375 pixels.
+
 ## [2.18.19] - November 2026
 
 WCAG 2.2 AA pass and a content sync fix. No feature removed, no identifier renamed.
