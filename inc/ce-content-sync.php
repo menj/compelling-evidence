@@ -27,7 +27,21 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  */
 function ce_sync_mark_seeded( $post_id, $slug ) {
     update_post_meta( $post_id, '_ce_seed_key', sanitize_title( $slug ) );
-    update_post_meta( $post_id, '_ce_seed_hash', md5( (string) get_post_field( 'post_content', $post_id ) ) );
+    update_post_meta( $post_id, '_ce_seed_hash', ce_sync_seed_hash( $post_id ) );
+}
+
+/**
+ * Fingerprint of what the sync writes: the text, the title and the excerpt.
+ *
+ * @param int $post_id Article ID.
+ * @return string
+ */
+function ce_sync_seed_hash( $post_id ) {
+    return md5(
+        (string) get_post_field( 'post_content', $post_id ) . "\0" .
+        (string) get_post_field( 'post_title', $post_id ) . "\0" .
+        (string) get_post_field( 'post_excerpt', $post_id )
+    );
 }
 
 /**
@@ -484,7 +498,7 @@ function ce_sync_article_content( bool $force_run = false ) {
         if ( ! in_array( $orphan_slug, $valid_slugs, true ) ) {
             // An article edited since the sync wrote it stays.
             $written = (string) get_post_meta( $orphan_id, '_ce_seed_hash', true );
-            if ( '' === $written || md5( (string) get_post_field( 'post_content', $orphan_id ) ) !== $written ) {
+            if ( '' === $written || ce_sync_seed_hash( $orphan_id ) !== $written ) {
                 if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
                     error_log( 'CE: Kept edited article that is not in the bundle: ' . $orphan_slug );
                 }

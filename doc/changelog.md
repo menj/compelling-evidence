@@ -11,7 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 WCAG 2.2 AA pass and a content sync fix. No feature removed, no identifier renamed.
 
 ### Fixed
-- Content sync (`inc/ce-content-sync.php`): the orphan pass trashed every published `ce_article` that was not in the bundled JSON, owner-made articles included. It now trashes only posts that carry `_ce_seed_key`, which the sync sets when it creates or updates an article, and only when the post text still matches `_ce_seed_hash`. An owner-made article, or one edited after the sync wrote it, stays.
+- Content sync (`inc/ce-content-sync.php`): the orphan pass trashed every published `ce_article` that was not in the bundled JSON, owner-made articles included. It now trashes only posts that carry `_ce_seed_key`, which the sync sets when it creates or updates an article, and only when its text, title and excerpt still match `_ce_seed_hash`. An owner-made article, or one edited after the sync wrote it, stays.
 - Form fields use `--field-edge` (3.8:1 on the card, was 1.3:1), a 4.5:1 placeholder and a visible focus ring (1.4.11, 1.4.3, 2.4.7).
 - The consent text on the Ask a question page read at 4.2:1 and now inherits the muted text colour; the required marker uses `--accent-text` (1.4.3).
 - The consent box is 24 pixels (2.5.8).

@@ -19,7 +19,7 @@ This document describes the update steps, the notes for each version that needs 
 
 Replace the theme files. Nothing else to do.
 
-The content sync changed. Before, the orphan pass trashed any published article that was not in the bundled JSON. Now it trashes only an article it wrote itself (`_ce_seed_key`) whose text has not changed since (`_ce_seed_hash`). Articles written by an earlier version carry no record until the next sync touches them, so they stay until their slug appears in the bundle, and the sync never trashes them. An orphan left over from an old slug rename is now kept; trash it by hand.
+The content sync changed. Before, the orphan pass trashed any published article that was not in the bundled JSON. Now it trashes only an article it wrote itself (`_ce_seed_key`) whose text, title and excerpt have not changed since (`_ce_seed_hash`). Articles written by an earlier version carry no record until the next sync touches them, so they stay until their slug appears in the bundle, and the sync never trashes them. An orphan left over from an old slug rename is now kept; trash it by hand.
 
 Accessibility issue register (WCAG 2.2 AA; axe-core on 11 templates at 375 and 1280 pixels, a keyboard walk and a target-size probe):
 

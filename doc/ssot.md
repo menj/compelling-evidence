@@ -302,7 +302,7 @@ Main branch is `main`. Version tags follow semantic versioning prefixed with `v`
 
 Distribution zip is built with `git archive`, which honours the `export-ignore` lines in `.gitattributes` (`.claude/`, `bin/`, `tests/`, `phpcs.xml.dist`, `.gitattributes`, `.gitignore`):
 ```bash
-git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.19.zip v2.18.18   # the release tag, as in doc/readme.md
+git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.19.zip v2.18.19   # the release tag, as in doc/readme.md
 ```
 
 ---
@@ -647,7 +647,7 @@ Reference documents: Google's SEO Starter Guide and Google's list of structured 
 
 The orphan pass (trashing articles no longer in the JSON) runs only when the loader reports no errors. Before 2.6.36, one batch failing its checksum removed that batch from the article list and the orphan pass trashed every article in it. After editing any batch file, recompute its checksum in `manifest.json`.
 
-Since 2.18.19 the pass also trashes only posts the sync wrote: each article the sync creates or updates carries `_ce_seed_key` (its bundled slug) and `_ce_seed_hash` (the md5 of the text it wrote). An article without the key, or whose text no longer matches the hash, is kept and logged in debug mode.
+Since 2.18.19 the pass also trashes only posts the sync wrote: each article the sync creates or updates carries `_ce_seed_key` (its bundled slug) and `_ce_seed_hash` (the md5 of the text, title and excerpt it wrote). An article without the key, or whose text, title or excerpt no longer matches the hash, is kept and logged in debug mode.
 
 ## 28a. Accessibility (since 2.18.19)
 
