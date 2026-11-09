@@ -40,6 +40,13 @@ function ce_sync_mark_seeded( $post_id, $slug ) {
 function ce_sync_save_faq( $post_id, array $article ) {
     if ( ! empty( $article['faq'] ) && is_array( $article['faq'] ) ) {
         update_post_meta( $post_id, '_ce_faq_items', $article['faq'] );
+        update_post_meta( $post_id, '_ce_faq_bundled', 1 );
+    } elseif ( get_post_meta( $post_id, '_ce_faq_bundled', true ) ) {
+        // The bundle carried a FAQ for this article before and no longer does.
+        // FAQ items an editor added to an article that never had a bundled
+        // FAQ are left alone.
+        delete_post_meta( $post_id, '_ce_faq_items' );
+        delete_post_meta( $post_id, '_ce_faq_bundled' );
     }
 }
 

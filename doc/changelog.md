@@ -13,7 +13,7 @@ Canon sections. No feature removed, no identifier renamed.
 ### Added
 - `islamic-dilemma-quran-and-bible` (batch-007): a section "How the New Testament was gathered", three answers added to its FAQ, and the sources, all citing Davidson by printed page.
 - `which-old-testament-islamic-dilemma` (batch-010, order 145, topic The Quran & Its Sources, 145 articles in all): the Hebrew, Greek, Catholic, Protestant, Orthodox and Ethiopian lists, with its short title and description in `seo.json`.
-- An optional `faq` list on a bundled article. The loader sanitises it and the sync saves it as `_ce_faq_items`, so the article shows the questions and carries FAQPage markup for the same questions.
+- An optional `faq` list on a bundled article. The loader sanitises it and the sync saves it as `_ce_faq_items`, so the article shows the questions and carries FAQPage markup for the same questions. The sync marks such an article with `_ce_faq_bundled` and clears the items only if the bundle later drops the list; FAQ items an editor added to other articles are never touched.
 
 ## [2.18.20] - November 2026
 
