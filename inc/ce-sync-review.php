@@ -184,7 +184,11 @@ function ce_sync_bundle_count(): int {
  * @return string '' when allowed, otherwise the reason.
  */
 function ce_sync_removal_block(): string {
-	return ce_sync_guard( ce_sync_disabled(), ce_sync_batches_intact(), ce_sync_bundle_count(), (int) get_option( 'ce_sync_count', 0 ) );
+	$why = ce_sync_guard( ce_sync_disabled(), ce_sync_batches_intact(), ce_sync_bundle_count(), (int) get_option( 'ce_sync_count', 0 ) );
+	if ( '' === $why && get_option( 'ce_sync_loader_errors' ) ) {
+		return 'the article loader reported errors at the last sync';
+	}
+	return $why;
 }
 
 /**
@@ -406,10 +410,12 @@ function ce_sync_review_apply(): array {
 		return $out;
 	}
 	[ , $errors ] = ce_sync_bundle();
-	$blocked      = ce_sync_removal_block();
-	if ( '' === $blocked && $errors ) {
-		$blocked = 'the article loader reported errors';
+	if ( $errors ) {
+		update_option( 'ce_sync_loader_errors', 1, false );
+	} else {
+		delete_option( 'ce_sync_loader_errors' );
 	}
+	$blocked = ce_sync_removal_block();
 	$out['blocked'] = $blocked;
 	foreach ( ce_sync_plan() as $row ) {
 		if ( 'supersede' === $row['action'] && '' === $blocked ) {
@@ -456,7 +462,7 @@ function ce_sync_maybe_run(): void {
 	if ( get_option( 'ce_sync_fp' ) === $fp ) {
 		return;
 	}
-	ce_sync_article_content( true );
+	ce_sync_article_content( true, true ); // Respect a running sync's lock: two requests must not both create articles.
 	ce_sync_review_apply();
 	update_option( 'ce_sync_fp', $fp, false );
 }
@@ -519,7 +525,7 @@ function ce_sync_handle_now(): void {
 		wp_safe_redirect( ce_sync_screen_url() );
 		exit;
 	}
-	ce_sync_article_content( true );
+	ce_sync_article_content( true, true );
 	ce_sync_review_apply();
 	wp_safe_redirect( ce_sync_screen_url() );
 	exit;
@@ -596,6 +602,9 @@ function ce_render_content_sync_card(): void {
 		echo '<table class="widefat striped"><thead><tr><th scope="col">' . esc_html__( 'Article', 'compelling-evidence' ) . '</th><th scope="col">' . esc_html__( 'The next sync', 'compelling-evidence' ) . '</th><th scope="col">' . esc_html__( 'Your choice', 'compelling-evidence' ) . '</th></tr></thead><tbody>';
 		foreach ( $rows as $row ) {
 			echo '<tr><td>' . esc_html( $row['title'] ) . '<br><code>' . esc_html( $row['key'] ) . '</code>';
+			if ( ! get_post_meta( $row['post_id'], '_ce_seed_key', true ) ) {
+				echo '<br><em>' . esc_html__( 'The theme has no record of creating this article. Taking the bundled text is your choice; nothing happens until you click.', 'compelling-evidence' ) . '</em>';
+			}
 			if ( 'newer' === $row['action'] && isset( $bundle[ $row['key'] ] ) ) {
 				$post = get_post( $row['post_id'] );
 				if ( $post && function_exists( 'wp_text_diff' ) ) {
@@ -674,6 +683,15 @@ function ce_superseded_redirect(): void {
 	$path = trim( (string) wp_parse_url( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) ), PHP_URL_PATH ), '/' );
 	$slug = sanitize_title( (string) basename( $path ) );
 	if ( '' === $slug ) {
+		return;
+	}
+	if ( '' !== ce_sync_removal_block() ) {
+		return; // The same guards as the removal: while one holds, no address is redirected.
+	}
+	// Only an article the sync created and moved to the Trash qualifies; an unrelated 404 that happens to end in
+	// a mapped slug does not.
+	$retired = get_posts( [ 'post_type' => 'ce_article', 'post_status' => 'trash', 'numberposts' => 1, 'fields' => 'ids', 'meta_key' => '_ce_seed_key', 'meta_value' => $slug ] );
+	if ( ! $retired ) {
 		return;
 	}
 	foreach ( ce_supersedes() as $pairs ) {

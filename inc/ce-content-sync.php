@@ -213,7 +213,7 @@ function ce_ensure_topics_exist() {
  *                        this flag. The ?ce_force_sync GET param also sets it
  *                        for direct-URL access with manage_options capability.
  */
-function ce_sync_article_content( bool $force_run = false ) {
+function ce_sync_article_content( bool $force_run = false, bool $respect_lock = false ) {
     if ( function_exists( 'ce_sync_disabled' ) && ce_sync_disabled() ) {
         return; // The kill switch comes first: nothing is written, created or trashed.
     }
@@ -262,7 +262,7 @@ function ce_sync_article_content( bool $force_run = false ) {
     // Lock to prevent concurrent sync runs
     $lock_key = 'ce_content_sync_lock';
     $lock_active = get_transient( $lock_key );
-    if ( $lock_active && ! $force_sync ) {
+    if ( $lock_active && ( ! $force_sync || $respect_lock ) ) {
         if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
             error_log( 'CE: Sync skipped — lock active (expires in ' . $lock_active . 's)' );
         }
@@ -270,7 +270,7 @@ function ce_sync_article_content( bool $force_run = false ) {
     }
     
     // Clear any stuck lock if force syncing
-    if ( $force_sync && $lock_active ) {
+    if ( $force_sync && $lock_active && ! $respect_lock ) {
         delete_transient( $lock_key );
         if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
             error_log( 'CE: Cleared stuck lock for force sync' );
@@ -374,7 +374,7 @@ function ce_sync_article_content( bool $force_run = false ) {
             if ( 'current' === $ce_action ) {
                 // Nothing to write. A slug-only rename of an untouched article still applies, so the
                 // orphan pass does not take its old slug for a dropped article.
-                if ( $was_renamed && $ce_marked && $existing[0]->post_name !== $article['slug'] ) {
+                if ( $was_renamed && $ce_marked && $existing[0]->post_name !== $article['slug'] && $ce_state['stored'] === $ce_state['recorded'] ) {
                     wp_update_post( [ 'ID' => $existing[0]->ID, 'post_name' => $article['slug'] ] );
                     ce_sync_mark_seeded( $existing[0]->ID, $article['slug'], $article );
                 } elseif ( $ce_marked && '' === $ce_state['bfp'] && $ce_state['stored'] === ce_sync_bundle_fp( $article ) ) {
