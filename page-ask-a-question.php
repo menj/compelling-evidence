@@ -126,16 +126,16 @@ get_header(); ?>
 
     <aside class="ask-sidebar">
       <div class="sidebar-widget">
-        <h3 class="widget-title"><?php esc_html_e( 'Before you ask…', 'compelling-evidence' ); ?></h3>
+        <h2 class="widget-title"><?php esc_html_e( 'Before you ask…', 'compelling-evidence' ); ?></h2>
         <p style="color:var(--muted);font-size:.9rem;line-height:1.7;margin-bottom:1rem;"><?php esc_html_e( 'Your question may already be answered. Try searching first:', 'compelling-evidence' ); ?></p>
         <div class="ask-search">
-          <input type="search" id="ask-search-input" placeholder="<?php esc_attr_e( 'Search the site…', 'compelling-evidence' ); ?>" aria-label="<?php esc_attr_e( 'Search articles', 'compelling-evidence' ); ?>">
+          <input type="search" enterkeyhint="search" id="ask-search-input" placeholder="<?php esc_attr_e( 'Search the site…', 'compelling-evidence' ); ?>" aria-label="<?php esc_attr_e( 'Search articles', 'compelling-evidence' ); ?>">
           <a href="#" id="ask-search-go" class="btn-ghost" style="margin-top:.8rem;display:block;text-align:center;font-size:.85rem;"><?php esc_html_e( 'Search', 'compelling-evidence' ); ?></a>
         </div>
       </div>
 
       <div class="sidebar-widget">
-        <h3 class="widget-title"><?php esc_html_e( 'Popular Questions', 'compelling-evidence' ); ?></h3>
+        <h2 class="widget-title"><?php esc_html_e( 'Popular Questions', 'compelling-evidence' ); ?></h2>
         <?php
         $popular = get_posts([
           'post_type'      => ['ce_article', 'post'],

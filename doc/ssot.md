@@ -1,7 +1,7 @@
 # SSOT: Single Source of Truth
 ## Compelling Evidence theme: system design, naming conventions, configuration rules
 
-**Version:** 2.18.17  
+**Version:** 2.18.18  
 **Location:** `doc/ssot.md`
 
 This document is authoritative. When any other file conflicts with a rule stated here, this document is correct and the other file should be updated.
@@ -302,7 +302,7 @@ Main branch is `main`. Version tags follow semantic versioning prefixed with `v`
 
 Distribution zip is built with `git archive`, which honours the `export-ignore` lines in `.gitattributes` (`.claude/`, `bin/`, `tests/`, `phpcs.xml.dist`, `.gitattributes`, `.gitignore`):
 ```bash
-git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.17.zip v2.18.17   # the release tag, as in doc/readme.md
+git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.18.zip v2.18.18   # the release tag, as in doc/readme.md
 ```
 
 ---

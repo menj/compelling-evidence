@@ -2341,3 +2341,19 @@ html { scroll-padding-top: calc(var(--ce-fixed-h, var(--total-offset, 116px)) + 
 /* The skip target (tabindex -1) is not a control: focus lands there so the
    next Tab starts inside the content. A ring round the whole page helps no one. */
 main[tabindex="-1"]:focus { outline: none; }
+
+/* ── Mobile-first audit (2.18.18) ─────────────────────────────────────────
+   Additive and scoped. Long titles, links and excerpts wrap inside their
+   column; search fields may shrink below their default width; small links
+   get a finger-sized target on touch screens and below 782px. */
+main, .ce-footer, .ce-nav { overflow-wrap: break-word; }
+.hero-search input[type="search"],
+.not-found-search input[type="search"] { min-width: 0; }
+.topic-section { min-width: 0; }
+.related-list a, .qa-topic-list li a { overflow-wrap: anywhere; }
+@media (pointer: coarse), (max-width: 781px) {
+  .hero-search input[type="search"],
+  .not-found-search input[type="search"] { font-size: 1rem; }
+  .card-title a, .card-link, .footer-bottom-links a, .je-browse { display: inline-block; padding-block: 0.35em; }
+  .footer-cta { display: inline-block; padding-block: 0.3em; }
+}

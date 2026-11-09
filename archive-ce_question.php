@@ -119,7 +119,7 @@ get_header(); ?>
           <svg width="64" height="64" fill="none" stroke="#0cd4e0" stroke-width="1.5" viewBox="0 0 24 24">
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
           </svg>
-          <h3><?php esc_html_e( 'No published answers yet', 'compelling-evidence' ); ?></h3>
+          <h2><?php esc_html_e( 'No published answers yet', 'compelling-evidence' ); ?></h2>
           <p><?php esc_html_e( 'We\'re working on responses to community questions. Check back soon!', 'compelling-evidence' ); ?></p>
           <a href="<?php echo esc_url( home_url( '/ask-a-question/' ) ); ?>" class="btn-primary"><?php esc_html_e( 'Ask Your Question', 'compelling-evidence' ); ?></a>
         </div>

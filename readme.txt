@@ -6,8 +6,8 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.18.17
-Stable tag: 2.18.17
+Version: 2.18.18
+Stable tag: 2.18.18
 License: GNU General Public License v3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Template: twentytwentyfive
@@ -159,6 +159,11 @@ CE Theme, Copyright 2026 MENJ. Licensed under the GNU GPL, version 3 or later; t
 * Article figures are not bundled. inc/articles/media.json lists each with its source page, creator and licence, and the credit prints under the figure.
 
 == Changelog ==
+
+= 2.18.18 - November 2026 =
+* Phones: long titles and links wrap instead of running past the screen edge, the search fields fit a 320 pixel screen and do not make the phone zoom when tapped, small links are easier to tap, and the quiz option boxes are larger.
+* The glossary is a proper list for screen readers, and the Ask a question and unanswered questions pages have a correct heading order.
+* Several greyed texts on the search, glossary and questions pages are brighter, so they are easier to read.
 
 = 2.18.17 - November 2026 =
 * The last quiz question, for a Questioning Muslim or an Ex-Believer, gains four answers that many people give for doubting or leaving: verses on fighting, slavery or people of other faiths; rules on women, such as inheritance, testimony and polygamy; the Prophet's marriages or conduct; and being told good people of other faiths will burn. Each picks the matching articles here and the matching pages on murtadd.org. "A verse or hadith" now picks articles too. The answer never changes the path.
@@ -619,6 +624,9 @@ Uthmani Quran font replaced with KFGQPC HAFS version (608 glyphs). CE Hadith add
 For the full version history see doc/changelog.md in the theme zip.
 
 == Upgrade Notice ==
+
+= 2.18.18 =
+Replace the theme files. Nothing else to do.
 
 = 2.18.17 =
 Replace the theme files. Nothing else to do.

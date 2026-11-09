@@ -15,6 +15,10 @@ This document describes the update steps, the notes for each version that needs 
 
 ---
 
+## Upgrading to v2.18.18 from v2.18.17
+
+Replace the theme files. Nothing else changes.
+
 ## Upgrading to v2.18.17 from v2.18.16
 
 Replace the theme files. Nothing else changes.
@@ -790,12 +794,56 @@ The command above reads the version dynamically. Alternatively replace `{version
 
 ---
 
+## Mobile-first audit, 2.18.18
+
+Measured with Playwright at 320, 360, 375, 390, 414, 480, 768, 1024 and 1280 pixels on 19 page types: home, long-title post, an article, the articles index, a topic, a category, the questions archive, the journeys index, a journey, the quiz, My progress, Ask a question, FAQ, glossary, contact, search with and without results, 404 and login. Axe 4, WCAG 2.0 to 2.1 AA and best-practice tags.
+
+| Finding | Severity | Risk of the fix | Status |
+|---|---|---|---|
+| A long post title and link widened the page by 408 to 2,674 px at every width | High | Low | Fixed |
+| Ask a question sidebar widened the page by 263 to 619 px from 768 px up (long related titles in flex links) | High | Low | Fixed |
+| Home and 404 search fields wider than a 320 px column; 15.2 px input text makes iOS zoom | Medium | Low | Fixed |
+| Glossary entries had `dt` and `dd` with no `dl` (186 axe errors) | Medium | Low (template) | Fixed |
+| Heading order: unanswered questions `h3` and Ask a question sidebar `h3` after the page `h1` | Medium | Low (template) | Fixed |
+| Contrast on glossary Arabic (3.9:1), empty-search text (3.3:1), suggestion pills (4.4:1), ghost button (4.5:1), questions topic list | Medium | Low | Fixed |
+| Quiz mode radios 18 px; card, footer and journey links 18 to 23 px | Medium | Low | Fixed |
+| Search inputs lacked `enterkeyhint` | Low | Low | Fixed |
+| Menu items and footer links 18 to 22 px high at 1024 and 1280 | Low | Medium | Open |
+| Many greyed 11 to 15 px labels and excerpts (about 338 text blocks under 16 px) | Low | Medium | Open |
+| About 50 `max-width` blocks in `main.css` and `templates.css` are desktop-first | Low | High | Open |
+| The topic accordion header bleeds 16 px past its section by design | Low | None | Left |
+| Login: remember-me and the core password button | Low | None (core) | Not ours |
+
+Pages that scrolled sideways, out of 19:
+
+| Width | 320 | 360 | 375 | 390 | 414 | 480 | 768 | 1024 | 1280 |
+|---|---|---|---|---|---|---|---|---|---|
+| Before | 1 | 1 | 1 | 1 | 1 | 1 | 2 | 2 | 2 |
+| After | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+
+Targets under 24 px at phone widths: 13 to 17 before, 2 after (the hidden skip link and one pagination ellipsis). Layout shift peaked at 0.0536 (quiz, 1024 px) before and after; no page is worse. The menu already reported `aria-expanded`, closed on Escape and returned focus, and that held at every width.
+
+### For manual review
+
+- Color contrast still shows on the questions archive and Ask a question in axe runs taken during the fade-in. The reading names a mid-fade colour (`#84749f` on `#2a1050`), so it is the animation, not the stylesheet; test once with reduced motion.
+- The `h2` headings on Ask a question inherit their look from the `widget-title` class. Check that page once in a browser.
+- Raising 11 to 15 px labels is a design call for the owner.
+
+### Remaining risks
+
+- Converting the desktop-first queries needs 1024 and 1280 screenshots per block.
+- The 21 px desktop menu items pass through spacing; changing them alters the header.
+
+---
+
 ## Roadmap
 
 These are plans, not promises. Each item rests on something on record: the code, the server logs of October and November 2026, a documented limit, or a feature another of the owner's themes already has. Items leave this list when they ship and go into `doc/changelog.md`. GitHub had no open issues or pull requests when the list was last checked (2026-11-05), and the code carries no TODO markers.
 
 ### Next
 
+- Convert the desktop-first `max-width` queries in `main.css` and `templates.css` to `min-width`, one block at a time, with 1024 and 1280 screenshots. Found in the 2.18.18 audit.
+- Raise menu items, footer links and small labels to the target and text sizes in the audit table. Found in the 2.18.18 audit.
 - A private login address. The abrahamic and bestofislam themes move the login screen to an address of the owner's choosing; here `inc/ce-login.php` styles the screen only. The October 2026 log shows 327 requests for `/wp-login.php` with an address appended and 1,328 for `/login`.
 - Security headers on front-end responses (`X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options`, HSTS as an opt-in). The bestofislam theme sends them from `inc/security-headers.php`; this theme sends only cache headers.
 - Keep the root `.htaccess` sections on a network when one site leaves the theme. `ce_sec_remove_htaccess()` runs on any site's `switch_theme`, and the shared file then lacks both sections until another site's next sync.
