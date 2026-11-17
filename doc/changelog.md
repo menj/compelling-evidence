@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.18.23] - November 2026
+
+Documentation only. No code, article text, data or setting changed, no feature removed and no public identifier renamed.
+
+### Changed
+- The two hadith cited in `why-people-leave-honour-fate-home` have been read in the text of Sahih al-Bukhari (the Sultaniyya edition, shamela.ws, book 1681) on 2026-11-17: **5136** is the report that a previously married woman is not married until she is consulted and a virgin not until she gives her permission, which is her silence; **5138** is the report of the woman whose father married her against her will and whose marriage the Prophet rejected. Both match what the article says. This replaces the 2.18.15 note that they had not been checked against a hadith collection.
+- Not covered by this check: any other hadith in the bundled articles, and every hadith grading.
+
 ## [2.18.22] - November 2026
 
 The content sync follows the bundle, safely. No feature removed, no option key renamed.

@@ -6,8 +6,8 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.18.22
-Stable tag: 2.18.22
+Version: 2.18.23
+Stable tag: 2.18.23
 License: GNU General Public License v3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Template: twentytwentyfive
@@ -159,6 +159,9 @@ CE Theme, Copyright 2026 MENJ. Licensed under the GNU GPL, version 3 or later; t
 * Article figures are not bundled. inc/articles/media.json lists each with its source page, creator and licence, and the credit prints under the figure.
 
 == Changelog ==
+
+= 2.18.23 - November 2026 =
+* Documentation only. The two hadith cited in the article on honour, free will and fear at home have now been checked against the text of Sahih al-Bukhari.
 
 = 2.18.22 - November 2026 =
 * The content sync follows the bundle, safely. An article you edited is never overwritten. Tools lists it with a diff, and you take the bundled text or keep your own.
@@ -644,6 +647,9 @@ Uthmani Quran font replaced with KFGQPC HAFS version (608 glyphs). CE Hadith add
 For the full version history see doc/changelog.md in the theme zip.
 
 == Upgrade Notice ==
+
+= 2.18.23 =
+Documentation only. Replace the theme files. Nothing else to do.
 
 = 2.18.22 =
 Replace the theme files. Open Theme Options, Tools: articles you edited are listed there with a diff.

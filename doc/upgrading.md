@@ -15,6 +15,10 @@ This document describes the update steps, the notes for each version that needs 
 
 ---
 
+## Upgrading to v2.18.23 from v2.18.22
+
+Documentation only. Replace the theme files. Nothing else changes.
+
 ## Upgrading to v2.18.22 from v2.18.21
 
 Replace the theme files. Nothing else to do.
