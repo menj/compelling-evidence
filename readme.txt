@@ -649,7 +649,7 @@ For the full version history see doc/changelog.md in the theme zip.
 == Upgrade Notice ==
 
 = 2.18.23 =
-Documentation only. Replace the theme files. Nothing else to do.
+Documentation only. Replace the theme files, then load any admin page once. Nothing else to do.
 
 = 2.18.22 =
 Replace the theme files. Open Theme Options, Tools: articles you edited are listed there with a diff.
