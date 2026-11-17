@@ -15,6 +15,10 @@ This document describes the update steps, the notes for each version that needs 
 
 ---
 
+## Upgrading to v2.18.23 from v2.18.22
+
+Documentation only: no theme code, article text, data or setting changes. Replace the theme files, then load any admin page once, so the steps that follow every version change run as usual, the content sync among them. Nothing else to do.
+
 ## Upgrading to v2.18.22 from v2.18.21
 
 Replace the theme files. Nothing else to do.
