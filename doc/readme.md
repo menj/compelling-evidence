@@ -32,13 +32,18 @@ A child theme for one site: 14 journeys, a weighted intake quiz, 145 articles in
 set -e                                               # stop at the first failure
 for t in tests/*.php; do php "$t" || exit 1; done   # PHP self-tests, WordPress stubbed
 node tests/analytics-path-test.js                    # the analytics page type and slug
-CE_BASE=http://127.0.0.1:8818 node tests/axe-check.js  # accessibility (needs playwright and axe-core in a scratch folder)
 for f in functions.php inc/*.php; do php -l "$f" > /dev/null || exit 1; done
 php bin/build-error-pages.php                        # rebuild errors/*.html from inc/ce-error-page-html.php
 node bin/quiz-sim.js                                 # quiz scoring simulation
 python3 bin/build-murtadd-counterparts.py            # rebuild inc/data/murtadd-counterparts.json
 python3 bin/build-quiz-murtadd-links.py              # rebuild inc/data/quiz-murtadd-links.json
 git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.24.zip v2.18.24   # after the release is committed and tagged
+```
+
+The accessibility check is run apart from that block, because it needs a running copy of the site. Install `playwright` and `axe-core` with `npm i` in a scratch folder, then run it with `NODE_PATH` pointing at that folder's `node_modules`:
+
+```
+NODE_PATH=/path/to/scratch/node_modules CE_BASE=http://127.0.0.1:8818 node tests/axe-check.js
 ```
 
 Every PHP script in `tests/` and `bin/` exits unless it runs from the command line. `.gitattributes` keeps `.gitattributes`, `.gitignore`, `.claude/`, `phpcs.xml.dist`, `bin/` and `tests/` out of the zip; `doc/` and `tools/` ship, and the live-server clean-up removes them.
