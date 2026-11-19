@@ -15,6 +15,10 @@ This document describes the update steps, the notes for each version that needs 
 
 ---
 
+## Upgrading to v2.18.24 from v2.18.23
+
+Documentation only: no theme code, article text, data or setting changes. Replace the theme files, then load any admin page once, so the steps that follow every version change run as usual. Nothing else to do.
+
 ## Upgrading to v2.18.23 from v2.18.22
 
 Documentation only: no theme code, article text, data or setting changes. Replace the theme files, then load any admin page once, so the steps that follow every version change run as usual, the content sync among them. Nothing else to do.
@@ -900,7 +904,7 @@ These are plans, not promises. Each item rests on something on record: the code,
 
 ### Ideas
 
-- Key points for the 143 seeded articles, carried in the JSON batches. The box is built, but the batches hold no key points yet, so "In short" shows the excerpt alone.
+- Key points for the 145 seeded articles, carried in the JSON batches. The box is built, but the batches hold no key points yet, so "In short" shows the excerpt alone.
 - Ornate ayah brackets (U+FD3E, U+FD3F) in the Quran face. `doc/ssot.md`, section 14, records that KFGQPC lacks them and CE Hadith draws them.
 - Answer the sign-in probes earlier. The October 2026 SSL log shows 3,170 requests answering 401 on `/`, and 1,328, 1,142 and 384 on `/login`, `/signin` and `/signup`. They come from the host's layer, so the answer may sit outside the theme.
 

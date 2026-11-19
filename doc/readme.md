@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Version | 2.18.23 |
+| Version | 2.18.24 |
 | Licence | GNU GPL v3 or later; the full text is in `LICENSE` |
 | Parent | Twenty Twenty-Five, tested with 1.5 (`CE_PARENT_TESTED_VERSION`) |
 | Requires | WordPress 6.7 (tested to 7.1), PHP 8.0 (tested to 8.4) |
@@ -37,7 +37,13 @@ php bin/build-error-pages.php                        # rebuild errors/*.html fro
 node bin/quiz-sim.js                                 # quiz scoring simulation
 python3 bin/build-murtadd-counterparts.py            # rebuild inc/data/murtadd-counterparts.json
 python3 bin/build-quiz-murtadd-links.py              # rebuild inc/data/quiz-murtadd-links.json
-git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.23.zip v2.18.23   # after the release is committed and tagged
+git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.24.zip v2.18.24   # after the release is committed and tagged
+```
+
+The accessibility check is run apart from that block, because it needs a running copy of the site. Install `playwright` and `axe-core` with `npm i` in a scratch folder, then run it with `NODE_PATH` pointing at that folder's `node_modules`:
+
+```
+NODE_PATH=/path/to/scratch/node_modules CE_BASE=http://127.0.0.1:8818 node tests/axe-check.js
 ```
 
 Every PHP script in `tests/` and `bin/` exits unless it runs from the command line. `.gitattributes` keeps `.gitattributes`, `.gitignore`, `.claude/`, `phpcs.xml.dist`, `bin/` and `tests/` out of the zip; `doc/` and `tools/` ship, and the live-server clean-up removes them.
@@ -104,7 +110,7 @@ compelling-evidence/
 | 2 | The Problem of Evil | `the-problem-of-evil` | 9 |
 | 3 | Ethics Without God? | `ethics-without-god` | 5 |
 | 4 | Science & Evidence | `science-evidence` | 11 |
-| 5 | The Quran & Its Sources | `quran-and-sources` | 30 |
+| 5 | The Quran & Its Sources | `quran-and-sources` | 31 |
 | 6 | History, Context & Comparison | `history-context-comparison` | 15 |
 | 7 | Divine Justice & Fairness | `divine-justice-fairness` | 7 |
 | 8 | Islamic Practice & Ritual | `islamic-practice-ritual` | 8 |

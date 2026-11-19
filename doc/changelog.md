@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.18.24] - November 2026
+
+Documentation only. No theme code, article text, data or setting changed, no feature removed and no public identifier renamed. The version number still changes, so, as with every release, the first admin page load after the files are replaced runs the normal upgrade steps.
+
+### Changed
+- Counts match the bundle: 145 articles (31 in The Quran & Its Sources), batches 001 to 010 listed in `doc/ssot.md`, and the quiz described as three modes of 5, 10 and 15 questions.
+- `doc/readme.md` lists `tests/axe-check.js` among the checks.
+
 ## [2.18.23] - November 2026
 
 Documentation only. No theme code, article text, data or setting changed, no feature removed and no public identifier renamed. The version number still changes, so, as with every release, the first admin page after the update runs the theme's version-gated steps, among them the content sync (which leaves articles you edited alone, since 2.18.22).
