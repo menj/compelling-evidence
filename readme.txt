@@ -161,7 +161,7 @@ CE Theme, Copyright 2026 MENJ. Licensed under the GNU GPL, version 3 or later; t
 == Changelog ==
 
 = 2.18.25 - November 2026 =
-* The content sync is recorded as done for a theme version only when every article went through. A failed article is tried again, at most every 15 minutes, instead of staying out of date.
+* The content sync is recorded as done for a theme version only when every article went through, and every batch passed its checksum. A failed article or batch is tried again, at most every 15 minutes, instead of staying out of date.
 
 = 2.18.24 - November 2026 =
 * Documentation only. Article, topic and test counts now match the bundle.

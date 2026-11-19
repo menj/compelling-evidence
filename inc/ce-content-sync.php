@@ -325,6 +325,10 @@ function ce_sync_article_content( bool $force_run = false, bool $respect_lock = 
     $synced = 0;
     $created = 0;
     $failed = 0;
+    // A batch that failed its checksum is missing from $articles, so its articles were not synced.
+    if ( $loader->has_errors() ) {
+        $failed += count( $loader->get_errors() );
+    }
 
     foreach ( $articles as $article ) {
         if ( empty( $article['slug'] ) ) {
@@ -595,6 +599,8 @@ function ce_sync_article_content( bool $force_run = false, bool $respect_lock = 
         update_option( $version_key, time() );
         delete_transient( $retry_key );
     } else {
+        // A forced run can fail after an earlier success: clear the old record so normal loads try again too.
+        delete_option( $version_key );
         set_transient( $retry_key, '1', 15 * MINUTE_IN_SECONDS );
         error_log( 'CE: Content sync finished with ' . $failed . ' failed item(s); this version is not marked as synced and will be tried again.' );
     }
