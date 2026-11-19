@@ -1,7 +1,7 @@
 # SSOT: Single Source of Truth
 ## Compelling Evidence theme: system design, naming conventions, configuration rules
 
-**Version:** 2.18.23  
+**Version:** 2.18.24  
 **Location:** `doc/ssot.md`
 
 This document is authoritative. When any other file conflicts with a rule stated here, this document is correct and the other file should be updated.
@@ -80,7 +80,12 @@ inc/articles/
 ├── batch-002.json            # 24 articles
 ├── batch-003.json            # 24 articles
 ├── batch-004.json            # 24 articles
-└── batch-005.json            # 24 articles (including order 120, added v2.3.1)
+├── batch-005.json            # 24 articles (including order 120, added v2.3.1)
+├── batch-006.json            # 3 articles
+├── batch-007.json            # 8 articles
+├── batch-008.json            # 6 articles
+├── batch-009.json            # 6 articles
+└── batch-010.json            # 2 articles (145 in all)
 ```
 
 **The WordPress database follows the bundle, safely (since 2.18.22).** `ce-content-sync.php` updates an article the sync created while you have not edited it. An article you edited is never overwritten: it is listed under Tools with a diff, and you take the bundled text or keep your own. See section 28c.
@@ -302,7 +307,7 @@ Main branch is `main`. Version tags follow semantic versioning prefixed with `v`
 
 Distribution zip is built with `git archive`, which honours the `export-ignore` lines in `.gitattributes` (`.claude/`, `bin/`, `tests/`, `phpcs.xml.dist`, `.gitattributes`, `.gitignore`):
 ```bash
-git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.23.zip v2.18.23   # the release tag, as in doc/readme.md
+git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.24.zip v2.18.24   # the release tag, as in doc/readme.md
 ```
 
 ---

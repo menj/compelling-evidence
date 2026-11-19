@@ -6,20 +6,20 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.18.23
-Stable tag: 2.18.23
+Version: 2.18.24
+Stable tag: 2.18.24
 License: GNU General Public License v3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Template: twentytwentyfive
 Tags: custom-menu, custom-logo, featured-images, rtl-language-support, translation-ready
 
-Child theme of Twenty Twenty-Five for compelling-evidence.com: 14 journeys, a persona quiz and 143 articles on God, evidence and Islam.
+Child theme of Twenty Twenty-Five for compelling-evidence.com: 14 journeys, a persona quiz and 145 articles on God, evidence and Islam.
 
 == Description ==
 
 CE Theme runs one site, compelling-evidence.com. It is a child of Twenty Twenty-Five and is not built as a general-purpose theme.
 
-A reader takes a 10-question quiz, gets routed to 1 of 14 journeys written for a starting point (atheist, agnostic, scientist, sceptic and so on), and reads on into 143 articles in 11 topics. Everything the theme needs (articles, topics, pages) ships inside it and syncs to the database on activation.
+A reader takes the quiz (5, 10 or 15 questions, as they choose), gets routed to 1 of 14 journeys written for a starting point (atheist, agnostic, scientist, sceptic and so on), and reads on into 145 articles in 11 topics. Everything the theme needs (articles, topics, pages) ships inside it and syncs to the database on activation.
 
 All fonts are self-hosted. With default settings the theme makes no request to another server from a visitor's browser, sets no cookie and tracks nothing.
 
@@ -27,7 +27,7 @@ All fonts are self-hosted. With default settings the theme makes no request to a
 
 * 14 journeys, each a stand-alone page with saved progress, a visible FAQ and FAQPage markup.
 * A persona quiz in three modes (quick, standard, full) with weighted scoring; it also carries a visible FAQ and FAQPage markup.
-* 143 articles and their topic taxonomy (ce_topic), seeded from JSON batch files.
+* 145 articles and their topic taxonomy (ce_topic), seeded from JSON batch files.
 * Reader questions (ce_question) with an Ask a Question form, spam honeypot and nonce.
 * A progress page driven by localStorage.
 * On each article: the published and updated dates, an "In short" box from the excerpt and the key points, the questions saved in the FAQ Items box shown as a FAQ, and a list of every Qur'an and hadith passage quoted, linked to its place.
@@ -159,6 +159,9 @@ CE Theme, Copyright 2026 MENJ. Licensed under the GNU GPL, version 3 or later; t
 * Article figures are not bundled. inc/articles/media.json lists each with its source page, creator and licence, and the credit prints under the figure.
 
 == Changelog ==
+
+= 2.18.24 - November 2026 =
+* Documentation only. Article, topic and test counts now match the bundle.
 
 = 2.18.23 - November 2026 =
 * Documentation only. The two hadith cited in the article on honour, free will and fear at home have now been checked against the text of Sahih al-Bukhari.
@@ -647,6 +650,9 @@ Uthmani Quran font replaced with KFGQPC HAFS version (608 glyphs). CE Hadith add
 For the full version history see doc/changelog.md in the theme zip.
 
 == Upgrade Notice ==
+
+= 2.18.24 =
+Documentation only. Replace the theme files, then load any admin page once. Nothing else to do.
 
 = 2.18.23 =
 Documentation only. Replace the theme files, then load any admin page once. Nothing else to do.
