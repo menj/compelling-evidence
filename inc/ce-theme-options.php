@@ -978,6 +978,7 @@ function ce_manual_content_sync(): array {
     $theme_version = wp_get_theme()->get( 'Version' );
     $version_key   = 'ce_content_sync_' . str_replace( '.', '_', $theme_version );
     delete_option( $version_key );
+    delete_transient( $version_key . '_retry' ); // The retry wait after a failed run would otherwise block this request.
     delete_transient( 'ce_content_sync_lock' );
 
     // ── Load the canonical sync function ─────────────────────────────────────
