@@ -234,6 +234,13 @@ function ce_sync_article_content( bool $force_run = false, bool $respect_lock = 
     // Either trigger bypasses the version check
     $force_sync = $force_run || $url_force;
 
+    // A run that had a failed item is not recorded, so it is tried again. The retry waits 15 minutes
+    // between attempts, so one article that keeps failing does not rerun the whole sync on every admin load.
+    $retry_key = $version_key . '_retry';
+    if ( ! $force_sync && get_transient( $retry_key ) ) {
+        return;
+    }
+
     // Check if already synced this version
     $already_synced = get_option( $version_key );
     if ( $already_synced && ! $force_sync ) {
@@ -583,8 +590,14 @@ function ce_sync_article_content( bool $force_run = false, bool $respect_lock = 
     // Clean up deprecated topic terms (restructured categories)
     ce_cleanup_deprecated_topics();
 
-    // Mark this version as synced
-    update_option( $version_key, time() );
+    // Mark this version as synced only when every item went through.
+    if ( 0 === $failed ) {
+        update_option( $version_key, time() );
+        delete_transient( $retry_key );
+    } else {
+        set_transient( $retry_key, '1', 15 * MINUTE_IN_SECONDS );
+        error_log( 'CE: Content sync finished with ' . $failed . ' failed item(s); this version is not marked as synced and will be tried again.' );
+    }
     
     // Release lock
     delete_transient( $lock_key );

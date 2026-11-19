@@ -6,8 +6,8 @@ Author URI: https://menj.blog
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.0
-Version: 2.18.24
-Stable tag: 2.18.24
+Version: 2.18.25
+Stable tag: 2.18.25
 License: GNU General Public License v3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Template: twentytwentyfive
@@ -159,6 +159,9 @@ CE Theme, Copyright 2026 MENJ. Licensed under the GNU GPL, version 3 or later; t
 * Article figures are not bundled. inc/articles/media.json lists each with its source page, creator and licence, and the credit prints under the figure.
 
 == Changelog ==
+
+= 2.18.25 - November 2026 =
+* The content sync is recorded as done for a theme version only when every article went through. A failed article is tried again, at most every 15 minutes, instead of staying out of date.
 
 = 2.18.24 - November 2026 =
 * Documentation only. Article, topic and test counts now match the bundle.
@@ -650,6 +653,9 @@ Uthmani Quran font replaced with KFGQPC HAFS version (608 glyphs). CE Hadith add
 For the full version history see doc/changelog.md in the theme zip.
 
 == Upgrade Notice ==
+
+= 2.18.25 =
+Replace the theme files, then load any admin page once. If an article could not be written before, the sync now tries it again.
 
 = 2.18.24 =
 Documentation only. Replace the theme files, then load any admin page once. Nothing else to do.
