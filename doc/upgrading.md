@@ -15,6 +15,12 @@ This document describes the update steps, the notes for each version that needs 
 
 ---
 
+## Upgrading to v2.18.25 from v2.18.24
+
+Replace the theme files, then load any admin page once. Nothing else to do.
+
+What changed for you: a failed article write no longer marks the version as synced. The sync tries the failed item again, at most every 15 minutes. Look in the PHP error log for "Content sync finished with" if an article stays out of date.
+
 ## Upgrading to v2.18.24 from v2.18.23
 
 Documentation only: no theme code, article text, data or setting changes. Replace the theme files, then load any admin page once, so the steps that follow every version change run as usual. Nothing else to do.

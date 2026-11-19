@@ -1296,6 +1296,7 @@ function ce_render_sync_tool_page(): void {
         $theme_version = wp_get_theme()->get( 'Version' );
         $version_key   = 'ce_content_sync_' . str_replace( '.', '_', $theme_version );
         delete_option( $version_key );
+        delete_transient( $version_key . '_retry' ); // The retry wait after a failed run would otherwise block the sync that was asked for.
         delete_transient( 'ce_content_sync_lock' );
         $message = '<div class="notice notice-success is-dismissible"><p>'
             . esc_html__( 'Sync lock cleared. The article sync will run on your next admin page load.', 'compelling-evidence' )

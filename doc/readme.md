@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Version | 2.18.24 |
+| Version | 2.18.25 |
 | Licence | GNU GPL v3 or later; the full text is in `LICENSE` |
 | Parent | Twenty Twenty-Five, tested with 1.5 (`CE_PARENT_TESTED_VERSION`) |
 | Requires | WordPress 6.7 (tested to 7.1), PHP 8.0 (tested to 8.4) |
@@ -37,7 +37,7 @@ php bin/build-error-pages.php                        # rebuild errors/*.html fro
 node bin/quiz-sim.js                                 # quiz scoring simulation
 python3 bin/build-murtadd-counterparts.py            # rebuild inc/data/murtadd-counterparts.json
 python3 bin/build-quiz-murtadd-links.py              # rebuild inc/data/quiz-murtadd-links.json
-git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.24.zip v2.18.24   # after the release is committed and tagged
+git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.25.zip v2.18.25   # after the release is committed and tagged
 ```
 
 The accessibility check is run apart from that block, because it needs a running copy of the site. Install `playwright` and `axe-core` with `npm i` in a scratch folder, then run it with `NODE_PATH` pointing at that folder's `node_modules`:
