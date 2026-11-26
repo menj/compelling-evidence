@@ -1,7 +1,7 @@
 # SSOT: Single Source of Truth
 ## Compelling Evidence theme: system design, naming conventions, configuration rules
 
-**Version:** 2.18.24  
+**Version:** 2.18.25  
 **Location:** `doc/ssot.md`
 
 This document is authoritative. When any other file conflicts with a rule stated here, this document is correct and the other file should be updated.
@@ -307,7 +307,7 @@ Main branch is `main`. Version tags follow semantic versioning prefixed with `v`
 
 Distribution zip is built with `git archive`, which honours the `export-ignore` lines in `.gitattributes` (`.claude/`, `bin/`, `tests/`, `phpcs.xml.dist`, `.gitattributes`, `.gitignore`):
 ```bash
-git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.24.zip v2.18.24   # the release tag, as in doc/readme.md
+git archive --format=zip --prefix=compelling-evidence/ -o compelling-evidence-2.18.25.zip v2.18.25   # the release tag, as in doc/readme.md
 ```
 
 ---
@@ -665,6 +665,8 @@ Since 2.18.19 the pass also trashes only posts the sync wrote: each article the 
 | A `supersedes` pair names it as old, and the new one is published | 301 to the new article at any address, hidden from lists, search, feeds and sitemaps, noindex, then moved to the Trash | Stays, listed |
 
 Only posts that carry `_ce_seed_key` are ever trashed, and nothing is deleted. A bundled article in the Trash is not created again. `inc/data/supersedes.json` is `{ "ce_article": { "old-slug": "new-slug" } }` and ships empty; the `ce_supersedes` filter can add pairs. The Tools tab has a dry-run card, a log of the last 100 changes and a "Run the review sync now" button. `CE_DISABLE_CONTENT_SYNC` in `wp-config.php` switches off updates, removals, the redirect and the hiding; the button handlers check it straight after the nonce. Removals also stop when a batch fails its checksum or the bundle lists more than 10 percent fewer articles than at the last good sync.
+
+**A failed item is retried (since 2.18.25).** `ce_sync_article_content()` writes the option `ce_content_sync_<version>` only when no article failed to create or update and every batch passed its checksum. A failed run also deletes the option, so a forced run that fails after an earlier success is tried again by normal loads. After a run with a failure it sets the transient `ce_content_sync_<version>_retry` for 15 minutes, so the next attempt waits and a persistent failure does not rerun the whole sync on every admin load. A forced run (Tools, `?ce_force_sync`) ignores the wait.
 
 The sync runs when the theme version, a batch checksum, the supersedes map or the guard state changes, so a corrected batch needs no version bump. `inc/articles/manifest.json` is the live manifest. `manifest-clean.json` (version 2.3.5, five batches) is read by no code.
 

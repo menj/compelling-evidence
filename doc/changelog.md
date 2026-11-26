@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [2.18.25] - November 2026
+
+The content sync retries what failed. No feature removed, no option key renamed.
+
+### Fixed
+- `ce_sync_article_content()` recorded a theme version as synced even when an article failed to create or update, so later admin loads skipped it and the article stayed out of date or missing. The version is now recorded only when every item went through. After a failure the sync tries again, at most every 15 minutes (transient `ce_content_sync_<version>_retry`). A forced run ignores the wait. A batch that fails its checksum counts as a failure, and a failed run deletes the version option, so a forced run that fails after an earlier success is also tried again. The Force re-sync tools also clear the retry wait, so a requested sync is never held back by it. Reported by CodeAnt on #47 and #48.
+
 ## [2.18.24] - November 2026
 
 Documentation only. No theme code, article text, data or setting changed, no feature removed and no public identifier renamed. The version number still changes, so, as with every release, the first admin page load after the files are replaced runs the normal upgrade steps.
